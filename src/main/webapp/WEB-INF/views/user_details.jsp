@@ -93,7 +93,7 @@
                                         <li role="presentation" class="">
                                             <a href="#tab_content4" id="roles-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <i class="fa fa-key">&nbsp;</i>
-                                            <spring:message code="label.role.user_roles" /></a>
+                                            <spring:message code="label.user.roles" /></a>
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content5" id="groups-tab" role="tab" data-toggle="tab" aria-expanded="false">

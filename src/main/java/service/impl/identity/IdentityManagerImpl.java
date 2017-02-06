@@ -18,6 +18,7 @@ import common.exceptions.security.InvalidLoginException;
 import common.exceptions.security.SystemSecurityException;
 import common.utils.security.SecurityUtils;
 import dao.api.group.GroupDAO;
+import dao.api.identity.PermissionDAO;
 import dao.api.identity.RoleDAO;
 import dao.api.identity.UserDAO;
 import model.common.session.SessionData;
@@ -47,6 +48,9 @@ public class IdentityManagerImpl implements IdentityManager
 
     @Autowired
     RoleDAO roleDAO;
+
+    @Autowired
+    PermissionDAO permissionDAO;
 
   
     /**************************************************
@@ -210,6 +214,47 @@ public class IdentityManagerImpl implements IdentityManager
     
     }
     
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Role saveRole( Role role )
+    {
+       
+        isValidRoleName( role.getName() );
+
+        try
+        {
+            return roleDAO.save( role );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in saving role:", e );        
+        }
+
+        return null;
+    }
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Permission savePermission( Permission permission )
+    {
+        try
+        {
+            return permissionDAO.save( permission );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in saving Permission:", e );        
+        }
+
+        return null;
+    }
+
+
     /**************************************************
      * 
      */
@@ -472,7 +517,7 @@ public class IdentityManagerImpl implements IdentityManager
         if ( roleName.equalsIgnoreCase( "token" ) || roleName.equalsIgnoreCase( "role" )
                 || roleName.equalsIgnoreCase( "system" ) )
         {
-            throw new IllegalArgumentException( "User name is reserved by the system." );
+            throw new IllegalArgumentException( "Role name is reserved by the system." );
         }
     }
     

@@ -39,7 +39,8 @@ common.utils.system.SystemUtils"%>
 
 </head>
 <!-- ***************************** -->
-<c:set var="rolesPage" value="${requestScope.rolesPage}"/>
+<c:set var="role" value="${requestScope.roleDetails}"/>
+<c:set var="usersPage" value="${requestScope.usersPage}"/>
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -77,7 +78,7 @@ common.utils.system.SystemUtils"%>
                                                     class="control-label"
                                                     for="organization-name"><spring:message code="label.role.name" />:&nbsp;</label>
                                                 </td>
-                                                <td><input type="text" name="organizationName" value="${param.roleName}"
+                                                <td><input type="text" name="roleName" value="${param.roleName}"
                                                     id="organization-name" class="form-control input-sm">
                                                 </td>
                                                 <td>&nbsp;&nbsp;

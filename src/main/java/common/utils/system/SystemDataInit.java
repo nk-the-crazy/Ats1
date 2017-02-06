@@ -10,6 +10,9 @@ import model.common.DataValue;
 import model.contact.Address;
 import model.contact.Contact;
 import model.group.UserGroup;
+import model.identity.Permission;
+import model.identity.PermissionItem;
+import model.identity.Role;
 import model.identity.User;
 import model.identity.UserType;
 import model.organization.Organization;
@@ -65,6 +68,11 @@ public class SystemDataInit
         UserGroup group2 = groupManager.createGroup( "Общая Группа", "Общая Группа (All)", 1 );
         groupManager.saveGroup( group2 );
         
+        Role role1 = createDefaultRoles("Administrator Role"); 
+        Role role2 = createDefaultRoles("Task Manager"); 
+        Role role3 = createDefaultRoles("Assessment Manager"); 
+        Role role4 = createDefaultRoles("User Role"); 
+        
         for(int x=1; x < 30; x++) 
         {
             User user = identityManager.createUser( "admin"+x, "secret", "mail@mail.com"+x, UserType.Regular.getId());
@@ -82,6 +90,11 @@ public class SystemDataInit
             user.addGroup( group1 );
             user.addGroup( group2 );
             
+            user.addRole( role1 );
+            user.addRole( role2 );
+            user.addRole( role3 );
+            user.addRole( role4 );
+            
             if(x == 3 || x == 6) 
             {
                 UserGroup group3 = groupManager.createGroup( "Повышение квалификации 3-"+x, "Группа-Повышение квалификации 3-"+x, 1 );
@@ -94,6 +107,24 @@ public class SystemDataInit
         }
     }
     
+    private Role createDefaultRoles(String name) 
+    {
+        Permission perm1 = identityManager.createPermission( PermissionItem.IdentityManagement.getId(), true, true, false, false);
+        Permission perm2 = identityManager.createPermission( PermissionItem.AssessmentManagement.getId(), true, true, false, false);
+        Permission perm3 = identityManager.createPermission( PermissionItem.GroupManagement.getId(), true, true, false, false);
+        Permission perm4 = identityManager.createPermission( PermissionItem.TaskManagement.getId(), true, true, false, false);
+        
+        Role role = identityManager.createRole( name, "Details:"+name, 2);
+        
+        role.addPermission( perm1 );
+        role.addPermission( perm2 );
+        role.addPermission( perm3 );
+        role.addPermission( perm4 );
+        
+        identityManager.saveRole( role );
+        
+        return role;
+    }
     
     //******************************************
     private Organization createDefaultOrganizations() 

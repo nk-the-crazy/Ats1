@@ -54,4 +54,8 @@ public interface IdentityManager
 
     Permission createPermission( int item, boolean read, boolean write, boolean update, boolean delete );
 
+    Role saveRole( Role role );
+
+    Permission savePermission( Permission permission );
+
 }
