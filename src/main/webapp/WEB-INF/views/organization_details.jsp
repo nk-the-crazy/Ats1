@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -79,7 +80,7 @@
                                     <ul id="organizationDetailsTab" class="nav nav-tabs bar_tabs" role="tablist">
                                         <li role="presentation" class="active">
                                             <a href="#tab_content1" id="organization-tab" role="tab" data-toggle="tab" aria-expanded="true">
-                                            <spring:message code="label.page.group_details.title" /></a>
+                                            <spring:message code="label.page.organization_details.title" /></a>
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content3" id="contacts-tab" role="tab" data-toggle="tab" aria-expanded="false">
@@ -88,7 +89,7 @@
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content2" id="users-tab" role="tab" data-toggle="tab" aria-expanded="false">
-                                            <spring:message code="label.group.members" /></a>
+                                            <spring:message code="label.user_list" /></a>
                                         </li>
                                     </ul>
                                     <div id="organizationDetailsTabContent" class="tab-content">
@@ -185,7 +186,7 @@
                                               </tbody>
                                             </table>                                        
                                         </div>
-                                        <div role="tabpanel" class="tab-pane col-md-8 fade" 
+                                        <div role="tabpanel" class="tab-pane col-md-12 fade" 
                                              id="tab_content2" aria-labelledby="users-tab">
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
@@ -202,8 +203,8 @@
                                                     <tr>
                                                         <td class="col-md-1">${index + loopCounter.count }</td>
                                                         <td><a href="user_details.vw?user_id=${person[1]}">
-                                                            <c:out value="${user[2]}"/></a></td>
-                                                        <td><c:out value="${user[5]}"/>&nbsp;<c:out value="${user[4]}"/></td>
+                                                            <c:out value="${person[2]}"/></a></td>
+                                                        <td><c:out value="${person[5]}"/>&nbsp;<c:out value="${person[4]}"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <!-- *********/Person list ************ -->
@@ -259,6 +260,18 @@
     <!-- Dat Tables -->
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if(activeTab){
+            $('#organizationDetailsTab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+    </script>
 
 </body>
 </html>

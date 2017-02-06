@@ -3,9 +3,10 @@ package model.identity;
 public enum PermissionItem
 {
     IdentityManagement(1),
-    AssessmentManagement(2),
-    QuestionManagement(3),
-    ReportManagement(4);
+    GroupManagement(2),
+    AssessmentManagement(3),
+    TaskManagement(4),
+    ReportManagement(5);
     
     private final static int groupId = 2;
     private int id;

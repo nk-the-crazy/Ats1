@@ -66,8 +66,5 @@
 	
 	<!-- ********** Spring Web Config ********* -->
     <bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
-	
-	
-	 
 
 </beans>

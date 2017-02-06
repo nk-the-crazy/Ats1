@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -53,10 +52,7 @@ public class Organization
     @JoinColumn(name="contact_id")
     private Contact contact;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "organz_persons", joinColumns = {
-            @JoinColumn(name = "organz_id", referencedColumnName = "id") }, inverseJoinColumns = {
-                    @JoinColumn(name = "person_id", referencedColumnName = "id") })
+    @OneToMany(mappedBy="organization", fetch = FetchType.LAZY)
     private Set<Person> personList = new HashSet<>();
 
     public String getCode()

@@ -191,6 +191,19 @@
     <!-- Dat Tables -->
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if(activeTab){
+            $('#groupDetailsTab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+    </script>
+    
 
 </body>
 </html>

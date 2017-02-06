@@ -308,7 +308,7 @@
                                               </tbody>
                                             </table> 
                                             <!------------- Pagination -------------->
-                                            <c:if test="${groupsPage.totalPages > 0}">
+                                            <c:if test="${groupsPage.totalPages > 1}">
                                                 <jsp:include page="include/pagination.jsp">
                                                      <jsp:param name="page" value="user_details.vw" />
                                                      <jsp:param name="addParam" value="user_id=${param.user_id}" />
@@ -358,6 +358,19 @@
     <!-- Dat Tables -->
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if(activeTab){
+            $('#userDetailsTab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+    </script>
 
 </body>
 </html>
