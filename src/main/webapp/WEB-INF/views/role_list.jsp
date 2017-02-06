@@ -19,7 +19,7 @@ common.utils.system.SystemUtils"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.organizations.title" /></title>
+<title><spring:message code="label.page.roles.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,7 +39,7 @@ common.utils.system.SystemUtils"%>
 
 </head>
 <!-- ***************************** -->
-<c:set var="organizationsPage" value="${requestScope.organizationsPage}"/>
+<c:set var="rolesPage" value="${requestScope.rolesPage}"/>
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -47,13 +47,13 @@ common.utils.system.SystemUtils"%>
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp">
-                <jsp:param name="page" value="organizations_list.vw" />
+                <jsp:param name="page" value="role_list.vw" />
             </jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp">
-                <jsp:param name="page" value="uorganizations_list.vw" />
+                <jsp:param name="page" value="role_list.vw" />
             </jsp:include>
             <!-- /top navigation -->
 
@@ -62,22 +62,22 @@ common.utils.system.SystemUtils"%>
                 <div class="">
                     <div class="clearfix"></div>
                     <div class="row">
-                        <div class="col-md-10 col-sm-10 col-xs-10">
+                        <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.organizations.title" /></h2>
+                                    <h2><spring:message code="label.page.roles.title" /></h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form id="user_search" data-parsley-validate action="organization_list.vw"
+                                    <form id="user_search" data-parsley-validate action="role_list.vw"
                                         class="form-horizontal form-label-left">
                                         <table>
                                             <tr>
                                                 <td><label
                                                     class="control-label"
-                                                    for="organization-name"><spring:message code="label.organization.name" />:&nbsp;</label>
+                                                    for="organization-name"><spring:message code="label.role.name" />:&nbsp;</label>
                                                 </td>
-                                                <td><input type="text" name="organizationName" value="${param.organizationName}"
+                                                <td><input type="text" name="organizationName" value="${param.roleName}"
                                                     id="organization-name" class="form-control input-sm">
                                                 </td>
                                                 <td>&nbsp;&nbsp;
@@ -96,42 +96,36 @@ common.utils.system.SystemUtils"%>
                                         <thead>
                                             <tr>
                                                 <th>№</th>
-                                                <th><spring:message code="label.organization.name" /></th>
-                                                <th><spring:message code="label.organization.type" /></th>
-                                                <th><spring:message code="label.data.status" /></th>
+                                                <th><spring:message code="label.role.name" /></th>
+                                                <th><spring:message code="label.role.desc" /></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <!-- *********User list ************ -->
+                                        <!-- *********Role list ************ -->
                                         
-                                        <c:set var="index" value="${organizationsPage.number * organizationsPage.size}" />
+                                        <c:set var="index" value="${rolesPage.number * rolesPage.size}" />
                                         
-                                        <c:forEach var="organization" items="${organizationsPage.content}" varStatus="loopCounter">
-                                            <tr class="${organization.status == 1 ? 'a' : 'warning'}">
+                                        <c:forEach var="role" items="${rolesPage.content}" varStatus="loopCounter">
+                                            <tr>
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
-                                                <td><a href="organization_details.vw?organization_id=${organization.id}">
-                                                    <c:out value="${organization.name}"/></a>
-                                                </td>
-                                                <td class="col-md-2">
-                                                   ${SystemUtils.getAttribute('system.attrib.organization.type',organization.type, locale)}
-                                                </td>
-                                                <td class="col-md-2">
-                                                   ${SystemUtils.getAttribute('system.attrib.data.status',organization.status, locale)}
-                                                </td>
+                                                <td class="col-md-2"><a href="role_details.vw?role_id=${role.id}">
+                                                    <c:out value="${role.name}"/></a>
+                                                </td class="col-md-3">
+                                                <td><c:out value="${role.details}"/></td>
                                             </tr>
                                         </c:forEach>
-                                        <!-- *********User list ************ -->
+                                        <!-- *********/Role list ************ -->
                                         </tbody>
                                     </table>
                                     
                                     <!------------- Pagination -------------->
-                                    <c:if test="${organizationsPage.totalPages > 1}">
+                                    <c:if test="${rolesPage.totalPages > 1}">
                                         <jsp:include page="include/pagination.jsp">
-                                             <jsp:param name="page" value="user_list.vw" />
-                                             <jsp:param name="totalPages" value="${organizationsPage.totalPages}" />
-                                             <jsp:param name="totalElements" value="${organizationsPage.totalElements}" />
-                                             <jsp:param name="currentIndex" value="${organizationsPage.number}" />
-                                             <jsp:param name="pageableSize" value="${organizationsPage.size}" />
+                                             <jsp:param name="page" value="role_list.vw" />
+                                             <jsp:param name="totalPages" value="${rolesPage.totalPages}" />
+                                             <jsp:param name="totalElements" value="${rolesPage.totalElements}" />
+                                             <jsp:param name="currentIndex" value="${rolesPage.number}" />
+                                             <jsp:param name="pageableSize" value="${rolesPage.size}" />
                                          </jsp:include>
                                      </c:if>
                                     <!--------------------------------------->

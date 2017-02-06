@@ -89,7 +89,7 @@
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content2" id="users-tab" role="tab" data-toggle="tab" aria-expanded="false">
-                                            <spring:message code="label.user_list" /></a>
+                                            <spring:message code="label.user.list" /></a>
                                         </li>
                                     </ul>
                                     <div id="organizationDetailsTabContent" class="tab-content">
@@ -108,8 +108,9 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
-                                                  <td  class="${organization.status == 1 ? 'a' : 'warning'}">
-                                                  <c:out value="${organization.status}"/></td>
+                                                  <td  class="${organization.status == 1 ? '' : 'warning'}">
+                                                      ${SystemUtils.getAttribute('system.attrib.data.status',organization.status,locale)}
+                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.organization.tax_payer_number" />:</th>

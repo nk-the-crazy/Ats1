@@ -29,7 +29,7 @@ public class Permission
     private long id;
 
     @Column( name = "item" )
-    private int item;
+    private short item;
 
     @Column( name = "read" )
     private boolean read = false;
@@ -78,12 +78,10 @@ public class Permission
     }
 
 
-    
     public boolean isUpdate()
     {
         return update;
     }
-
 
     
     public void setUpdate( boolean update )
@@ -91,13 +89,11 @@ public class Permission
         this.update = update;
     }
 
-
     
     public boolean isDelete()
     {
         return delete;
     }
-
 
     
     public void setDelete( boolean delete )
@@ -105,15 +101,23 @@ public class Permission
         this.delete = delete;
     }
 
-
     
     public String getObjectName()
     {
         return "";
     }
 
-
     
+    public int getItem()
+    {
+        return item;
+    }
+
+    public void setItem( int item )
+    {
+        this.item = (short)item;
+    }
+
     public List<String> asString()
     {
         List<String> perms = new ArrayList<>();

@@ -4,6 +4,7 @@ package web.controller.identity;
 import javax.servlet.http.HttpSession;
 import model.common.session.SessionData;
 import model.group.UserGroup;
+import model.identity.Role;
 import model.identity.User;
 import service.api.identity.IdentityManager;
 import org.slf4j.Logger;
@@ -118,6 +119,46 @@ public class IdentityController
     
     /*******************************************************
      * 
+     * */
+    @RequestMapping( value = "/edit_password.do", method = RequestMethod.POST )
+    public ModelAndView changeUserPassword( @RequestParam( "currentPassword" ) String currentPassword,
+                                            @RequestParam( "newPassword" ) String newPassword, HttpSession session)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+        
+        try
+        {
+            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
+            
+            if(sData == null)
+            {
+                model.setViewName( ModelView.VIEW_EDIT_PASSWORD_PAGE);
+            }
+            else
+            {
+                if(identityManager.changeUserPassword( sData.getUser(), currentPassword, newPassword ))
+                {
+                    model.setViewName( ModelView.VIEW_MAIN_PAGE);
+                }
+                else
+                {
+                    model.setViewName( ModelView.VIEW_EDIT_PASSWORD_PAGE);
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error changing password:", e );        
+        }
+        
+        return model;
+        
+    }
+    
+    
+    
+    /*******************************************************
+     * 
      */
 	@RequestMapping( value = "/user_list.vw")
     public ModelAndView getUsers( @RequestParam( name = "userName" , defaultValue = "", required = false ) 
@@ -171,6 +212,58 @@ public class IdentityController
     }
     
 	
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/role_list.vw")
+    public ModelAndView getRoles( @RequestParam( name = "roleName" , defaultValue = "", required = false ) 
+                                  String roleName,
+                                  Pageable pageable )
+    {
+         ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+            
+            try
+            {
+                Page<Role> rolesPage = identityManager.getRolesByRoleName( roleName, pageable);
+                        
+                model.addObject( "rolesPage", rolesPage );
+                model.setViewName( ModelView.VIEW_ROLE_LIST_PAGE);
+            }
+            catch(Exception e)
+            {
+                logger.error( " **** Error getting role list:", e );        
+            }
+            
+            return model;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/role_details.vw")
+    public ModelAndView getRoleDetailsView(@RequestParam( "role_id" ) long roleId, Pageable pageable)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+        
+        try
+        {
+            Role role = identityManager.getRoleDetails( roleId);
+            Page<User> usersPage = identityManager.getRoleUsers( roleId, pageable );
+            
+            model.addObject( "roleDetails", role );
+            model.addObject( "usersPage", usersPage );
+            model.setViewName( ModelView.VIEW_ROLE_DETAILS_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting role Details:", e );        
+        }
+        
+        return model;
+        
+    }
+    
 	/*******************************************************
 	 * 
 	 */
