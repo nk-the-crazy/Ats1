@@ -1,0 +1,73 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+
+	<context:component-scan base-package="web.controller" />
+	<context:component-scan base-package="web.interceptor" />
+    
+	
+	<!-- ******* CSS and JS *************************************** -->
+
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:default-servlet-handler />
+
+	<mvc:annotation-driven>
+		<mvc:argument-resolvers>
+	        <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver">
+	            <property name="oneIndexedParameters" value="false"/>
+                <property name="maxPageSize" value="40"/>
+	            <property name="fallbackPageable">
+	                <bean class="org.springframework.data.domain.PageRequest">
+	                    <constructor-arg name="page" value="0" />
+	                    <constructor-arg name="size" value="12" />
+	                </bean>
+	            </property>
+            </bean>
+	    </mvc:argument-resolvers>
+	</mvc:annotation-driven>
+    
+	<!-- ********** Interceptors *********** -->
+
+	<mvc:interceptors>
+
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="locale" />
+		</bean>
+
+	</mvc:interceptors>
+
+
+	<!-- ********** Internal View Resolver *********** -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/views/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+	<!-- ********** Locale Resolver *********** -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en" />
+	</bean>
+	
+	<!-- ********** Spring Web Config ********* -->
+    <bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
+	
+	
+	 
+
+</beans>
