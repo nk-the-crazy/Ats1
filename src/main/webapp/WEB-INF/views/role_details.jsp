@@ -37,7 +37,7 @@
 
 </head>
 <!-- ***************************** -->
-<c:set var="group" value="${requestScope.groupDetails}"/>
+<c:set var="role" value="${requestScope.roleDetails}"/>
 <c:set var="usersPage" value="${requestScope.usersPage}"/>
 <!-- ***************************** -->
 <body class="nav-md">
@@ -82,18 +82,18 @@
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content2" id="permissions-tab" role="tab" data-toggle="tab" aria-expanded="false">
-                                            <i class="fa fa-group">&nbsp;</i>
-                                            <spring:message code="label.role.members" /></a>
+                                            <i class="fa fa-key">&nbsp;</i>
+                                            <spring:message code="label.role.permissions" /></a>
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content3" id="users-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <i class="fa fa-group">&nbsp;</i>
-                                            <spring:message code="label.group.members" /></a>
+                                            <spring:message code="label.role.members" /></a>
                                         </li>
                                     </ul>
-                                    <div id="groupDetailsTabContent" class="tab-content">
+                                    <div id="roleDetailsTabContent" class="tab-content">
                                         <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
-                                              aria-labelledby="groups-tab">
+                                              aria-labelledby="roles-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
                                                 <tr>
@@ -102,29 +102,51 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><spring:message code="label.group.name" />:</th>
-                                                  <td class="col-md-5"><c:out value="${group.name}"/></td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.group.date" />:</th>
-                                                  <td><c:out value="${group.created}"/></td>
+                                                  <th scope="row" class="col-md-3"><spring:message code="label.role.name" />:</th>
+                                                  <td class="col-md-5"><c:out value="${role.name}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.group.desc" />:</th>
-                                                  <td><c:out value="${group.details}"/></td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.data.status" />:</th>
-                                                    <td class="${group.status == 1 ? 'a' : 'warning'}">
-                                                    ${SystemUtils.getAttribute('system.attrib.data.status', group.status, locale)}
-                                                    </td>
+                                                  <td><c:out value="${role.details}"/></td>
                                                 </tr>
                                               </tbody>
                                             </table>
                                         </div>
+                                        <div role="tabpanel" class="tab-pane col-md-9 fade" 
+                                             id="tab_content2" aria-labelledby="permissions-tab">
+                                            
+                                            <table id="" class="dataTable table table-bordered">
+                                              <thead>
+                                                <tr>
+                                                    <th>№</th>
+                                                    <th><spring:message code="label.permission" /></th>
+                                                    <th><spring:message code="label.permission.read" /></th>
+                                                    <th><spring:message code="label.permission.write" /></th>
+                                                    <th><spring:message code="label.permission.update" /></th>
+                                                    <th><spring:message code="label.permission.delete" /></th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <!-- *********Permission list ************ -->
+                                                <c:forEach var="permission" items="${role.permissions}" varStatus="loopCounter">
+                                                    <tr>
+                                                        <td class="col-md-1">${loopCounter.count}</td>
+                                                        <td class="col-md-3">
+                                                        ${SystemUtils.getAttribute('system.attrib.permission',permission.item, locale)}
+                                                        </td>
+                                                        <td class="col-md-1"><i class="${permission.read ? 'fa fa-check' : 'fa fa-close'}"></i></td>
+                                                        <td class="col-md-1"><i class="${permission.write ? 'fa fa-check' : 'fa fa-close'}"></i></td>
+                                                        <td class="col-md-1"><i class="${permission.update ? 'fa fa-check' : 'fa fa-close'}"></i></td>
+                                                        <td class="col-md-1"><i class="${permission.delete ? 'fa fa-check' : 'fa fa-close'}"></i></td>
+                                                    </tr>
+                                                </c:forEach>
+                                                <!-- *********User list ************ -->
+                                              </tbody>
+                                            </table>
+                                        </div>
                                         
-                                        <div role="tabpanel" class="tab-pane col-md-12 fade" 
-                                             id="tab_content2" aria-labelledby="users-tab">
+                                        <div role="tabpanel" class="tab-pane col-md-10 fade" 
+                                             id="tab_content3" aria-labelledby="users-tab">
                                             
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
@@ -204,7 +226,7 @@
         });
         var activeTab = localStorage.getItem('activeTab');
         if(activeTab){
-            $('#groupDetailsTab a[href="' + activeTab + '"]').tab('show');
+            $('#roleDetailsTab a[href="' + activeTab + '"]').tab('show');
         }
     });
     </script>
