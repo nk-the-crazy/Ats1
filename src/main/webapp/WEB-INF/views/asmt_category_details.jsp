@@ -17,7 +17,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.group_details.title" /></title>
+<title><spring:message code="label.page.asmt.category_details.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -37,20 +37,20 @@
 
 </head>
 <!-- ***************************** -->
-<c:set var="group" value="${requestScope.groupDetails}"/>
-<c:set var="usersPage" value="${requestScope.usersPage}"/>
+<c:set var="category" value="${requestScope.categoryDetails}"/>
+<c:set var="tasksPage" value="${requestScope.tasksPage}"/>
 <!-- ***************************** -->
 <body class="nav-md">
     <div class="container body">
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp"><jsp:param name="page"
-                    value="group_details.vw" /></jsp:include>
+                    value="asmt_category_details.vw" /></jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp"><jsp:param name="page"
-                    value="group_details.vw" /></jsp:include>
+                    value="asmt_category_details.vw" /></jsp:include>
             <!-- /top navigation -->
 
             <!-- page content -->
@@ -60,7 +60,7 @@
                         <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.group_details.title" /></h2>
+                                    <h2><spring:message code="label.page.asmt.category_details.title" /></h2>
                                      <div style="text-align: right;">
                                         <button type="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
@@ -75,20 +75,20 @@
                                 </div>
                                 <div class="x_content">
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                                    <ul id="groupDetailsTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <ul id="categoryDetailsTab" class="nav nav-tabs bar_tabs" role="tablist">
                                         <li role="presentation" class="active">
-                                            <a href="#tab_content1" id="groups-tab" role="tab" data-toggle="tab" aria-expanded="true">
-                                            <spring:message code="label.page.group_details.title" /></a>
+                                            <a href="#tab_content1" id="category-tab" role="tab" data-toggle="tab" aria-expanded="true">
+                                            <spring:message code="label.page.asmt.category_details.title" /></a>
                                         </li>
                                         <li role="presentation" class="">
-                                            <a href="#tab_content2" id="users-tab" role="tab" data-toggle="tab" aria-expanded="false">
+                                            <a href="#tab_content2" id="tasks-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <i class="fa fa-group">&nbsp;</i>
-                                            <spring:message code="label.group.members" /></a>
+                                            <spring:message code="label.asmt.task.list" /></a>
                                         </li>
                                     </ul>
-                                    <div id="groupDetailsTabContent" class="tab-content">
+                                    <div id="categoryDetailsTabContent" class="tab-content">
                                         <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
-                                              aria-labelledby="groups-tab">
+                                              aria-labelledby="category-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
                                                 <tr>
@@ -97,61 +97,49 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><spring:message code="label.group.name" />:</th>
-                                                  <td class="col-md-5"><c:out value="${group.name}"/></td>
+                                                  <th scope="row" class="col-md-3"><spring:message code="label.asmt.task.category.name" />:</th>
+                                                  <td class="col-md-5"><c:out value="${category.name}"/></td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.group.date" />:</th>
-                                                  <td><c:out value="${group.created}"/></td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.group.desc" />:</th>
-                                                  <td><c:out value="${group.details}"/></td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.data.status" />:</th>
-                                                    <td class="${group.status == 1 ? 'a' : 'warning'}">
-                                                    ${SystemUtils.getAttribute('system.attrib.data.status', group.status, locale)}
-                                                    </td>
+                                                  <th scope="row" ><spring:message code="label.asmt.task.category.desc" />:</th>
+                                                  <td><c:out value="${category.desc}"/></td>
                                                 </tr>
                                               </tbody>
                                             </table>
                                         </div>
                                         
                                         <div role="tabpanel" class="tab-pane col-md-10 fade" 
-                                             id="tab_content2" aria-labelledby="users-tab">
+                                             id="tab_content2" aria-labelledby="tasks-tab">
                                             
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
-                                                    <th><spring:message code="label.user.name" /></th>
-                                                    <th><spring:message code="label.user.full_name" /></th>
+                                                    <th><spring:message code="label.asmt.task.name" /></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <!-- *********User list ************ -->
-                                                <c:set var="index" value="${usersPage.number * usersPage.size}" />
-                                                <c:forEach var="user" items="${usersPage.content}" varStatus="loopCounter">
+                                                <!-- *********Task list ************ -->
+                                                <c:set var="index" value="${tasksPage.number * tasksPage.size}" />
+                                                <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${index + loopCounter.count }</td>
-                                                        <td><a href="user_details.vw?user_id=${user[0]}">
-                                                            <c:out value="${user[1]}"/></a></td>
-                                                        <td><c:out value="${user[3]}"/>&nbsp;<c:out value="${user[2]}"/></td>
+                                                        <td><a href="asmt_task_details.vw?asmt_task_id=${task[1]}">
+                                                            <c:out value="${task[2]}"/></a></td>
                                                     </tr>
                                                 </c:forEach>
-                                                <!-- *********User list ************ -->
+                                                <!-- *********/Task list ************ -->
                                               </tbody>
                                             </table>
                                              <!------------- Pagination -------------->
                                             <c:if test="${usersPage.totalPages > 1}">
                                                 <jsp:include page="include/pagination.jsp">
-                                                     <jsp:param name="page" value="user_details.vw" />
-                                                     <jsp:param name="addParam" value="group_id=${param.group_id}" />
-                                                     <jsp:param name="totalPages" value="${usersPage.totalPages}" />
-                                                     <jsp:param name="totalElements" value="${usersPage.totalElements}" />
-                                                     <jsp:param name="currentIndex" value="${usersPage.number}" />
-                                                     <jsp:param name="pageableSize" value="${usersPage.size}" />
+                                                     <jsp:param name="page" value="asmt_category_details.vw" />
+                                                     <jsp:param name="addParam" value="asmt_category_id=${param.asmt_category_id}" />
+                                                     <jsp:param name="totalPages" value="${tasksPage.totalPages}" />
+                                                     <jsp:param name="totalElements" value="${tasksPage.totalElements}" />
+                                                     <jsp:param name="currentIndex" value="${tasksPage.number}" />
+                                                     <jsp:param name="pageableSize" value="${tasksPage.size}" />
                                                  </jsp:include>
                                              </c:if>
                                             <!--------------------------------------->                                              
@@ -169,7 +157,7 @@
 
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
-            <jsp:param name="page" value="group_details.vw" />
+            <jsp:param name="page" value="asmt_category_details.vw" />
         </jsp:include>
         <!-- /footer content -->
     </div>

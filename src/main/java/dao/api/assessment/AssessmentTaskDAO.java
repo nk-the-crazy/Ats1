@@ -22,7 +22,7 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
     Page<AssessmentTask> findByDetails(@Param("itemName") String itemName,
                                        @Param("categoryName") String categoryName , 
                                        @Param("modeType") short modeType , 
-                                       Pageable page );
+                                       Pageable pageable );
     
 
     //********************************************
@@ -34,7 +34,7 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
             + " ORDER BY t.itemName")
     Page<AssessmentTask> findByItemNameAndCategory(@Param("itemName") String itemName,
                                          @Param("categoryName") String categoryName , 
-                                         Pageable page );
+                                         Pageable pageable );
 
 
     //********************************************
@@ -47,11 +47,11 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
 
 
     //********************************************
-    @Query(value = "SELECT t.id, t.itemName "
-            + " FROM Category c "
+    @Query(value = "SELECT c.id, t.id, t.itemName "
+            + " FROM AssessmentTaskCategory c "
             + " JOIN c.tasks t "
             + " WHERE c.id=:categoryId "
             + " ORDER By t.itemName" )
-    Page<AssessmentTask> getByCategoryId(@Param("categoryId") long categoryId );
+    Page<AssessmentTask> getByCategoryId(@Param("categoryId") long categoryId , Pageable pageable );
 
 }

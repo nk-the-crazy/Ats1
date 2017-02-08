@@ -188,7 +188,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
     @Override
     public Page<AssessmentTask> getCategoryTasks( long categoryId, Pageable pageable )
     {
-        return taskDAO.getByCategoryId(categoryId);
+        return taskDAO.getByCategoryId( categoryId, pageable);
     }
     
     

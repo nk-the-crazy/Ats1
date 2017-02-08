@@ -21,7 +21,7 @@ model.assessment.task.*" %>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.asmt.task.categories.title"/></title>
+<title><spring:message code="label.page.asmt.categories.title"/></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css"
@@ -64,7 +64,7 @@ model.assessment.task.*" %>
 						<div class="col-md-8 col-sm-8 col-xs-8">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2><spring:message code="label.page.asmt.task.categories.title"/></h2>
+									<h2><spring:message code="label.page.asmt.categories.title"/></h2>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
