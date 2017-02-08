@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskCategory;
+import model.assessment.task.AssessmentTaskDetails;
 import model.common.DataValue;
 import model.contact.Address;
 import model.contact.Contact;
@@ -17,6 +20,7 @@ import model.identity.User;
 import model.identity.UserType;
 import model.organization.Organization;
 import model.person.Person;
+import service.api.assesment.task.AssessmentTaskManager;
 import service.api.contact.ContactManager;
 import service.api.group.GroupManager;
 import service.api.identity.IdentityManager;
@@ -32,6 +36,9 @@ public class SystemDataInit
     
     @Autowired
     private PersonManager personManager;
+    
+    @Autowired
+    private AssessmentTaskManager taskManager;
     
     @Autowired
     private ContactManager contactManager;
@@ -51,6 +58,7 @@ public class SystemDataInit
     public void initializeSystemData() 
     {
         createDefaultUsers();
+        createDefaultCategories();
     }
 
     //******************************************
@@ -139,5 +147,58 @@ public class SystemDataInit
         
         return organizationManager.saveOrganization( organization );
     }
- 
+
+    
+    //******************************************
+    private void createDefaultCategories() 
+    {
+        for(int x=1; x < 20; x++) 
+        {
+            AssessmentTaskCategory category = taskManager.createTaskCategory( "Category-"+x, "Details of Category-"+x );
+            
+            AssessmentTask task1 = createDefaultTasks(x) ;
+            AssessmentTask task2 = createDefaultTasks(x+1) ;
+            
+            category.addTask( task1 );
+            category.addTask( task2 );
+            
+            for(int a=1; a < 5; a++) 
+            {
+                AssessmentTaskCategory categoryS1 = taskManager.createTaskCategory( "Category-"+x+"-"+a, "Details of Category-"+x );
+                category.addChildCategory( categoryS1 );
+
+                for(int b=1; b < 3; b++) 
+                {
+                    AssessmentTaskCategory categoryS2 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b, "Details of Category-"+x );
+                    categoryS1.addChildCategory( categoryS2 );
+
+                    //AssessmentTaskCategory categoryS3 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b+"-"+b, "Details of Category-"+x );
+                    //categoryS2.addChildCategory( categoryS3 );
+}
+            }
+            
+            taskManager.saveTaskCategory( category );
+        }
+    }
+    
+    
+    //******************************************
+    private AssessmentTask createDefaultTasks(int index) 
+    {
+        AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?", 2, 1, 1);
+                
+        AssessmentTaskDetails det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
+        AssessmentTaskDetails det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );
+        AssessmentTaskDetails det3 = taskManager.createTaskDetails( "Answer = "+ (index+14), 0 );
+        AssessmentTaskDetails det4 = taskManager.createTaskDetails( "Answer = "+ (index+33), 0 );
+        
+        task.addDetails( det1 );
+        task.addDetails( det2 );
+        task.addDetails( det3 );
+        task.addDetails( det4 );
+        
+        //taskManager.saveTask( task );
+        
+        return task;
+    }
 }

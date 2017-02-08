@@ -32,6 +32,17 @@ public class ModelView
     public static String VIEW_ORGANIZATION_LIST_PAGE  = "organization_list";
     public static String VIEW_ORGANIZATION_DETAILS_PAGE  = "organization_details";
     
+    
+    //Task
+    public static String VIEW_ASMT_TASK_REGISTER_PAGE  = "register_asmt_task";
+    public static String VIEW_ASMT_TASK_LIST_PAGE  = "asmt_task_list";
+    public static String VIEW_ASMT_TASK_DETAILS_PAGE  = "asmt_task_details";
+    
+    //Task
+    public static String VIEW_ASMT_CATEGORY_REGISTER_PAGE  = "register_asmt_category";
+    public static String VIEW_ASMT_CATEGORY_LIST_PAGE  = "asmt_category_list";
+    public static String VIEW_ASMT_CATEGORY_DETAILS_PAGE  = "asmt_category_details";
+    
    
     
 }

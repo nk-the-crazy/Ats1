@@ -3,7 +3,10 @@
         pageEncoding="UTF-8"
 	    errorPage="error.jsp"%>
 
-<%@page import="common.utils.system.SystemUtils,java.util.Locale" %>
+<%@page import="common.utils.system.SystemUtils, 
+java.util.Locale, 
+java.util.List,
+model.assessment.task.*" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -38,7 +41,9 @@
 <link rel="stylesheet" href="resources/lib/jquery-treegrid/css/jquery.treegrid.css">
 
 </head>
-
+<!-- ***************************** -->
+<c:set var="categoryList" value="${requestScope.categoryList}"/>
+<!-- ***************************** -->
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
@@ -56,26 +61,37 @@
 			<div class="right_col" role="main">
 				<div class="">
 					<div class="row">
-						<div class="col-md-5 col-sm-5 col-xs-5">
+						<div class="col-md-8 col-sm-8 col-xs-8">
 							<div class="x_panel">
 								<div class="x_title">
 									<h2><spring:message code="label.page.task.categories.title"/></h2>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-                                <table class="tree">
-                                    <tr class="treegrid-1">
-                                        <td>Root node</td><td>Additional info</td>
-                                    </tr>
-                                    <tr class="treegrid-2 treegrid-parent-1">
-                                        <td>Node 1-1</td><td>Additional info</td>
-                                    </tr>
-                                    <tr class="treegrid-3 treegrid-parent-1">
-                                        <td>Node 1-2</td><td>Additional info</td>
-                                    </tr>
-                                    <tr class="treegrid-4 treegrid-parent-3">
-                                        <td>Node 1-2-1</td><td>Additional info</td>
-                                    </tr>
+                                 <table id="datatable" class="table table-striped table-bordered tree dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>№</th>
+                                            <th><spring:message code="label.assessment.task.category.name" /></th>
+                                            <th><spring:message code="label.assessment.task.count" /></th>
+                                            <th><spring:message code="label.assessment.task.category.desc" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="category" items="${categoryList}" varStatus="loopCounter">
+                                            <tr class="treegrid-${category.id}">
+                                                <td>${loopCounter.count}</td>
+                                                <td><a href="asmt_category_details.vw?asmt_category_id=${category.id}">
+                                                ${category.name}</a></td>
+                                                <td>No Count</td>
+                                                <td>${category.details}</td>
+                                            </tr>
+                                            <c:set var="node" value="${category}" scope="request"/>
+                                            <jsp:include page="include/node.jsp"/>
+                                         
+                                        </c:forEach>
+                                       
+                                    </tbody>
                                 </table>
                                 </div>
 							</div>
@@ -106,15 +122,18 @@
 	<!-- Custom Theme Scripts -->
 	<script src="resources/js/custom.min.js"></script>
     
-    
     <!-- Tree Grid -->
     <script type="text/javascript" src="resources/lib/jquery-treegrid/js/jquery.treegrid.js"></script>
-    <script type="text/javascript" src="resources/lib/jquery-treegrid/js/jquery.treegrid.bootstrap3.js"></script>
     <script type="text/javascript">
-    
+
     $(document).ready(function() 
     {
-        $('.tree').treegrid();
+        $('.tree').treegrid({
+                        expanderExpandedClass: 'glyphicon glyphicon-minus',
+                        expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                        initialState: 'collapsed',
+                        treeColumn: 1
+                    });
     });
     
     </script>

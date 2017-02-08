@@ -33,16 +33,16 @@
                         <spring:message code="label.menu.assessment" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><i class="fa fa-plus"></i><a href="tables.html"><spring:message code="label.menu.assessment.register" /></a></li>
+                            <li><a href="tables.html"><spring:message code="label.menu.assessment.register" /></a></li>
                             <li><a href="tables_dynamic.html"><spring:message code="label.menu.assessment.management" /></a></li>
                         </ul></li>
                     <li><a><i class="fa fa-cubes"></i> 
                         <spring:message code="label.menu.task.list" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="register_group.vw"><i class="fa fa-cube"></i> 
+                            <li><a href="asmt_task_list.vw"><i class="fa fa-cube"></i> 
                                  <spring:message code="label.menu.task.management" /> </a></li>
-                            <li><a href="register_group.vw"><i class="fa fa-sitemap"></i>
+                            <li><a href="asmt_category_list.vw"><i class="fa fa-sitemap"></i>
                                 <spring:message code="label.menu.task.category.management" />
                             </a></li>
                         </ul></li>
