@@ -1,4 +1,4 @@
-package model.assessment.task;
+package model.assessment;
 
 public enum AssessmentTaskType
 {

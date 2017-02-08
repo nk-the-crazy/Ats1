@@ -1,21 +1,23 @@
-package service.impl.assesment.task;
+package service.impl.assesment;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 
-import dao.api.assessment.task.AssessmentTaskCategoryDAO;
-import dao.api.assessment.task.AssessmentTaskDAO;
-import model.assessment.task.AssessmentTask;
-import model.assessment.task.AssessmentTaskCategory;
-import model.assessment.task.AssessmentTaskDetails;
-import service.api.assesment.task.AssessmentTaskManager;
+import dao.api.assessment.AssessmentTaskCategoryDAO;
+import dao.api.assessment.AssessmentTaskDAO;
+import model.assessment.AssessmentTask;
+import model.assessment.AssessmentTaskCategory;
+import model.assessment.AssessmentTaskDetails;
+import service.api.assessment.AssessmentTaskManager;
 
 @Service("taskManagerService")
 @Transactional
@@ -116,6 +118,8 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
     @Override
     public AssessmentTask saveTask( AssessmentTask entity)
     {
+        isValidTaskName(entity.getItemName());
+        
         return taskDAO.save( entity );
     }
 
@@ -126,6 +130,8 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
     @Override
     public AssessmentTaskCategory saveTaskCategory( AssessmentTaskCategory entity)
     {
+        isValidCategoryName(entity.getName());
+        
         return categoryDAO.save( entity );
     }
 
@@ -138,16 +144,54 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
         return categoryDAO.findAll();
     }
     
-    /**************************************************
-     * 
+    
+    /* *************************************************
      */
     @Override
     public List<AssessmentTaskCategory> getCategoryTree()
     {
         return categoryDAO.getCategoryTree();
     }
+    
+
+    /* *************************************************
+     */
+    @Override
+    public AssessmentTaskCategory getCategoryDetails(long categoryId)
+    {
+        return categoryDAO.findOne( categoryId );
+    }
 
 
+    /* *************************************************
+     */
+    @Override
+    public Page<AssessmentTask> getTasksByDetails(String itemName, String categoryName, short modeType, Pageable pageable)
+    {
+        return taskDAO.findByDetails( itemName, categoryName, modeType, pageable  );
+    }    
+    
+    
+    /* *************************************************
+     */
+    @Override
+    public AssessmentTask getTaskFullDetails(long taskId)
+    {
+        return taskDAO.getFullDetails( taskId );
+    }
+    
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Page<AssessmentTask> getCategoryTasks( long categoryId, Pageable pageable )
+    {
+        return taskDAO.getByCategoryId(categoryId);
+    }
+    
+    
     /**************************************************
      * 
      */
@@ -164,6 +208,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
             throw new IllegalArgumentException( "Task name is reserved by the system." );
         }
     }
+    
 
     /**************************************************
      * 
@@ -180,5 +225,6 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
             throw new IllegalArgumentException( "Category name is reserved by the system." );
         }
     }
+
 
 }

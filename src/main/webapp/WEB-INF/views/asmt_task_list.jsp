@@ -18,7 +18,7 @@ common.utils.system.SystemUtils"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.users.title" /></title>
+<title><spring:message code="label.page.asmt.tasks.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -38,7 +38,7 @@ common.utils.system.SystemUtils"%>
 
 </head>
 <!-- ***************************** -->
-<c:set var="usersPage" value="${requestScope.usersPage}"/>
+<c:set var="tasksPage" value="${requestScope.tasksPage}"/>
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -46,13 +46,13 @@ common.utils.system.SystemUtils"%>
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp">
-                <jsp:param name="page" value="user_list.vw" />
+                <jsp:param name="page" value="asmt_task_list.vw" />
             </jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp">
-                <jsp:param name="page" value="user_list.vw" />
+                <jsp:param name="page" value="asmt_task_list.vw" />
             </jsp:include>
             <!-- /top navigation -->
 
@@ -60,29 +60,58 @@ common.utils.system.SystemUtils"%>
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-10 col-sm-10 col-xs-10">
+                        <div class="col-md-11 col-sm-11 col-xs-11">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.users.title" /></h2>
-                                    <div class="clearfix"></div>
+                                    <h2><spring:message code="label.page.asmt.tasks.title" /></h2>
+                                    <div class="btn-group pull-right">
+                                      <button type="button" class="btn btn-success btn-xs">
+                                        <i class="fa fa-plus"></i>&nbsp;
+                                                <spring:message code="label.menu.task.register"/></button>
+                                      <button type="button" class="btn btn-success btn-xs dropdown-toggle" 
+                                        data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only"></span>
+                                      </button>
+                                      <ul class="dropdown-menu" role="menu">
+                                        
+                                        <li><a href="#"><i class="fa fa-upload"></i>&nbsp;
+                                                <spring:message code="label.asmt.task.upload"/></a>
+                                        </li>
+                                        <li class="divider"></li>
+                                      </ul>
+                                    </div>
+                                  <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form id="user_search" data-parsley-validate action="user_list.vw"
+                                    <form id="user_search" data-parsley-validate action="asmt_task_list.vw"
                                         class="form-horizontal form-label-left">
                                         <table>
                                             <tr>
                                                 <td><label
                                                     class="control-label"
-                                                    for="login-name"><spring:message code="label.user.login" />:&nbsp;</label>
+                                                    for="login-name"><spring:message code="label.asmt.task.name" />:&nbsp;</label>
                                                 </td>
-                                                <td><input type="text" name="userName" value="${param.userName}"
+                                                <td><input type="text" id="login-name" name="taskItemName" value="${param.taskItemName}"
                                                     id="first-name" class="form-control input-sm">
                                                 </td>
                                                 <td>&nbsp;&nbsp; <label class="control-label"
-                                                    for="last-name"><spring:message code="label.user.last_name" />:&nbsp;</label>
+                                                    for="category-name"><spring:message code="label.asmt.task.category" />:&nbsp;</label>
                                                 </td>
-                                                <td><input type="text" value="${param.lastName}"
-                                                    id="last-name" name="lastName" class="form-control input-sm">
+                                                <td><input type="text" value="${param.categoryName}"
+                                                    id="category-name" name="categoryName" class="form-control input-sm">
+                                                </td>
+                                                <td><label class="control-label"for="mode-type">
+                                                    &nbsp;<spring:message code="label.asmt.task.mode.type" />:&nbsp;</label>
+                                                </td>
+                                                <td><select id="mode-type" class="form-control input-sm" name="taskModeType">
+                                                        <option value="0"><spring:message code="label.data.all" /></option>
+                                                        <c:forEach var="systemAttr" varStatus="loopCounter"
+                                                            items="${SystemUtils.getAttributes('system.attrib.task.mode.type',locale)}"> 
+                                                            <option ${param.taskModeType == (loopCounter.count) ? 'selected="selected"' : ''}
+                                                            value="${loopCounter.count}">${systemAttr}</option>
+                                                        </c:forEach>
+                                                  </select>
                                                 </td>
                                                 <td>&nbsp;&nbsp;
                                                     <button type="submit"
@@ -100,39 +129,41 @@ common.utils.system.SystemUtils"%>
                                         <thead>
                                             <tr>
                                                 <th>№</th>
-                                                <th><spring:message code="label.user.login" /></th>
-                                                <th><spring:message code="label.user.full_name" /></th>
-                                                <th><spring:message code="label.user.last_login" /></th>
+                                                <th><spring:message code="label.asmt.task.name" /></th>
+                                                <th><spring:message code="label.asmt.task.complexity" /></th>
+                                                <th><spring:message code="label.asmt.task.mode" /></th>
+                                                <th><spring:message code="label.asmt.task.mode.type" /></th>
+                                                <th><spring:message code="label.asmt.task.category" /></th>
                                                 <th><spring:message code="label.data.status" /></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <!-- *********User list ************ -->
-                                        <c:set var="index" value="${usersPage.number * usersPage.size}" />
-                                        <c:forEach var="user" items="${usersPage.content}" varStatus="loopCounter">
-                                            <tr class="${user[3] == 1 ? 'a' : 'warning'}">
+                                        <!-- *********Task list ************ -->
+                                        <c:set var="index" value="${tasksPage.number * tasksPage.size}" />
+                                        <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
+                                            <tr class="${task[4] == 1 ? 'a' : 'warning'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
-                                                <td><a href="user_details.vw?user_id=${user[0]}">
-                                                    <c:out value="${user[1]}"/></a></td>
-                                                <td><c:out value="${user[5]}"/>&nbsp;<c:out value="${user[4]}"/></td>
-                                                <td class="col-md-3"><c:out value="${user[2]}"/></td>
-                                                <td class="col-md-2">
-                                                   ${SystemUtils.getAttribute('system.attrib.data.status',user[3],locale)}
-                                                </td>
+                                                <td><a href="asmt_task_details.vw?asmt_task_id=${task[0]}">
+                                                    <c:out value="${task[1]}"/></a></td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.complexity',task[3],locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode',task[3],locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[4],locale)}</td>
+                                                <td><c:out value="${task[6]}"/></td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.data.status',task[5],locale)}</td>
                                             </tr>
                                         </c:forEach>
-                                        <!-- *********User list ************ -->
+                                        <!-- *********/Task list ************ -->
                                         </tbody>
                                     </table>
                                     
                                     <!------------- Pagination -------------->
-                                    <c:if test="${usersPage.totalPages > 1}">
+                                    <c:if test="${tasksPage.totalPages > 1}">
                                         <jsp:include page="include/pagination.jsp">
-                                             <jsp:param name="page" value="user_list.vw" />
-                                             <jsp:param name="totalPages" value="${usersPage.totalPages}" />
-                                             <jsp:param name="totalElements" value="${usersPage.totalElements}" />
-                                             <jsp:param name="currentIndex" value="${usersPage.number}" />
-                                             <jsp:param name="pageableSize" value="${usersPage.size}" />
+                                             <jsp:param name="page" value="asmt_task_list.vw" />
+                                             <jsp:param name="totalPages" value="${tasksPage.totalPages}" />
+                                             <jsp:param name="totalElements" value="${tasksPage.totalElements}" />
+                                             <jsp:param name="currentIndex" value="${tasksPage.number}" />
+                                             <jsp:param name="pageableSize" value="${tasksPage.size}" />
                                          </jsp:include>
                                      </c:if>
                                     <!--------------------------------------->
@@ -148,7 +179,7 @@ common.utils.system.SystemUtils"%>
 
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
-            <jsp:param name="page" value="user_list" />
+            <jsp:param name="page" value="asmt_task_list.vw" />
         </jsp:include>
         <!-- /footer content -->
     </div>

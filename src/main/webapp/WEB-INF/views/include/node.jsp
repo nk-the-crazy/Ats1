@@ -7,7 +7,7 @@
         <td></td>
         <td><a href="asmt_category_details.vw?asmt_category_id=${node.id}">
         ${node.name}</a></td>
-        <td>${node.id}-Parent=${node.parent.id }</td>
+        <td>No Data</td>
         <td>${node.details}</td>
     </tr>
     

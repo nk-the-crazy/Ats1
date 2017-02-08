@@ -1,12 +1,11 @@
-package dao.api.assessment.task;
+package dao.api.assessment;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-
-import model.assessment.task.AssessmentTaskCategory;
+import model.assessment.AssessmentTaskCategory;
 
 
 

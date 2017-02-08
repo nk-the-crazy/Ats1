@@ -1,4 +1,4 @@
-package model.assessment.task;
+package model.assessment;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -21,7 +21,7 @@ model.assessment.task.*" %>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.task.categories.title"/></title>
+<title><spring:message code="label.page.asmt.task.categories.title"/></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css"
@@ -64,7 +64,7 @@ model.assessment.task.*" %>
 						<div class="col-md-8 col-sm-8 col-xs-8">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2><spring:message code="label.page.task.categories.title"/></h2>
+									<h2><spring:message code="label.page.asmt.task.categories.title"/></h2>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
@@ -72,9 +72,9 @@ model.assessment.task.*" %>
                                     <thead>
                                         <tr>
                                             <th>№</th>
-                                            <th><spring:message code="label.assessment.task.category.name" /></th>
-                                            <th><spring:message code="label.assessment.task.count" /></th>
-                                            <th><spring:message code="label.assessment.task.category.desc" /></th>
+                                            <th><spring:message code="label.asmt.task.category.name" /></th>
+                                            <th><spring:message code="label.asmt.task.count" /></th>
+                                            <th><spring:message code="label.asmt.task.category.desc" /></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -83,7 +83,7 @@ model.assessment.task.*" %>
                                                 <td>${loopCounter.count}</td>
                                                 <td><a href="asmt_category_details.vw?asmt_category_id=${category.id}">
                                                 ${category.name}</a></td>
-                                                <td>No Count</td>
+                                                <td>No Data</td>
                                                 <td>${category.details}</td>
                                             </tr>
                                             <c:set var="node" value="${category}" scope="request"/>
