@@ -38,7 +38,7 @@
 </head>
 <!-- ***************************** -->
 <c:set var="category" value="${requestScope.categoryDetails}"/>
-<c:set var="tasksPage" value="${requestScope.tasksPage}"/>
+<c:set var="tasksPage" value="${requestScope.categoryTasks}"/>
 <!-- ***************************** -->
 <body class="nav-md">
     <div class="container body">
@@ -82,7 +82,7 @@
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content2" id="tasks-tab" role="tab" data-toggle="tab" aria-expanded="false">
-                                            <i class="fa fa-group">&nbsp;</i>
+                                            <i class="fa fa-cube">&nbsp;</i>
                                             <spring:message code="label.asmt.task.list" /></a>
                                         </li>
                                     </ul>
@@ -102,7 +102,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.asmt.task.category.desc" />:</th>
-                                                  <td><c:out value="${category.desc}"/></td>
+                                                  <td><c:out value="${category.details}"/></td>
                                                 </tr>
                                               </tbody>
                                             </table>
@@ -115,7 +115,7 @@
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
-                                                    <th><spring:message code="label.asmt.task.name" /></th>
+                                                    <th><spring:message code="label.asmt.task.item.name" /></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
@@ -187,7 +187,7 @@
         });
         var activeTab = localStorage.getItem('activeTab');
         if(activeTab){
-            $('#groupDetailsTab a[href="' + activeTab + '"]').tab('show');
+            $('#categoryDetailsTab a[href="' + activeTab + '"]').tab('show');
         }
     });
     </script>

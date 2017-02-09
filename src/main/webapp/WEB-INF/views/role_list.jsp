@@ -109,7 +109,7 @@ common.utils.system.SystemUtils"%>
                                         <c:forEach var="role" items="${rolesPage.content}" varStatus="loopCounter">
                                             <tr>
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
-                                                <td class="col-md-2"><a href="role_details.vw?role_id=${role.id}">
+                                                <td class="col-md-3"><a href="role_details.vw?role_id=${role.id}">
                                                     <c:out value="${role.name}"/></a>
                                                 </td class="col-md-3">
                                                 <td><c:out value="${role.details}"/></td>

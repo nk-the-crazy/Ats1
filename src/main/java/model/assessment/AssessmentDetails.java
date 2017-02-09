@@ -16,10 +16,26 @@ public class AssessmentDetails
     @Column(name = "id")
     private long id;
 
+    @Column( name = "details")
+    private String details;
+    
     public long getId()
     {
         return id;
     }
+
+    public String getDetails()
+    {
+        return details;
+    }
+
+    public void setDetails( String details )
+    {
+        this.details = details;
+    }
+    
+    
+    
 
     
 }

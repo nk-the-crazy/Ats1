@@ -2,7 +2,7 @@
 <%@page contentType="text/html" 
         pageEncoding="UTF-8" 
         errorPage="error.jsp" 
-        import="model.identity.*,common.utils.system.SystemUtils"%>
+        import="model.assessment.*,common.utils.system.SystemUtils"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -17,7 +17,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.group_details.title" /></title>
+<title><spring:message code="label.page.asmt.task_details.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -37,8 +37,7 @@
 
 </head>
 <!-- ***************************** -->
-<c:set var="group" value="${requestScope.groupDetails}"/>
-<c:set var="usersPage" value="${requestScope.usersPage}"/>
+<c:set var="task" value="${requestScope.taskDetails}"/>
 <!-- ***************************** -->
 <body class="nav-md">
     <div class="container body">
@@ -57,10 +56,10 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-10 col-sm-10 col-xs-10">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.group_details.title" /></h2>
+                                    <h2><spring:message code="label.page.asmt.task_details.title" /></h2>
                                      <div style="text-align: right;">
                                         <button type="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
@@ -75,15 +74,15 @@
                                 </div>
                                 <div class="x_content">
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                                    <ul id="groupDetailsTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <ul id="taskDetailsTab" class="nav nav-tabs bar_tabs" role="tablist">
                                         <li role="presentation" class="active">
-                                            <a href="#tab_content1" id="groups-tab" role="tab" data-toggle="tab" aria-expanded="true">
-                                            <spring:message code="label.page.group_details.title" /></a>
+                                            <a href="#tab_content1" id="task-tab" role="tab" data-toggle="tab" aria-expanded="true">
+                                            <i class="fa fa-cube">&nbsp;</i>
+                                            <spring:message code="label.asmt.task" /></a>
                                         </li>
                                         <li role="presentation" class="">
-                                            <a href="#tab_content2" id="users-tab" role="tab" data-toggle="tab" aria-expanded="false">
-                                            <i class="fa fa-group">&nbsp;</i>
-                                            <spring:message code="label.group.members" /></a>
+                                            <a href="#tab_content2" id="task-details-tab" role="tab" data-toggle="tab" aria-expanded="false">
+                                            <spring:message code="label.asmt.task.details" /></a>
                                         </li>
                                     </ul>
                                     <div id="groupDetailsTabContent" class="tab-content">
@@ -97,21 +96,40 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><spring:message code="label.group.name" />:</th>
-                                                  <td class="col-md-5"><c:out value="${group.name}"/></td>
+                                                  <th scope="row" class="col-md-3"><spring:message code="label.asmt.task.name" />:</th>
+                                                  <td class="col-md-7"><c:out value="${task.itemName}"/></td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.group.date" />:</th>
-                                                  <td><c:out value="${group.created}"/></td>
+                                                  <th scope="row" ><spring:message code="label.asmt.task.item.content" />:</th>
+                                                  <td style="height: 60px;">${task.itemContent}</td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.group.desc" />:</th>
-                                                  <td><c:out value="${group.details}"/></td>
+                                                  <th scope="row" ><spring:message code="label.asmt.task.complexity" />:</th>
+                                                    <td>
+                                                    ${SystemUtils.getAttribute('system.attrib.task.complexity', task.complexity, locale)}
+                                                    </td>
                                                 </tr>
+                                                <tr>
+                                                  <th scope="row" ><spring:message code="label.asmt.task.mode" />:</th>
+                                                    <td>
+                                                    ${SystemUtils.getAttribute('system.attrib.task.mode', task.mode, locale)}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" ><spring:message code="label.asmt.task.mode.type" />:</th>
+                                                    <td>
+                                                    ${SystemUtils.getAttribute('system.attrib.task.mode.type', task.modeType, locale)}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" ><spring:message code="label.asmt.task.category.name" />:</th>
+                                                  <td class="col-lg-3"><c:out value="${task.category.name}"/></td>
+                                                </tr>
+                                                
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
-                                                    <td class="${group.status == 1 ? 'a' : 'warning'}">
-                                                    ${SystemUtils.getAttribute('system.attrib.data.status', group.status, locale)}
+                                                    <td class="${task.status == 1 ? 'a' : 'warning'}">
+                                                    ${SystemUtils.getAttribute('system.attrib.data.status', task.status, locale)}
                                                     </td>
                                                 </tr>
                                               </tbody>
@@ -119,42 +137,28 @@
                                         </div>
                                         
                                         <div role="tabpanel" class="tab-pane col-md-10 fade" 
-                                             id="tab_content2" aria-labelledby="users-tab">
+                                             id="tab_content2" aria-labelledby="task-details-tab">
                                             
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
-                                                    <th><spring:message code="label.user.name" /></th>
-                                                    <th><spring:message code="label.user.full_name" /></th>
+                                                    <th><spring:message code="label.asmt.task.item.grade" />(%)</th>
+                                                    <th><spring:message code="label.asmt.task.item.option" /></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <!-- *********User list ************ -->
-                                                <c:set var="index" value="${usersPage.number * usersPage.size}" />
-                                                <c:forEach var="user" items="${usersPage.content}" varStatus="loopCounter">
+                                                <!-- *********Task Details list************ -->
+                                                <c:forEach var="taskDetails" items="${task.details}" varStatus="loopCounter">
                                                     <tr>
-                                                        <td class="col-md-1">${index + loopCounter.count }</td>
-                                                        <td><a href="user_details.vw?user_id=${user[0]}">
-                                                            <c:out value="${user[1]}"/></a></td>
-                                                        <td><c:out value="${user[3]}"/>&nbsp;<c:out value="${user[2]}"/></td>
+                                                        <td class="col-md-1">${loopCounter.count }</td>
+                                                        <td class="col-md-2"><c:out value="${taskDetails.itemGrade}"/></td>
+                                                        <td><c:out value="${taskDetails.itemOption}"/></td>
                                                     </tr>
                                                 </c:forEach>
-                                                <!-- *********User list ************ -->
+                                                <!-- *********Task Details list ************ -->
                                               </tbody>
                                             </table>
-                                             <!------------- Pagination -------------->
-                                            <c:if test="${usersPage.totalPages > 1}">
-                                                <jsp:include page="include/pagination.jsp">
-                                                     <jsp:param name="page" value="user_details.vw" />
-                                                     <jsp:param name="addParam" value="group_id=${param.group_id}" />
-                                                     <jsp:param name="totalPages" value="${usersPage.totalPages}" />
-                                                     <jsp:param name="totalElements" value="${usersPage.totalElements}" />
-                                                     <jsp:param name="currentIndex" value="${usersPage.number}" />
-                                                     <jsp:param name="pageableSize" value="${usersPage.size}" />
-                                                 </jsp:include>
-                                             </c:if>
-                                            <!--------------------------------------->                                              
                                         </div>
                                     </div>
                                   </div>
@@ -199,7 +203,7 @@
         });
         var activeTab = localStorage.getItem('activeTab');
         if(activeTab){
-            $('#groupDetailsTab a[href="' + activeTab + '"]').tab('show');
+            $('#taskDetailsTab a[href="' + activeTab + '"]').tab('show');
         }
     });
     </script>

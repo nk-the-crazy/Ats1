@@ -12,7 +12,7 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
 {
     
     //********************************************
-    @Query(value = "SELECT t.id, t.itemName, t.complexity ,t.mode, t.modeType ,t.status, c.name "
+    @Query(value = "SELECT t.id, t.itemName, t.complexity ,t.mode, t.modeType ,t.status, c.id, c.name "
             + " FROM AssessmentTask t "
             + " INNER JOIN t.category c "
             + " WHERE LOWER(t.itemName) LIKE LOWER(CONCAT('%',:itemName, '%')) AND "

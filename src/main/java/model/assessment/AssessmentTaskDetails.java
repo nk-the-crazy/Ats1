@@ -16,11 +16,11 @@ public class AssessmentTaskDetails
     @Column(name = "id")
     private long id;
     
-    @Column(name = "grade")
-    private float grade = 0;
+    @Column(name = "item_grade")
+    private float itemGrade = 0;
     
-    @Column(name = "item_details")
-    private String itemDetails;
+    @Column(name = "item_option")
+    private String itemOption;
     
     
     //***********************************
@@ -29,24 +29,28 @@ public class AssessmentTaskDetails
         return id;
     }
 
-    public float getGrade()
+
+    public float getItemGrade()
     {
-        return grade;
+        return itemGrade;
     }
 
-    public void setGrade( float grade )
+
+    public void setItemGrade( float itemGrade )
     {
-        this.grade = grade;
+        this.itemGrade = itemGrade;
     }
 
-    public String getItemDetails()
+
+    public String getItemOption()
     {
-        return itemDetails;
+        return itemOption;
     }
 
-    public void setItemDetails( String itemDetails )
+
+    public void setItemOption( String itemOption )
     {
-        this.itemDetails = itemDetails;
+        this.itemOption = itemOption;
     }
-    
+  
 }

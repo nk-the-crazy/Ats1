@@ -6,7 +6,7 @@
 <%@page import="common.utils.system.SystemUtils, 
 java.util.Locale, 
 java.util.List,
-model.assessment.task.*" %>
+model.assessment.*" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>

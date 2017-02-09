@@ -28,8 +28,8 @@ public class AssessmentTask
     @Column(name = "item_name")
     private String itemName;
     
-    @Column(name = "item_text")
-    private String itemText;
+    @Column(name = "item_content")
+    private String itemContent;
     
     @Column(name = "mode_type")
     private short modeType = 1;
@@ -72,14 +72,15 @@ public class AssessmentTask
         this.itemName = itemName;
     }
 
-    public String getItemText()
+  
+    public String getItemContent()
     {
-        return itemText;
+        return itemContent;
     }
 
-    public void setItemText( String itemText )
+    public void setItemContent( String itemContent )
     {
-        this.itemText = itemText;
+        this.itemContent = itemContent;
     }
 
     public short getModeType()
@@ -151,6 +152,5 @@ public class AssessmentTask
     {
         details.add( data );
     }
-
     
 }

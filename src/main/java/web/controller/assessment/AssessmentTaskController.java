@@ -21,7 +21,7 @@ import web.common.view.ModelView;
 @Controller
 public class AssessmentTaskController
 {
-  //---------------------------------
+    //---------------------------------
     private static final Logger logger = LoggerFactory.getLogger(AssessmentTaskController.class);
     //---------------------------------
 
@@ -87,7 +87,7 @@ public class AssessmentTaskController
      * 
      */
     @RequestMapping( value = "/asmt_category_list.vw")
-    public ModelAndView getUsers( @RequestParam( name = "userName" , defaultValue = "", required = false ) 
+    public ModelAndView getCategories( @RequestParam( name = "userName" , defaultValue = "", required = false ) 
                                   String userName, 
                                   @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
                                   String lastName, 
@@ -115,7 +115,7 @@ public class AssessmentTaskController
      * 
      */
     @RequestMapping( value = "/asmt_category_details.vw")
-    public ModelAndView getUserDetailsView(@RequestParam( "asmt_category_id" ) long categoryId, Pageable pageable)
+    public ModelAndView getCategoryDetailsView(@RequestParam( "asmt_category_id" ) long categoryId, Pageable pageable)
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
         

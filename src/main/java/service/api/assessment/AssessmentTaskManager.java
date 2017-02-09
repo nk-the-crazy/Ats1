@@ -13,11 +13,11 @@ import model.assessment.AssessmentTaskDetails;
 public interface AssessmentTaskManager
 {
 
-    AssessmentTask createTask( String itemName, String itemText, int mode, int modeType, int complexity );
+    AssessmentTask createTask( String itemName, String itemContent, int mode, int modeType, int complexity );
 
     AssessmentTaskCategory createTaskCategory( String name, String details );
 
-    AssessmentTaskDetails createTaskDetails( String itemDetails, float grade );
+    AssessmentTaskDetails createTaskDetails( String itemOption, float grade );
 
     AssessmentTask saveTask( AssessmentTask entity );
 
