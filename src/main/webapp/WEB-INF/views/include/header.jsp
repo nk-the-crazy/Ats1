@@ -39,8 +39,6 @@
                     <span>&nbsp;&nbsp;<b>${sessionScope.sessionData.user.userName}</b></span>
 						<span class=" fa fa-angle-down"></span></a>
 					<ul class="dropdown-menu dropdown-usermenu pull-right">
-						<li><a href="user_details.vw?user_id=${sessionScope.sessionData.user.id}"><i class="fa fa-male pull-left"></i>
-                        <spring:message code="label.menu.profile"/></a></li>
                         <li><a href="edit_password.vw"><i class="fa fa-unlock pull-left"></i>
                              <spring:message code="label.menu.change_password"/></a></li>
 						<li><a href=""><i class="fa fa-question-circle pull-left">

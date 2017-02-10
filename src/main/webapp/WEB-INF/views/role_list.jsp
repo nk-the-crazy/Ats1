@@ -111,8 +111,8 @@ common.utils.system.SystemUtils"%>
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td class="col-md-3"><a href="role_details.vw?role_id=${role.id}">
                                                     <c:out value="${role.name}"/></a>
-                                                </td class="col-md-3">
-                                                <td><c:out value="${role.details}"/></td>
+                                                </td>
+                                                <td class="col-md-3"><c:out value="${role.details}"/></td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Role list ************ -->

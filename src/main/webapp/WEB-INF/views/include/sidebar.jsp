@@ -33,8 +33,9 @@
                         <spring:message code="label.menu.assessment" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="tables.html"><spring:message code="label.menu.assessment.register" /></a></li>
-                            <li><a href="tables_dynamic.html"><spring:message code="label.menu.assessment.management" /></a></li>
+                            <li><a href="assessment_private_list.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
+                            <li><a href="register_assessment.vw"><spring:message code="label.menu.assessment.register" /></a></li>
+                            <li><a href="assessment_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
                         </ul></li>
                     <li><a><i class="fa fa-cubes"></i> 
                         <spring:message code="label.menu.task.list" /><span

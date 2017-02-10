@@ -58,4 +58,6 @@ public interface IdentityManager
 
     Permission savePermission( Permission permission );
 
+    User getUser( long userId );
+
 }

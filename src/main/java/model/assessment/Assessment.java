@@ -21,7 +21,7 @@ import model.group.UserGroup;
 import model.identity.User;
 
 @Entity
-@Table( name = "assesment" )
+@Table( name = "assessment" )
 public class Assessment
 {
     @Id
@@ -39,7 +39,13 @@ public class Assessment
     private Date endDate;
     
     @Column(name = "type")
-    private int type = 2;
+    private short type = 2;
+
+    @Column(name = "max_grade")
+    private short maxGrade = 100;
+
+    @Column(name = "time")
+    private short time = 1;
 
     @Column(name = "status")
     private int status = 1;
@@ -47,13 +53,13 @@ public class Assessment
     
     // *********************************************
     @OneToOne (cascade = CascadeType.ALL,fetch = FetchType.LAZY )
-    @JoinColumn(name="details_id", nullable = false)
+    @JoinColumn(name="details_id")
     private AssessmentDetails details;
     // *********************************************
     
     // *********************************************
-    @OneToOne (cascade = CascadeType.ALL,fetch = FetchType.LAZY )
-    @JoinColumn(name="author_id", nullable = false)
+    @OneToOne (cascade = CascadeType.MERGE,fetch = FetchType.LAZY )
+    @JoinColumn(name="author_id")
     private User author;
     // *********************************************
 
@@ -70,7 +76,7 @@ public class Assessment
     @JoinTable( name="asssessment_groups",
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="group_id", referencedColumnName="id"))
-    private Set<UserGroup> groups = new HashSet<UserGroup>();
+    private Set<UserGroup> participants = new HashSet<UserGroup>();
     // *********************************************
 
     // *********************************************
@@ -129,7 +135,7 @@ public class Assessment
 
     public void setType( int type )
     {
-        this.type = type;
+        this.type = (short)type;
     }
 
     public AssessmentDetails getDetails()
@@ -142,17 +148,18 @@ public class Assessment
         this.details = details;
     }
 
-    public Set<UserGroup> getGroups()
+    public Set<UserGroup> getParticipants()
     {
-        return groups;
+        return participants;
     }
 
-    public void setGroups( Set<UserGroup> groups )
+
+    public void setParticipants( Set<UserGroup> participants )
     {
-        this.groups = groups;
+        this.participants = participants;
     }
-    
-    
+
+
     public int getStatus()
     {
         return status;
@@ -195,6 +202,18 @@ public class Assessment
     {
         this.managers = managers;
     }
+    
+    
+    public int getMaxGrade()
+    {
+        return maxGrade;
+    }
+
+
+    public void setMaxGrade( int maxGrade )
+    {
+        this.maxGrade = (short) maxGrade;
+    }
 
 
     public void addTask(AssessmentTask task) 
@@ -204,13 +223,27 @@ public class Assessment
 
     public void addGroup(UserGroup group) 
     {
-        groups.add(group );
+        participants.add(group );
     }
 
     public void addManager(User manager) 
     {
         managers.add(manager );
     }
+
+
+    public int getTime()
+    {
+        return time;
+    }
+
+
+    public void setTime( int time )
+    {
+        this.time = (short)time;
+    }
+    
+    
 
 
 }

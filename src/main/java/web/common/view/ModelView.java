@@ -42,6 +42,7 @@ public class ModelView
     //Assessment
     public static String VIEW_ASMT_REGISTER_PAGE  = "register_assessment";
     public static String VIEW_ASMT_LIST_PAGE  = "assessment_list";
+    public static String VIEW_ASMT_PRIVATE_LIST_PAGE  = "assessment_private_list";
     public static String VIEW_ASMT_DETAILS_PAGE  = "assessment_details";
     
     //Task

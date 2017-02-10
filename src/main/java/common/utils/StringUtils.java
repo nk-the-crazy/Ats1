@@ -11,10 +11,10 @@ import common.utils.system.SystemUtils;
 public class StringUtils
 {
     private static SimpleDateFormat shortDateFormatter = new SimpleDateFormat(
-            SystemUtils.getSettings( "system.app.date.format_short" ) );
+            SystemUtils.getSettings( "system.app.date.format.short" ) );
 
     private static SimpleDateFormat longDateFormatter = new SimpleDateFormat(
-            SystemUtils.getSettings( "system.app.date.format_long" ) );
+            SystemUtils.getSettings( "system.app.date.format.long" ) );
 
     /*****************************************
      * 

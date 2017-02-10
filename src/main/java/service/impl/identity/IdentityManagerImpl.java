@@ -131,6 +131,7 @@ public class IdentityManagerImpl implements IdentityManager
         
     }
     
+    
     /**************************************************
      * 
      */
@@ -298,6 +299,15 @@ public class IdentityManagerImpl implements IdentityManager
     public Page<User> getUsers(Pageable pageable)
     {
         return userDAO.findAll( pageable );
+    }
+
+
+    /* *************************************************
+     */
+    @Override
+    public User getUser(long userId)
+    {
+        return userDAO.findOne( userId );
     }
 
 

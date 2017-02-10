@@ -1,4 +1,4 @@
-package service.impl;
+package service.impl.assesment;
 
 
 import java.util.Date;
@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dao.api.assessment.AssessmentDAO;
+import dao.api.assessment.AssessmentTaskDAO;
 import model.assessment.Assessment;
+import model.assessment.AssessmentTask;
 import service.api.assessment.AssessmentManager;
 
 
-@Service("localeManagerService")
+@Service("assessmentManagerService")
 @Transactional
 public class AssessmentManagerImpl implements AssessmentManager
 {
@@ -26,6 +28,9 @@ public class AssessmentManagerImpl implements AssessmentManager
 
     @Autowired
     AssessmentDAO assessmentDAO;
+
+    @Autowired
+    AssessmentTaskDAO taskDAO;
 
     
     /**************************************************
@@ -78,7 +83,7 @@ public class AssessmentManagerImpl implements AssessmentManager
     @Override
     public Assessment getAssessmentFullDetails( long assessmentId )
     {
-        return null;
+        return assessmentDAO.getFullDetails( assessmentId );
     }
     
 
@@ -86,10 +91,32 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public Page<Assessment> getAssessmentsByDetails( String assessmentName, Date startDate, Date endDate,
+    public Page<Assessment> getAssessmentsByDetails( String assessmentName, Date startDateFrom, Date startDateTo,
             short assessmentType, Pageable pageable )
     {
-        return assessmentDAO.getByDetails(assessmentName, startDate, endDate,assessmentType, pageable);
+        return assessmentDAO.getByDetails(assessmentName, startDateFrom, startDateTo,assessmentType, pageable);
     }
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Page<Assessment> getAssessmentsByDetails( String assessmentName, Date startDateFrom , short assessmentType, Pageable pageable )
+    {
+        return assessmentDAO.getByDetails(assessmentName, startDateFrom, assessmentType, pageable);
+    }
+    
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Page<AssessmentTask> getAssessmentTasks( long assessmentId, Pageable pageable )
+    {
+        return taskDAO.getByAssessmentId( assessmentId, pageable );
+    }
+    
+    
 
 }

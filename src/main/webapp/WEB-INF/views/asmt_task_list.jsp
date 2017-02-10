@@ -104,7 +104,7 @@ common.utils.system.SystemUtils"%>
                                                 <td><label class="control-label"for="mode-type">
                                                     &nbsp;<spring:message code="label.asmt.task.mode.type" />:&nbsp;</label>
                                                 </td>
-                                                <td><select id="mode-type" class="form-control input-sm" name="taskModeType">
+                                                <td><select id="mode-type" class="form-control input-select-sm" name="taskModeType">
                                                         <option value="0"><spring:message code="label.data.all" /></option>
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
                                                             items="${SystemUtils.getAttributes('system.attrib.task.mode.type',locale)}"> 

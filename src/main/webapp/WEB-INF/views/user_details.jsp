@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -39,6 +40,8 @@
 <!-- ***************************** -->
 <c:set var="user" value="${requestScope.userDetails}"/>
 <c:set var="groupsPage" value="${requestScope.userGroups}"/>
+<c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
+<c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -123,7 +126,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.last_login_date" />:</th>
-                                                  <td><c:out value="${user.lastLogin}"/></td>
+                                                  <td><fmt:formatDate pattern="${dateTimeFormatShort}" value="${user.lastLogin}" /></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
@@ -145,16 +148,12 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><spring:message code="label.user.last_name" />:</th>
-                                                  <td  class="col-md-8"><c:out value="${user.person.lastName}"/></td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row"><spring:message code="label.user.first_name" />:</th>
-                                                  <td><c:out value="${user.person.firstName}"/></td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.user.middle_name" />:</th>
-                                                  <td><c:out value="${user.person.middleName}"/></td>
+                                                  <th scope="row" class="col-md-3"><spring:message code="label.user.full_name" />:</th>
+                                                  <td  class="col-md-8">
+                                                  <c:out value="${user.person.lastName}"/>&nbsp;
+                                                  <c:out value="${user.person.firstName}"/>&nbsp;
+                                                  <c:out value="${user.person.middleName}"/>
+                                                  </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.gender" />:</th>
@@ -164,7 +163,8 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.birth_date" />:</th>
-                                                  <td><c:out value="${user.person.personDetails.birthDate}"/></td>
+                                                  <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.person.personDetails.birthDate}" />
+                                                  </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.tax_payer_number" />:</th>
@@ -186,8 +186,12 @@
                                                   <th scope="row" >
                                                   <spring:message code="label.organization" />:</th>
                                                   <td><a href="organization_details.vw?organization_id=${user.person.organization.id}">
-                                                    
                                                     <c:out value="${user.person.organization.name}"/></a></td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" >
+                                                  <spring:message code="label.user.activity" />:</th>
+                                                  <td><c:out value="${user.person.personDetails.activity}"/></td>
                                                 </tr>
                                                 <thead>
                                                     <tr>
@@ -197,12 +201,20 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.passport.number" />:</th>
                                                   <td>
-                                                  <c:out value="${user.person.personDetails.passportNumber}"/>
+                                                  <c:out value="${user.person.personDetails.passportSerial}"/>
                                                   <c:out value="${user.person.personDetails.passportNumber}"/></td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.user.passport.number" />:</th>
-                                                  <td><c:out value="${user.person.personDetails.passportNumber}"/></td>
+                                                  <th scope="row" ><spring:message code="label.user.passport.date.valid" />:</th>
+                                                  <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.lastLogin}" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" ><spring:message code="label.user.passport.date.issued" />:</th>
+                                                  <td>
+                                                  <c:out value="${user.person.personDetails.passportIssuedBy}"/>&nbsp;&nbsp;
+                                                  <fmt:formatDate pattern="${dateFormatShort}" value="${user.person.personDetails.passportIssuedDate}" />
+                                                  </td>
                                                 </tr>
                                               </tbody>
                                             </table>                                        
@@ -266,7 +278,7 @@
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
-                                                    <th><spring:message code="label.role.name" /></th>
+                                                    <th><spring:message code="label.user.login" /></th>
                                                     <th><spring:message code="label.role.desc" /></th>
                                                 </tr>
                                               </thead>

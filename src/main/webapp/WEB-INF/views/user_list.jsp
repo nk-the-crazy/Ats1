@@ -7,6 +7,7 @@ common.utils.system.SystemUtils"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -39,6 +40,7 @@ common.utils.system.SystemUtils"%>
 </head>
 <!-- ***************************** -->
 <c:set var="usersPage" value="${requestScope.usersPage}"/>
+<c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -68,7 +70,7 @@ common.utils.system.SystemUtils"%>
                                 </div>
                                 <div class="x_content">
                                     <form id="user_search" data-parsley-validate action="user_list.vw"
-                                        class="form-horizontal form-label-left">
+                                        class="form-horizontal form-label-left ">
                                         <table>
                                             <tr>
                                                 <td><label
@@ -115,7 +117,9 @@ common.utils.system.SystemUtils"%>
                                                 <td><a href="user_details.vw?user_id=${user[0]}">
                                                     <c:out value="${user[1]}"/></a></td>
                                                 <td><c:out value="${user[5]}"/>&nbsp;<c:out value="${user[4]}"/></td>
-                                                <td class="col-md-3"><c:out value="${user[2]}"/></td>
+                                                <td class="col-md-3">
+                                                <fmt:formatDate pattern="${dateTimeFormatShort }" value="${user[2]}" />
+                                                </td>
                                                 <td class="col-md-2">
                                                    ${SystemUtils.getAttribute('system.attrib.data.status',user[3],locale)}
                                                 </td>

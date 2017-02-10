@@ -54,4 +54,13 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
             + " ORDER By t.itemName" )
     Page<AssessmentTask> getByCategoryId(@Param("categoryId") long categoryId , Pageable pageable );
 
+    
+    //********************************************
+    @Query(value = "SELECT a.id, t.id, t.itemName "
+            + " FROM Assessment a "
+            + " JOIN a.tasks t "
+            + " WHERE a.id=:assessmentId "
+            + " ORDER By t.itemName" )
+    Page<AssessmentTask> getByAssessmentId(@Param("assessmentId") long assessmentId , Pageable pageable );
+
 }

@@ -50,7 +50,7 @@ public class AssessmentTask
     private AssessmentTaskCategory category;
     // *********************************************
      
-    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name="asmt_tasks_details", 
           joinColumns=@JoinColumn(name="task_id"),
           inverseJoinColumns=@JoinColumn(name="details_id"))

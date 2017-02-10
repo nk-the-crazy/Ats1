@@ -1,11 +1,16 @@
 package common.utils.system;
 
+import java.util.Date;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.apache.commons.lang.time.DateUtils;
+
+import model.assessment.Assessment;
 import model.assessment.AssessmentTask;
 import model.assessment.AssessmentTaskCategory;
 import model.assessment.AssessmentTaskDetails;
@@ -20,6 +25,7 @@ import model.identity.User;
 import model.identity.UserType;
 import model.organization.Organization;
 import model.person.Person;
+import service.api.assessment.AssessmentManager;
 import service.api.assessment.AssessmentTaskManager;
 import service.api.contact.ContactManager;
 import service.api.group.GroupManager;
@@ -49,6 +55,10 @@ public class SystemDataInit
     @Autowired
     private OrganizationManager organizationManager;
     
+    @Autowired
+    private AssessmentManager assessmentManager;
+    
+
     @PostConstruct
     void init() 
     {
@@ -59,6 +69,7 @@ public class SystemDataInit
     {
         createDefaultUsers();
         createDefaultCategories();
+        createDefaultAssessments();
     }
 
     //******************************************
@@ -120,7 +131,7 @@ public class SystemDataInit
         Permission perm1 = identityManager.createPermission( PermissionItem.IdentityManagement.getId(), true, true, false, false);
         Permission perm2 = identityManager.createPermission( PermissionItem.AssessmentManagement.getId(), true, true, false, false);
         Permission perm3 = identityManager.createPermission( PermissionItem.GroupManagement.getId(), true, true, false, false);
-        Permission perm4 = identityManager.createPermission( PermissionItem.TaskManagement.getId(), true, true, false, false);
+        Permission perm4 = identityManager.createPermission( PermissionItem.AssessmentTaskManagement.getId(), true, true, false, false);
         
         Role role = identityManager.createRole( name, "Details:"+name, 2);
         
@@ -174,7 +185,7 @@ public class SystemDataInit
 
                     //AssessmentTaskCategory categoryS3 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b+"-"+b, "Details of Category-"+x );
                     //categoryS2.addChildCategory( categoryS3 );
-}
+                }
             }
             
             taskManager.saveTaskCategory( category );
@@ -201,4 +212,20 @@ public class SystemDataInit
         
         return task;
     }
+    
+    //******************************************
+    private void createDefaultAssessments() 
+    {
+        
+        for(int x=1;x < 10 ; x++  ) 
+        {
+            Date startDate = DateUtils.addDays( new Date(System.currentTimeMillis()), -1 );
+            Date endDate = DateUtils.addDays( new Date(System.currentTimeMillis()), x );
+            Assessment asmt =  assessmentManager.createAssessment( "New Assessment-"+x, startDate , endDate, 2 );
+            
+            asmt.setAuthor( identityManager.getUser( 1 ) );
+            assessmentManager.saveAssessment( asmt );
+        }
+    }
+    
 }
