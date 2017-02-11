@@ -11,7 +11,7 @@ public class SessionData
 	private User user = null;
 	private String token = "";
 	private Date lastLogin = null;
-    private AssessmentProcess pcocess= null;
+    private AssessmentProcess process= null;
 
 	
 	/* ********************************
@@ -63,15 +63,15 @@ public class SessionData
     }
 
 
-    public AssessmentProcess getAssessmentPcocess()
+    public AssessmentProcess getAssessmentProcess()
     {
-        return pcocess;
+        return process;
     }
 
 
-    public void setAssessmentPcocess( AssessmentProcess assessmentPcocess )
+    public void setAssessmentProcess( AssessmentProcess assessmentProcess )
     {
-        this.pcocess = assessmentPcocess;
+        this.process = assessmentProcess;
     }
 
 }

@@ -100,6 +100,10 @@
                                                   <td class="col-md-7"><c:out value="${task.itemName}"/></td>
                                                 </tr>
                                                 <tr>
+                                                  <th scope="row" ><spring:message code="label.asmt.task.item.grade" />:</th>
+                                                  <td style="height: 60px;">${task.itemGrade}</td>
+                                                </tr>
+                                                <tr>
                                                   <th scope="row" ><spring:message code="label.asmt.task.item.content" />:</th>
                                                   <td style="height: 60px;">${task.itemContent}</td>
                                                 </tr>
@@ -152,7 +156,7 @@
                                                 <c:forEach var="taskDetails" items="${task.details}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${loopCounter.count }</td>
-                                                        <td class="col-md-2"><c:out value="${taskDetails.itemGrade}"/></td>
+                                                        <td class="col-md-2"><c:out value="${taskDetails.itemOptionGrade}"/></td>
                                                         <td><c:out value="${taskDetails.itemOption}"/></td>
                                                     </tr>
                                                 </c:forEach>

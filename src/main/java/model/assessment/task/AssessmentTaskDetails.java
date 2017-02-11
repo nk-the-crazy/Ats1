@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -17,10 +18,14 @@ public class AssessmentTaskDetails
     private long id;
     
     @Column(name = "item_grade")
-    private float itemGrade = 0;
+    private float itemOptionGrade = 0;
     
     @Column(name = "item_option")
     private String itemOption;
+    
+    @Column(name = "item_option_content")
+    @Lob
+    private String itemOptionContent;
     
     
     //***********************************
@@ -30,17 +35,16 @@ public class AssessmentTaskDetails
     }
 
 
-    public float getItemGrade()
+    public float getItemOptionGrade()
     {
-        return itemGrade;
+        return itemOptionGrade;
     }
 
 
-    public void setItemGrade( float itemGrade )
+    public void setItemOptionGrade( float itemOptionGrade )
     {
-        this.itemGrade = itemGrade;
+        this.itemOptionGrade = itemOptionGrade;
     }
-
 
     public String getItemOption()
     {
@@ -52,5 +56,19 @@ public class AssessmentTaskDetails
     {
         this.itemOption = itemOption;
     }
+
+
+    public String getItemOptionContent()
+    {
+        return itemOptionContent;
+    }
+
+
+    public void setItemOptionContent( String itemOptionContent )
+    {
+        this.itemOptionContent = itemOptionContent;
+    }
+    
+    
   
 }

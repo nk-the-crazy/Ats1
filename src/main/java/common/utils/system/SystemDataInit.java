@@ -196,7 +196,7 @@ public class SystemDataInit
     //******************************************
     private AssessmentTask createDefaultTasks(int index) 
     {
-        AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?", 2, 1, 1);
+        AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?",10, 2, 1, 1);
                 
         AssessmentTaskDetails det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
         AssessmentTaskDetails det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );
@@ -221,7 +221,7 @@ public class SystemDataInit
         {
             Date startDate = DateUtils.addDays( new Date(System.currentTimeMillis()), -1 );
             Date endDate = DateUtils.addDays( new Date(System.currentTimeMillis()), x );
-            Assessment asmt =  assessmentManager.createAssessment( "New Assessment-"+x, startDate , endDate, 2 );
+            Assessment asmt =  assessmentManager.createAssessment( "New Assessment-"+x, startDate , endDate,3 , 2 );
             
             asmt.setAuthor( identityManager.getUser( 1 ) );
             

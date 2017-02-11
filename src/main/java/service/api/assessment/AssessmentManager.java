@@ -15,8 +15,6 @@ public interface AssessmentManager
 
     Assessment getAssessmentFullDetails( long assessmentId );
 
-    Assessment createAssessment( String name, Date startDate, Date endDate, int type );
-
     Page<Assessment> getAssessmentsByDetails( String assessmentName, Date startDateFrom, Date startDateTo, short assessmentType,
             Pageable pageable );
 
@@ -32,6 +30,8 @@ public interface AssessmentManager
     Object getAssessmentDetails( long assessmentId );
 
     AssessmentProcess initProcess( long assessmentId, long userId );
+
+    Assessment createAssessment( String name, Date startDate, Date endDate, int time, int type );
 
   
 }

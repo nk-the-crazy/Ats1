@@ -132,7 +132,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/assessment_init.vw")
+    @RequestMapping( value = "/asmt_init_process.do")
     public ModelAndView initAssessement(@RequestParam( "assessment_id" ) long assessmentId , HttpSession session)
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
@@ -145,14 +145,14 @@ public class AssessmentController
             AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
 
             asmtDetails = process.getObject();
-            sData.setAssessmentPcocess( process );
+            sData.setAssessmentProcess( process );
             
             // --- Remove Object ------
             process.setObject( null );
             //-------------------------
             
             model.addObject( "assessmentDetails", asmtDetails );
-            model.setViewName( ModelView.VIEW_ASMT_INIT_PAGE); 
+            model.setViewName( ModelView.VIEW_ASMT_INIT_PROCESS_PAGE); 
             
         }
         catch(Exception e)
@@ -166,5 +166,42 @@ public class AssessmentController
     }
     
 
+
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_start_process.do")
+    public ModelAndView startAssessement(@RequestParam( "assessment_id" ) long assessmentId , HttpSession session)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+        
+        try
+        {
+            //SessionData sData = (SessionData)session.getAttribute( "sessionData" );
+            //Object asmtDetails = null; 
+                    
+            //AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
+
+            //asmtDetails = process.getObject();
+            //sData.setAssessmentPcocess( process );
+            
+            // --- Remove Object ------
+            //process.setObject( null );
+            //-------------------------
+            
+            //model.addObject( "assessmentDetails", asmtDetails );
+            model.setViewName( ModelView.VIEW_ASMT_START_PROCESS_PAGE); 
+            
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error initializing assessment Details:", e ); 
+            model.addObject( "errorData", e );
+        }
+        
+        return model;
+        
+    }
+    
 
 }

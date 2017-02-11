@@ -37,7 +37,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTask createTask( String itemName, String itemContent, int mode, int modeType, int complexity)
+    public AssessmentTask createTask( String itemName, String itemContent, float itemGrade, int mode, int modeType, int complexity)
     {
         AssessmentTask task = null;
         
@@ -50,6 +50,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
             task.setComplexity( complexity );
             task.setItemContent( itemContent );
             task.setMode( mode );
+            task.setItemGrade( itemGrade );
             task.setModeType( modeType );
         }
         catch(Exception e) 
@@ -66,14 +67,14 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTaskDetails createTaskDetails( String itemOption, float grade)
+    public AssessmentTaskDetails createTaskDetails( String itemOption, float itemOptionGrade)
     {
         AssessmentTaskDetails taskDetails = null;
         
         try 
         {
             taskDetails = new AssessmentTaskDetails();
-            taskDetails.setItemGrade( grade );
+            taskDetails.setItemOptionGrade( itemOptionGrade );
             taskDetails.setItemOption( itemOption );
         }
         catch(Exception e) 

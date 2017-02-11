@@ -48,7 +48,11 @@ public class ModelView
     public static String VIEW_ASMT_REGISTER_PAGE  = "assessment_register";
     public static String VIEW_ASMT_LIST_PAGE  = "assessment_list";
     public static String VIEW_ASMT_DETAILS_PAGE  = "assessment_details";
-    public static String VIEW_ASMT_INIT_PAGE  = "assessment_init";
+    
+    //Process
+    public static String VIEW_ASMT_INIT_PROCESS_PAGE  = "asmt_init_process";
+    public static String VIEW_ASMT_START_PROCESS_PAGE  = "asmt_start_process";
+    public static String VIEW_ASMT_END_PROCESS_PAGE  = "asmt_end_process";
     
     //Task
     public static String VIEW_ASMT_CATEGORY_REGISTER_PAGE  = "asmt_category_register";

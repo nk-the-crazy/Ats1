@@ -92,14 +92,14 @@ common.utils.system.SystemUtils"%>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
                                                 <td class="col-md-1">
-                                                    <a href="assessment_init.vw?assessment_id=${assessment.id}" 
+                                                    <a href="asmt_init_process.do?assessment_id=${assessment.id}" 
                                                          class="btn btn-primary btn-xs" role="button">
                                                         <i class="fa fa-clock-o"></i>&nbsp;
                                                             <spring:message code="label.assessment.start"/>
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a href="assessment_init.vw?assessment_id=${assessment.id}" 
+                                                    <a href="asmt_init_process.do?assessment_id=${assessment.id}" 
                                                        role="button" class="btn btn-success btn-xs">
                                                         <i class="fa fa-line-chart"></i><spring:message code="label.assessment.result"/>
                                                     </a>

@@ -3,7 +3,7 @@
         pageEncoding="UTF-8"
 	    errorPage="error.jsp"%>
 
-<%@page import="common.utils.system.SystemUtils,java.util.Locale" %>
+<%@page import="common.utils.StringUtils, common.utils.system.SystemUtils,java.util.Locale, model.assessment.*" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -19,7 +19,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.assessment_init.title"/></title>
+<title><spring:message code="label.page.assessment_start.title"/></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css"
@@ -36,9 +36,8 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 </head>
 <!-- ***************************** -->
-<c:set var="assessmentDetails" value="${requestScope.assessmentDetails}"/>
-<c:set var="assessment" value="${assessmentDetails[0]}"/>
-<c:set var="taskCount" value="${assessmentDetails[1]}"/>
+<c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
+<c:set var="currentTask" value="${requestScope.currentTask}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 <!-- ***************************** -->
 
@@ -47,70 +46,67 @@
 		<div class="main_container">
 			<!-- sidebar -->
 			<jsp:include page="include/sidebar.jsp"><jsp:param name="page"
-					value="assessment_init.vw" /></jsp:include>
+					value="asmt_start_process.vw" /></jsp:include>
 			<!-- /sidebar -->
 
 			<!-- top navigation -->
 			<jsp:include page="include/header.jsp"><jsp:param name="page"
-					value="assessment_init.vw" /></jsp:include>
+					value="asmt_start_process.vw" /></jsp:include>
 			<!-- /top navigation -->
 
 			<!-- page content -->
 			<div class="right_col" role="main">
 				<div class="">
 					<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-8">
+						<div class="col-md-10 col-sm-10 col-xs-10">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2><spring:message code="label.page.assessment_init.title"/></h2>
-									<ul class="nav navbar-right panel_toolbox">
-										<li><a class="collapse-link"><i
-												class="fa fa-chevron-up"></i></a></li>
-										
-									</ul>
+									<h2><spring:message code="label.page.assessment_start.title"/>&nbsp;&nbsp;-&nbsp;&nbsp;${process.name}</h2>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                     <table class="table table-bordered dataTable">
                                       <thead>
                                         <tr>
-                                            <th colspan="2"><i class="fa fa-user"></i>&nbsp;&nbsp;
-                                            <spring:message code="label.account" /></th>
+                                            <th colspan="4"><i class="fa fa-cube"></i>&nbsp;&nbsp;
+                                            <spring:message code="label.asmt.task" /></th>
                                         </tr>
                                       </thead>
                                       <tbody>
+                                        <!--  
                                         <tr>
-                                          <th scope="row" class="col-md-3"><spring:message code="label.assessment.name" />:</th>
-                                          <td class="col-md-5"><c:out value="${assessment.name}"/></td>
+                                          <th class="col-md-3" scope="row" class="col-md-3"><spring:message code="label.asmt.task.item.name" />:</th>
+                                          <td class="col-md-9" colspan="3"><c:out value="${process.name}"/></td>
                                         </tr>
+                                        --> 
                                         <tr>
-                                          <th scope="row"><spring:message code="label.assessment.type" />:</th>
-                                          <td><c:out value="${assessment.name}"/></td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row"><spring:message code="label.date.time" />:</th>
-                                          <td><c:out value="${assessment.name}"/></td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row"><spring:message code="label.asmt.task.count" />:</th>
-                                          <td><c:out value="${taskCount}"/></td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row"><spring:message code="label.assessment.maxgrade" />:</th>
-                                          <td><c:out value="${assessment.name}"/></td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row" ><spring:message code="label.date.start" />-<spring:message code="label.date.end" /></th>
-                                          <td><fmt:formatDate pattern="${dateFormatShort }" value="${assessment.startDate}" />-
-                                          <fmt:formatDate pattern="${dateFormatShort }" value="${assessment.endDate}" />
+                                          <th class="col-md-2" scope="row"><spring:message code="label.date.time" />:</th>
+                                          <td class="col-md-2"><div class="countdown"><c:out value="${StringUtils.minutesToDetails(process.time)}"/></div>
                                           </td>
+                                          <th class="col-md-2" scope="row">
+                                            <spring:message code="label.date.time.remaining" />:</th>
+                                          <td class="col-md-6"><div class="countdown" id="timerCountDown"></div></td>
                                         </tr>
+                                        <thead>
+                                        <tr>
+                                            <th colspan="4"></th>
+                                        </tr>
+                                        </thead> 
+                                        <tr>
+                                          <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.content" /></th>
+                                          <td class="col-md-10" colspan="3"></td>
+                                        </tr>
+                                        <tr>
+                                          <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.options" /></th>
+                                          <td class="col-md-10" colspan="3"></td>
+                                        </tr>
+                                      
                                         <tr>
                                           <th scope="row" ></th>
-                                          <td><a href="assessment_start.vw?" role="button" class="btn btn-danger btn-xs">
-                                                <i class="fa fa-clock-o"></i>&nbsp;
-                                                <spring:message code="label.assessment.start"/>
+                                          <td><a href="assessment_start.vw?" role="button" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-share"></i>&nbsp;
+                                                <spring:message code="label.action.continue"/>
                                                </a> 
                                            </td>
                                         </tr>
@@ -127,7 +123,7 @@
 
 			<!-- footer content -->
 			<jsp:include page="include/footer.jsp"><jsp:param name="page"
-					value="assessment_init.vw" /></jsp:include>
+					value="asmt_start_process.vw" /></jsp:include>
 			<!-- /footer content -->
 		</div>
 	</div>
@@ -145,5 +141,25 @@
 	
 	<!-- Custom Theme Scripts -->
 	<script src="resources/js/custom.min.js"></script>
+    
+    <!-- Timer -->
+    <script type="text/javascript" src="resources/lib/jquery.countdown-2.2.0/jquery.countdown.js"></script>
+    <script type="text/javascript">
+
+    function getCountDownTime() 
+    {
+      return new Date(new Date().valueOf() + 1 * 1 * ${process.time} * 60 * 1000);
+    }
+
+    var $clock = $('#timerCountDown');
+
+    $clock.countdown(getCountDownTime(), function(event) 
+    {
+      $(this).html(event.strftime('%H:%M:%S'));
+    });
+
+    </script>
+    <!-- /Timer -->
+    
 </body>
 </html>

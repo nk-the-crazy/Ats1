@@ -13,7 +13,8 @@ import model.assessment.task.AssessmentTaskDetails;
 public interface AssessmentTaskManager
 {
 
-    AssessmentTask createTask( String itemName, String itemContent, int mode, int modeType, int complexity );
+    AssessmentTask createTask( String itemName, String itemContent, float itemGrade, int mode, int modeType,
+            int complexity );
 
     AssessmentTaskCategory createTaskCategory( String name, String details );
 
@@ -37,4 +38,5 @@ public interface AssessmentTaskManager
 
     AssessmentTask getTaskById( long taskId );
 
+    
 }

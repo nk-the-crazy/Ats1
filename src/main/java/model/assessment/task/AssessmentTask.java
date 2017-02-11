@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -29,7 +30,11 @@ public class AssessmentTask
     private String itemName;
     
     @Column(name = "item_content")
+    @Lob
     private String itemContent;
+    
+    @Column(name = "item_grade")
+    private float itemGrade = 0;
     
     @Column(name = "mode_type")
     private short modeType = 1;
@@ -151,6 +156,16 @@ public class AssessmentTask
     public void addDetails(AssessmentTaskDetails data) 
     {
         details.add( data );
+    }
+
+    public float getItemGrade()
+    {
+        return itemGrade;
+    }
+
+    public void setItemGrade( float itemGrade )
+    {
+        this.itemGrade = itemGrade;
     }
     
 }

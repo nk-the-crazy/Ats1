@@ -68,7 +68,7 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public Assessment createAssessment( String name, Date startDate, Date endDate, int type )
+    public Assessment createAssessment( String name, Date startDate, Date endDate, int time ,int type )
     {
         Assessment assessment = null;
 
@@ -78,6 +78,7 @@ public class AssessmentManagerImpl implements AssessmentManager
             assessment.setName( name );
             assessment.setType( type ); 
             assessment.setStartDate( startDate );
+            assessment.setTime( time );
             assessment.setEndDate( endDate );
         }
         catch ( Exception e )
