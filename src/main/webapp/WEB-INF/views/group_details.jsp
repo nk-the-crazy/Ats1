@@ -110,7 +110,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
-                                                    <td class="${group.status == 1 ? 'a' : 'warning'}">
+                                                    <td class="${group.status == 1 ? 'a' : 'danger'}">
                                                     ${SystemUtils.getAttribute('system.attrib.data.status', group.status, locale)}
                                                     </td>
                                                 </tr>

@@ -14,9 +14,9 @@ import com.google.common.base.Strings;
 
 import dao.api.assessment.AssessmentTaskCategoryDAO;
 import dao.api.assessment.AssessmentTaskDAO;
-import model.assessment.AssessmentTask;
-import model.assessment.AssessmentTaskCategory;
-import model.assessment.AssessmentTaskDetails;
+import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskCategory;
+import model.assessment.task.AssessmentTaskDetails;
 import service.api.assessment.AssessmentTaskManager;
 
 @Service("taskManagerService")
@@ -135,6 +135,17 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
         return categoryDAO.save( entity );
     }
 
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentTask getTaskById(long taskId)
+    {
+        return taskDAO.findOne( taskId );
+    }
+
+    
     /**************************************************
      * 
      */

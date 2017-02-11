@@ -11,10 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import common.exceptions.security.AccessDeniedException;
 import dao.api.assessment.AssessmentDAO;
 import dao.api.assessment.AssessmentTaskDAO;
 import model.assessment.Assessment;
-import model.assessment.AssessmentTask;
+import model.assessment.process.AssessmentProcess;
+import model.assessment.task.AssessmentTask;
 import service.api.assessment.AssessmentManager;
 
 
@@ -32,6 +34,35 @@ public class AssessmentManagerImpl implements AssessmentManager
     @Autowired
     AssessmentTaskDAO taskDAO;
 
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess initProcess(long assessmentId, long userId)
+    {
+        Object[] asmtObject = (Object[]) assessmentDAO.getDetails( assessmentId );
+        
+        if(asmtObject == null)
+        {
+            throw new AccessDeniedException("User is not permitted to take assessment.");
+        }
+        else
+        {
+            Assessment asmt = (Assessment)asmtObject[0];
+            long taskCount = (long) asmtObject[1];
+            
+            AssessmentProcess process = new AssessmentProcess();
+            
+            process.setObject( asmtObject ); 
+            process.setTaskCount( (short)taskCount ); 
+            process.setName( asmt.getName() );
+            process.setId( asmt.getId() );
+            process.setTime( asmt.getTime() );
+            
+            return process;
+        }
+    }
     
     /**************************************************
      * 
@@ -90,7 +121,7 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public Assessment getAssessmentDetails( long assessmentId )
+    public Object getAssessmentDetails( long assessmentId )
     {
         return assessmentDAO.getDetails( assessmentId );
     }

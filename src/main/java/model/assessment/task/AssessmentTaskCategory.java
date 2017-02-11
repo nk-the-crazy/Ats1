@@ -1,4 +1,4 @@
-package model.assessment;
+package model.assessment.task;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,18 +1,16 @@
-package model.assessment;
+package model.assessment.process;
 
-public enum AssessmentTaskType
+public enum AssessmentProcessState
 {
-    SingleChoice(1),
-    MultipleChoice(2),
-    MatchCase(3),
-    ShortAnswer(4),
-    Essay(5);
+    Ready(1),
+    Started(2),
+    Finished(4);
 
     private final static int groupId = 3;
     private int id;
 
 
-    private AssessmentTaskType( int id )
+    private AssessmentProcessState( int id )
     {
         this.id = id;
     }

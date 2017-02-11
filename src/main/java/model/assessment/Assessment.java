@@ -16,7 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import model.assessment.task.AssessmentTask;
 import model.group.UserGroup;
 import model.identity.User;
 
@@ -50,7 +52,9 @@ public class Assessment
     @Column(name = "status")
     private int status = 1;
 
-    
+    @Transient
+    private long taskCount = 0;
+
     // *********************************************
     @OneToOne (cascade = CascadeType.ALL,fetch = FetchType.LAZY )
     @JoinColumn(name="details_id")
@@ -58,14 +62,14 @@ public class Assessment
     // *********************************************
     
     // *********************************************
-    @OneToOne (cascade = CascadeType.MERGE,fetch = FetchType.LAZY )
+    @OneToOne (fetch = FetchType.LAZY )
     @JoinColumn(name="author_id")
     private User author;
     // *********************************************
 
     // *********************************************
-    @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable( name="asssessment_managers",
+    @ManyToMany (fetch = FetchType.LAZY)
+    @JoinTable( name="assessment_managers",
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
     private Set<User> managers = new HashSet<User>();
@@ -73,15 +77,15 @@ public class Assessment
 
     // *********************************************
     @ManyToMany (fetch = FetchType.LAZY)
-    @JoinTable( name="asssessment_groups",
+    @JoinTable( name="assessment_groups",
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="group_id", referencedColumnName="id"))
     private Set<UserGroup> participants = new HashSet<UserGroup>();
     // *********************************************
 
     // *********************************************
-    @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable( name="asssessment_tasks",
+    @ManyToMany (fetch = FetchType.LAZY)
+    @JoinTable( name="assessment_tasks",
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="task_id", referencedColumnName="id"))
     private Set<AssessmentTask> tasks = new HashSet<AssessmentTask>();
@@ -242,8 +246,17 @@ public class Assessment
     {
         this.time = (short)time;
     }
-    
-    
 
+
+    public long getTaskCount()
+    {
+        return taskCount;
+    }
+
+
+    public void setTaskCount( long taskCount )
+    {
+        this.taskCount = (short) taskCount;
+    }
 
 }

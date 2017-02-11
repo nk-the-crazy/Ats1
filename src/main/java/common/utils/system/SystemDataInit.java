@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang.time.DateUtils;
 
 import model.assessment.Assessment;
-import model.assessment.AssessmentTask;
-import model.assessment.AssessmentTaskCategory;
-import model.assessment.AssessmentTaskDetails;
+import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskCategory;
+import model.assessment.task.AssessmentTaskDetails;
 import model.common.DataValue;
 import model.contact.Address;
 import model.contact.Contact;
@@ -225,15 +225,23 @@ public class SystemDataInit
             
             asmt.setAuthor( identityManager.getUser( 1 ) );
             
-            if(x == 9)
+            if(x == 9 || x == 8)
             {
                 asmt.addParticipant( groupManager.getGroupById( 5 ) );
+                asmt.addTask( taskManager.getTaskById( 1 ) );
+                asmt.addTask( taskManager.getTaskById( 5 ) );
             }
             else
             {
                 asmt.addParticipant( groupManager.getGroupById( 1 ) );
                 asmt.addParticipant( groupManager.getGroupById( 2 ) );
                 asmt.addParticipant( groupManager.getGroupById( 3 ) );
+                
+                
+                asmt.addTask( taskManager.getTaskById( 1 ) );
+                asmt.addTask( taskManager.getTaskById( 2 ) );
+                asmt.addTask( taskManager.getTaskById( 3 ) );
+                asmt.addTask( taskManager.getTaskById( 4 ) );
             }
             assessmentManager.saveAssessment( asmt );
         }

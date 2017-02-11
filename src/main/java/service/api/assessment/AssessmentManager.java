@@ -7,7 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import model.assessment.Assessment;
-import model.assessment.AssessmentTask;
+import model.assessment.process.AssessmentProcess;
+import model.assessment.task.AssessmentTask;
 
 public interface AssessmentManager
 {
@@ -28,7 +29,9 @@ public interface AssessmentManager
 
     Page<Assessment> getAssessmentsByUserId( long userId, Pageable pageable );
 
-    Assessment getAssessmentDetails( long assessmentId );
+    Object getAssessmentDetails( long assessmentId );
+
+    AssessmentProcess initProcess( long assessmentId, long userId );
 
   
 }

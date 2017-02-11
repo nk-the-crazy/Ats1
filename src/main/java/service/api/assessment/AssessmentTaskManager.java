@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import model.assessment.AssessmentTask;
-import model.assessment.AssessmentTaskCategory;
-import model.assessment.AssessmentTaskDetails;
+import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskCategory;
+import model.assessment.task.AssessmentTaskDetails;
 
 
 public interface AssessmentTaskManager
@@ -34,5 +34,7 @@ public interface AssessmentTaskManager
     AssessmentTask getTaskFullDetails( long taskId );
 
     Page<AssessmentTask> getCategoryTasks( long categoryId, Pageable pageable );
+
+    AssessmentTask getTaskById( long taskId );
 
 }

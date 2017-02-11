@@ -85,22 +85,24 @@ common.utils.system.SystemUtils"%>
                                         <!-- *********Assessment list ************ -->
                                         <c:set var="index" value="${assessmentsPage.number * assessmentsPage.size}" />
                                         <c:forEach var="assessment" items="${assessmentsPage.content}" varStatus="loopCounter">
-                                            <tr class="${assessment.status == 1 ? 'a' : 'warning'}">
+                                            <tr class="${assessment.status == 1 ? '' : 'warning'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><c:out value="${assessment.name}"/></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
                                                 <td class="col-md-1">
-                                                    <button type="button" class="btn-td btn btn-primary btn-xs">
+                                                    <a href="assessment_init.vw?assessment_id=${assessment.id}" 
+                                                         class="btn btn-primary btn-xs" role="button">
                                                         <i class="fa fa-clock-o"></i>&nbsp;
                                                             <spring:message code="label.assessment.start"/>
-                                                    </button>
+                                                    </a>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="tn btn-success btn-xs">
+                                                    <a href="assessment_init.vw?assessment_id=${assessment.id}" 
+                                                       role="button" class="btn btn-success btn-xs">
                                                         <i class="fa fa-line-chart"></i><spring:message code="label.assessment.result"/>
-                                                    </button>
+                                                    </a>
                                                  </td>
                                             </tr>
                                         </c:forEach>

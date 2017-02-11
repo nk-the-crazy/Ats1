@@ -16,7 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import common.utils.StringUtils;
 import model.assessment.Assessment;
-import model.assessment.AssessmentTask;
+import model.assessment.process.AssessmentProcess;
+import model.assessment.task.AssessmentTask;
 import model.common.session.SessionData;
 import service.api.assessment.AssessmentManager;
 import web.common.view.ModelView;
@@ -35,9 +36,9 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/user_assessments_list.vw")
-    public ModelAndView getAssessmentPrivateList( HttpSession session , Pageable pageable )
+    public ModelAndView getUserAssessmentsList( HttpSession session , Pageable pageable )
     {         
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
             
         try
         {
@@ -55,6 +56,7 @@ public class AssessmentController
         catch(Exception e)
         {
             logger.error( " **** Error getting User assigned Assessment list:", e );        
+            model.addObject( "errorData", e );
         }
         
         return model;
@@ -75,7 +77,7 @@ public class AssessmentController
                                             short assessmentType,
                                             Pageable pageable )
     {         
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
             
         try
         {
@@ -90,6 +92,7 @@ public class AssessmentController
         catch(Exception e)
         {
             logger.error( " **** Error getting Assessment list:", e );        
+            model.addObject( "errorData", e );
         }
         
         return model;
@@ -102,7 +105,7 @@ public class AssessmentController
     @RequestMapping( value = "/assessment_details.vw")
     public ModelAndView getAssessmentDetails(@RequestParam( "assessment_id" ) long assessmentId, Pageable pageable )
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
         
         try
         {
@@ -117,6 +120,7 @@ public class AssessmentController
         catch(Exception e)
         {
             logger.error( " **** Error getting assessment Details:", e );        
+            model.addObject( "errorData", e );
         }
         
         return model;
@@ -129,21 +133,32 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/assessment_init.vw")
-    public ModelAndView initAssessement(@RequestParam( "assessment_id" ) long assessmentId)
+    public ModelAndView initAssessement(@RequestParam( "assessment_id" ) long assessmentId , HttpSession session)
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
         
         try
         {
-            Assessment asmtDetails = assessmentManager.getAssessmentFullDetails( assessmentId );
+            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
+            Object asmtDetails = null; 
+                    
+            AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
 
-
+            asmtDetails = process.getObject();
+            sData.setAssessmentPcocess( process );
+            
+            // --- Remove Object ------
+            process.setObject( null );
+            //-------------------------
+            
             model.addObject( "assessmentDetails", asmtDetails );
-            model.setViewName( ModelView.VIEW_ASMT_INIT_PAGE);
+            model.setViewName( ModelView.VIEW_ASMT_INIT_PAGE); 
+            
         }
         catch(Exception e)
         {
-            logger.error( " **** Error getting assessment Details:", e );        
+            logger.error( " **** Error initializing assessment Details:", e ); 
+            model.addObject( "errorData", e );
         }
         
         return model;

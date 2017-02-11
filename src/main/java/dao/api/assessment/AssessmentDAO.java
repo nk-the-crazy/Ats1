@@ -68,13 +68,13 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
 
     
     //********************************************
-    @Query(value = "SELECT a, count (t.id) "
+    @Query(value = "SELECT a, count (t.id) as taskCount "
             + " FROM Assessment a "
             + " LEFT JOIN FETCH a.details d "
-            + " LEFT JOIN a.tasks t  "
-            + " GROUP BY a.id "
+            + " LEFT JOIN a.tasks t "
+            + " GROUP BY a.id,d.id "
 
             + " HAVING a.id=:assessmentId " )
-    Assessment getDetails( @Param("assessmentId") long assessmentId );
+    Object getDetails( @Param("assessmentId") long assessmentId );
 
 }

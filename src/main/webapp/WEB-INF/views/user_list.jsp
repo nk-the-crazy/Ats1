@@ -112,7 +112,7 @@ common.utils.system.SystemUtils"%>
                                         <!-- *********User list ************ -->
                                         <c:set var="index" value="${usersPage.number * usersPage.size}" />
                                         <c:forEach var="user" items="${usersPage.content}" varStatus="loopCounter">
-                                            <tr class="${user[3] == 1 ? 'a' : 'warning'}">
+                                            <tr class="${user[3] == 1 ? 'a' : 'danger'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="user_details.vw?user_id=${user[0]}">
                                                     <c:out value="${user[1]}"/></a></td>

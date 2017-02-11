@@ -131,14 +131,14 @@ common.utils.system.SystemUtils"%>
                                         <!-- *********Assessment list ************ -->
                                         <c:set var="index" value="${assessmentsPage.number * assessmentsPage.size}" />
                                         <c:forEach var="assessment" items="${assessmentsPage.content}" varStatus="loopCounter">
-                                            <tr class="${assessment.status == 1 ? 'a' : 'warning'}">
+                                            <tr class="${assessment.status == 1 ? '' : 'danger'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="assessment_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.data.status',assessment.status,locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',assessment.status,locale)}</td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Assessment list ************ -->

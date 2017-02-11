@@ -141,7 +141,7 @@ common.utils.system.SystemUtils"%>
                                         <!-- *********Task list ************ -->
                                         <c:set var="index" value="${tasksPage.number * tasksPage.size}" />
                                         <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
-                                            <tr class="${task[4] == 1 ? 'a' : 'warning'}">
+                                            <tr class="${task[4] == 1 ? 'a' : 'danger'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="asmt_task_details.vw?asmt_task_id=${task[0]}">
                                                     <c:out value="${task[1]}"/></a></td>

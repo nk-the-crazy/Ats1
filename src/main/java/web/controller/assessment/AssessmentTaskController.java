@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import model.assessment.AssessmentTask;
-import model.assessment.AssessmentTaskCategory;
+import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskCategory;
 import service.api.assessment.AssessmentTaskManager;
 import web.common.view.ModelView;
 
