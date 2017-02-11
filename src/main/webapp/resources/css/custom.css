@@ -1868,10 +1868,15 @@ button,
 .buttons,
 .btn,
 .modal-footer .btn + .btn {
-  margin-bottom: 5px;
+  margin-bottom: 0px;
   margin-right: 5px;
-  margin-top: 3px;
+  margin-top: 0px;
   font-weight: bold; }
+
+.btn-td {
+  margin: 1px 1px 1px 1px;
+  
+;}
 
 .btn-group-vertical .btn, .btn-group .btn {
   margin-bottom: 0;

@@ -33,7 +33,7 @@
                         <spring:message code="label.menu.assessment" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="assessment_private_list.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
+                            <li><a href="user_assessments_list.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
                             <li><a href="register_assessment.vw"><spring:message code="label.menu.assessment.register" /></a></li>
                             <li><a href="assessment_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
                         </ul></li>

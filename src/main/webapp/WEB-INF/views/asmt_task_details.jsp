@@ -199,10 +199,13 @@
     $(document).ready(function()
     {
         $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            localStorage.setItem('taskDetailsactiveTab', $(e.target).attr('href'));
         });
-        var activeTab = localStorage.getItem('activeTab');
-        if(activeTab){
+        
+        var activeTab = localStorage.getItem('taskDetailsactiveTab');
+        
+        if(activeTab)
+        {
             $('#taskDetailsTab a[href="' + activeTab + '"]').tab('show');
         }
     });

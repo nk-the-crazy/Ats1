@@ -10,6 +10,7 @@ public class ModelView
     public static String VIEW_USER_REGISTER_PAGE  = "register_user";
     public static String VIEW_USER_LIST_PAGE  = "user_list";
     public static String VIEW_USER_DETAILS_PAGE  = "user_details";
+    public static String VIEW_USER_ASMT_LIST_PAGE  = "user_assessments_list";
     
     //Role
     public static String VIEW_ROLE_REGISTER_PAGE  = "register_role";
@@ -42,8 +43,8 @@ public class ModelView
     //Assessment
     public static String VIEW_ASMT_REGISTER_PAGE  = "register_assessment";
     public static String VIEW_ASMT_LIST_PAGE  = "assessment_list";
-    public static String VIEW_ASMT_PRIVATE_LIST_PAGE  = "assessment_private_list";
     public static String VIEW_ASMT_DETAILS_PAGE  = "assessment_details";
+    public static String VIEW_ASMT_INIT_PAGE  = "assessment_init";
     
     //Task
     public static String VIEW_ASMT_CATEGORY_REGISTER_PAGE  = "register_asmt_category";

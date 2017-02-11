@@ -86,6 +86,15 @@ public class AssessmentManagerImpl implements AssessmentManager
         return assessmentDAO.getFullDetails( assessmentId );
     }
     
+    /**************************************************
+     * 
+     */
+    @Override
+    public Assessment getAssessmentDetails( long assessmentId )
+    {
+        return assessmentDAO.getDetails( assessmentId );
+    }
+    
 
     /**************************************************
      * 
@@ -96,6 +105,17 @@ public class AssessmentManagerImpl implements AssessmentManager
     {
         return assessmentDAO.getByDetails(assessmentName, startDateFrom, startDateTo,assessmentType, pageable);
     }
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Page<Assessment> getAssessmentsByUserId( long userId, Pageable pageable )
+    {
+        return assessmentDAO.getByUserId( userId, pageable ); 
+    }
+    
 
     /**************************************************
      * 

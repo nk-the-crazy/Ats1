@@ -45,22 +45,16 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
 
     
     //********************************************
-    @Query(value = "SELECT a "
+    @Query(value = "SELECT DISTINCT a "
             + " FROM Assessment a "
             + " JOIN a.participants p "
             + " WHERE p.id in "
-            + " ( select g.id ) "
-            
-            + " WHERE a."
-            + " ( a.startDate>=:startDateFrom ) AND"
-            + " ( a.type=:assessmentType OR 0=:assessmentType ) "
-            
+            + " ( SELECT g.id FROM UserGroup g JOIN g.users u "
+            + "   WHERE u.id = :userId ) "
             + " ORDER BY a.startDate DESC " )
-    Page<Assessment> getByUserId( @Param("assessmentName") String assessmentName, 
-                                   @Param("startDateFrom") Date startDateFrom, 
-                                   @Param("assessmentType") short assessmentType,
-                                   Pageable pageable );
+    Page<Assessment> getByUserId( @Param("userId") long userId, Pageable pageable );
 
+    
     //********************************************
     @Query(value = "SELECT a "
             + " FROM Assessment a "
@@ -71,5 +65,16 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
 
             + " WHERE a.id=:assessmentId " )
     Assessment getFullDetails( @Param("assessmentId") long assessmentId );
+
+    
+    //********************************************
+    @Query(value = "SELECT a, count (t.id) "
+            + " FROM Assessment a "
+            + " LEFT JOIN FETCH a.details d "
+            + " LEFT JOIN a.tasks t  "
+            + " GROUP BY a.id "
+
+            + " HAVING a.id=:assessmentId " )
+    Assessment getDetails( @Param("assessmentId") long assessmentId );
 
 }

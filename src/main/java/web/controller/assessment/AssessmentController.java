@@ -34,7 +34,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/assessment_private list.vw")
+    @RequestMapping( value = "/user_assessments_list.vw")
     public ModelAndView getAssessmentPrivateList( HttpSession session , Pageable pageable )
     {         
         ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
@@ -50,11 +50,11 @@ public class AssessmentController
                 model.addObject( "assessmentsPage", asmtsPage );
             }
             
-            model.setViewName( ModelView.VIEW_ASMT_LIST_PAGE);
+            model.setViewName( ModelView.VIEW_USER_ASMT_LIST_PAGE);
         }
         catch(Exception e)
         {
-            logger.error( " **** Error getting Assessment list:", e );        
+            logger.error( " **** Error getting User assigned Assessment list:", e );        
         }
         
         return model;
@@ -125,5 +125,31 @@ public class AssessmentController
     
 
     
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/assessment_init.vw")
+    public ModelAndView initAssessement(@RequestParam( "assessment_id" ) long assessmentId)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+        
+        try
+        {
+            Assessment asmtDetails = assessmentManager.getAssessmentFullDetails( assessmentId );
+
+
+            model.addObject( "assessmentDetails", asmtDetails );
+            model.setViewName( ModelView.VIEW_ASMT_INIT_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting assessment Details:", e );        
+        }
+        
+        return model;
+        
+    }
+    
+
 
 }

@@ -19,7 +19,7 @@ common.utils.system.SystemUtils"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.assessments.title" /></title>
+<title><spring:message code="label.page.user_assessments.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -36,9 +36,6 @@ common.utils.system.SystemUtils"%>
 <!-- Data Table -->
 <link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css"
     rel="stylesheet">
-    
-<!-- bootstrap-daterangepicker -->
-<link href="resources/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
 </head>
 <!-- ***************************** -->
@@ -51,13 +48,13 @@ common.utils.system.SystemUtils"%>
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp">
-                <jsp:param name="page" value="assessment_list.vw" />
+                <jsp:param name="page" value="assessment_private_list.vw" />
             </jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp">
-                <jsp:param name="page" value="assessment_list.vw" />
+                <jsp:param name="page" value="user_assessment_list.vw" />
             </jsp:include>
             <!-- /top navigation -->
 
@@ -65,56 +62,13 @@ common.utils.system.SystemUtils"%>
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-11 col-sm-11 col-xs-11">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.assessments.title" /></h2>
-                                    <div class="btn-group pull-right">
-                                      <button type="button" class="btn btn-success btn-xs">
-                                        <i class="fa fa-plus"></i>&nbsp;
-                                                <spring:message code="label.menu.assessment.register"/></button>
-                                    </div>
-                                  <div class="clearfix"></div>
+                                    <h2><spring:message code="label.page.user_assessments.title" /></h2>
+                                    <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form id="user_search" data-parsley-validate action="assessment_list.vw"
-                                        class="form-horizontal form-label-left">
-                                       <div class="form-group">
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label class="control-label" for="assessment-name">
-                                                    <spring:message code="label.assessment.name" />:</label>
-                                                <input type="text" id="assessment-name" name="assessmentName" value="${param.assessmentName}"
-                                                        id="first-name" class="form-control input-sm">
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label class="control-label" for="assessment-date">
-                                                    <spring:message code="label.date.start" /></label>
-                                                <input id="assessment-date"type="text" class="date-picker form-control input-sm" 
-                                                name="startDateFrom" value="${param.startDateFrom}">
-                                             </div>
-                                             <div class="col-md-3 col-sm-3 col-xs-3">
-                                                 <label class="control-label" for="assessment-type">
-                                                       <spring:message code="label.asmt.task.mode.type" />:</label>
-                                                 <select id="assessment-type" class="form-control input-select-sm" name="assessmentType">
-                                                    <option value="0"><spring:message code="label.data.all" /></option>
-                                                    <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                        items="${SystemUtils.getAttributes('system.attrib.assessment.type',locale)}"> 
-                                                        <option ${param.assessmentType == (loopCounter.count) ? 'selected="selected"' : ''}
-                                                        value="${loopCounter.count}">${systemAttr}</option>
-                                                    </c:forEach>
-                                                 </select>
-                                             </div>
-                                             <div>
-                                                <div>&nbsp;</div>
-                                                <button type="submit"
-                                                    class="btn btn-primary btn-xs">
-                                                    <i class="fa fa-search"></i>
-                                                    <spring:message code="label.action.search" />
-                                                </button>
-                                            </div>
-                                         </div>
-                                    </form>
-
                                     <table id="datatable"
                                         class="table table-striped table-bordered">
                                         <thead>
@@ -124,7 +78,7 @@ common.utils.system.SystemUtils"%>
                                                 <th><spring:message code="label.assessment.type" /></th>
                                                 <th><spring:message code="label.date.start" /></th>
                                                 <th><spring:message code="label.date.end" /></th>
-                                                <th><spring:message code="label.data.status" /></th>
+                                                <th colspan="2"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -133,12 +87,21 @@ common.utils.system.SystemUtils"%>
                                         <c:forEach var="assessment" items="${assessmentsPage.content}" varStatus="loopCounter">
                                             <tr class="${assessment.status == 1 ? 'a' : 'warning'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
-                                                <td><a href="assessment_details.vw?assessment_id=${assessment.id}">
-                                                    <c:out value="${assessment.name}"/></a></td>
+                                                <td><c:out value="${assessment.name}"/></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.data.status',assessment.status,locale)}</td>
+                                                <td class="col-md-1">
+                                                    <button type="button" class="btn-td btn btn-primary btn-xs">
+                                                        <i class="fa fa-clock-o"></i>&nbsp;
+                                                            <spring:message code="label.assessment.start"/>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="tn btn-success btn-xs">
+                                                        <i class="fa fa-line-chart"></i><spring:message code="label.assessment.result"/>
+                                                    </button>
+                                                 </td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Assessment list ************ -->
@@ -168,7 +131,7 @@ common.utils.system.SystemUtils"%>
 
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
-            <jsp:param name="page" value="assessment_list.vw" />
+            <jsp:param name="page" value="assessment_private_list.vw" />
         </jsp:include>
         <!-- /footer content -->
     </div>
@@ -192,30 +155,6 @@ common.utils.system.SystemUtils"%>
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     
-    <!-- bootstrap-daterangepicker -->
-    <script src="resources/lib/moment/min/moment.min.js"></script>
-    <script src="resources/lib/moment/locale/ru.js"></script>
-    <script src="resources/lib/moment/locale/ky.js"></script>
-    <script src="resources/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script>
-      $(document).ready(function() 
-      { 
-          moment.locale('${locale}');
-          
-          $('#assessment-date').daterangepicker(
-          {
-              locale: { 
-                  format: "${dateFormatShort.toUpperCase()}"
-                },
-              singleDatePicker: true,
-              //startDate: '01.01.2016',
-              calender_style: "picker_4"
-                  }, function(start, end, label) {
-                      console.log(start.toISOString(), end.toISOString(), label);
-          });
-      });
-    </script>
-    <!-- /bootstrap-daterangepicker -->    
     
     <script>
 		$(document).ready(function() 

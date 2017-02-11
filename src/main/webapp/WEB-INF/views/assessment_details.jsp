@@ -89,11 +89,11 @@
                                             <spring:message code="label.assessment" /></a>
                                         </li>
                                         <li role="presentation" class="">
-                                            <a href="#tab_content3" id="managers-tab" role="tab" data-toggle="tab" aria-expanded="false">
+                                            <a href="#tab_content2" id="managers-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <spring:message code="label.assessment.managers" /></a>
                                         </li>
                                         <li role="presentation" class="">
-                                            <a href="#tab_content2" id="participants-tab" role="tab" data-toggle="tab" aria-expanded="false">
+                                            <a href="#tab_content3" id="participants-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <i class="fa fa-users">&nbsp;</i>
                                             <spring:message code="label.assessment.participants" /></a>
                                         </li>
@@ -137,7 +137,7 @@
                                                 <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.date.time" />:</th>
                                                   <td class="col-md-5"><c:out value="${assessment.time}"/>&nbsp;&nbsp;
-                                                  <spring:message code="label.date.time" />
+                                                  <spring:message code="label.date.time.minutes" />
                                                   </td>
                                                 </tr>
                                                 <tr>
@@ -169,8 +169,8 @@
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <!-- *********Participant list ************ -->
-                                                <c:forEach var="user" items="${assessment.participants}" varStatus="loopCounter">
+                                                <!-- *********Manager list ************ -->
+                                                <c:forEach var="user" items="${assessment.managers}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${loopCounter.count }</td>
                                                         <td><a href="user_details.vw?user_id=${user.id}">
@@ -178,7 +178,7 @@
                                                         <td><c:out value=""/></td>
                                                     </tr>
                                                 </c:forEach>
-                                                <!-- *********/Participant list ************ -->
+                                                <!-- *********/Manager list ************ -->
                                               </tbody>
                                             </table>                                              
                                         </div>
@@ -282,9 +282,9 @@
     $(document).ready(function()
     {
         $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            localStorage.setItem('assessmentDetailsActiveTab', $(e.target).attr('href'));
         });
-        var activeTab = localStorage.getItem('activeTab');
+        var activeTab = localStorage.getItem('assessmentDetailsActiveTab');
         if(activeTab){
             $('#assessmentDetailsTab a[href="' + activeTab + '"]').tab('show');
         }

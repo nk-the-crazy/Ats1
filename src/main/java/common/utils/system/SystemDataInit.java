@@ -224,6 +224,17 @@ public class SystemDataInit
             Assessment asmt =  assessmentManager.createAssessment( "New Assessment-"+x, startDate , endDate, 2 );
             
             asmt.setAuthor( identityManager.getUser( 1 ) );
+            
+            if(x == 9)
+            {
+                asmt.addParticipant( groupManager.getGroupById( 5 ) );
+            }
+            else
+            {
+                asmt.addParticipant( groupManager.getGroupById( 1 ) );
+                asmt.addParticipant( groupManager.getGroupById( 2 ) );
+                asmt.addParticipant( groupManager.getGroupById( 3 ) );
+            }
             assessmentManager.saveAssessment( asmt );
         }
     }

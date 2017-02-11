@@ -28,5 +28,7 @@ public interface AssessmentManager
 
     Page<Assessment> getAssessmentsByUserId( long userId, Pageable pageable );
 
+    Assessment getAssessmentDetails( long assessmentId );
+
   
 }

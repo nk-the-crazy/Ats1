@@ -195,9 +195,9 @@
     $(document).ready(function()
     {
         $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            localStorage.setItem('groupDetailsactiveTab', $(e.target).attr('href'));
         });
-        var activeTab = localStorage.getItem('activeTab');
+        var activeTab = localStorage.getItem('groupDetailsactiveTab');
         if(activeTab){
             $('#groupDetailsTab a[href="' + activeTab + '"]').tab('show');
         }

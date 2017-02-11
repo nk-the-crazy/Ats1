@@ -72,7 +72,7 @@ public class Assessment
     // *********************************************
 
     // *********************************************
-    @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany (fetch = FetchType.LAZY)
     @JoinTable( name="asssessment_groups",
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="group_id", referencedColumnName="id"))
@@ -221,7 +221,7 @@ public class Assessment
         tasks.add(task );
     }
 
-    public void addGroup(UserGroup group) 
+    public void addParticipant(UserGroup group) 
     {
         participants.add(group );
     }
