@@ -30,26 +30,21 @@
                     <li><a href="main.vw"><i class="fa fa-home"></i> 
                         <spring:message code="label.menu.home" /> </a></li>
                     <li><a><i class="fa fa-graduation-cap"></i> 
-                        <spring:message code="label.menu.testing" /><span
+                        <spring:message code="label.menu.assessment" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="tables.html">Tables</a></li>
-                            <li><a href="tables_dynamic.html">Table
-                                    Dynamic</a></li>
+                            <li><a href="user_assessments_list.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
+                            <li><a href="register_assessment.vw"><spring:message code="label.menu.assessment.register" /></a></li>
+                            <li><a href="assessment_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
                         </ul></li>
                     <li><a><i class="fa fa-cubes"></i> 
-                        <spring:message code="label.menu.tasks" /><span
+                        <spring:message code="label.menu.task.list" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="register_group.vw"><i class="fa fa-plus"></i> 
-                                 <spring:message code="label.menu.register_task" /> </a></li>
-                            <li><a href="register_group.vw"><i class="fa fa-cube"></i> 
-                                 <spring:message code="label.menu.manage_tasks" /> </a></li>
-                            <li><a href="register_group.vw"><i class="fa fa-plus"></i>
-                                <spring:message code="label.menu.register_task_category" />
-                            </a></li>
-                            <li><a href="register_group.vw"><i class="fa fa-sitemap"></i>
-                                <spring:message code="label.menu.manage_task_categories" />
+                            <li><a href="asmt_task_list.vw"><i class="fa fa-cube"></i> 
+                                 <spring:message code="label.menu.task.management" /> </a></li>
+                            <li><a href="asmt_category_list.vw"><i class="fa fa-sitemap"></i>
+                                <spring:message code="label.menu.task.category.management" />
                             </a></li>
                         </ul></li>
                     <li><a><i class="fa fa-bar-chart-o"></i>
@@ -67,16 +62,15 @@
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a><i class="fa fa-user"></i>
-                                <spring:message code="label.menu.manage_users" /><span
-                                    class="fa fa-chevron-down"></span></a>
+                                <spring:message code="label.menu.manage_users" />
+                                    <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li class="sub_menu"><a
                                         href="register_user.vw"> <spring:message
                                                 code="label.menu.register_user" />
                                     </a></li>
-                                    <li class="sub_menu"><a
-                                        href="user_list.vw"> <spring:message
-                                                code="label.menu.user_list" />
+                                    <li class="sub_menu"><a href="user_list.vw"> 
+                                        <spring:message code="label.menu.user_list" />
                                     </a></li>
                                 </ul></li>
                             <li><a><i class="fa fa-group"></i>

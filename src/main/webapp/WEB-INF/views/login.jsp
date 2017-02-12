@@ -63,7 +63,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password"><spring:message code="label.user.password"/>:<span class="required"></span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password"><spring:message code="label.password"/>:<span class="required"></span>
                         </label>
                         <div class="col-md-8 col-sm-8 col-xs-12">
                           <input value="secret" type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">

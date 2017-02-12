@@ -86,6 +86,16 @@ public class GroupManagerImpl implements GroupManager
      * 
      */
     @Override
+    public UserGroup getGroupById( long groupId)
+    {
+        return groupDAO.findOne( groupId ) ;
+    }
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
     public List<UserGroup> getGroupsByName( String groupName )
     {
         return groupDAO.findByName(groupName);

@@ -11,7 +11,7 @@ import model.system.SystemAttribute;
 import service.api.system.SystemManager;
 
 
-@Service("localeManagerService")
+@Service("systemManagerService")
 @Transactional
 public class SystemManagerImpl implements SystemManager
 {

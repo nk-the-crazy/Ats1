@@ -18,9 +18,13 @@ import common.exceptions.security.InvalidLoginException;
 import common.exceptions.security.SystemSecurityException;
 import common.utils.security.SecurityUtils;
 import dao.api.group.GroupDAO;
+import dao.api.identity.PermissionDAO;
+import dao.api.identity.RoleDAO;
 import dao.api.identity.UserDAO;
 import model.common.session.SessionData;
 import model.group.UserGroup;
+import model.identity.Permission;
+import model.identity.Role;
 import model.identity.User;
 import model.identity.UserType;
 import service.api.identity.IdentityManager;
@@ -41,6 +45,12 @@ public class IdentityManagerImpl implements IdentityManager
 
     @Autowired
     GroupDAO groupDAO;
+
+    @Autowired
+    RoleDAO roleDAO;
+
+    @Autowired
+    PermissionDAO permissionDAO;
 
   
     /**************************************************
@@ -121,6 +131,7 @@ public class IdentityManagerImpl implements IdentityManager
         
     }
     
+    
     /**************************************************
      * 
      */
@@ -150,6 +161,101 @@ public class IdentityManagerImpl implements IdentityManager
     }
     
     
+    /**************************************************
+     * 
+     */
+    @Override
+    public Role createRole(String roleName, String details, int type)
+    {
+        Role role = null;
+        
+        isValidRoleName( roleName );
+        
+        try 
+        {
+            role = new Role();
+            role.setName( roleName );
+            role.setDetails( details );
+            role.setType( type );
+        }
+        catch(Exception e) 
+        {
+            
+        }
+        
+        return role;
+    
+    }
+    
+   
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Permission createPermission(int item, boolean read, boolean write, 
+                                                 boolean update, boolean delete)
+    {
+        Permission permission = null;
+        
+        try 
+        {
+            permission = new Permission();
+            permission.setItem( item );
+            permission.setRead( read );
+            permission.setWrite( write );
+            permission.setUpdate( update );
+            permission.setDelete( delete );
+        }
+        catch(Exception e) 
+        {
+        }
+        
+        return permission;
+    
+    }
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Role saveRole( Role role )
+    {
+       
+        isValidRoleName( role.getName() );
+
+        try
+        {
+            return roleDAO.save( role );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in saving role:", e );        
+        }
+
+        return null;
+    }
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Permission savePermission( Permission permission )
+    {
+        try
+        {
+            return permissionDAO.save( permission );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in saving Permission:", e );        
+        }
+
+        return null;
+    }
+
+
     /**************************************************
      * 
      */
@@ -193,6 +299,15 @@ public class IdentityManagerImpl implements IdentityManager
     public Page<User> getUsers(Pageable pageable)
     {
         return userDAO.findAll( pageable );
+    }
+
+
+    /* *************************************************
+     */
+    @Override
+    public User getUser(long userId)
+    {
+        return userDAO.findOne( userId );
     }
 
 
@@ -292,6 +407,57 @@ public class IdentityManagerImpl implements IdentityManager
 
         return null;
     }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public Page<Role> getRolesByRoleName( String roleName, Pageable pageable )
+    {
+        return roleDAO.findByRoleName( roleName, pageable );
+    }
+
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public Role getRoleDetails( long roleId )
+    {
+        // *********************************
+        try
+        {
+            return roleDAO.findById( roleId );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in get role details:", e );        
+        }
+
+        return null;
+    }
+
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Page<User> getRoleUsers( long roleId, Pageable pageable )
+    {
+        // *********************************
+        try
+        {
+            return userDAO.getByRoleId( roleId, pageable );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in get role details:", e );        
+        }
+
+        return null;
+    }
+
 
     
     /* *************************************************
@@ -349,7 +515,22 @@ public class IdentityManagerImpl implements IdentityManager
 
 
   
-
+    /**************************************************
+     * 
+     */
+    private void isValidRoleName( String roleName )
+    {
+        if ( Strings.isNullOrEmpty( roleName ) || roleName.length() < 4 )
+        {
+            throw new IllegalArgumentException( "Role name cannot be shorter than 4 characters." );
+        }
+        if ( roleName.equalsIgnoreCase( "token" ) || roleName.equalsIgnoreCase( "role" )
+                || roleName.equalsIgnoreCase( "system" ) )
+        {
+            throw new IllegalArgumentException( "Role name is reserved by the system." );
+        }
+    }
+    
 
     /**************************************************
      * 
@@ -385,5 +566,6 @@ public class IdentityManagerImpl implements IdentityManager
             throw new IllegalArgumentException( "Password doesn't match security requirements" );
         }
     }
+
 
 }

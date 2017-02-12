@@ -22,6 +22,9 @@ public class PersonDetails
     @Column( name = "gender" )
     private short gender = 1;
     
+    @Column( name = "activity" )
+    private String activity;
+    
     @Column(name = "marital_status")
     private short maritalStatus = 1;
     
@@ -195,10 +198,17 @@ public class PersonDetails
         this.passportIssuedBy = passportIssuedBy;
     }
 
-    
-    
-    
-    
-    
+
+    public String getActivity()
+    {
+        return activity;
+    }
+
+
+    public void setActivity( String activity )
+    {
+        this.activity = activity;
+    }
+
 
 }

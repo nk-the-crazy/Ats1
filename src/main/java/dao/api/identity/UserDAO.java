@@ -66,7 +66,16 @@ public interface UserDAO extends JpaRepository<User, Long>
             + " LEFT JOIN u.person p "
             + " WHERE g.id=:groupId")
     Page<User> getByGroupId(@Param("groupId") long groupId , Pageable page );
-
     
+    
+    //********************************************
+    @Query(value = "SELECT r.id, u.id, u.userName, p.firstName, p.lastName "
+            + " FROM User u "
+            + " JOIN u.person p "
+            + " RIGHT JOIN u.roles r "
+            + " WHERE r.id=:roleId "
+            + " ORDER BY u.userName")
+    Page<User> getByRoleId(@Param("roleId") long roleId, Pageable page );
+ 
   
 }

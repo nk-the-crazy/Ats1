@@ -24,4 +24,6 @@ public interface GroupManager
 
     Page<User> getGroupUsers( long groupId, Pageable pageable );
 
+    UserGroup getGroupById( long groupId );
+
 }

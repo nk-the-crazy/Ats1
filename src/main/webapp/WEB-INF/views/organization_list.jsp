@@ -107,7 +107,7 @@ common.utils.system.SystemUtils"%>
                                         <c:set var="index" value="${organizationsPage.number * organizationsPage.size}" />
                                         
                                         <c:forEach var="organization" items="${organizationsPage.content}" varStatus="loopCounter">
-                                            <tr class="${organization.status == 1 ? 'a' : 'warning'}">
+                                            <tr class="${organization.status == 1 ? 'a' : 'danger'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="organization_details.vw?organization_id=${organization.id}">
                                                     <c:out value="${organization.name}"/></a>

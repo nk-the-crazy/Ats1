@@ -124,7 +124,7 @@ common.utils.system.SystemUtils"%>
                                         <c:set var="index" value="${groupsPage.number * usersPage.size}" />
                                         
                                         <c:forEach var="group" items="${groupsPage.content}" varStatus="loopCounter">
-                                            <tr class="${group[2] == 1 ? 'a' : 'warning'}">
+                                            <tr class="${group[2] == 1 ? 'a' : 'danger'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="group_details.vw?group_id=${group[0]}">
                                                     <c:out value="${group[1]}"/></a></td>
@@ -141,7 +141,7 @@ common.utils.system.SystemUtils"%>
                                     </table>
                                     
                                     <!------------- Pagination -------------->
-                                    <c:if test="${groupsPage.totalPages > 0}">
+                                    <c:if test="${groupsPage.totalPages > 1}">
                                         <jsp:include page="include/pagination.jsp">
                                              <jsp:param name="page" value="user_list.vw" />
                                              <jsp:param name="totalPages" value="${groupsPage.totalPages}" />

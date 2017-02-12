@@ -110,7 +110,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
-                                                    <td class="${group.status == 1 ? 'a' : 'warning'}">
+                                                    <td class="${group.status == 1 ? 'a' : 'danger'}">
                                                     ${SystemUtils.getAttribute('system.attrib.data.status', group.status, locale)}
                                                     </td>
                                                 </tr>
@@ -191,6 +191,19 @@
     <!-- Dat Tables -->
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+            localStorage.setItem('groupDetailsactiveTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('groupDetailsactiveTab');
+        if(activeTab){
+            $('#groupDetailsTab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+    </script>
+    
 
 </body>
 </html>

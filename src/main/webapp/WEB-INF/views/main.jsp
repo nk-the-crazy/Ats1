@@ -4,8 +4,10 @@
 	    errorPage="error.jsp"%>
 
 <%@page import="common.utils.system.SystemUtils,java.util.Locale" %>
-	
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -33,6 +35,10 @@
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
 </head>
+<!-- ***************************** -->
+<c:set var="sessionData" value="${sessionScope.sessionData}"/>
+<c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
+<!-- ***************************** -->
 
 <body class="nav-md">
 	<div class="container body">
@@ -62,7 +68,33 @@
 									</ul>
 									<div class="clearfix"></div>
 								</div>
-								<div class="x_content">App Name: <%=SystemUtils.getSettings( "system.app.name" ) %></div>
+								<div class="x_content">
+                                    <div class="col-md-6">
+                                    <table class="table table-bordered dataTable">
+                                      <thead>
+                                        <tr>
+                                            <th colspan="2"><i class="fa fa-user"></i>&nbsp;&nbsp;
+                                            <spring:message code="label.account" /></th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <th scope="row" class="col-md-3"><spring:message code="label.user.login" />:</th>
+                                          <td class="col-md-5"><c:out value="${sessionData.user.userName}"/></td>
+                                        </tr>
+                                        <tr>
+                                          <th scope="row"><spring:message code="label.account_email" />:</th>
+                                          <td><c:out value="${sessionData.user.email}"/></td>
+                                        </tr>
+                                        <tr>
+                                          <th scope="row" ><spring:message code="label.user.last_login_date" />:</th>
+                                          <td><fmt:formatDate pattern="${dateTimeFormatShort }" value="${sessionData.user.lastLogin}" />
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    </div>
+                                </div>
 							</div>
 						</div>
 					</div>
