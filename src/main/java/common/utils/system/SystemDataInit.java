@@ -13,7 +13,7 @@ import org.apache.commons.lang.time.DateUtils;
 import model.assessment.Assessment;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
-import model.assessment.task.AssessmentTaskDetails;
+import model.assessment.task.AssessmentTaskOption;
 import model.common.DataValue;
 import model.contact.Address;
 import model.contact.Contact;
@@ -198,10 +198,10 @@ public class SystemDataInit
     {
         AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?",10, 2, 1, 1);
                 
-        AssessmentTaskDetails det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
-        AssessmentTaskDetails det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );
-        AssessmentTaskDetails det3 = taskManager.createTaskDetails( "Answer = "+ (index+14), 0 );
-        AssessmentTaskDetails det4 = taskManager.createTaskDetails( "Answer = "+ (index+33), 0 );
+        AssessmentTaskOption det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
+        AssessmentTaskOption det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );
+        AssessmentTaskOption det3 = taskManager.createTaskDetails( "Answer = "+ (index+14), 0 );
+        AssessmentTaskOption det4 = taskManager.createTaskDetails( "Answer = "+ (index+33), 0 );
         
         task.addDetails( det1 );
         task.addDetails( det2 );

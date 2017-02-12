@@ -1,84 +1,128 @@
 package model.assessment.process;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import model.assessment.Assessment;
+import model.identity.User;
+
+@Entity
+@Table( name = "asmt_process" )
 public class AssessmentProcess
 {
-    private long id = 0;
-    private long userId = 0;
-    private short taskCount = 0;
-    private String name = "";
-    private Object object = null;
-    private short time = 0;
-    private short state = 1; // Ready State
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
     
+    @Column(name = "time_elapsed") //seconds
+    private long timeElapsed;
     
+    @Column(name = "start_date") //seconds
+    private Date startDate;
+    
+    @Column(name = "end_date") //seconds
+    private Date endDate;
+    
+    // *********************************************
+    @OneToOne(  fetch = FetchType.LAZY )
+    @JoinColumn(name = "user_id")
+    private User user;
+    // *********************************************    
+    
+    // *********************************************
+    @ManyToOne(  fetch = FetchType.LAZY )
+    @JoinColumn(name = "assessment_id")
+    private Assessment assessment;
+    // *********************************************    
+    
+    // *********************************************
+    @OneToMany(  fetch = FetchType.LAZY )
+    @JoinTable(name="asmt_process_tasks", 
+               joinColumns=@JoinColumn(name="process_id" ),
+               inverseJoinColumns=@JoinColumn(name="task_id"))
+    private Set<AssessmentProcessTask> tasks = new HashSet<AssessmentProcessTask>();
+    // *********************************************    
+
     public long getId()
     {
         return id;
     }
-    
-    public void setId( long id )
+
+    public long getTimeElapsed()
     {
-        this.id = id;
-    }
-    public short getTaskCount()
-    {
-        return taskCount;
-    }
-    
-    public void setTaskCount( int taskCount )
-    {
-        this.taskCount = (short)taskCount;
-    }
-    
-    public String getName()
-    {
-        return name;
-    }
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-   
-    public long getUserId()
-    {
-        return userId;
-    }
-    
-    public void setUserId( long userId )
-    {
-        this.userId = userId;
+        return timeElapsed;
     }
 
-    public Object getObject()
+    public void setTimeElapsed( long timeElapsed )
     {
-        return object;
+        this.timeElapsed = timeElapsed;
     }
 
-    public void setObject( Object object )
+    public Date getStartDate()
     {
-        this.object = object;
+        return startDate;
     }
 
-    public short getTime()
+    public void setStartDate( Date startDate )
     {
-        return time;
+        this.startDate = startDate;
     }
 
-    public void setTime( int time )
+    public Date getEndDate()
     {
-        this.time = (short)time;
+        return endDate;
     }
 
-    public int getState()
+    public void setEndDate( Date endDate )
     {
-        return state;
+        this.endDate = endDate;
     }
 
-    public void setState( int state )
+    public User getUser()
     {
-        this.state = (short)state;
+        return user;
     }
 
-   
+    public void setUser( User user )
+    {
+        this.user = user;
+    }
+
+    public Assessment getAssessment()
+    {
+        return assessment;
+    }
+
+    public void setAssessment( Assessment assessment )
+    {
+        this.assessment = assessment;
+    }
+
+    public Set<AssessmentProcessTask> getTasks()
+    {
+        return tasks;
+    }
+
+    public void setTasks( Set<AssessmentProcessTask> tasks )
+    {
+        this.tasks = tasks;
+    }
   
+
+     
 }

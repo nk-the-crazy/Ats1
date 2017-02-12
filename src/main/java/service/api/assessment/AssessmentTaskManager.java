@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
-import model.assessment.task.AssessmentTaskDetails;
+import model.assessment.task.AssessmentTaskOption;
 
 
 public interface AssessmentTaskManager
@@ -18,7 +18,7 @@ public interface AssessmentTaskManager
 
     AssessmentTaskCategory createTaskCategory( String name, String details );
 
-    AssessmentTaskDetails createTaskDetails( String itemOption, float grade );
+    AssessmentTaskOption createTaskDetails( String itemOption, float grade );
 
     AssessmentTask saveTask( AssessmentTask entity );
 

@@ -33,5 +33,9 @@ public interface AssessmentManager
 
     Assessment createAssessment( String name, Date startDate, Date endDate, int time, int type );
 
+    AssessmentProcess startProcess( AssessmentProcess process );
+
+    Assessment getAssessmentByIdAndUserId( long assessmentId, long userId );
+
   
 }

@@ -16,6 +16,7 @@ import dao.api.assessment.AssessmentDAO;
 import dao.api.assessment.AssessmentTaskDAO;
 import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
+import model.assessment.process.AssessmentProcessState;
 import model.assessment.task.AssessmentTask;
 import service.api.assessment.AssessmentManager;
 
@@ -41,29 +42,52 @@ public class AssessmentManagerImpl implements AssessmentManager
     @Override
     public AssessmentProcess initProcess(long assessmentId, long userId)
     {
-        Object[] asmtObject = (Object[]) assessmentDAO.getDetails( assessmentId );
+        Assessment assessment = assessmentDAO.getByIdAndUserId( assessmentId, userId );
         
-        if(asmtObject == null)
+        if(assessment == null)
         {
             throw new AccessDeniedException("User is not permitted to take assessment.");
         }
         else
         {
-            Assessment asmt = (Assessment)asmtObject[0];
-            long taskCount = (long) asmtObject[1];
-            
             AssessmentProcess process = new AssessmentProcess();
             
-            process.setObject( asmtObject ); 
-            process.setTaskCount( (short)taskCount ); 
-            process.setName( asmt.getName() );
-            process.setId( asmt.getId() );
-            process.setTime( asmt.getTime() );
+            process.setAssessment( assessment );
+            //process.setTaskIdList( taskDAO.getRandomIdByAssessmentId( assessment.getId() ) );
+            //process.setState( AssessmentProcessState.Ready.getId() );
+            //process.setCurrentTaskIndex( 0 );
             
             return process;
         }
     }
     
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess startProcess(AssessmentProcess process)
+    {
+        int currentTaskIndex  = process.getCurrentTaskIndex();
+        
+        if(currentTaskIndex == 0)
+        {
+            process.setState( AssessmentProcessState.Started.getId() );
+            process.setTimeElapsed( 0 );
+        }
+        else if(( currentTaskIndex + 1 ) == process.getTaskIdList().size() )
+        {
+            return process;
+        }
+        
+        AssessmentTask currentTask = taskDAO.findOne( process.getTaskIdList().get( currentTaskIndex ) );
+        process.setCurrentTask( currentTask );
+        process.setCurrentTaskIndex( currentTaskIndex + 1 );
+        
+        return process;
+    }
+    
+
     /**************************************************
      * 
      */
@@ -118,6 +142,7 @@ public class AssessmentManagerImpl implements AssessmentManager
         return assessmentDAO.getFullDetails( assessmentId );
     }
     
+    
     /**************************************************
      * 
      */
@@ -125,6 +150,16 @@ public class AssessmentManagerImpl implements AssessmentManager
     public Object getAssessmentDetails( long assessmentId )
     {
         return assessmentDAO.getDetails( assessmentId );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public Assessment getAssessmentByIdAndUserId( long assessmentId, long userId )
+    {
+        return assessmentDAO.getByIdAndUserId( assessmentId, userId );
     }
     
 

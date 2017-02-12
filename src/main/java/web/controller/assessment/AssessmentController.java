@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import common.utils.StringUtils;
 import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
+import model.assessment.process.AssessmentProcessState;
 import model.assessment.task.AssessmentTask;
 import model.common.session.SessionData;
 import service.api.assessment.AssessmentManager;
@@ -140,24 +141,15 @@ public class AssessmentController
         try
         {
             SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            Object asmtDetails = null; 
-                    
             AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
 
-            asmtDetails = process.getObject();
             sData.setAssessmentProcess( process );
-            
-            // --- Remove Object ------
-            process.setObject( null );
-            //-------------------------
-            
-            model.addObject( "assessmentDetails", asmtDetails );
+            model.addObject( "assessmentProcess", process );
             model.setViewName( ModelView.VIEW_ASMT_INIT_PROCESS_PAGE); 
-            
         }
         catch(Exception e)
         {
-            logger.error( " **** Error initializing assessment Details:", e ); 
+            logger.error( " **** Error initializing assessment :", e ); 
             model.addObject( "errorData", e );
         }
         
@@ -171,26 +163,23 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/asmt_start_process.do")
-    public ModelAndView startAssessement(@RequestParam( "assessment_id" ) long assessmentId , HttpSession session)
+    public ModelAndView startAssessement( HttpSession session )
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
         
         try
         {
-            //SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            //Object asmtDetails = null; 
-                    
-            //AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
+            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
+            AssessmentProcess process = assessmentManager.startProcess( sData.getAssessmentProcess() );
 
-            //asmtDetails = process.getObject();
-            //sData.setAssessmentPcocess( process );
-            
-            // --- Remove Object ------
-            //process.setObject( null );
-            //-------------------------
-            
-            //model.addObject( "assessmentDetails", asmtDetails );
-            model.setViewName( ModelView.VIEW_ASMT_START_PROCESS_PAGE); 
+            if(process.getState() == AssessmentProcessState.Finished.getId())
+            {
+                model.setViewName( ModelView.VIEW_ASMT_START_PROCESS_PAGE); 
+            }
+            else
+            {
+                model.setViewName( ModelView.VIEW_ASMT_START_PROCESS_PAGE); 
+            }
             
         }
         catch(Exception e)

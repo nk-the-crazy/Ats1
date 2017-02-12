@@ -50,16 +50,16 @@ public class AssessmentTask
     
     
     // *********************************************
-    @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn(name = "category_id")
     private AssessmentTaskCategory category;
     // *********************************************
      
-    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name="asmt_tasks_details", 
-          joinColumns=@JoinColumn(name="task_id"),
-          inverseJoinColumns=@JoinColumn(name="details_id"))
-    private Set<AssessmentTaskDetails> details = new HashSet<AssessmentTaskDetails>();
+    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+    @JoinTable(name="asmt_tasks_options", 
+          joinColumns=@JoinColumn(name="task_id" , nullable = false),
+          inverseJoinColumns=@JoinColumn(name="options_id"))
+    private Set<AssessmentTaskOption> options = new HashSet<AssessmentTaskOption>();
 
     // *********************************************
     public long getId()
@@ -138,14 +138,14 @@ public class AssessmentTask
         this.category = category;
     }
 
-    public Set<AssessmentTaskDetails> getDetails()
+    public Set<AssessmentTaskOption> getOptions()
     {
-        return details;
+        return options;
     }
 
-    public void setDetails( Set<AssessmentTaskDetails> details )
+    public void setDetails( Set<AssessmentTaskOption> options )
     {
-        this.details = details;
+        this.options = options;
     }
 
     public void setId( long id )
@@ -153,9 +153,9 @@ public class AssessmentTask
         this.id = id;
     }
     
-    public void addDetails(AssessmentTaskDetails data) 
+    public void addDetails(AssessmentTaskOption data) 
     {
-        details.add( data );
+        options.add( data );
     }
 
     public float getItemGrade()

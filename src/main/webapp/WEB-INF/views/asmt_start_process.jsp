@@ -37,8 +37,12 @@
 </head>
 <!-- ***************************** -->
 <c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
-<c:set var="currentTask" value="${requestScope.currentTask}"/>
+<c:set var="taskIdList" value="${process.taskIdList}"/>
+<c:set var="processTime" value="${process.assessment.time}"/>
+<c:set var="task" value="${process.currentTask}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
+
+
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -61,7 +65,13 @@
 						<div class="col-md-10 col-sm-10 col-xs-10">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2><spring:message code="label.page.assessment_start.title"/>&nbsp;&nbsp;-&nbsp;&nbsp;${process.name}</h2>
+									<h2><spring:message code="label.page.assessment_start.title"/>
+                                     &nbsp;&nbsp;-&nbsp;&nbsp;${process.assessment.name}</h2>
+                                     <div class="btn-group pull-right">
+                                      <a role="button" class="btn btn-primary btn-xs">
+                                        <i class="fa fa-check-square-o"></i>&nbsp;
+                                        <spring:message code="label.assessment.end"/></a>
+                                    </div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
@@ -69,45 +79,53 @@
                                     <table class="table table-bordered dataTable">
                                       <thead>
                                         <tr>
-                                            <th colspan="4"><i class="fa fa-cube"></i>&nbsp;&nbsp;
+                                            <th colspan="6"><i class="fa fa-cube"></i>&nbsp;&nbsp;
                                             <spring:message code="label.asmt.task" /></th>
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <!--  
                                         <tr>
-                                          <th class="col-md-3" scope="row" class="col-md-3"><spring:message code="label.asmt.task.item.name" />:</th>
-                                          <td class="col-md-9" colspan="3"><c:out value="${process.name}"/></td>
-                                        </tr>
-                                        --> 
-                                        <tr>
-                                          <th class="col-md-2" scope="row"><spring:message code="label.date.time" />:</th>
-                                          <td class="col-md-2"><div class="countdown"><c:out value="${StringUtils.minutesToDetails(process.time)}"/></div>
+                                          <th class="success col-md-2" scope="row"><spring:message code="label.asmt.task.number" />:</th>
+                                          <td class="col-md-2"><div class="countdown">
+                                            <spring:message code="label.asmt.task.number.overall" arguments="${process.currentTaskIndex},${process.taskIdList.size()}" />
+                                            </div>
+                                          <th class="success col-md-2" scope="row"><spring:message code="label.date.time" />:</th>
+                                          <td class="col-md-2"><div class="countdown"><c:out value="${StringUtils.minutesToDetails(processTime)}"/></div>
                                           </td>
-                                          <th class="col-md-2" scope="row">
+                                          <th class="success col-md-2" scope="row">
                                             <spring:message code="label.date.time.remaining" />:</th>
-                                          <td class="col-md-6"><div class="countdown" id="timerCountDown"></div></td>
+                                          <td class="col-md-4" id="timerCountDownTd"><div class="countdown" id="timerCountDown">
+                                          </div></td>
                                         </tr>
                                         <thead>
                                         <tr>
-                                            <th colspan="4"></th>
+                                            <th colspan="6"></th>
                                         </tr>
                                         </thead> 
                                         <tr>
                                           <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.content" /></th>
-                                          <td class="col-md-10" colspan="3"></td>
+                                          <td class="col-md-10" colspan="5">
+                                            <c:out value="${task.itemContent }"/>
+                                          </td>
                                         </tr>
                                         <tr>
                                           <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.options" /></th>
-                                          <td class="col-md-10" colspan="3"></td>
+                                          <td class="col-md-10" colspan="5"></td>
                                         </tr>
                                       
                                         <tr>
                                           <th scope="row" ></th>
-                                          <td><a href="assessment_start.vw?" role="button" class="btn btn-primary btn-xs">
+                                          <td><a href="asmt_start_process.do?" role="button" id="btnNextStep" class="btn btn-success btn-xs">
                                                 <i class="fa fa-share"></i>&nbsp;
-                                                <spring:message code="label.action.continue"/>
+                                                <spring:message code="label.asmt.task.response.save"/>
                                                </a> 
+                                           </td>
+                                           <td colspan="2">
+                                          <div class="btn-group pull-right">
+                                      <button type="button" class="btn btn-primary btn-xs">
+                                        <i class="fa fa-check-square-o"></i>&nbsp;
+                                        <spring:message code="label.assessment.end"/></button>
+                                    </div>
                                            </td>
                                         </tr>
                                       </tbody>
@@ -148,7 +166,7 @@
 
     function getCountDownTime() 
     {
-      return new Date(new Date().valueOf() + 1 * 1 * ${process.time} * 60 * 1000);
+      return new Date(new Date().valueOf() + 1 * 1 * ${processTime} * 60 * 1000);
     }
 
     var $clock = $('#timerCountDown');
@@ -156,6 +174,14 @@
     $clock.countdown(getCountDownTime(), function(event) 
     {
       $(this).html(event.strftime('%H:%M:%S'));
+      
+    });
+
+    $clock.on('finish.countdown', function() 
+    {
+    	$("#timerCountDownTd").addClass('danger');
+        $("#btnNextStep").addClass('disabled');
+        $('#timerCountDown').html('<spring:message code="label.date.time.timeup"/>');
     });
 
     </script>

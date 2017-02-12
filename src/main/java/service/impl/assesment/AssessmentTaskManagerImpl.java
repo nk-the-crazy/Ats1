@@ -16,7 +16,7 @@ import dao.api.assessment.AssessmentTaskCategoryDAO;
 import dao.api.assessment.AssessmentTaskDAO;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
-import model.assessment.task.AssessmentTaskDetails;
+import model.assessment.task.AssessmentTaskOption;
 import service.api.assessment.AssessmentTaskManager;
 
 @Service("taskManagerService")
@@ -67,13 +67,13 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTaskDetails createTaskDetails( String itemOption, float itemOptionGrade)
+    public AssessmentTaskOption createTaskDetails( String itemOption, float itemOptionGrade)
     {
-        AssessmentTaskDetails taskDetails = null;
+        AssessmentTaskOption taskDetails = null;
         
         try 
         {
-            taskDetails = new AssessmentTaskDetails();
+            taskDetails = new AssessmentTaskOption();
             taskDetails.setItemOptionGrade( itemOptionGrade );
             taskDetails.setItemOption( itemOption );
         }

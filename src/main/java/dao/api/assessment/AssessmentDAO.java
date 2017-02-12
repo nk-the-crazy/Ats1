@@ -76,5 +76,20 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
 
             + " HAVING a.id=:assessmentId " )
     Object getDetails( @Param("assessmentId") long assessmentId );
+    
+    
+  //********************************************
+    @Query(value = "SELECT DISTINCT a "
+            + " FROM Assessment a "
+            + " JOIN a.participants p "
+            
+            + " WHERE p.id in "
+            + " ( SELECT g.id FROM UserGroup g JOIN g.users u "
+            + "   WHERE u.id = :userId ) AND "
+            + " a.id=:assessmentId "
+            
+            + " ORDER BY a.startDate DESC " )
+    Assessment getByIdAndUserId( @Param("assessmentId") long assessmentId , @Param("userId") long userId);
+
 
 }
