@@ -90,10 +90,10 @@ common.utils.system.SystemUtils"%>
                                             <tr>
                                                 <td><label
                                                     class="control-label"
-                                                    for="login-name"><spring:message code="label.asmt.task.name" />:&nbsp;</label>
+                                                    for="task-name"><spring:message code="label.asmt.task.name" />:&nbsp;</label>
                                                 </td>
-                                                <td><input type="text" id="login-name" name="taskItemName" value="${param.taskItemName}"
-                                                    id="first-name" class="form-control input-sm">
+                                                <td><input type="text" id="task-name" name="taskItemName" value="${param.taskItemName}"
+                                                    class="form-control input-sm">
                                                 </td>
                                                 <td>&nbsp;&nbsp; <label class="control-label"
                                                     for="category-name"><spring:message code="label.asmt.task.category" />:&nbsp;</label>

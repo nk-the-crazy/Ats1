@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Strings;
 
 import common.exceptions.security.InvalidLoginException;
+import common.exceptions.security.InvalidPasswordException;
 import common.exceptions.security.SystemSecurityException;
 import common.utils.security.SecurityUtils;
 import dao.api.group.GroupDAO;
@@ -557,13 +558,13 @@ public class IdentityManagerImpl implements IdentityManager
     {
         if ( Strings.isNullOrEmpty( password ) || password.length() < 4 )
         {
-            throw new IllegalArgumentException( "Password cannot be shorter than 4 characters" );
+            throw new InvalidPasswordException( "Password cannot be shorter than 4 characters" );
         }
 
         if ( password.equalsIgnoreCase( userName ) || password.equalsIgnoreCase( "password" )
                 || password.equalsIgnoreCase( "system" ) )
         {
-            throw new IllegalArgumentException( "Password doesn't match security requirements" );
+            throw new InvalidPasswordException( "Password doesn't match security requirements" );
         }
     }
 

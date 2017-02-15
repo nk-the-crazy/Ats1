@@ -42,7 +42,7 @@ public class Organization
     
     @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY )
     @JoinColumn(name="details_id")
-    private OrganizationDetails details;
+    private OrganizationDetail detail;
     
     @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY )
     @JoinColumn(name="address_id")
@@ -75,14 +75,14 @@ public class Organization
         this.name = name;
     }
 
-    public OrganizationDetails getDetails()
+    public OrganizationDetail getDetail()
     {
-        return details;
+        return detail;
     }
 
-    public void setDetails( OrganizationDetails details )
+    public void setDetail( OrganizationDetail detail )
     {
-        this.details = details;
+        this.detail = detail;
     }
 
      public long getId()

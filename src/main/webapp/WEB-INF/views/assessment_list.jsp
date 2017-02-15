@@ -84,7 +84,7 @@ common.utils.system.SystemUtils"%>
                                                 <label class="control-label" for="assessment-name">
                                                     <spring:message code="label.assessment.name" />:</label>
                                                 <input type="text" id="assessment-name" name="assessmentName" value="${param.assessmentName}"
-                                                        id="first-name" class="form-control input-sm">
+                                                       class="form-control input-sm">
                                             </div>
                                             <div class="col-md-2 col-sm-2 col-xs-2">
                                                 <label class="control-label" for="assessment-date">

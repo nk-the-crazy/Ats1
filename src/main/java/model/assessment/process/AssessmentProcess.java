@@ -1,9 +1,10 @@
 package model.assessment.process;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,12 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import model.assessment.Assessment;
 import model.identity.User;
 
@@ -29,14 +28,15 @@ public class AssessmentProcess
     @Column(name = "id")
     private long id;
     
-    @Column(name = "time_elapsed") //seconds
-    private long timeElapsed;
-    
-    @Column(name = "start_date") //seconds
+    @Column(name = "start_date") 
     private Date startDate;
     
-    @Column(name = "end_date") //seconds
+    @Column(name = "end_date") 
     private Date endDate;
+    
+    @Column(name = "state") 
+    private short state = 1;
+    
     
     // *********************************************
     @OneToOne(  fetch = FetchType.LAZY )
@@ -51,11 +51,8 @@ public class AssessmentProcess
     // *********************************************    
     
     // *********************************************
-    @OneToMany(  fetch = FetchType.LAZY )
-    @JoinTable(name="asmt_process_tasks", 
-               joinColumns=@JoinColumn(name="process_id" ),
-               inverseJoinColumns=@JoinColumn(name="task_id"))
-    private Set<AssessmentProcessTask> tasks = new HashSet<AssessmentProcessTask>();
+    @OneToMany(mappedBy="process" , cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+    private List<AssessmentProcessTask> tasks = new ArrayList<AssessmentProcessTask>();
     // *********************************************    
 
     public long getId()
@@ -65,14 +62,10 @@ public class AssessmentProcess
 
     public long getTimeElapsed()
     {
-        return timeElapsed;
+        return endDate.getTime() - startDate.getTime() ;
     }
 
-    public void setTimeElapsed( long timeElapsed )
-    {
-        this.timeElapsed = timeElapsed;
-    }
-
+    
     public Date getStartDate()
     {
         return startDate;
@@ -113,16 +106,30 @@ public class AssessmentProcess
         this.assessment = assessment;
     }
 
-    public Set<AssessmentProcessTask> getTasks()
+    public List<AssessmentProcessTask> getTasks()
     {
         return tasks;
     }
 
-    public void setTasks( Set<AssessmentProcessTask> tasks )
+    public void setTasks( List<AssessmentProcessTask> tasks )
     {
         this.tasks = tasks;
     }
-  
 
-     
+    public int getState()
+    {
+        return state;
+    }
+
+    public void setState( int state )
+    {
+        this.state = (short)state;
+    }
+
+    public void addProcessTask(AssessmentProcessTask processTask)
+    {
+        this.tasks.add( processTask );
+    }
+    
+
 }

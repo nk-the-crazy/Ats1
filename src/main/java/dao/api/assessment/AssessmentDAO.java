@@ -58,7 +58,6 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
     //********************************************
     @Query(value = "SELECT a "
             + " FROM Assessment a "
-            + " LEFT JOIN FETCH a.details ad "
             + " LEFT JOIN FETCH a.author  at "
             + " LEFT JOIN FETCH a.managers m "
             + " LEFT JOIN FETCH a.participants p "
@@ -70,25 +69,24 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
     //********************************************
     @Query(value = "SELECT a, count (t.id) as taskCount "
             + " FROM Assessment a "
-            + " LEFT JOIN FETCH a.details d "
             + " LEFT JOIN a.tasks t "
-            + " GROUP BY a.id,d.id "
+            + " GROUP BY a.id "
 
             + " HAVING a.id=:assessmentId " )
     Object getDetails( @Param("assessmentId") long assessmentId );
     
     
-  //********************************************
+   //********************************************
     @Query(value = "SELECT DISTINCT a "
             + " FROM Assessment a "
             + " JOIN a.participants p "
+            + " JOIN FETCH a.tasks t "
+            + " JOIN FETCH t.options o "
             
             + " WHERE p.id in "
             + " ( SELECT g.id FROM UserGroup g JOIN g.users u "
             + "   WHERE u.id = :userId ) AND "
-            + " a.id=:assessmentId "
-            
-            + " ORDER BY a.startDate DESC " )
+            + " a.id=:assessmentId " )
     Assessment getByIdAndUserId( @Param("assessmentId") long assessmentId , @Param("userId") long userId);
 
 

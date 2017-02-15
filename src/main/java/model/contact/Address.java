@@ -25,8 +25,8 @@ public class Address
 	@Column( name = "city", length = 120)
 	private String city;
 	
-	@Column( name = "address_line", length = 250)
-	private String addressLine;
+	@Column( name = "primary_address", length = 250)
+	private String primaryAddress;
 
 	@Column( name = "secondary_address", length = 250)
 	private String secondaryAddress;
@@ -81,19 +81,18 @@ public class Address
 	}
 
 	
-    public String getAddressLine()	
-	{
-		return addressLine;
-	}
+    public String getPrimaryAddress()
+    {
+        return primaryAddress;
+    }
 
 
-	
-    public void setAddressLine( String addressLine )
-	{
-		this.addressLine = addressLine;
-	}		
+    public void setPrimaryAddress( String primaryAddress )
+    {
+        this.primaryAddress = primaryAddress;
+    }
 
-	
+
     public String getSecondaryAddress()
     {
         return secondaryAddress;

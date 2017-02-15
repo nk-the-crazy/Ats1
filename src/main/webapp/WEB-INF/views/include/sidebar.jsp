@@ -95,17 +95,16 @@
                                                 code="label.menu.register_role" />
                                     </a></li>
                                     <li class="sub_menu"><a
-                                        href="role_list.vw"> <spring:message
-                                                code="label.menu.role_list" />
+                                        href="role_list.vw"> 
+                                        <spring:message code="label.menu.role_list" />
                                     </a></li>
                                 </ul></li>
                             <li><a><i class="fa fa-bank"></i> <spring:message
                                         code="label.menu.manage_organizations" /><span
                                     class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li class="sub_menu"><a
-                                        href="register_organization.vw"> <spring:message
-                                                code="label.menu.register_organization" />
+                                    <li class="sub_menu"><a href="organization_register.vw"> 
+                                        <spring:message code="label.menu.register_organization" />
                                     </a></li>
                                     <li class="sub_menu"><a
                                         href="organization_list.vw"> <spring:message

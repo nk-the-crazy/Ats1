@@ -22,7 +22,10 @@ public class AssessmentTaskResponse
     private long id;
 
     @Column(name = "short_response")
-    private String shortResponse;    
+    private String shortResponse; 
+    
+    @Column(name = "grade")
+    float grade = 0;
     
     @Column(name = "response")
     @Lob
@@ -30,7 +33,7 @@ public class AssessmentTaskResponse
     
     // *********************************************
     @OneToOne(  fetch = FetchType.LAZY )
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "task_option_id")
     private AssessmentTaskOption option;
     // *********************************************  
 
@@ -69,5 +72,15 @@ public class AssessmentTaskResponse
         this.option = option;
     }
 
+    public float getGrade()
+    {
+        return grade;
+    }
+
+    public void setGrade( float grade )
+    {
+        this.grade = grade;
+    }
+    
 
 }

@@ -55,7 +55,7 @@ public class Person
 	// *********************************************
     @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY )
     @JoinColumn(name="details_id")
-    private PersonDetails personDetails; 
+    private PersonDetails detail; 
     
     // *********************************************
     @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY )
@@ -158,18 +158,15 @@ public class Person
 		this.status = status;
 	}
 
-	
-    public PersonDetails getPersonDetails()
-	{
-		return personDetails;
-	}
+	public PersonDetails getDetail()
+    {
+        return detail;
+    }
 
-	
-    public void setPersonDetails( PersonDetails personDetails )
-	{
-        this.personDetails = personDetails;
-	}
-
+    public void setDetail( PersonDetails detail )
+    {
+        this.detail = detail;
+    }
 
     public Set<User> getUsers()
     {

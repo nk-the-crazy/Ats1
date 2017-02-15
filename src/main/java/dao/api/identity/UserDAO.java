@@ -44,7 +44,7 @@ public interface UserDAO extends JpaRepository<User, Long>
             + " FROM User u "
             + " LEFT JOIN FETCH u.person p "
             + " LEFT JOIN FETCH p.address a "
-            + " LEFT JOIN FETCH p.personDetails d "
+            + " LEFT JOIN FETCH p.detail d "
             + " LEFT JOIN FETCH p.contact c "
             + " LEFT JOIN FETCH p.organization o "
             + " WHERE u.id=:userId")

@@ -33,7 +33,7 @@ public class ContactManagerImpl implements ContactManager
      * 
      */
     @Override
-    public Address createAddress(int countryId, int regionId , String city, String addressLine, String secondaryAddress, int type)
+    public Address createAddress(int countryId, int regionId , String city, String primaryAddress, String secondaryAddress, int type)
     {
         Address address = null;
         
@@ -43,7 +43,7 @@ public class ContactManagerImpl implements ContactManager
             address.setRegionId( regionId );
             address.setCountryId( countryId );
             address.setCity( city );
-            address.setAddressLine( addressLine );
+            address.setPrimaryAddress( primaryAddress );
             address.setSecondaryAddress( secondaryAddress );
             address.setType( type );
         }

@@ -245,7 +245,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><spring:message code="label.address.primary" />:</th>
-                                                  <td><c:out value="${user.person.address.addressLine}"/></td>
+                                                  <td><c:out value="${user.person.address.primaryAddress}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><spring:message code="label.address.secondary" />:</th>

@@ -69,7 +69,7 @@ public class IdentityController
             if ( sData != null )
             {
                 session.setAttribute( "sessionData", sData );
-                model.setViewName( ModelView.VIEW_MAIN_PAGE);
+               return new ModelAndView("redirect:main.vw");
             }
             else
             {

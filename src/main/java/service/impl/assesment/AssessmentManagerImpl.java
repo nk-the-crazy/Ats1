@@ -14,10 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import common.exceptions.security.AccessDeniedException;
 import dao.api.assessment.AssessmentDAO;
 import dao.api.assessment.AssessmentTaskDAO;
+import dao.api.assessment.process.AssessmentProcessDAO;
+import dao.api.assessment.process.AssessmentProcessTaskDAO;
 import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.AssessmentProcessState;
+import model.assessment.process.AssessmentProcessTask;
 import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskResponse;
 import service.api.assessment.AssessmentManager;
 
 
@@ -31,6 +35,12 @@ public class AssessmentManagerImpl implements AssessmentManager
 
     @Autowired
     AssessmentDAO assessmentDAO;
+
+    @Autowired
+    AssessmentProcessDAO processDAO;
+
+    @Autowired
+    AssessmentProcessTaskDAO processTaskDAO;
 
     @Autowired
     AssessmentTaskDAO taskDAO;
@@ -50,13 +60,19 @@ public class AssessmentManagerImpl implements AssessmentManager
         }
         else
         {
-            AssessmentProcess process = new AssessmentProcess();
-            
+            AssessmentProcess process = createAssessmentProcess();
             process.setAssessment( assessment );
-            //process.setTaskIdList( taskDAO.getRandomIdByAssessmentId( assessment.getId() ) );
-            //process.setState( AssessmentProcessState.Ready.getId() );
-            //process.setCurrentTaskIndex( 0 );
             
+            
+            for(AssessmentTask task : assessment.getTasks() )
+            {
+                AssessmentProcessTask processTask = new AssessmentProcessTask();
+                processTask.setTaskDetails( task );
+                process.addProcessTask( processTask );
+            }
+            
+            saveAssessmentProcess( process );
+
             return process;
         }
     }
@@ -66,28 +82,60 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public AssessmentProcess startProcess(AssessmentProcess process)
+    public AssessmentProcess startProcess( AssessmentProcess process , AssessmentTaskResponse taskResponse)
     {
-        int currentTaskIndex  = process.getCurrentTaskIndex();
-        
-        if(currentTaskIndex == 0)
+        if(process.getState() == AssessmentProcessState.Ready.getId() )
         {
             process.setState( AssessmentProcessState.Started.getId() );
-            process.setTimeElapsed( 0 );
+            process.setStartDate( new Date(System.currentTimeMillis()) );
+            process.setEndDate( process.getStartDate() );
         }
-        else if(( currentTaskIndex + 1 ) == process.getTaskIdList().size() )
+        else
         {
-            return process;
+            process.setEndDate( new Date(System.currentTimeMillis()) );
         }
         
-        AssessmentTask currentTask = taskDAO.findOne( process.getTaskIdList().get( currentTaskIndex ) );
-        process.setCurrentTask( currentTask );
-        process.setCurrentTaskIndex( currentTaskIndex + 1 );
+        processDAO.save( process );
         
         return process;
     }
     
 
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess endProcess( AssessmentProcess process)
+    {
+        process.setState( AssessmentProcessState.Finished.getId() );
+        process.setEndDate( new Date(System.currentTimeMillis()) );
+        
+        return process;
+    }
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess createAssessmentProcess()
+    {
+        AssessmentProcess process = null;
+
+        try
+        {
+            process = new AssessmentProcess();
+        }
+        catch ( Exception e )
+        {
+            logger.error( e.toString(), e );
+        }
+
+        return process;
+
+    }
+    
     /**************************************************
      * 
      */
@@ -113,7 +161,27 @@ public class AssessmentManagerImpl implements AssessmentManager
         return assessment;
 
     }
+
     
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess saveAssessmentProcess( AssessmentProcess process )
+    {
+        try
+        {
+            return processDAO.save( process );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in saving assessment process:", e );        
+        }
+
+        return null;
+    }
+    
+
     /**************************************************
      * 
      */
@@ -132,7 +200,6 @@ public class AssessmentManagerImpl implements AssessmentManager
         return null;
     }
     
-
     /**************************************************
      * 
      */
@@ -192,8 +259,7 @@ public class AssessmentManagerImpl implements AssessmentManager
     {
         return assessmentDAO.getByDetails(assessmentName, startDateFrom, assessmentType, pageable);
     }
-    
-    
+
 
     /**************************************************
      * 
@@ -204,6 +270,6 @@ public class AssessmentManagerImpl implements AssessmentManager
         return taskDAO.getByAssessmentId( assessmentId, pageable );
     }
     
-    
 
+  
 }
