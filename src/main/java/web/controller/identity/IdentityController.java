@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -274,6 +275,49 @@ public class IdentityController
 		session.removeAttribute( "sessionData" );
 		return ModelView.VIEW_LOGIN_PAGE;
 	}
+	
+	
+	
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/role_register.vw")
+    public String registerRoleView()
+    {
+        return ModelView.VIEW_ROLE_REGISTER_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/role_register.do")
+    public ModelAndView registerRoleView( @ModelAttribute( "role" ) Role role)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_ROLE_DETAILS_PAGE );
+        
+        try
+        {
+            role = identityManager.saveRole( role );
+            
+            return new ModelAndView("redirect:role_details.vw?role_id=" + role.getId() );
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.setViewName( ModelView.VIEW_ROLE_REGISTER_PAGE );
+            model.addObject( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error registering role:", e ); 
+            model.setViewName( ModelView.VIEW_ROLE_REGISTER_PAGE );
+            model.addObject( "errorMessage", e );
+        }
+        
+        return model;
+        
+    }
 	
 	
 

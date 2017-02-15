@@ -118,7 +118,7 @@ common.utils.system.SystemUtils"%>
                                                     <c:out value="${user[1]}"/></a></td>
                                                 <td><c:out value="${user[5]}"/>&nbsp;<c:out value="${user[4]}"/></td>
                                                 <td class="col-md-3">
-                                                <fmt:formatDate pattern="${dateTimeFormatShort }" value="${user[2]}" />
+                                                    <fmt:formatDate pattern="${dateTimeFormatShort }" value="${user[2]}" />
                                                 </td>
                                                 <td class="col-md-2">
                                                    ${SystemUtils.getAttribute('system.attrib.data.status',user[3],locale)}

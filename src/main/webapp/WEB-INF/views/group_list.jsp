@@ -8,6 +8,7 @@ common.utils.system.SystemUtils"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -40,6 +41,7 @@ common.utils.system.SystemUtils"%>
 </head>
 <!-- ***************************** -->
 <c:set var="groupsPage" value="${requestScope.groupsPage}"/>
+<c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -128,7 +130,9 @@ common.utils.system.SystemUtils"%>
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="group_details.vw?group_id=${group[0]}">
                                                     <c:out value="${group[1]}"/></a></td>
-                                                <td class="col-md-2"><c:out value="${group[4]}"/></td>
+                                                <td class="col-md-2">
+                                                    <fmt:formatDate pattern="${dateTimeFormatShort }" value="${group[4]}" />
+                                                </td>
                                                 <td class="col-md-1"><c:out value="${group[6]}"/></td>
                                                 <td><c:out value="${group[5]}"/></td>
                                                 <td class="col-md-1">

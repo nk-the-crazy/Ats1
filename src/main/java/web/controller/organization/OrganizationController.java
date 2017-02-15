@@ -111,7 +111,7 @@ public class OrganizationController
         }
         catch(Exception e)
         {
-            logger.error( " **** Error getting Organization Details:", e ); 
+            logger.error( " **** Error registering Organization:", e ); 
             model.setViewName( ModelView.VIEW_ORGANIZATION_REGISTER_PAGE );
             model.addObject( "errorMessage", e );
         }

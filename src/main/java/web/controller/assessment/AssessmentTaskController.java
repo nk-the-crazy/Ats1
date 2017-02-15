@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -136,6 +137,48 @@ public class AssessmentTaskController
         return model;
         
     }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/amst_task_register.vw")
+    public String registerOrganizationView()
+    {
+        return ModelView.VIEW_ASMT_TASK_REGISTER_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/amst_task_register.do")
+    public ModelAndView registerOrganizationView( @ModelAttribute( "task" ) AssessmentTask task)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_ORGANIZATION_DETAILS_PAGE );
+        
+        try
+        {
+            task = taskManager.saveTask( task );
+            
+            return new ModelAndView("redirect:organization_details.vw?asmt_task_id=" + task.getId() );
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.setViewName( ModelView.VIEW_ASMT_TASK_REGISTER_PAGE );
+            model.addObject( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error registering assessment task:", e ); 
+            model.setViewName( ModelView.VIEW_ASMT_TASK_REGISTER_PAGE );
+            model.addObject( "errorMessage", e );
+        }
+        
+        return model;
+        
+    }
+   
 }
 
 

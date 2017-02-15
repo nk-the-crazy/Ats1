@@ -171,7 +171,7 @@
                                                   <th scope="row" class="col-md-3">
                                                     <label class="control-label" for="address-country-id">
                                                     <spring:message code="label.address.country" />:</label></th>
-                                                  <td class="col-md-8">
+                                                  <td>
                                                     <select id="address-country-id" class="form-control input-select-sm" 
                                                         name="address.countryId">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"

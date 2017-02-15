@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -80,6 +81,48 @@ public class GroupController
         return model;
         
     }
-   
+    
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/group_register.vw")
+    public String registerGroupView()
+    {
+        return ModelView.VIEW_GROUP_REGISTER_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/group_register.do")
+    public ModelAndView registerGroup( @ModelAttribute( "group" ) UserGroup group)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_ROLE_DETAILS_PAGE );
+        
+        try
+        {
+            group = groupManager.saveGroup( group );
+            
+            return new ModelAndView("redirect:group_details.vw?group_id=" + group.getId() );
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.setViewName( ModelView.VIEW_GROUP_REGISTER_PAGE );
+            model.addObject( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error registering group:", e ); 
+            model.setViewName( ModelView.VIEW_GROUP_REGISTER_PAGE );
+            model.addObject( "errorMessage", e );
+        }
+        
+        return model;
+        
+    }
+
 
 }

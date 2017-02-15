@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -39,6 +40,7 @@
 <!-- ***************************** -->
 <c:set var="group" value="${requestScope.groupDetails}"/>
 <c:set var="usersPage" value="${requestScope.usersPage}"/>
+<c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
 <!-- ***************************** -->
 <body class="nav-md">
     <div class="container body">
@@ -102,7 +104,8 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.group.date" />:</th>
-                                                  <td><c:out value="${group.created}"/></td>
+                                                  <td><fmt:formatDate pattern="${dateTimeFormatShort }" value="${group.created}" />
+                                                  </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.group.desc" />:</th>
