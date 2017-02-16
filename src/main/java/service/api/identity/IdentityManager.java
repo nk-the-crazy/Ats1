@@ -60,4 +60,6 @@ public interface IdentityManager
 
     User getUser( long userId );
 
+    List<Role> getRoleShortListByRoleName( String roleName );
+
 }

@@ -1,29 +1,37 @@
 package web.controller.identity;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import model.common.session.SessionData;
 import model.group.UserGroup;
 import model.identity.Role;
 import model.identity.User;
+import service.api.group.GroupManager;
 import service.api.identity.IdentityManager;
 import service.api.organization.OrganizationManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import common.exceptions.security.InvalidLoginException;
 import common.exceptions.security.InvalidPasswordException;
+import common.utils.StringUtils;
 import web.common.view.ModelView;
 
 
@@ -40,8 +48,20 @@ public class IdentityController
     @Autowired
     private OrganizationManager organizationManager;
     
-  
-	/*******************************************************
+    @Autowired
+    private GroupManager groupManager;
+      
+	
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) 
+    {
+        SimpleDateFormat dateFormat = StringUtils.getShortDateFormat();
+        dateFormat.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
+    
+    
+    /*******************************************************
 	 * 
 	 * */
 	@RequestMapping(value={ "/", "/login.vw"} )
@@ -284,9 +304,7 @@ public class IdentityController
 	}
 	
 	
-	
-    
-    /*******************************************************
+	/*******************************************************
      * 
      */
     @RequestMapping("/role_register.vw")
@@ -332,6 +350,8 @@ public class IdentityController
     public String registerUserView(Model model)
     {
         model.addAttribute( "organizationShortList" , organizationManager.getOrganizationShortListByName( "" ));
+        model.addAttribute( "roleShortList" , identityManager.getRoleShortListByRoleName( "" ));
+        model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
         
         return ModelView.VIEW_USER_REGISTER_PAGE;
     }
@@ -341,7 +361,10 @@ public class IdentityController
      * 
      */
     @RequestMapping( value = "/user_register.do")
-    public ModelAndView registerUserView( @ModelAttribute( "user" ) User user)
+    public ModelAndView registerUserView( @ModelAttribute( "user" ) User user,
+                                          @RequestParam( "organizationId" ) long personId,
+                                          @RequestParam( "roleIds" ) List<Long> roleIds,
+                                          @RequestParam( "groupIds" ) List<Long> groupIds)
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_USER_REGISTER_PAGE );
         

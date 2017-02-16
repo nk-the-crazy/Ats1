@@ -41,7 +41,7 @@
 <link href="resources/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
 <!-- bootstrap-duallistbox -->
-<link href="resources/lib/bootstrap-duallistbox/dist/duallistbox.min.css" rel="stylesheet">
+<link href="resources/lib/bootstrap-duallistbox/dist/duallistbox.css" rel="stylesheet">
 
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
@@ -49,6 +49,8 @@
 </head>
 <!-- ***************************** -->
 <c:set var="organizations" value="${requestScope.organizationShortList}"/>
+<c:set var="roles" value="${requestScope.roleList}"/>
+<c:set var="group" value="${requestScope.groupList}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 <!-- ***************************** -->
 
@@ -253,9 +255,9 @@
                                                   <spring:message code="label.organization" />:</label></th>
                                                   <td>
                                                     <div class="col-md-10">
-                                                    <select id="person-organization" class="select2_single" name="person.organization.id">
+                                                    <select id="person-organization" class="select2_single" name="organizationId">
                                                         <c:forEach var="organization" items="${organizations}" varStatus="loopCounter"> 
-                                                            <option ${user.person.organization.id == organization[0] ? 'selected="selected"' : ''}
+                                                            <option ${organizationId == organization[0] ? 'selected="selected"' : ''}
                                                             value="${organization[0]}">${organization[1]}</option>
                                                         </c:forEach>
                                                     </select>
@@ -412,70 +414,25 @@
                                         </div>
                                         <div role="tabpanel" class="tab-pane col-md-8 fade" 
                                              id="tab_content4" aria-labelledby="roles-tab">
-                                            
-                                            <table id="" class="dataTable table table-bordered">
-                                              <thead>
-                                                <tr>
-                                                    <th>№</th>
-                                                    <th><spring:message code="label.user.login" /></th>
-                                                    <th><spring:message code="label.role.desc" /></th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                <%-- 
-                                                <!-- *********Role list ************ -->
-                                                <c:forEach var="role" items="${user.roles}" varStatus="loopCounter">
-                                                    <tr>
-                                                        <td class="col-md-1">${loopCounter.count }</td>
-                                                        <td><a href="role_details.vw?role_id=${role.id}">
-                                                            <c:out value="${role.name}"/></a></td>
-                                                        <td><c:out value="${role.details}"/></td>
-                                                    </tr>
+                                              <div class="bootstrap-duallistbox-container">
+                                                <select multiple="multiple" class="roleDualBox" size="8" name="roleIds">
+                                                <c:forEach var="role" items="${roles}" varStatus="loopCounter">
+                                                    <option value="${role[0]}">${role[1]}</option>
                                                 </c:forEach>
-                                                <!-- *********Role list ************ -->
-                                                --%>
-                                              </tbody>
-                                            </table>                                              
+                                                </select>
+                                           </div>
                                         </div>
-                                        <div role="tabpanel" class="tab-pane fade col-md-12" id="tab_content5"  aria-labelledby="groups-tab">
-                                            <%-- <table id="" class="dataTable table table-bordered">
-                                              <thead>
-                                                <tr>
-                                                    <th>№</th>
-                                                    <th><spring:message code="label.group.name" /></th>
-                                                    <th><spring:message code="label.group.desc" /></th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                
-                                                <!-- *********Group list ************ -->
-                                                <c:set var="index" value="${groupsPage.number * groupsPage.size}" />
-                                                <c:forEach var="group" items="${groupsPage.content}" varStatus="loopCounter">
-                                                    <tr>
-                                                        <td class="col-md-1">${index + loopCounter.count }</td>
-                                                        <td><a href="group_details.vw?group_id=${group[1]}">
-                                                            <c:out value="${group[2]}"/></a></td>
-                                                        <td><c:out value="${group[3]}"/></td>
-                                                    </tr>
+                                        <div role="tabpanel" class="tab-pane fade col-md-12" 
+                                             id="tab_content5"  aria-labelledby="groups-tab">
+                                            <div class="bootstrap-duallistbox-container">
+                                                <select multiple="multiple" class="groupDualBox" size="8" name="groupIds">
+                                                <c:forEach var="group" items="${groups}" varStatus="loopCounter">
+                                                    <option ${groupIds[loopCounter.index] == group[0] ? 'selected="selected"' : ''} 
+                                                    value="${group[0]}">${group[1]}</option>
                                                 </c:forEach>
-                                                <!-- *********Group list ************ -->
-                                              </tbody>
-                                            </table> 
-                                            <!------------- Pagination -------------->
-                                            <c:if test="${groupsPage.totalPages > 1}">
-                                                <jsp:include page="include/pagination.jsp">
-                                                     <jsp:param name="page" value="user_details.vw" />
-                                                     <jsp:param name="addParam" value="user_id=${param.user_id}" />
-                                                     <jsp:param name="totalPages" value="${groupsPage.totalPages}" />
-                                                     <jsp:param name="totalElements" value="${groupsPage.totalElements}" />
-                                                     <jsp:param name="currentIndex" value="${groupsPage.number}" />
-                                                     <jsp:param name="pageableSize" value="${groupsPage.size}" />
-                                                 </jsp:include>
-                                             </c:if>
-                                            <!--------------------------------------->
-                                            --%>
+                                                </select>
+                                           </div>
                                         </div>
-                                        
                                     </div>
                                   </div>
                                </div>
@@ -512,7 +469,32 @@
     
     <!-- bootstrap-duallistbox -->
     <script src="resources/lib/bootstrap-duallistbox/dist/duallistbox.min.js"></script>
+    <script type="text/javascript">
     
+    var rolesDualListBox = $('.roleDualBox').bootstrapDualListbox({
+    	 bootstrap2compatible    : false,
+    	  nonSelectedListLabel: '<spring:message code="label.role.list" />',
+    	  selectedListLabel: '<spring:message code="label.role.selected" />',
+    	  preserveSelectionOnMove: 'moved',
+    	  moveOnSelect: false,
+    	  showFilterInputs :true,
+    	  infoText: false
+    	  
+    	});
+    
+    var groupsDualListBox = $('.groupDualBox').bootstrapDualListbox({
+        bootstrap2compatible    : false,
+    	nonSelectedListLabel: '<spring:message code="label.group.list" />',
+        selectedListLabel: '<spring:message code="label.group.selected" />',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false,
+        showFilterInputs :true,
+        infoText: false
+        
+      });
+  
+    </script>
+    <!-- /bootstrap-duallistbox -->
     
     <!-- Custom Theme Scripts -->
     <script src="resources/js/custom.min.js"></script>

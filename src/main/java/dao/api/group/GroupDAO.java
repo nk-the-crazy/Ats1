@@ -8,9 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import model.group.UserGroup;
-
 
 public interface GroupDAO extends JpaRepository<UserGroup, Long>
 {
@@ -45,6 +43,13 @@ public interface GroupDAO extends JpaRepository<UserGroup, Long>
             + " JOIN g.users u "
             + " WHERE u.id=:userId")
     Page<UserGroup> getByUserId(@Param("userId") long userId , Pageable page );
+    
+    
+    @Query(value = "SELECT g.id, g.name "
+            + " FROM UserGroup g "
+            + " WHERE LOWER(g.name) LIKE LOWER(CONCAT('%',:groupName, '%')) "
+            + " ORDER BY g.id")
+    List<UserGroup> getShortListByGroupName(@Param("groupName") String groupName );
 
 
 }

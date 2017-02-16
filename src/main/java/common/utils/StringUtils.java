@@ -113,5 +113,14 @@ public class StringUtils
 
         return "00:00:00";
     }
+    
+    
+    /*****************************************
+     * 
+     * */
+    public static SimpleDateFormat getShortDateFormat()
+    {
+        return shortDateFormatter;
+    }
 
 }

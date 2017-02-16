@@ -106,6 +106,15 @@ public class GroupManagerImpl implements GroupManager
      * 
      */
     @Override
+    public List<UserGroup> getGroupShortListByName( String groupName )
+    {
+        return groupDAO.getShortListByGroupName( groupName );
+    }
+    
+    /**************************************************
+     * 
+     */
+    @Override
     public Page<UserGroup> getGroupsByName( String groupName, Pageable pageable )
     {
         return groupDAO.findByName(groupName, pageable);

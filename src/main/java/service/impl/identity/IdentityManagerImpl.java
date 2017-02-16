@@ -419,6 +419,15 @@ public class IdentityManagerImpl implements IdentityManager
         return roleDAO.findByRoleName( roleName, pageable );
     }
 
+    /**************************************************
+     * 
+     */
+    @Override
+    public List<Role> getRoleShortListByRoleName( String roleName)
+    {
+        return roleDAO.getShortListByRoleName( roleName );
+    }
+
     
     /**************************************************
      * 
