@@ -362,9 +362,9 @@ public class IdentityController
      */
     @RequestMapping( value = "/user_register.do")
     public ModelAndView registerUserView( @ModelAttribute( "user" ) User user,
-                                          @RequestParam( "organizationId" ) long personId,
-                                          @RequestParam( "roleIds" ) List<Long> roleIds,
-                                          @RequestParam( "groupIds" ) List<Long> groupIds)
+                                          @RequestParam( name = "organizationId", required = true ) long personId,
+                                          @RequestParam( name = "roleIds" , required = false ) List<Long> roleIds,
+                                          @RequestParam( name = "groupIds", required = false ) List<Long> groupIds)
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_USER_REGISTER_PAGE );
         
