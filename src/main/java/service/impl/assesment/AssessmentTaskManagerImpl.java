@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.google.common.base.Strings;
 
@@ -91,7 +92,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTaskCategory createTaskCategory(String name, String details)
+    public AssessmentTaskCategory createTaskCategory(String name, String details, int type)
     {
         AssessmentTaskCategory category = null;
         
@@ -102,6 +103,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
             category = new AssessmentTaskCategory();
             category.setName( name );
             category.setDetails( details );
+            category.setType( type );
         }
         catch(Exception e) 
         {
@@ -117,12 +119,33 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
+    public AssessmentTask saveTask( AssessmentTask entity , boolean defaultCategory)
+    {
+        isValidTaskName(entity.getItemName());
+        
+        if(defaultCategory)
+        {
+            if(entity.getCategory() == null || entity.getCategory().getId() <= 0)
+            {
+                entity.setCategory( getSystemCategory());
+            }
+        }
+        
+        return taskDAO.save( entity );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
     public AssessmentTask saveTask( AssessmentTask entity)
     {
         isValidTaskName(entity.getItemName());
         
         return taskDAO.save( entity );
     }
+
 
     
     /**************************************************
@@ -172,6 +195,16 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
     public AssessmentTaskCategory getCategoryDetails(long categoryId)
     {
         return categoryDAO.findOne( categoryId );
+    }
+    
+
+    /* *************************************************
+     */
+    @Override
+    public AssessmentTaskCategory getSystemCategory()
+    {
+        List<AssessmentTaskCategory> elements = categoryDAO.getSystemCategory();
+        return CollectionUtils.isEmpty( elements ) ? null : elements.get(0);
     }
 
 

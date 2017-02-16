@@ -120,6 +120,15 @@ public class OrganizationManagerImpl implements OrganizationManager
      * 
      */
     @Override
+    public List<Organization> getOrganizationShortListByName(String organizationName)
+    {
+        return organzDAO.getShortListByName( organizationName );
+    }
+
+    /**************************************************
+     * 
+     */
+    @Override
     public Organization getOrganizationDetails( long organizationId )
     {
         return organzDAO.getFullDetails( organizationId );

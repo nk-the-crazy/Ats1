@@ -42,8 +42,8 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
     //********************************************
     @Query(value = "SELECT t "
             + " FROM AssessmentTask t "
-            + " JOIN FETCH t.category c "
-            + " JOIN FETCH t.options d "
+            + " LEFT JOIN FETCH t.category c "
+            + " LEFT JOIN FETCH t.options d "
             + " WHERE t.id=:taskId " )
     AssessmentTask getFullDetails(@Param("taskId") long taskId );
 

@@ -2,8 +2,6 @@ package web.controller.assessment;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -21,7 +19,6 @@ import common.utils.StringUtils;
 import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.AssessmentProcessState;
-import model.assessment.process.AssessmentProcessTask;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskResponse;
 import model.common.session.SessionData;

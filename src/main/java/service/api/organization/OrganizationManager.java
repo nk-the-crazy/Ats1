@@ -29,5 +29,7 @@ public interface OrganizationManager
 
     Page<Person> getOrganizationPersonList( long organizationId, Pageable pageable );
 
+    List<Organization> getOrganizationShortListByName( String organizationName );
+
     
 }

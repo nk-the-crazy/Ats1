@@ -100,7 +100,7 @@ public class GroupController
     @RequestMapping( value = "/group_register.do")
     public ModelAndView registerGroup( @ModelAttribute( "group" ) UserGroup group)
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_ROLE_DETAILS_PAGE );
+        ModelAndView model = new ModelAndView( ModelView.VIEW_GROUP_REGISTER_PAGE );
         
         try
         {
@@ -110,14 +110,12 @@ public class GroupController
         }
         catch(IllegalArgumentException e)
         {
-            model.setViewName( ModelView.VIEW_GROUP_REGISTER_PAGE );
             model.addObject( "errorMessage", "message.error.attribute.invalid");
         }
         catch(Exception e)
         {
             logger.error( " **** Error registering group:", e ); 
-            model.setViewName( ModelView.VIEW_GROUP_REGISTER_PAGE );
-            model.addObject( "errorMessage", e );
+            model.addObject( "errorMessage", "message.error.system" );
         }
         
         return model;

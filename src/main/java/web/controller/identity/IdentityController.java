@@ -7,12 +7,15 @@ import model.group.UserGroup;
 import model.identity.Role;
 import model.identity.User;
 import service.api.identity.IdentityManager;
+import service.api.organization.OrganizationManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import common.exceptions.security.InvalidLoginException;
+import common.exceptions.security.InvalidPasswordException;
 import web.common.view.ModelView;
 
 
@@ -32,6 +36,9 @@ public class IdentityController
 
     @Autowired
 	private IdentityManager identityManager;
+    
+    @Autowired
+    private OrganizationManager organizationManager;
     
   
 	/*******************************************************
@@ -295,7 +302,7 @@ public class IdentityController
     @RequestMapping( value = "/role_register.do")
     public ModelAndView registerRoleView( @ModelAttribute( "role" ) Role role)
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_ROLE_DETAILS_PAGE );
+        ModelAndView model = new ModelAndView( ModelView.VIEW_ROLE_REGISTER_PAGE );
         
         try
         {
@@ -305,14 +312,12 @@ public class IdentityController
         }
         catch(IllegalArgumentException e)
         {
-            model.setViewName( ModelView.VIEW_ROLE_REGISTER_PAGE );
             model.addObject( "errorMessage", "message.error.attribute.invalid");
         }
         catch(Exception e)
         {
             logger.error( " **** Error registering role:", e ); 
-            model.setViewName( ModelView.VIEW_ROLE_REGISTER_PAGE );
-            model.addObject( "errorMessage", e );
+            model.addObject( "errorMessage", "message.error.system" );
         }
         
         return model;
@@ -320,5 +325,49 @@ public class IdentityController
     }
 	
 	
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/user_register.vw")
+    public String registerUserView(Model model)
+    {
+        model.addAttribute( "organizationShortList" , organizationManager.getOrganizationShortListByName( "" ));
+        
+        return ModelView.VIEW_USER_REGISTER_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/user_register.do")
+    public ModelAndView registerUserView( @ModelAttribute( "user" ) User user)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_USER_REGISTER_PAGE );
+        
+        try
+        {
+            user = identityManager.saveUser( user );
+            
+            return new ModelAndView("redirect:user_details.vw?user_id=" + user.getId() );
+        }
+        catch(InvalidPasswordException e)
+        {
+            model.addObject( "errorMessage", "message.error.password.invalid");
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addObject( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error registering role:", e ); 
+            model.addObject( "errorMessage", "message.error.system" );
+        }
+        
+        return model;
+        
+    }
+    
 
 }

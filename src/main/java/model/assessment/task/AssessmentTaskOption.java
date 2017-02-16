@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table( name = "asmt_task_options" )
+@Table( name = "asmt_task_option" )
 public class AssessmentTaskOption
 {
     @Id

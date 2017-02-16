@@ -96,7 +96,7 @@ public class OrganizationController
     @RequestMapping( value = "/organization_register.do")
     public ModelAndView registerOrganizationView( @ModelAttribute( "organization" ) Organization organization )
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_ORGANIZATION_DETAILS_PAGE );
+        ModelAndView model = new ModelAndView( ModelView.VIEW_ORGANIZATION_REGISTER_PAGE );
         
         try
         {
@@ -106,14 +106,12 @@ public class OrganizationController
         }
         catch(IllegalArgumentException e)
         {
-            model.setViewName( ModelView.VIEW_ORGANIZATION_REGISTER_PAGE );
             model.addObject( "errorMessage", "message.error.attribute.invalid");
         }
         catch(Exception e)
         {
             logger.error( " **** Error registering Organization:", e ); 
-            model.setViewName( ModelView.VIEW_ORGANIZATION_REGISTER_PAGE );
-            model.addObject( "errorMessage", e );
+            model.addObject( "errorMessage", "message.error.system" );
         }
         
         return model;

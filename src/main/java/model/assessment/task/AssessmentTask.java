@@ -1,7 +1,7 @@
 package model.assessment.task;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,10 +56,10 @@ public class AssessmentTask
     // *********************************************
      
     @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-    @JoinTable(name="asmt_tasks_options", 
+    @JoinTable(name="asmt_task_options", 
           joinColumns=@JoinColumn(name="task_id" , nullable = false),
           inverseJoinColumns=@JoinColumn(name="options_id"))
-    private Set<AssessmentTaskOption> options = new HashSet<AssessmentTaskOption>();
+    private List<AssessmentTaskOption> options = new ArrayList<AssessmentTaskOption>();
 
     // *********************************************
     public long getId()
@@ -138,12 +138,12 @@ public class AssessmentTask
         this.category = category;
     }
 
-    public Set<AssessmentTaskOption> getOptions()
+    public List<AssessmentTaskOption> getOptions()
     {
         return options;
     }
 
-    public void setDetails( Set<AssessmentTaskOption> options )
+    public void setOptions( List<AssessmentTaskOption> options )
     {
         this.options = options;
     }

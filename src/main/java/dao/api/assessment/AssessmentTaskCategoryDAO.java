@@ -17,4 +17,10 @@ public interface AssessmentTaskCategoryDAO extends  JpaRepository<AssessmentTask
             + " WHERE c.parent.id IS NULL" )
     List<AssessmentTaskCategory> getCategoryTree();
 
+    //********************************************
+    @Query(value = "SELECT c "
+            + " FROM AssessmentTaskCategory c "
+            + " WHERE c.type=1" )
+   List<AssessmentTaskCategory> getSystemCategory();
+
 }

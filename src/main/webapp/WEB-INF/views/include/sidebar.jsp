@@ -45,6 +45,8 @@
                                  <spring:message code="label.menu.task.register" /> </a></li>
                             <li><a href="asmt_task_list.vw"><i class="fa fa-cube"></i> 
                                  <spring:message code="label.menu.task.management" /> </a></li>
+                            <li><a href="asmt_category_register.vw"><i class="fa fa-plus"></i> 
+                                 <spring:message code="label.menu.task.category.register" /> </a></li>
                             <li><a href="asmt_category_list.vw"><i class="fa fa-sitemap"></i>
                                 <spring:message code="label.menu.task.category.management" />
                             </a></li>

@@ -34,6 +34,13 @@ public interface OrganizationDAO extends JpaRepository<Organization, Long>
     
     
     //********************************************
+    @Query(value = "SELECT ogz.id, ogz.name "
+            + " FROM Organization ogz "
+            + " WHERE LOWER(ogz.name) LIKE LOWER(CONCAT('%',:organizationName, '%'))")
+    List<Organization> getShortListByName(@Param("organizationName") String organizationName);
+    
+    
+    //********************************************
     @Query(value = "SELECT ogz "
             + " FROM Organization ogz "
             + " LEFT JOIN FETCH ogz.address a "

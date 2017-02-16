@@ -165,29 +165,38 @@ public class SystemDataInit
     {
         for(int x=1; x < 20; x++) 
         {
-            AssessmentTaskCategory category = taskManager.createTaskCategory( "Category-"+x, "Details of Category-"+x );
+            AssessmentTaskCategory category = null;
             
-            AssessmentTask task1 = createDefaultTasks(x) ;
-            AssessmentTask task2 = createDefaultTasks(x+1) ;
-            
-            category.addTask( task1 );
-            category.addTask( task2 );
-            
-            for(int a=1; a < 5; a++) 
+            if(x == 1)
             {
-                AssessmentTaskCategory categoryS1 = taskManager.createTaskCategory( "Category-"+x+"-"+a, "Details of Category-"+x );
-                category.addChildCategory( categoryS1 );
-
-                for(int b=1; b < 3; b++) 
-                {
-                    AssessmentTaskCategory categoryS2 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b, "Details of Category-"+x );
-                    categoryS1.addChildCategory( categoryS2 );
-
-                    //AssessmentTaskCategory categoryS3 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b+"-"+b, "Details of Category-"+x );
-                    //categoryS2.addChildCategory( categoryS3 );
-                }
+                category = taskManager.createTaskCategory( "Default-"+x, "Default Category-"+x , 1);
             }
-            
+            else
+            {
+                category = taskManager.createTaskCategory( "Category-"+x, "Details of Category-"+x , 2);
+                AssessmentTask task1 = createDefaultTasks(x) ;
+                AssessmentTask task2 = createDefaultTasks(x+1) ;
+                
+                category.addTask( task1 );
+                category.addTask( task2 );
+                
+                for(int a=1; a < 5; a++) 
+                {
+                    AssessmentTaskCategory categoryS1 = taskManager.createTaskCategory( "Category-"+x+"-"+a, "Details of Category-"+x , 2 );
+                    category.addChildCategory( categoryS1 );
+    
+                    for(int b=1; b < 3; b++) 
+                    {
+                        AssessmentTaskCategory categoryS2 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b, "Details of Category-"+x, 2 );
+                        categoryS1.addChildCategory( categoryS2 );
+    
+                        //AssessmentTaskCategory categoryS3 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b+"-"+b, "Details of Category-"+x );
+                        //categoryS2.addChildCategory( categoryS3 );
+                    }
+                }
+                
+                
+            }
             taskManager.saveTaskCategory( category );
         }
     }

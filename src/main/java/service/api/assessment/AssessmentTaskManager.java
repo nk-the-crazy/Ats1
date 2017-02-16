@@ -16,13 +16,11 @@ public interface AssessmentTaskManager
     AssessmentTask createTask( String itemName, String itemContent, float itemGrade, int mode, int modeType,
             int complexity );
 
-    AssessmentTaskCategory createTaskCategory( String name, String details );
-
     AssessmentTaskOption createTaskDetails( String itemOption, float grade );
 
     AssessmentTask saveTask( AssessmentTask entity );
 
-    AssessmentTaskCategory saveTaskCategory( AssessmentTaskCategory entity );
+    AssessmentTaskCategory saveTaskCategory( AssessmentTaskCategory category );
 
     List<AssessmentTaskCategory> getCategories();
 
@@ -37,6 +35,12 @@ public interface AssessmentTaskManager
     Page<AssessmentTask> getCategoryTasks( long categoryId, Pageable pageable );
 
     AssessmentTask getTaskById( long taskId );
+
+    AssessmentTaskCategory createTaskCategory( String name, String details, int type );
+
+    AssessmentTaskCategory getSystemCategory();
+
+    AssessmentTask saveTask( AssessmentTask entity, boolean defaultCategory );
 
     
 }
