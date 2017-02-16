@@ -1,8 +1,14 @@
 /* **************************************** */
-.countdown
+.timing-panel
 {
     font-size: 15px;
 }
+
+.tasks-panel
+{
+    font-size: 13px;
+}
+/* **************************************** */
 
 .daterangepicker .ranges li {
   color: #73879C; }
@@ -511,8 +517,8 @@ table.no-margin .progress {
   position: relative;
   min-height: 1px;
   float: left;
-  padding-right: 10px;
-  padding-left: 10px; }
+  padding-right: 1px;
+  padding-left: 1px; }
 
 .row {
   margin-right: -10px;
@@ -777,7 +783,7 @@ a:hover, a:focus {
 
 footer {
   background: #fff;
-  padding: 15px 20px;
+  padding: 0px 20px;
   display: block; }
 
 .nav-sm footer {
@@ -2036,8 +2042,7 @@ span.section {
 
 .input-select-sm {
   border-radius: 0;
-  width: 100%;
-  height: 25px;
+  height: 24px;
   padding-top: 2px;
   padding-left: 2px;
   font-size: 12px }
@@ -3559,17 +3564,17 @@ div[data-role="editor-toolbar"] {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 0;
-  min-height: 38px; }
+  min-height: 26px; }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
   color: #73879C;
-  padding-top: 5px; }
+  padding-top: 1px; }
 
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-  padding-top: 3px; }
+  padding-top: 1px; }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
-  height: 36px; }
+  height: 26px; }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice,
 .select2-container--default .select2-selection--multiple .select2-selection__clear {

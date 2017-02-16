@@ -5,7 +5,6 @@
 <!-- ************************************* -->
 
 <footer>
-	<div class="pull-right">Qualification Test and Certification
-		System</div>
+	<div class="pull-right">Assessment Testing System By Almetico</div>
 	<div class="clearfix"></div>
 </footer>

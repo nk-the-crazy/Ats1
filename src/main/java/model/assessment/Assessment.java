@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,7 +46,7 @@ public class Assessment
     private short maxGrade = 100;
 
     @Column(name = "time")
-    private short time = 1;
+    private long time = 1;
 
     @Column(name = "status")
     private int status = 1;
@@ -55,12 +54,6 @@ public class Assessment
     @Transient
     private long taskCount = 0;
 
-    // *********************************************
-    @OneToOne (cascade = CascadeType.ALL,fetch = FetchType.LAZY )
-    @JoinColumn(name="details_id")
-    private AssessmentDetails details;
-    // *********************************************
-    
     // *********************************************
     @OneToOne (fetch = FetchType.LAZY )
     @JoinColumn(name="author_id")
@@ -142,16 +135,7 @@ public class Assessment
         this.type = (short)type;
     }
 
-    public AssessmentDetails getDetails()
-    {
-        return details;
-    }
-
-    public void setDetails( AssessmentDetails details )
-    {
-        this.details = details;
-    }
-
+  
     public Set<UserGroup> getParticipants()
     {
         return participants;
@@ -236,15 +220,15 @@ public class Assessment
     }
 
 
-    public int getTime()
+    public long getTime()
     {
         return time;
     }
 
 
-    public void setTime( int time )
+    public void setTime( long time )
     {
-        this.time = (short)time;
+        this.time = time;
     }
 
 

@@ -101,11 +101,11 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.asmt.task.item.grade" />:</th>
-                                                  <td style="height: 60px;">${task.itemGrade}</td>
+                                                  <td>${task.itemGrade}</td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.asmt.task.item.content" />:</th>
-                                                  <td style="height: 60px;">${task.itemContent}</td>
+                                                  <td style="height: 80px;">${task.itemContent}</td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.asmt.task.complexity" />:</th>
@@ -127,7 +127,8 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.asmt.task.category.name" />:</th>
-                                                  <td class="col-lg-3"><c:out value="${task.category.name}"/></td>
+                                                  <td class="col-lg-3"><a href="asmt_category_details.vw?asmt_category_id=${task.category.id }">
+                                                  <c:out value="${task.category.name}"/></a></td>
                                                 </tr>
                                                 
                                                 <tr>
@@ -153,11 +154,11 @@
                                               </thead>
                                               <tbody>
                                                 <!-- *********Task Details list************ -->
-                                                <c:forEach var="taskDetails" items="${task.details}" varStatus="loopCounter">
+                                                <c:forEach var="options" items="${task.options}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${loopCounter.count }</td>
-                                                        <td class="col-md-2"><c:out value="${taskDetails.itemOptionGrade}"/></td>
-                                                        <td><c:out value="${taskDetails.itemOption}"/></td>
+                                                        <td class="col-md-2"><c:out value="${options.itemOptionGrade}"/></td>
+                                                        <td><c:out value="${options.itemOption}"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <!-- *********Task Details list ************ -->

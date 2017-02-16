@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table( name = "asmt_task_category" )
+@Table( name = "asmt_category" )
 public class AssessmentTaskCategory
 {
     @Id
@@ -30,6 +30,9 @@ public class AssessmentTaskCategory
     @Column(name = "details")
     private String details;
     
+    @Column(name = "type")
+    private short type = 2; //Regular
+    
     // *********************************************
     @OneToMany(mappedBy="category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<AssessmentTask> tasks = new HashSet<AssessmentTask>();
@@ -41,7 +44,7 @@ public class AssessmentTaskCategory
     // *********************************************
 
     // *********************************************
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="parent_id")
     private AssessmentTaskCategory parent = null;
     // *********************************************
@@ -126,5 +129,17 @@ public class AssessmentTaskCategory
             childCategory.setParent( this ); 
         }
     }
+
+    public int getType()
+    {
+        return type;
+    }
+
+    public void setType( int type )
+    {
+        this.type = (short)type;
+    }
+    
+    
 
 }

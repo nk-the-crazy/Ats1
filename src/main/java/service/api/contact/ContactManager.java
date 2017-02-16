@@ -11,6 +11,6 @@ public interface ContactManager
 
     Address saveAddress( Address address );
 
-    Address createAddress( int countryId, int regionId, String city, String addressLine, String secondaryAddress,
+    Address createAddress( int countryId, int regionId, String city, String primaryAddress, String secondaryAddress,
             int type );
 }

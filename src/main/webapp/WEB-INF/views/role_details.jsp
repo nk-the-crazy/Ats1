@@ -112,7 +112,7 @@
                                               </tbody>
                                             </table>
                                         </div>
-                                        <div role="tabpanel" class="tab-pane col-md-9 fade" 
+                                        <div role="tabpanel" class="tab-pane col-md-10 fade" 
                                              id="tab_content2" aria-labelledby="permissions-tab">
                                             
                                             <table id="" class="dataTable table table-bordered">

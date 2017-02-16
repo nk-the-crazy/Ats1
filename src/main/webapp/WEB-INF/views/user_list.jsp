@@ -8,8 +8,8 @@ common.utils.system.SystemUtils"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!-- ************************************* -->
 
+<!-- ************************************* --> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,7 +78,7 @@ common.utils.system.SystemUtils"%>
                                                     for="login-name"><spring:message code="label.user.login" />:&nbsp;</label>
                                                 </td>
                                                 <td><input type="text" name="userName" value="${param.userName}"
-                                                    id="first-name" class="form-control input-sm">
+                                                    id="login-name" class="form-control input-sm">
                                                 </td>
                                                 <td>&nbsp;&nbsp; <label class="control-label"
                                                     for="last-name"><spring:message code="label.user.last_name" />:&nbsp;</label>
@@ -118,7 +118,7 @@ common.utils.system.SystemUtils"%>
                                                     <c:out value="${user[1]}"/></a></td>
                                                 <td><c:out value="${user[5]}"/>&nbsp;<c:out value="${user[4]}"/></td>
                                                 <td class="col-md-3">
-                                                <fmt:formatDate pattern="${dateTimeFormatShort }" value="${user[2]}" />
+                                                    <fmt:formatDate pattern="${dateTimeFormatShort }" value="${user[2]}" />
                                                 </td>
                                                 <td class="col-md-2">
                                                    ${SystemUtils.getAttribute('system.attrib.data.status',user[3],locale)}

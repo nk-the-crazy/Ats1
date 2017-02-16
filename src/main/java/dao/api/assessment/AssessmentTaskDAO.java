@@ -1,5 +1,7 @@
 package dao.api.assessment;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,8 +42,8 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
     //********************************************
     @Query(value = "SELECT t "
             + " FROM AssessmentTask t "
-            + " JOIN FETCH t.category c "
-            + " JOIN FETCH t.details d "
+            + " LEFT JOIN FETCH t.category c "
+            + " LEFT JOIN FETCH t.options d "
             + " WHERE t.id=:taskId " )
     AssessmentTask getFullDetails(@Param("taskId") long taskId );
 
@@ -62,5 +64,14 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
             + " WHERE a.id=:assessmentId "
             + " ORDER By t.itemName" )
     Page<AssessmentTask> getByAssessmentId(@Param("assessmentId") long assessmentId , Pageable pageable );
+
+    
+    //********************************************
+    @Query(value = "SELECT t.id  "
+            + " FROM Assessment a "
+            + " JOIN a.tasks t "
+            + " WHERE a.id=:assessmentId "
+            + " ORDER BY RAND()" )
+    List<Long> getRandomIdByAssessmentId(@Param("assessmentId") long assessmentId);
 
 }

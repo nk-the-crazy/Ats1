@@ -44,6 +44,7 @@ public class OrganizationManagerImpl implements OrganizationManager
             code = generateCode();
                 
         isValidCode(code);
+        isValidName(name);
         
         try 
         {
@@ -72,6 +73,7 @@ public class OrganizationManagerImpl implements OrganizationManager
             organization.setCode(generateCode());
                 
         isValidCode(organization.getCode());
+        isValidName(organization.getName());
 
         try
         {
@@ -113,6 +115,15 @@ public class OrganizationManagerImpl implements OrganizationManager
         return organzDAO.findByName( organizationName ) ;
     }
 
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public List<Organization> getOrganizationShortListByName(String organizationName)
+    {
+        return organzDAO.getShortListByName( organizationName );
+    }
 
     /**************************************************
      * 
@@ -167,6 +178,23 @@ public class OrganizationManagerImpl implements OrganizationManager
         if ( code.equalsIgnoreCase( "code" ))
         {
             throw new IllegalArgumentException( "Code name is reserved by the system." );
+        }
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    private void isValidName( String name )
+    {
+        if ( Strings.isNullOrEmpty( name ) || name.length() < 3 )
+        {
+            throw new IllegalArgumentException( "Code name cannot be shorter than 4 characters." );
+        }
+
+        if ( name.equalsIgnoreCase( "name" ))
+        {
+            throw new IllegalArgumentException( "Name is reserved by the system." );
         }
     }
     

@@ -36,9 +36,8 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 </head>
 <!-- ***************************** -->
-<c:set var="assessmentDetails" value="${requestScope.assessmentDetails}"/>
-<c:set var="assessment" value="${assessmentDetails[0]}"/>
-<c:set var="taskCount" value="${assessmentDetails[1]}"/>
+<c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
+<c:set var="tasks" value="${process.tasks}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 <!-- ***************************** -->
 
@@ -78,37 +77,37 @@
                                       <tbody>
                                         <tr>
                                           <th scope="row" class="col-md-3"><spring:message code="label.assessment.name" />:</th>
-                                          <td class="col-md-5"><c:out value="${assessment.name}"/></td>
+                                          <td class="col-md-5"><c:out value="${process.assessment.name}"/></td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.assessment.type" />:</th>
                                           <td>
-                                                ${SystemUtils.getAttribute('system.attrib.assessment.type',assessment.type, locale)}
+                                                ${SystemUtils.getAttribute('system.attrib.assessment.type',process.assessment.type, locale)}
                                           </td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.date.time" />:</th>
-                                          <td class="col-md-5"><c:out value="${assessment.time}"/>&nbsp;&nbsp;
+                                          <td class="col-md-5"><c:out value="${process.assessment.time}"/>&nbsp;&nbsp;
                                             <spring:message code="label.date.time.minutes" />
                                           </td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.asmt.task.count" />:</th>
-                                          <td><c:out value="${taskCount}"/></td>
+                                          <td><c:out value="${tasks.size()}"/></td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.assessment.maxgrade" />:</th>
-                                          <td><c:out value="${assessment.maxGrade}"/></td>
+                                          <td><c:out value="${process.assessment.maxGrade}"/></td>
                                         </tr>
                                         <tr>
                                           <th scope="row" ><spring:message code="label.date.start" />-<spring:message code="label.date.end" /></th>
-                                          <td><fmt:formatDate pattern="${dateFormatShort }" value="${assessment.startDate}" />-
-                                          <fmt:formatDate pattern="${dateFormatShort }" value="${assessment.endDate}" />
+                                          <td><fmt:formatDate pattern="${dateFormatShort }" value="${process.assessment.startDate}" />-
+                                          <fmt:formatDate pattern="${dateFormatShort }" value="${process.assessment.endDate}" />
                                           </td>
                                         </tr>
                                         <tr>
                                           <th scope="row" ></th>
-                                          <td><a href="asmt_start_process.do?assessment_id=3" role="button" class="btn btn-danger btn-xs">
+                                          <td><a href="asmt_start_process.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
                                                 <i class="fa fa-clock-o"></i>&nbsp;
                                                 <spring:message code="label.assessment.start"/>
                                                </a> 

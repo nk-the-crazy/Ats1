@@ -103,7 +103,11 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><spring:message code="label.group.name" />:</th>
+                                                  <th scope="row" class="col-md-3"><spring:message code="label.organization.code" />:</th>
+                                                  <td class="col-md-5"><c:out value="${organization.code}"/></td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" class="col-md-3"><spring:message code="label.organization.name" />:</th>
                                                   <td class="col-md-5"><c:out value="${organization.name}"/></td>
                                                 </tr>
                                                 <tr>
@@ -114,23 +118,23 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.organization.tax_payer_number" />:</th>
-                                                  <td><c:out value="${organization.details.taxPayerNumber}"/></td>
+                                                  <td><c:out value="${organization.detail.taxPayerNumber}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.organization.sector" />:</th>
                                                   <td>
-                                                      ${SystemUtils.getAttribute('system.attrib.organization.sector',organization.details.sector,locale)}
+                                                      ${SystemUtils.getAttribute('system.attrib.organization.sector',organization.detail.sector,locale)}
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.organization.activity" />:</th>
                                                   <td>
-                                                      ${SystemUtils.getAttribute('system.attrib.organization.activity',organization.details.activity,locale)}
+                                                      ${SystemUtils.getAttribute('system.attrib.organization.activity',organization.detail.activity,locale)}
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.organization.desc" />:</th>
-                                                  <td><c:out value="${organization.details.details}"/></td>
+                                                  <td><c:out value="${organization.detail.details}"/></td>
                                                 </tr>
                                               </tbody>
                                             </table>
@@ -161,7 +165,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><spring:message code="label.address.primary" />:</th>
-                                                  <td><c:out value="${organization.address.addressLine}"/></td>
+                                                  <td><c:out value="${organization.address.primaryAddress}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><spring:message code="label.address.secondary" />:</th>

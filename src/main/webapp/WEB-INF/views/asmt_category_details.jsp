@@ -61,11 +61,20 @@
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt.category_details.title" /></h2>
-                                     <div style="text-align: right;">
-                                        <button type="button" class="btn btn-info btn-xs">
+                                     <div class="pull-right">
+                                        <a href="asmt_category_register.vw?asmt_category_id=${category.id}" 
+                                            role="button" class="btn btn-success btn-xs">
+                                            <i class="fa fa-plus"></i>&nbsp;
+                                                <spring:message code="label.menu.task.category.register"/>
+                                        </a>
+                                        <a href="asmt_category_edit.vw?asmt_category_id=${category.id}" role="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
                                                 <spring:message code="label.action.edit"/>
-                                        </button>
+                                        </a>
+                                        <a href="asmt_category_remove.vw?asmt_category_id=${category.id}"  role="button" class="btn btn-danger btn-xs">
+                                            <i class="fa fa-close"></i>&nbsp;
+                                                <spring:message code="label.action.edit"/>
+                                        </a>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">
                                             <i class="fa fa-chevron-left"></i>&nbsp;
                                                 <spring:message code="label.action.back"/>

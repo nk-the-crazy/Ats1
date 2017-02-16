@@ -26,4 +26,6 @@ public interface GroupManager
 
     UserGroup getGroupById( long groupId );
 
+    List<UserGroup> getGroupShortListByName( String groupName );
+
 }

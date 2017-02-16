@@ -1,72 +1,119 @@
 package model.assessment.process;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import model.assessment.Assessment;
+import model.identity.User;
+
+@Entity
+@Table( name = "asmt_process" )
 public class AssessmentProcess
 {
-    private long id = 0;
-    private long userId = 0;
-    private short taskCount = 0;
-    private String name = "";
-    private Object object = null;
-    private short time = 0;
-    private short state = 1; // Ready State
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+    
+    @Column(name = "start_date") 
+    private Date startDate;
+    
+    @Column(name = "end_date") 
+    private Date endDate;
+    
+    @Column(name = "state") 
+    private short state = 1;
     
     
+    // *********************************************
+    @OneToOne(  fetch = FetchType.LAZY )
+    @JoinColumn(name = "user_id")
+    private User user;
+    // *********************************************    
+    
+    // *********************************************
+    @ManyToOne(  fetch = FetchType.LAZY )
+    @JoinColumn(name = "assessment_id")
+    private Assessment assessment;
+    // *********************************************    
+    
+    // *********************************************
+    @OneToMany(mappedBy="process" , cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+    private List<AssessmentProcessTask> tasks = new ArrayList<AssessmentProcessTask>();
+    // *********************************************    
+
     public long getId()
     {
         return id;
     }
-    
-    public void setId( long id )
+
+    public long getTimeElapsed()
     {
-        this.id = id;
-    }
-    public short getTaskCount()
-    {
-        return taskCount;
-    }
-    
-    public void setTaskCount( int taskCount )
-    {
-        this.taskCount = (short)taskCount;
-    }
-    
-    public String getName()
-    {
-        return name;
-    }
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-   
-    public long getUserId()
-    {
-        return userId;
-    }
-    
-    public void setUserId( long userId )
-    {
-        this.userId = userId;
+        return endDate.getTime() - startDate.getTime() ;
     }
 
-    public Object getObject()
+    
+    public Date getStartDate()
     {
-        return object;
+        return startDate;
     }
 
-    public void setObject( Object object )
+    public void setStartDate( Date startDate )
     {
-        this.object = object;
+        this.startDate = startDate;
     }
 
-    public short getTime()
+    public Date getEndDate()
     {
-        return time;
+        return endDate;
     }
 
-    public void setTime( int time )
+    public void setEndDate( Date endDate )
     {
-        this.time = (short)time;
+        this.endDate = endDate;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser( User user )
+    {
+        this.user = user;
+    }
+
+    public Assessment getAssessment()
+    {
+        return assessment;
+    }
+
+    public void setAssessment( Assessment assessment )
+    {
+        this.assessment = assessment;
+    }
+
+    public List<AssessmentProcessTask> getTasks()
+    {
+        return tasks;
+    }
+
+    public void setTasks( List<AssessmentProcessTask> tasks )
+    {
+        this.tasks = tasks;
     }
 
     public int getState()
@@ -79,6 +126,10 @@ public class AssessmentProcess
         this.state = (short)state;
     }
 
-   
-  
+    public void addProcessTask(AssessmentProcessTask processTask)
+    {
+        this.tasks.add( processTask );
+    }
+    
+
 }

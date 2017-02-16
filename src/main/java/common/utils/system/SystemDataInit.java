@@ -13,7 +13,7 @@ import org.apache.commons.lang.time.DateUtils;
 import model.assessment.Assessment;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
-import model.assessment.task.AssessmentTaskDetails;
+import model.assessment.task.AssessmentTaskOption;
 import model.common.DataValue;
 import model.contact.Address;
 import model.contact.Contact;
@@ -165,29 +165,38 @@ public class SystemDataInit
     {
         for(int x=1; x < 20; x++) 
         {
-            AssessmentTaskCategory category = taskManager.createTaskCategory( "Category-"+x, "Details of Category-"+x );
+            AssessmentTaskCategory category = null;
             
-            AssessmentTask task1 = createDefaultTasks(x) ;
-            AssessmentTask task2 = createDefaultTasks(x+1) ;
-            
-            category.addTask( task1 );
-            category.addTask( task2 );
-            
-            for(int a=1; a < 5; a++) 
+            if(x == 1)
             {
-                AssessmentTaskCategory categoryS1 = taskManager.createTaskCategory( "Category-"+x+"-"+a, "Details of Category-"+x );
-                category.addChildCategory( categoryS1 );
-
-                for(int b=1; b < 3; b++) 
-                {
-                    AssessmentTaskCategory categoryS2 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b, "Details of Category-"+x );
-                    categoryS1.addChildCategory( categoryS2 );
-
-                    //AssessmentTaskCategory categoryS3 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b+"-"+b, "Details of Category-"+x );
-                    //categoryS2.addChildCategory( categoryS3 );
-                }
+                category = taskManager.createTaskCategory( "Default-"+x, "Default Category-"+x , 1);
             }
-            
+            else
+            {
+                category = taskManager.createTaskCategory( "Category-"+x, "Details of Category-"+x , 2);
+                AssessmentTask task1 = createDefaultTasks(x) ;
+                AssessmentTask task2 = createDefaultTasks(x+1) ;
+                
+                category.addTask( task1 );
+                category.addTask( task2 );
+                
+                for(int a=1; a < 5; a++) 
+                {
+                    AssessmentTaskCategory categoryS1 = taskManager.createTaskCategory( "Category-"+x+"-"+a, "Details of Category-"+x , 2 );
+                    category.addChildCategory( categoryS1 );
+    
+                    for(int b=1; b < 3; b++) 
+                    {
+                        AssessmentTaskCategory categoryS2 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b, "Details of Category-"+x, 2 );
+                        categoryS1.addChildCategory( categoryS2 );
+    
+                        //AssessmentTaskCategory categoryS3 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b+"-"+b, "Details of Category-"+x );
+                        //categoryS2.addChildCategory( categoryS3 );
+                    }
+                }
+                
+                
+            }
             taskManager.saveTaskCategory( category );
         }
     }
@@ -198,10 +207,10 @@ public class SystemDataInit
     {
         AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?",10, 2, 1, 1);
                 
-        AssessmentTaskDetails det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
-        AssessmentTaskDetails det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );
-        AssessmentTaskDetails det3 = taskManager.createTaskDetails( "Answer = "+ (index+14), 0 );
-        AssessmentTaskDetails det4 = taskManager.createTaskDetails( "Answer = "+ (index+33), 0 );
+        AssessmentTaskOption det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
+        AssessmentTaskOption det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );
+        AssessmentTaskOption det3 = taskManager.createTaskDetails( "Answer = "+ (index+14), 0 );
+        AssessmentTaskOption det4 = taskManager.createTaskDetails( "Answer = "+ (index+33), 0 );
         
         task.addDetails( det1 );
         task.addDetails( det2 );

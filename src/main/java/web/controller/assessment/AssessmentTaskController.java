@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -136,6 +138,94 @@ public class AssessmentTaskController
         return model;
         
     }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_task_register.vw")
+    public String registerTaskView()
+    {
+        return ModelView.VIEW_ASMT_TASK_REGISTER_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_task_register.do")
+    public ModelAndView registerTask( @ModelAttribute( "task" ) AssessmentTask task)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_ASMT_TASK_REGISTER_PAGE );
+        
+        try
+        {
+            task = taskManager.saveTask( task , true );
+            
+            return new ModelAndView("redirect:asmt_task_details.vw?asmt_task_id=" + task.getId() );
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addObject( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error registering assessment task:", e ); 
+            model.addObject( "errorMessage", "message.error.system" );
+        }
+        
+        return model;
+        
+    }
+    
+   
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_category_register.vw")
+    public String registerCategoryView( @RequestParam( name = "asmt_category_id" , defaultValue = "0", required = false )
+                                        long categoryId, Model model)
+    {
+        model.addAttribute ( "parentCategoryId", categoryId);
+        return ModelView.VIEW_ASMT_CATEGORY_REGISTER_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_category_register.do")
+    public ModelAndView registerCategory( @RequestParam( name = "parentCategoryId" , defaultValue = "0", required = false )
+                                          long parentCategoryId,
+                                          @ModelAttribute( "category" ) AssessmentTaskCategory category)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_ASMT_CATEGORY_REGISTER_PAGE );
+        
+        try
+        {
+            if(parentCategoryId != 0)
+            {
+                category.setParent( taskManager.getCategoryDetails( parentCategoryId ) );
+            }
+            
+            category = taskManager.saveTaskCategory( category );
+            
+            return new ModelAndView("redirect:asmt_category_details.vw?asmt_category_id=" + category.getId() );
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addObject( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error registering assessment task:", e ); 
+            model.addObject( "errorMessage", "message.error.system" );
+        }
+        
+        return model;
+        
+    }
+   
 }
 
 

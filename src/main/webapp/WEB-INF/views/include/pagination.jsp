@@ -28,7 +28,7 @@
         <td>&nbsp;&nbsp;</td>
     
         <td>
-        <ul class="pagination pagination-sm">
+        <ul class="pagination pagination-xs">
             <c:choose>
                 <c:when test="${param.currentIndex <= 0}">
                     <li class="page-item disabled"><a href="#">

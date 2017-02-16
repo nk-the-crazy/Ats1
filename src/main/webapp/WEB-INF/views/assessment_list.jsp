@@ -84,12 +84,12 @@ common.utils.system.SystemUtils"%>
                                                 <label class="control-label" for="assessment-name">
                                                     <spring:message code="label.assessment.name" />:</label>
                                                 <input type="text" id="assessment-name" name="assessmentName" value="${param.assessmentName}"
-                                                        id="first-name" class="form-control input-sm">
+                                                       class="form-control input-sm">
                                             </div>
                                             <div class="col-md-2 col-sm-2 col-xs-2">
                                                 <label class="control-label" for="assessment-date">
                                                     <spring:message code="label.date.start" /></label>
-                                                <input id="assessment-date"type="text" class="date-picker form-control input-sm" 
+                                                <input id="assessment-date" type="text" class="date-picker form-control input-sm" 
                                                 name="startDateFrom" value="${param.startDateFrom}">
                                              </div>
                                              <div class="col-md-3 col-sm-3 col-xs-3">

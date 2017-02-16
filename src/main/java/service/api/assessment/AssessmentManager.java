@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskResponse;
+
 
 public interface AssessmentManager
 {
@@ -23,8 +25,7 @@ public interface AssessmentManager
     Page<Assessment> getAssessmentsByDetails( String assessmentName, Date startDateFrom, short assessmentType,
             Pageable pageable );
 
-    Page<AssessmentTask> getAssessmentTasks( long assessmentId, Pageable pageable );
-
+ 
     Page<Assessment> getAssessmentsByUserId( long userId, Pageable pageable );
 
     Object getAssessmentDetails( long assessmentId );
@@ -32,6 +33,18 @@ public interface AssessmentManager
     AssessmentProcess initProcess( long assessmentId, long userId );
 
     Assessment createAssessment( String name, Date startDate, Date endDate, int time, int type );
+
+    Assessment getAssessmentByIdAndUserId( long assessmentId, long userId );
+
+    AssessmentProcess saveAssessmentProcess( AssessmentProcess process );
+
+    AssessmentProcess createAssessmentProcess();
+
+    Page<AssessmentTask> getAssessmentTasks( long assessmentId, Pageable pageable );
+
+    AssessmentProcess startProcess( AssessmentProcess process, AssessmentTaskResponse taskResponse );
+
+    AssessmentProcess endProcess( AssessmentProcess process );
 
   
 }

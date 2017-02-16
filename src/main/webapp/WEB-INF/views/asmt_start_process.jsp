@@ -1,12 +1,20 @@
 <!-- ************************************* -->
-<%@page contentType="text/html" 
+<%@ page contentType="text/html" 
         pageEncoding="UTF-8"
 	    errorPage="error.jsp"%>
 
-<%@page import="common.utils.StringUtils, common.utils.system.SystemUtils,java.util.Locale, model.assessment.*" %>
+<%@ page import="common.utils.StringUtils, 
+common.utils.system.SystemUtils,
+java.util.Locale, 
+model.assessment.*,
+model.assessment.task.*,
+model.assessment.process.*,
+
+model.common.session.SessionData" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- ************************************* -->
 
@@ -34,11 +42,19 @@
 
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
+
 </head>
+
 <!-- ***************************** -->
 <c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
-<c:set var="currentTask" value="${requestScope.currentTask}"/>
+<c:set var="taskCount" value="${process.tasks.size()}"/>
+<c:set var="taskIndex" value="${(param.taskIndex + 1) >= taskCount ? taskCount - 1 : param.taskIndex}"/>
+<c:set var="processTask" value="${process.tasks.get(taskIndex)}"/>
+<c:set var="taskOptions" value="${processTask.taskDetails.options}"/>
+<c:set var="processTime" value="${process.assessment.time}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
+
+
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -61,58 +77,132 @@
 						<div class="col-md-10 col-sm-10 col-xs-10">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2><spring:message code="label.page.assessment_start.title"/>&nbsp;&nbsp;-&nbsp;&nbsp;${process.name}</h2>
+									<h2><spring:message code="label.page.assessment_start.title"/>
+                                     &nbsp;&nbsp;-&nbsp;&nbsp;${process.assessment.name}</h2>
+                                     <div class="btn-group pull-right">
+                                      <a href="asmt_end_process.do" role="button" class="btn btn-primary btn-xs">
+                                        <i class="fa fa-check-square-o"></i>&nbsp;
+                                        <spring:message code="label.assessment.end"/></a>
+                                    </div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-                                    <div class="col-md-12">
+                                   <div class="col-md-12">
+                                   <c:set value="${processTask }" var="processTask" scope="request"/>
+                                   <% 
+                                   
+                                   
+                                   %>
+                                   <form action="asmt_start_process.do" method="post">
+                                    <input type="hidden" name="taskIndex" value="${taskIndex+1}">
                                     <table class="table table-bordered dataTable">
                                       <thead>
                                         <tr>
-                                            <th colspan="4"><i class="fa fa-cube"></i>&nbsp;&nbsp;
+                                            <th colspan="6"><i class="fa fa-cube"></i>&nbsp;&nbsp;
                                             <spring:message code="label.asmt.task" /></th>
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <!--  
                                         <tr>
-                                          <th class="col-md-3" scope="row" class="col-md-3"><spring:message code="label.asmt.task.item.name" />:</th>
-                                          <td class="col-md-9" colspan="3"><c:out value="${process.name}"/></td>
-                                        </tr>
-                                        --> 
-                                        <tr>
-                                          <th class="col-md-2" scope="row"><spring:message code="label.date.time" />:</th>
-                                          <td class="col-md-2"><div class="countdown"><c:out value="${StringUtils.minutesToDetails(process.time)}"/></div>
+                                          <th class="success col-md-2" scope="row"><spring:message code="label.asmt.task.number" />:</th>
+                                          <td class="col-md-2">
+                                              <div class="timing-panel">
+                                                    <spring:message code="label.asmt.task.number.overall" arguments="${taskIndex + 1},${taskCount}" />
+                                              </div>
+                                              </td>
+                                          <th class="success col-md-2" scope="row"><spring:message code="label.date.time" />:</th>
+                                          <td class="col-md-2"><div class="timing-panel"><c:out value="${StringUtils.minutesToDetails(processTime)}"/></div>
                                           </td>
-                                          <th class="col-md-2" scope="row">
+                                          <th class="success col-md-2" scope="row">
                                             <spring:message code="label.date.time.remaining" />:</th>
-                                          <td class="col-md-6"><div class="countdown" id="timerCountDown"></div></td>
+                                          <td class="col-md-4" id="timerCountDownTd"><div class="timing-panel" id="timerCountDown">
+                                          </div></td>
                                         </tr>
                                         <thead>
                                         <tr>
-                                            <th colspan="4"></th>
+                                            <th colspan="6"></th>
                                         </tr>
                                         </thead> 
                                         <tr>
                                           <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.content" /></th>
-                                          <td class="col-md-10" colspan="3"></td>
+                                          <td class="col-md-10 tasks-panel" colspan="5">
+                                            <c:out value="${processTask.taskDetails.itemContent}"/>
+                                          </td>
                                         </tr>
                                         <tr>
                                           <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.options" /></th>
-                                          <td class="col-md-10" colspan="3"></td>
+                                          <td class="col-md-10 tasks-panel" colspan="5">
+                                           <div class="form-group">
+                                           <input type="hidden" name="taskResponses[0].grade" value="10">
+                                              <c:forEach var="taskOption" items="${taskOptions}" varStatus="loopCounter">
+                                               <c:choose>
+                                               <%-- Single Choice --%>
+                                               
+                                                  <c:when test="${processTask.taskDetails.modeType == 1}">
+                                                     <div class="radio">
+                                                        <label><input type="radio" name="option[0].id" value="${taskOption.id}"/>
+                                                          &#${loopCounter.index + 65}; ) ${taskOption.itemOption }</label>
+                                                      </div>
+                                                  </c:when>
+                                                  <%-- Multiple Choice --%>
+                                                  <c:when test="${processTask.taskDetails.modeType == 2}">
+                                                     <div class="checkbox">
+                                                        <label>
+                                                          <input type="checkbox"  name="optionsRadios" value="">
+                                                          &#${loopCounter.index + 65}; ) ${taskOption.itemOption }</label>
+                                                     </div>
+                                                  </c:when>
+                                                  <%-- Multiple Choice --%>
+                                                  <c:when test="${processTask.taskDetails.modeType == 4}">
+                                                     <div class="text">
+                                                           <label>&#${loopCounter.index + 65}; )</label>
+                                                           <input type="text" size="35" name="optionsRadios" value="">
+                                                     </div>
+                                                  </c:when>
+                                                  <%-- Esse ---------------%>
+                                                  <c:when test="${processTask.taskDetails.modeType == 5}">
+                                                     <c:if test="${loopCounter.index == 0 }">
+                                                         <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <textarea rows="14" class="resizable_textarea form-control"></textarea>
+                                                         </div>
+                                                     </c:if>
+                                                  </c:when>
+                                                  <c:otherwise>
+                                                  </c:otherwise>
+                                               </c:choose>
+                                              </c:forEach>
+                                            </div>
+                                           </td>
                                         </tr>
                                       
-                                        <tr>
+                                        <tr id="btnGroupRow">
                                           <th scope="row" ></th>
-                                          <td><a href="assessment_start.vw?" role="button" class="btn btn-primary btn-xs">
+                                          <td><button type="submit" id="btnNextStep" class="btn btn-success btn-xs">
                                                 <i class="fa fa-share"></i>&nbsp;
-                                                <spring:message code="label.action.continue"/>
-                                               </a> 
+                                                <spring:message code="label.asmt.task.response.save"/>
+                                               </button> 
+                                          </td>
+                                          <td >
+                                          </td>
+                                          <td colspan="3">
+                                            <div class="pull-right" style="display:inline;">
+                                                 <a href="asmt_start_process.do?taskIndex=${taskIndex + 1 }" 
+                                                    role="button" id="btnNextStep" class="btn btn-primary btn-xs">
+                                                    <spring:message code="label.action.jump"/>
+                                                </a>
+                                                 <select id="assessment-type" class="input-select-sm" name="assessmentType" style="border: 1px solid grey;">
+                                                    <c:forEach begin="0" end="${taskCount - 1}"  var="item"> 
+                                                        <option ${item == taskIndex ? 'selected="selected"' : ''}
+                                                        value="${item}">${item + 1}</option>
+                                                    </c:forEach>
+                                                 </select>
+                                             </div>
                                            </td>
                                         </tr>
                                       </tbody>
                                     </table>
-                                    </div>
+                                   </form>
+                                   </div>
                                 </div>
 							</div>
 						</div>
@@ -139,16 +229,20 @@
     <!-- NProgress -->
     <script src="resources/lib/nprogress/nprogress.js"></script>
 	
-	<!-- Custom Theme Scripts -->
-	<script src="resources/js/custom.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="resources/js/custom.min.js"></script>
     
     <!-- Timer -->
     <script type="text/javascript" src="resources/lib/jquery.countdown-2.2.0/jquery.countdown.js"></script>
     <script type="text/javascript">
+    var processTime =  ${processTime};
+    var elapsedTime =  ${process.timeElapsed};
+    
+    processTime = (processTime * 60 * 1000) - elapsedTime;
 
     function getCountDownTime() 
     {
-      return new Date(new Date().valueOf() + 1 * 1 * ${process.time} * 60 * 1000);
+    	return new Date(new Date().valueOf() + processTime);
     }
 
     var $clock = $('#timerCountDown');
@@ -156,6 +250,14 @@
     $clock.countdown(getCountDownTime(), function(event) 
     {
       $(this).html(event.strftime('%H:%M:%S'));
+      
+    });
+
+    $clock.on('finish.countdown', function() 
+    {
+    	$("#timerCountDownTd").addClass('danger');
+        $("#btnGroupRow").hide();
+        $('#timerCountDown').html('<spring:message code="label.date.time.timeup"/>');
     });
 
     </script>

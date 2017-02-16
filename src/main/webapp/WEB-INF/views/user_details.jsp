@@ -158,23 +158,23 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.gender" />:</th>
                                                   <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.user.gender',user.person.personDetails.gender,locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.user.gender',user.person.detail.gender,locale)}
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.birth_date" />:</th>
-                                                  <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.person.personDetails.birthDate}" />
+                                                  <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.birthDate}" />
                                                   </td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.user.tax_payer_number" />:</th>
-                                                  <td><c:out value="${user.person.personDetails.taxPayerNumber}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.marital_status" />:</th>
                                                   <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.user.marital',user.person.personDetails.maritalStatus,locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.user.marital',user.person.detail.maritalStatus,locale)}
                                                   </td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" ><spring:message code="label.user.tax_payer_number" />:</th>
+                                                  <td><c:out value="${user.person.detail.taxPayerNumber}"/></td>
                                                 </tr>
                                                 <thead>
                                                     <tr>
@@ -191,7 +191,7 @@
                                                 <tr>
                                                   <th scope="row" >
                                                   <spring:message code="label.user.activity" />:</th>
-                                                  <td><c:out value="${user.person.personDetails.activity}"/></td>
+                                                  <td><c:out value="${user.person.detail.activity}"/></td>
                                                 </tr>
                                                 <thead>
                                                     <tr>
@@ -201,19 +201,19 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.passport.number" />:</th>
                                                   <td>
-                                                  <c:out value="${user.person.personDetails.passportSerial}"/>
-                                                  <c:out value="${user.person.personDetails.passportNumber}"/></td>
+                                                  <c:out value="${user.person.detail.passportSerial}"/>
+                                                  <c:out value="${user.person.detail.passportNumber}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.passport.date.valid" />:</th>
-                                                  <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.lastLogin}" />
+                                                  <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.passportValidDate}" />
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.passport.date.issued" />:</th>
                                                   <td>
                                                   <c:out value="${user.person.personDetails.passportIssuedBy}"/>&nbsp;&nbsp;
-                                                  <fmt:formatDate pattern="${dateFormatShort}" value="${user.person.personDetails.passportIssuedDate}" />
+                                                  <fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.passportIssuedDate}" />
                                                   </td>
                                                 </tr>
                                               </tbody>
@@ -245,7 +245,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><spring:message code="label.address.primary" />:</th>
-                                                  <td><c:out value="${user.person.address.addressLine}"/></td>
+                                                  <td><c:out value="${user.person.address.primaryAddress}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><spring:message code="label.address.secondary" />:</th>

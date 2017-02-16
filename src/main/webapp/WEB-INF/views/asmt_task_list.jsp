@@ -65,9 +65,9 @@ common.utils.system.SystemUtils"%>
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt.tasks.title" /></h2>
                                     <div class="btn-group pull-right">
-                                      <button type="button" class="btn btn-success btn-xs">
+                                      <a href="asmt_task_register.vw" role="button" class="btn btn-success btn-xs">
                                         <i class="fa fa-plus"></i>&nbsp;
-                                                <spring:message code="label.menu.task.register"/></button>
+                                                <spring:message code="label.menu.task.register"/></a>
                                       <button type="button" class="btn btn-success btn-xs dropdown-toggle" 
                                         data-toggle="dropdown" aria-expanded="false">
                                         <span class="caret"></span>
@@ -90,10 +90,10 @@ common.utils.system.SystemUtils"%>
                                             <tr>
                                                 <td><label
                                                     class="control-label"
-                                                    for="login-name"><spring:message code="label.asmt.task.name" />:&nbsp;</label>
+                                                    for="task-name"><spring:message code="label.asmt.task.name" />:&nbsp;</label>
                                                 </td>
-                                                <td><input type="text" id="login-name" name="taskItemName" value="${param.taskItemName}"
-                                                    id="first-name" class="form-control input-sm">
+                                                <td><input type="text" id="task-name" name="taskItemName" value="${param.taskItemName}"
+                                                    class="form-control input-sm">
                                                 </td>
                                                 <td>&nbsp;&nbsp; <label class="control-label"
                                                     for="category-name"><spring:message code="label.asmt.task.category" />:&nbsp;</label>

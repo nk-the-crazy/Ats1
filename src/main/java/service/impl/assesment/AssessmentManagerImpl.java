@@ -14,9 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import common.exceptions.security.AccessDeniedException;
 import dao.api.assessment.AssessmentDAO;
 import dao.api.assessment.AssessmentTaskDAO;
+import dao.api.assessment.process.AssessmentProcessDAO;
+import dao.api.assessment.process.AssessmentProcessTaskDAO;
 import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
+import model.assessment.process.AssessmentProcessState;
+import model.assessment.process.AssessmentProcessTask;
 import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskResponse;
 import service.api.assessment.AssessmentManager;
 
 
@@ -32,6 +37,12 @@ public class AssessmentManagerImpl implements AssessmentManager
     AssessmentDAO assessmentDAO;
 
     @Autowired
+    AssessmentProcessDAO processDAO;
+
+    @Autowired
+    AssessmentProcessTaskDAO processTaskDAO;
+
+    @Autowired
     AssessmentTaskDAO taskDAO;
 
     
@@ -41,27 +52,88 @@ public class AssessmentManagerImpl implements AssessmentManager
     @Override
     public AssessmentProcess initProcess(long assessmentId, long userId)
     {
-        Object[] asmtObject = (Object[]) assessmentDAO.getDetails( assessmentId );
+        Assessment assessment = assessmentDAO.getByIdAndUserId( assessmentId, userId );
         
-        if(asmtObject == null)
+        if(assessment == null)
         {
             throw new AccessDeniedException("User is not permitted to take assessment.");
         }
         else
         {
-            Assessment asmt = (Assessment)asmtObject[0];
-            long taskCount = (long) asmtObject[1];
+            AssessmentProcess process = createAssessmentProcess();
+            process.setAssessment( assessment );
             
-            AssessmentProcess process = new AssessmentProcess();
             
-            process.setObject( asmtObject ); 
-            process.setTaskCount( (short)taskCount ); 
-            process.setName( asmt.getName() );
-            process.setId( asmt.getId() );
-            process.setTime( asmt.getTime() );
+            for(AssessmentTask task : assessment.getTasks() )
+            {
+                AssessmentProcessTask processTask = new AssessmentProcessTask();
+                processTask.setTaskDetails( task );
+                process.addProcessTask( processTask );
+            }
             
+            saveAssessmentProcess( process );
+
             return process;
         }
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess startProcess( AssessmentProcess process , AssessmentTaskResponse taskResponse)
+    {
+        if(process.getState() == AssessmentProcessState.Ready.getId() )
+        {
+            process.setState( AssessmentProcessState.Started.getId() );
+            process.setStartDate( new Date(System.currentTimeMillis()) );
+            process.setEndDate( process.getStartDate() );
+        }
+        else
+        {
+            process.setEndDate( new Date(System.currentTimeMillis()) );
+        }
+        
+        processDAO.save( process );
+        
+        return process;
+    }
+    
+
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess endProcess( AssessmentProcess process)
+    {
+        process.setState( AssessmentProcessState.Finished.getId() );
+        process.setEndDate( new Date(System.currentTimeMillis()) );
+        
+        return process;
+    }
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess createAssessmentProcess()
+    {
+        AssessmentProcess process = null;
+
+        try
+        {
+            process = new AssessmentProcess();
+        }
+        catch ( Exception e )
+        {
+            logger.error( e.toString(), e );
+        }
+
+        return process;
+
     }
     
     /**************************************************
@@ -89,7 +161,27 @@ public class AssessmentManagerImpl implements AssessmentManager
         return assessment;
 
     }
+
     
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentProcess saveAssessmentProcess( AssessmentProcess process )
+    {
+        try
+        {
+            return processDAO.save( process );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in saving assessment process:", e );        
+        }
+
+        return null;
+    }
+    
+
     /**************************************************
      * 
      */
@@ -108,7 +200,6 @@ public class AssessmentManagerImpl implements AssessmentManager
         return null;
     }
     
-
     /**************************************************
      * 
      */
@@ -118,6 +209,7 @@ public class AssessmentManagerImpl implements AssessmentManager
         return assessmentDAO.getFullDetails( assessmentId );
     }
     
+    
     /**************************************************
      * 
      */
@@ -125,6 +217,16 @@ public class AssessmentManagerImpl implements AssessmentManager
     public Object getAssessmentDetails( long assessmentId )
     {
         return assessmentDAO.getDetails( assessmentId );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public Assessment getAssessmentByIdAndUserId( long assessmentId, long userId )
+    {
+        return assessmentDAO.getByIdAndUserId( assessmentId, userId );
     }
     
 
@@ -157,8 +259,7 @@ public class AssessmentManagerImpl implements AssessmentManager
     {
         return assessmentDAO.getByDetails(assessmentName, startDateFrom, assessmentType, pageable);
     }
-    
-    
+
 
     /**************************************************
      * 
@@ -169,6 +270,6 @@ public class AssessmentManagerImpl implements AssessmentManager
         return taskDAO.getByAssessmentId( assessmentId, pageable );
     }
     
-    
 
+  
 }

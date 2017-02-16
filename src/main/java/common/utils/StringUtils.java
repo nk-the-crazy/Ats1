@@ -2,6 +2,7 @@ package common.utils;
 
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -88,6 +89,38 @@ public class StringUtils
         }
 
         return "00:00:00";
+    }
+
+    /*****************************************
+     * 
+     * */
+    public static String millisToDetails( int millis )
+    {
+        try
+        {
+            return String.format("%02d:%02d:%02d", 
+                    TimeUnit.MILLISECONDS.toHours(millis),
+                    TimeUnit.MILLISECONDS.toMinutes(millis) -  
+                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)), // The change is in this line
+                    TimeUnit.MILLISECONDS.toSeconds(millis) - 
+                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));   
+          
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+
+        return "00:00:00";
+    }
+    
+    
+    /*****************************************
+     * 
+     * */
+    public static SimpleDateFormat getShortDateFormat()
+    {
+        return shortDateFormatter;
     }
 
 }

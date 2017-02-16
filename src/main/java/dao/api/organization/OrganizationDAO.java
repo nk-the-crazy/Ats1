@@ -20,7 +20,7 @@ public interface OrganizationDAO extends JpaRepository<Organization, Long>
     //********************************************
     @Query(value = " SELECT ogz "
                  + " FROM Organization ogz "
-                 + " LEFT JOIN ogz.details ogzd "
+                 + " LEFT JOIN ogz.detail ogzd "
                  + " WHERE LOWER(ogz.name) LIKE LOWER(CONCAT('%',:organizationName, '%'))"
                  + " ORDER BY ogz.name ")
     Page<Organization> findByName(@Param("organizationName") String organizationName, Pageable pageable );
@@ -34,10 +34,17 @@ public interface OrganizationDAO extends JpaRepository<Organization, Long>
     
     
     //********************************************
+    @Query(value = "SELECT ogz.id, ogz.name "
+            + " FROM Organization ogz "
+            + " WHERE LOWER(ogz.name) LIKE LOWER(CONCAT('%',:organizationName, '%'))")
+    List<Organization> getShortListByName(@Param("organizationName") String organizationName);
+    
+    
+    //********************************************
     @Query(value = "SELECT ogz "
             + " FROM Organization ogz "
             + " LEFT JOIN FETCH ogz.address a "
-            + " LEFT JOIN FETCH ogz.details d "
+            + " LEFT JOIN FETCH ogz.detail d "
             + " LEFT JOIN FETCH ogz.contact c "
             + " WHERE ogz.id=:organizationId ")
     Organization getFullDetails(@Param("organizationId") long organizationId);
