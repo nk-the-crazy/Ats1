@@ -426,7 +426,6 @@
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade col-md-8" 
                                              id="tab_content5"  aria-labelledby="groups-tab">
-                                             
                                              <label>${paramValues['groupIds'][0]}<br></label>
                                              <div class="bootstrap-duallistbox-container">
                                                 <select multiple="multiple" class="groupDualBox" size="8" name="groupIds">
