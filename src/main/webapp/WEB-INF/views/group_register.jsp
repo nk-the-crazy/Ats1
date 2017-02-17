@@ -1,5 +1,5 @@
 <!-- ************************************* -->
-<%@page contentType="text/html" 
+<%@page contentType="text/html charset=UTF-8"
         pageEncoding="UTF-8" 
         errorPage="error.jsp" 
         import="model.identity.*,common.utils.system.SystemUtils"%>
