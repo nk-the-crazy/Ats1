@@ -203,12 +203,7 @@ public class AssessmentTaskController
         
         try
         {
-            if(parentCategoryId != 0)
-            {
-                category.setParent( taskManager.getCategoryDetails( parentCategoryId ) );
-            }
-            
-            category = taskManager.saveTaskCategory( category );
+            category = taskManager.saveTaskCategory( category , parentCategoryId );
             
             return new ModelAndView("redirect:asmt_category_details.vw?asmt_category_id=" + category.getId() );
         }

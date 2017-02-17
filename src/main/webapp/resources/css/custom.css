@@ -517,8 +517,8 @@ table.no-margin .progress {
   position: relative;
   min-height: 1px;
   float: left;
-  padding-right: 1px;
-  padding-left: 1px; }
+  padding-right: 2px;
+  padding-left: 3px; }
 
 .row {
   margin-right: -10px;
@@ -673,7 +673,7 @@ a:hover, a:focus {
 
 .site_title_logo 
 {
-    width: 70px;
+    width: 65px;
 }
 
 .system_title 
@@ -3292,9 +3292,9 @@ a.hiddenanchor {
   
   .login_wrapper_title_logo
   {
-     margin-top: 3px;
-     margin-left: 3px;
-     margin-bottom: 3px;
+     margin-top: 5px;
+     margin-left: 10px;
+     margin-bottom: 5px;
      width: 55px;
   }
 

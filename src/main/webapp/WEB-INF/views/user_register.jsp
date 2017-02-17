@@ -45,12 +45,11 @@
 
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
-
 </head>
 <!-- ***************************** -->
 <c:set var="organizations" value="${requestScope.organizationShortList}"/>
-<c:set var="roles" value="${requestScope.roleList}"/>
-<c:set var="group" value="${requestScope.groupList}"/>
+<c:set var="roles" value="${requestScope.roleShortList}"/>
+<c:set var="groups" value="${requestScope.groupShortList}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 <!-- ***************************** -->
 
@@ -217,8 +216,9 @@
                                                   <spring:message code="label.user.birth_date" />:</label></th>
                                                   <td>
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
+                                                        <fmt:formatDate pattern="${dateFormatShort }" value="${user.person.detail.birthDate}" var="bDate"/>
                                                         <input id="person-birth-date" type="text" class="date-picker form-control input-sm" 
-                                                               name="person.detail.birthDate" value="${user.person.detail.birthDate}">
+                                                               name="person.detail.birthDate" value="${bDate}" />
                                                     </div>
                                                   </td>
                                                 </tr>
@@ -240,7 +240,7 @@
                                                     <label class="control-label" for="person-taxPayerNumber">
                                                     <spring:message code="label.user.tax_payer_number" />:</label></th>
                                                   <td><div class="col-md-6 col-sm-6 col-xs-6"><input type="text" 
-                                                      id="person-taxPayerNumber" name="person.detail.taxPayerNumber" value="${user.person.personDetails.taxPayerNumber}"
+                                                      id="person-taxPayerNumber" name="person.detail.taxPayerNumber" value="${user.person.detail.taxPayerNumber}"
                                                       class="form-control input-sm"></div>
                                                   </td>
                                                 </tr>
@@ -269,7 +269,7 @@
                                                     <label class="control-label" for="person-activity">
                                                     <spring:message code="label.user.activity" />:</label></th>
                                                   <td><div  class="col-md-12 col-sm-12 col-xs-12"><input type="text" 
-                                                      id="person-activity" name="person.detail.activity" value="${user.person.personDetails.activity}"
+                                                      id="person-activity" name="person.detail.activity" value="${user.person.detail.activity}"
                                                       class="form-control input-sm"></div>
                                                   </td>
                                                 </tr>
@@ -284,11 +284,11 @@
                                                   <td>
                                                     <div class="form-group">
                                                         <span class="col-md-2"><input type="text" id="passport-serial" name="person.personDetails.passportSerial" 
-                                                               value="${user.person.personDetails.passportSerial}" class="form-control input-sm ">
+                                                               value="${user.person.detail.passportSerial}" class="form-control input-sm ">
                                                         </span>
                                                         <span class="col-md-4">
                                                         <input type="text" id="passport-number" name="person.personDetails.passportNumber" 
-                                                               value="${user.person.personDetails.passportNumber}" class="form-control input-sm">
+                                                               value="${user.person.detail.passportNumber}" class="form-control input-sm">
                                                      </span></div></td>
                                                 </tr>
                                                 <tr>
@@ -296,8 +296,9 @@
                                                   <spring:message code="label.user.passport.date.valid" />:</label></th>
                                                   <td>
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
+                                                            <fmt:formatDate pattern="${dateFormatShort }" value="${user.person.detail.passportValidDate}" var="pvDate"/>
                                                         <input id="passport-valid-date" type="text" class="date-picker form-control input-sm" 
-                                                               name="person.detail.passportValidDate" value="${user.person.detail.passportValidDate}">
+                                                               name="person.detail.passportValidDate" value="${pvDate}">
                                                     </div>
                                                   </td>
                                                 </tr>
@@ -307,8 +308,9 @@
                                                   <td>
                                                     <div class="form-group">
                                                          <span class="col-md-3">
+                                                            <fmt:formatDate pattern="${dateFormatShort }" value="${user.person.detail.passportIssuedDate}" var="psDate"/>
                                                             <input id="passport-issue-date" type="text" class="date-picker form-control input-sm" 
-                                                               name="person.detail.passportIssuedDate" value="${user.person.detail.passportIssuedDate}">
+                                                               name="person.detail.passportIssuedDate" value="${psDate}">
                                                          </span>
                                                          <span class="col-md-3">
                                                             <input type="text" id="passport-issue-ny" name="person.personDetails.passportIssuedBy" 
@@ -338,7 +340,7 @@
                                                         name="address.countryId">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
                                                             items="${SystemUtils.getAttributes('system.attrib.address.country',locale)}"> 
-                                                            <option ${user.address.countryId == (loopCounter.count) ? 'selected="selected"' : ''}
+                                                            <option ${user.person.address.countryId == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
                                                     </select>
@@ -355,7 +357,7 @@
                                                         name="address.regionId">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
                                                             items="${SystemUtils.getAttributes('system.attrib.address.region.2',locale)}"> 
-                                                            <option ${user.address.countryId == (loopCounter.count) ? 'selected="selected"' : ''}
+                                                            <option ${user.person.address.regionId == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
                                                     </select>
@@ -366,21 +368,21 @@
                                                   <th scope="row"><label class="control-label" for="address-city">
                                                     <spring:message code="label.address.city" />:</label></th>
                                                   <td><div class="col-md-6"><input type="text" id="address-city" name="address.city" 
-                                                       value="${user.address.city}" class="form-control input-sm"></div>
+                                                       value="${user.person.address.city}" class="form-control input-sm"></div>
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="address-primary">
                                                     <spring:message code="label.address.primary" />:</label></th>
                                                   <td><input type="text" id="address-primary" name="address.primaryAddress" 
-                                                        value="${user.address.primaryAddress}" class="form-control input-sm">
+                                                        value="${user.person.address.primaryAddress}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="address-secondary">
                                                     <spring:message code="label.address.secondary" />:</label></th>
                                                   <td><input type="text" id="address-secondary" name="address.secondaryAddress" 
-                                                      value="${user.address.secondaryAddress}" class="form-control input-sm">
+                                                      value="${user.person.address.secondaryAddress}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
                                                 <thead>
@@ -392,21 +394,21 @@
                                                   <th scope="row"><label class="control-label" for="contacts-phone">
                                                     <spring:message code="label.contacts.phone" />:</label></th>
                                                   <td><input type="text" id="contacts-phone" name="contact.phone"
-                                                        value="${user.contact.phone}" class="form-control input-sm">
+                                                        value="${user.person.contact.phone}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="contacts-email">
                                                     <spring:message code="label.contacts.email" />:</label></th>
                                                   <td><input type="text" id="contacts-email" name="contact.email"
-                                                        value="${user.contact.email}" class="form-control input-sm">
+                                                        value="${user.person.contact.email}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="contacts-secondary">
                                                     <spring:message code="label.contacts.secondary" />:</label></th>
                                                   <td><input type="text" id="contacts-secondary" name="contact.secondaryContacts"
-                                                        value="${user.contact.secondaryContacts}" class="form-control input-sm">
+                                                        value="${user.person.contact.secondaryContacts}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
                                               </tbody>
@@ -422,13 +424,15 @@
                                                 </select>
                                            </div>
                                         </div>
-                                        <div role="tabpanel" class="tab-pane fade col-md-12" 
+                                        <div role="tabpanel" class="tab-pane fade col-md-8" 
                                              id="tab_content5"  aria-labelledby="groups-tab">
-                                            <div class="bootstrap-duallistbox-container">
+                                             
+                                             <label>${paramValues['groupIds'][0]}<br></label>
+                                             <div class="bootstrap-duallistbox-container">
                                                 <select multiple="multiple" class="groupDualBox" size="8" name="groupIds">
                                                 <c:forEach var="group" items="${groups}" varStatus="loopCounter">
                                                     <option ${groupIds[loopCounter.index] == group[0] ? 'selected="selected"' : ''} 
-                                                    value="${group[0]}">${group[1]}</option>
+                                                    value="${group[0]}">${groupIds[loopCounter.index]}-${group[1]}</option>
                                                 </c:forEach>
                                                 </select>
                                            </div>

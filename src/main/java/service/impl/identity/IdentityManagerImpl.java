@@ -11,9 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.google.common.base.Strings;
-
 import common.exceptions.security.InvalidLoginException;
 import common.exceptions.security.InvalidPasswordException;
 import common.exceptions.security.SystemSecurityException;
@@ -22,12 +22,14 @@ import dao.api.group.GroupDAO;
 import dao.api.identity.PermissionDAO;
 import dao.api.identity.RoleDAO;
 import dao.api.identity.UserDAO;
+import dao.api.organization.OrganizationDAO;
 import model.common.session.SessionData;
 import model.group.UserGroup;
 import model.identity.Permission;
 import model.identity.Role;
 import model.identity.User;
 import model.identity.UserType;
+import model.organization.Organization;
 import service.api.identity.IdentityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,8 +54,10 @@ public class IdentityManagerImpl implements IdentityManager
 
     @Autowired
     PermissionDAO permissionDAO;
-
-  
+    
+    @Autowired
+    OrganizationDAO organizationDAO;
+    
     /**************************************************
      * 
      */
@@ -255,25 +259,50 @@ public class IdentityManagerImpl implements IdentityManager
 
         return null;
     }
+    
 
+    /**************************************************
+     * 
+     */
+    @Override
+    public User saveUser( User user , long organizationId , List<Long> roleIds, List<Long> groupIds)
+    {
+        isValidUserName( user.getUserName() );
+        isValidPassword( user.getUserName(), user.getPassword() );
 
+        
+        if(organizationId > 0)
+        {
+            Organization organization = organizationDAO.findOne( organizationId );
+            user.getPerson().setOrganization( organization );
+        }
+        
+        if(!CollectionUtils.isEmpty( roleIds ))
+        {
+            for(long roleId:roleIds)
+            {
+                user.addRole( roleDAO.findOne(roleId ));  
+            }
+        }
+        
+        if(!CollectionUtils.isEmpty( groupIds ))
+        {
+            for(long groupId:groupIds)
+            {
+                user.addGroup( groupDAO.findOne( groupId ));  
+            }
+        }
+        
+        return saveUser( user );
+    }
+    
+    
     /**************************************************
      * 
      */
     @Override
     public User saveUser( User user )
     {
-        // *********************************
-        if ( Strings.isNullOrEmpty( user.getUserName() ) )
-        {
-            user.setUserName( Integer.toString( SecurityUtils.generateShortRandom() ));
-        }
-        if ( Strings.isNullOrEmpty( user.getPassword() ) )
-        {
-            user.setPassword( Integer.toString( SecurityUtils.generateShortRandom() ));
-        }
-        // *********************************
-
         isValidUserName( user.getUserName() );
         isValidPassword( user.getUserName(), user.getPassword() );
 
@@ -438,7 +467,7 @@ public class IdentityManagerImpl implements IdentityManager
         // *********************************
         try
         {
-            return roleDAO.findById( roleId );
+            return roleDAO.findOne( roleId );
         }
         catch ( Exception e )
         {

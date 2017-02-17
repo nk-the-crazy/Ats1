@@ -42,5 +42,7 @@ public interface AssessmentTaskManager
 
     AssessmentTask saveTask( AssessmentTask entity, boolean defaultCategory );
 
+    AssessmentTaskCategory saveTaskCategory( AssessmentTaskCategory category, long parentCategoryId );
+
     
 }
