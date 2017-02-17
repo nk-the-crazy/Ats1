@@ -78,13 +78,13 @@ public class SystemDataInit
     {
         Organization organization = createDefaultOrganizations();
         
-        UserGroup group = groupManager.createGroup( "Повышение квалификации 2", "Группа-Повышение квалификации 2", 1 );
+        UserGroup group = groupManager.createGroup( "Р“СЂСѓРїРїР° РђСѓРґРёС‚РѕСЂРѕРІ 1", "Р“СЂСѓРїРїР° РђСѓРґРёС‚РѕСЂРѕРІ - Desc 1", 1 );
         groupManager.saveGroup( group );
         
-        UserGroup group1 = groupManager.createGroup( "Повышение квалификации", "Группа-Повышение квалификации", 1 );
+        UserGroup group1 = groupManager.createGroup( "Р“СЂСѓРїРїР° РђСѓРґРёС‚РѕСЂРѕРІ 2", "Р“СЂСѓРїРїР° РђСѓРґРёС‚РѕСЂРѕРІ - Desc 2", 1 );
         groupManager.saveGroup( group1 );
         
-        UserGroup group2 = groupManager.createGroup( "Общая Группа", "Общая Группа (All)", 1 );
+        UserGroup group2 = groupManager.createGroup( "Р“СЂСѓРїРїР° РђСѓРґРёС‚РѕСЂРѕРІ 3", "Р“СЂСѓРїРїР° РђСѓРґРёС‚РѕСЂРѕРІ - Desc 3", 1 );
         groupManager.saveGroup( group2 );
         
         Role role1 = createDefaultRoles("Administrator Role"); 
@@ -116,7 +116,7 @@ public class SystemDataInit
             
             if(x == 3 || x == 6) 
             {
-                UserGroup group3 = groupManager.createGroup( "Повышение квалификации 3-"+x, "Группа-Повышение квалификации 3-"+x, 1 );
+                UserGroup group3 = groupManager.createGroup( "Р“СЂСѓРїРїР° РђСѓРґРёС‚РѕСЂРѕРІ - 4"+x, "Р“СЂСѓРїРїР° РђСѓРґРёС‚РѕСЂРѕРІ - Desc 4"+x, 1 );
                 groupManager.saveGroup( group3 );
                 
                 user.addGroup( group3 );
@@ -148,7 +148,7 @@ public class SystemDataInit
     //******************************************
     private Organization createDefaultOrganizations() 
     {
-        Organization organization = organizationManager.createOrganization("", "Министерство Финансов КР.", 1 );
+        Organization organization = organizationManager.createOrganization("", "РњРёРЅРёСЃС‚РµСЂСЃС‚РІРѕ Р¤РёРЅР°РЅСЃРѕРІ РљР ", 1 );
         
         Contact contact = contactManager.createContact( "312", "44-32-12", "", DataValue.Primary.getId() );
         Address address =  contactManager.createAddress( 1, 1, "Bishkek", "The MinFin addressLine1", "" , DataValue.Primary.getId() );
