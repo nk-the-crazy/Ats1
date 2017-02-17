@@ -191,7 +191,7 @@
                                                         name="address.regionId">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
                                                             items="${SystemUtils.getAttributes('system.attrib.address.region.2',locale)}"> 
-                                                            <option ${organization.address.countryId == (loopCounter.count) ? 'selected="selected"' : ''}
+                                                            <option ${organization.address.regionId == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
                                                     </select>

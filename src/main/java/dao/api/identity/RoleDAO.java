@@ -13,9 +13,6 @@ import model.identity.Role;
 public interface RoleDAO extends JpaRepository<Role, Long>
 {
     //********************************************
-    Role findById( long id );
-    
-    //********************************************
     @Query(value = "SELECT r "
             + " FROM Role r "
             + " WHERE LOWER(r.name) LIKE LOWER(CONCAT('%',:roleName, '%')) "

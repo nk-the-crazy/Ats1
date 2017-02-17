@@ -34,7 +34,8 @@ public class Person
 	@Column( name = "id")
 	private long id;
 	
-    @Column( name = "code", nullable = false, unique = true )
+    //@Column( name = "code", nullable = false, unique = true )
+    @Column( name = "code")
     private String code;
 	
     @Column( name = "first_name", length = 60, nullable = false )
@@ -73,7 +74,7 @@ public class Person
     
     
     // *********************************************
-    @ManyToOne( cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", nullable = false)
     private Organization organization;
     // *********************************************

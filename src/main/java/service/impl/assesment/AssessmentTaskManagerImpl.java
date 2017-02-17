@@ -254,6 +254,21 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
         }
     }
     
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentTaskCategory saveTaskCategory( AssessmentTaskCategory category, long parentCategoryId )
+    {
+        if(parentCategoryId != 0)
+        {
+            category.setParent( getCategoryDetails( parentCategoryId ) );
+        }
+        
+        return saveTaskCategory( category );
+    }
+    
 
     /**************************************************
      * 
@@ -270,6 +285,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
             throw new IllegalArgumentException( "Category name is reserved by the system." );
         }
     }
+
 
 
 }

@@ -212,7 +212,7 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.passport.date.issued" />:</th>
                                                   <td>
-                                                  <c:out value="${user.person.personDetails.passportIssuedBy}"/>&nbsp;&nbsp;
+                                                  <c:out value="${user.person.detail.passportIssuedBy}"/>&nbsp;&nbsp;
                                                   <fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.passportIssuedDate}" />
                                                   </td>
                                                 </tr>

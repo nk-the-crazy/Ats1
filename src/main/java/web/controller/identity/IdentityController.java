@@ -50,6 +50,7 @@ public class IdentityController
     
     @Autowired
     private GroupManager groupManager;
+
       
 	
     @InitBinder
@@ -318,7 +319,7 @@ public class IdentityController
      * 
      */
     @RequestMapping( value = "/role_register.do")
-    public ModelAndView registerRoleView( @ModelAttribute( "role" ) Role role)
+    public ModelAndView registerRole( @ModelAttribute( "role" ) Role role)
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_ROLE_REGISTER_PAGE );
         
@@ -361,34 +362,32 @@ public class IdentityController
      * 
      */
     @RequestMapping( value = "/user_register.do")
-    public ModelAndView registerUserView( @ModelAttribute( "user" ) User user,
-                                          @RequestParam( name = "organizationId", required = true ) long personId,
-                                          @RequestParam( name = "roleIds" , required = false ) List<Long> roleIds,
-                                          @RequestParam( name = "groupIds", required = false ) List<Long> groupIds)
+    public String registerUser( Model model, @ModelAttribute( "user" ) User user,
+                                      @RequestParam( name = "organizationId", required = true ) long organizationId,
+                                      @RequestParam( name = "roleIds" , required = false ) List<Long> roleIds,
+                                      @RequestParam( name = "groupIds", required = false ) List<Long> groupIds)
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_USER_REGISTER_PAGE );
-        
         try
         {
-            user = identityManager.saveUser( user );
-            
-            return new ModelAndView("redirect:user_details.vw?user_id=" + user.getId() );
+           
+            user = identityManager.saveUser( user, organizationId, roleIds, groupIds );
+            return "redirect:user_details.vw?user_id=" + user.getId();
         }
         catch(InvalidPasswordException e)
         {
-            model.addObject( "errorMessage", "message.error.password.invalid");
+            model.addAttribute( "errorMessage", "message.error.password.invalid");
         }
         catch(IllegalArgumentException e)
         {
-            model.addObject( "errorMessage", "message.error.attribute.invalid");
+            model.addAttribute( "errorMessage", "message.error.attribute.invalid");
         }
         catch(Exception e)
         {
             logger.error( " **** Error registering role:", e ); 
-            model.addObject( "errorMessage", "message.error.system" );
+            model.addAttribute( "errorMessage", "message.error.system" );
         }
         
-        return model;
+        return registerUserView(model);
         
     }
     

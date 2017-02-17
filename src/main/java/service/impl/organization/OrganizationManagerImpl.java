@@ -125,6 +125,17 @@ public class OrganizationManagerImpl implements OrganizationManager
         return organzDAO.getShortListByName( organizationName );
     }
 
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public Organization getOrganizationById( long organizationId )
+    {
+        return organzDAO.getOne( organizationId );
+    }
+    
+
     /**************************************************
      * 
      */

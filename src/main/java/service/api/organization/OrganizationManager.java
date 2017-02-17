@@ -31,5 +31,7 @@ public interface OrganizationManager
 
     List<Organization> getOrganizationShortListByName( String organizationName );
 
+    Organization getOrganizationById( long organizationId );
+
     
 }

@@ -62,4 +62,6 @@ public interface IdentityManager
 
     List<Role> getRoleShortListByRoleName( String roleName );
 
+    User saveUser( User user, long organizationId, List<Long> roleIds, List<Long> groupIds );
+
 }
