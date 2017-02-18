@@ -73,7 +73,7 @@
                                         </a>
                                         <a href="asmt_category_remove.vw?asmt_category_id=${category.id}"  role="button" class="btn btn-danger btn-xs">
                                             <i class="fa fa-close"></i>&nbsp;
-                                                <spring:message code="label.action.edit"/>
+                                                <spring:message code="label.action.remove"/>
                                         </a>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">
                                             <i class="fa fa-chevron-left"></i>&nbsp;

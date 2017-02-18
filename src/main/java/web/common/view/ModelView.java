@@ -14,7 +14,6 @@ public class ModelView
     public static String VIEW_USER_REGISTER_PAGE  = "user_register";
     public static String VIEW_USER_LIST_PAGE  = "user_list";
     public static String VIEW_USER_DETAILS_PAGE  = "user_details";
-    public static String VIEW_USER_ASMT_LIST_PAGE  = "user_assessments_list";
     
     //Role
     public static String VIEW_ROLE_REGISTER_PAGE  = "role_register";
@@ -45,14 +44,15 @@ public class ModelView
     
     
     //Assessment
-    public static String VIEW_ASMT_REGISTER_PAGE  = "assessment_register";
-    public static String VIEW_ASMT_LIST_PAGE  = "assessment_list";
-    public static String VIEW_ASMT_DETAILS_PAGE  = "assessment_details";
+    public static String VIEW_ASMT_REGISTER_PAGE  = "asmt_register";
+    public static String VIEW_ASMT_LIST_PAGE  = "asmt_list";
+    public static String VIEW_ASMT_DETAILS_PAGE  = "asmt_details";
+    public static String VIEW_ASMT_LIST_USER_PAGE  = "asmt_list_user";
     
     //Process
-    public static String VIEW_ASMT_INIT_PROCESS_PAGE  = "asmt_init_process";
-    public static String VIEW_ASMT_START_PROCESS_PAGE  = "asmt_start_process";
-    public static String VIEW_ASMT_END_PROCESS_PAGE  = "asmt_end_process";
+    public static String VIEW_ASMT_PROCESS_INIT_PAGE  = "asmt_process_init_";
+    public static String VIEW_ASMT_PROCESS_START_PAGE  = "asmt_process_start";
+    public static String VIEW_ASMT_PROCESS_END_PAGE  = "asmt_process_end";
     
     //Task
     public static String VIEW_ASMT_CATEGORY_REGISTER_PAGE  = "asmt_category_register";

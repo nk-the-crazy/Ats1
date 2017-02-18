@@ -90,7 +90,7 @@
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content2" id="managers-tab" role="tab" data-toggle="tab" aria-expanded="false">
-                                            <spring:message code="label.assessment.managers" /></a>
+                                            <spring:message code="label.assessment.manager" /></a>
                                         </li>
                                         <li role="presentation" class="">
                                             <a href="#tab_content3" id="participants-tab" role="tab" data-toggle="tab" aria-expanded="false">
@@ -170,7 +170,7 @@
                                               </thead>
                                               <tbody>
                                                 <!-- *********Manager list ************ -->
-                                                <c:forEach var="user" items="${assessment.managers}" varStatus="loopCounter">
+                                                <c:forEach var="user" items="${assessment.inspectors}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${loopCounter.count }</td>
                                                         <td><a href="user_details.vw?user_id=${user.id}">
@@ -227,10 +227,10 @@
                                               </tbody>
                                             </table>
                                              <!------------- Pagination -------------->
-                                            <c:if test="${usersPage.totalPages > 1}">
+                                            <c:if test="${tasksPage.totalPages > 1}">
                                                 <jsp:include page="include/pagination.jsp">
-                                                     <jsp:param name="page" value="asmt_category_details.vw" />
-                                                     <jsp:param name="addParam" value="asmt_category_id=${param.asmt_category_id}" />
+                                                     <jsp:param name="page" value="asmt_details.vw" />
+                                                     <jsp:param name="addParam" value="assessment_id=${param.asmt_category_id}" />
                                                      <jsp:param name="totalPages" value="${tasksPage.totalPages}" />
                                                      <jsp:param name="totalElements" value="${tasksPage.totalElements}" />
                                                      <jsp:param name="currentIndex" value="${tasksPage.number}" />

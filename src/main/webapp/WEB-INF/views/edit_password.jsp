@@ -59,7 +59,7 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-                                <form>
+                                <form action="edit_password" method="POST">
                                     <table class="table table-bordered dataTable">
                                       <tbody>
                                       

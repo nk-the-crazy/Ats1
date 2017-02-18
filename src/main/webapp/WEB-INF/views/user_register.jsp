@@ -426,14 +426,28 @@
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade col-md-8" 
                                              id="tab_content5"  aria-labelledby="groups-tab">
-                                             <label>${paramValues['groupIds'][0]}<br></label>
+                                             <c:set var="selectedItemCount" value="${groupIds.length()}" />
+                                             <c:set var="selectedItemStr" value="${groupIds.toString()}" />
+                                             <c:set var="selectedItemIndex" value="0" />
+                                             
                                              <div class="bootstrap-duallistbox-container">
                                                 <select multiple="multiple" class="groupDualBox" size="8" name="groupIds">
                                                 <c:forEach var="group" items="${groups}" varStatus="loopCounter">
-                                                    <option ${groupIds[loopCounter.index] == group[0] ? 'selected="selected"' : ''} 
-                                                    value="${group[0]}">${groupIds[loopCounter.index]}-${group[1]}</option>
+                                                    <c:set var="selected" value=""/>
+                                                    <c:if test="${selectedItemCount <= selectedItemIndex }">
+                                                        <c:set var="selectedItemIndex" value="${selectedItemIndex + 1}"/>
+                                                        <c:if test="${selectedItemStr.contains(group[0])}">
+                                                            <c:set var="selected" value="selected"/>
+                                                            selected = ${selected } <br>
+                                                        </c:if>
+                                                    </c:if>
+                                                    <option ${selected} value="${group[0]}">${group[1]}</option>
                                                 </c:forEach>
                                                 </select>
+                                                selectedItemCount = ${selectedItemCount } <br>
+                                                selectedItemStr = ${selectedItemStr } <br>
+                                                selectedItemIndex = ${selectedItemIndex } <br>
+                                                
                                            </div>
                                         </div>
                                     </div>
@@ -454,7 +468,6 @@
         </jsp:include>
         <!-- /footer content -->
     </div>
-  
 
     <!-- jQuery -->
     <script src="resources/lib/jquery/js/jquery.min.js"></script>

@@ -128,22 +128,9 @@ public class IdentityController
      * 
      */
     @RequestMapping( value = "/edit_password.vw")
-    public ModelAndView changePasswordView()
+    public String changePasswordView()
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
-        
-        try
-        {
-            model.setViewName( ModelView.VIEW_EDIT_PASSWORD_PAGE);
-            
-        }
-        catch(Exception e)
-        {
-            logger.error( " **** Error changing user password:", e );        
-        }
-        
-        return model;
-        
+        return ModelView.VIEW_EDIT_PASSWORD_PAGE;
     }
     
     
@@ -154,31 +141,36 @@ public class IdentityController
     public ModelAndView changeUserPassword( @RequestParam( "currentPassword" ) String currentPassword,
                                             @RequestParam( "newPassword" ) String newPassword, HttpSession session)
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+        
+        ModelAndView model = new ModelAndView( ModelView.VIEW_EDIT_PASSWORD_PAGE );
+        SessionData sData = (SessionData)session.getAttribute( "sessionData" );
         
         try
         {
-            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            
             if(sData == null)
             {
-                model.setViewName( ModelView.VIEW_EDIT_PASSWORD_PAGE);
+                throw new InvalidLoginException("Session does not exists");
             }
             else
             {
                 if(identityManager.changeUserPassword( sData.getUser(), currentPassword, newPassword ))
                 {
-                    model.setViewName( ModelView.VIEW_MAIN_PAGE);
-                }
-                else
-                {
-                    model.setViewName( ModelView.VIEW_EDIT_PASSWORD_PAGE);
+                    model.addObject( "errorMessage", "message.success.password.changed");
                 }
             }
         }
+        catch(InvalidLoginException e)
+        {
+            model.addObject( "errorMessage", "message.error.invalid_login");
+        }
+        catch(InvalidPasswordException e)
+        {
+            model.addObject( "errorMessage", "message.error.password.invalid");
+        }
         catch(Exception e)
         {
-            logger.error( " **** Error changing password:", e );        
+            logger.error( " **** Error changing password for user:" + sData.getUser().getUserName() , e );    
+            model.addObject( "errorMessage", "message.error.system" );
         }
         
         return model;
@@ -383,7 +375,7 @@ public class IdentityController
         }
         catch(Exception e)
         {
-            logger.error( " **** Error registering role:", e ); 
+            logger.error( " **** Error registering user:", e ); 
             model.addAttribute( "errorMessage", "message.error.system" );
         }
         

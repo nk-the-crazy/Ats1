@@ -77,7 +77,7 @@ common.utils.system.SystemUtils"%>
                                   <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form id="user_search" data-parsley-validate action="assessment_list.vw"
+                                    <form id="user_search" data-parsley-validate action="asmt_list.vw"
                                         class="form-horizontal form-label-left">
                                        <div class="form-group">
                                             <div class="col-md-2 col-sm-2 col-xs-2">
@@ -133,7 +133,7 @@ common.utils.system.SystemUtils"%>
                                         <c:forEach var="assessment" items="${assessmentsPage.content}" varStatus="loopCounter">
                                             <tr class="${assessment.status == 1 ? '' : 'danger'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
-                                                <td><a href="assessment_details.vw?assessment_id=${assessment.id}">
+                                                <td><a href="asmt_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
@@ -148,7 +148,7 @@ common.utils.system.SystemUtils"%>
                                     <!------------- Pagination -------------->
                                     <c:if test="${assessmentsPage.totalPages > 1}">
                                         <jsp:include page="include/pagination.jsp">
-                                             <jsp:param name="page" value="assessment_list.vw" />
+                                             <jsp:param name="page" value="asmt_list.vw" />
                                              <jsp:param name="totalPages" value="${assessmentsPage.totalPages}" />
                                              <jsp:param name="totalElements" value="${assessmentsPage.totalElements}" />
                                              <jsp:param name="currentIndex" value="${assessmentsPage.number}" />

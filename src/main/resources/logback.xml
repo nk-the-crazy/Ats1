@@ -10,8 +10,14 @@
         </layout>
     </appender>
 
+    <!-- Set "debug" log level for Spring framework     -->
     <logger name="org.springframework" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
+    </logger>
+    
+    <!-- Set "debug" log level for Hibernate framework  -->
+    <logger name="org.hibernate">
+        <level value="debug"/>
     </logger>
          
     <root level="error">

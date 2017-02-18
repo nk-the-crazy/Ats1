@@ -38,7 +38,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/user_assessments_list.vw")
+    @RequestMapping( value = "/asmt_list_user.vw")
     public ModelAndView getUserAssessmentsList( HttpSession session , Pageable pageable )
     {         
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
@@ -54,7 +54,7 @@ public class AssessmentController
                 model.addObject( "assessmentsPage", asmtsPage );
             }
             
-            model.setViewName( ModelView.VIEW_USER_ASMT_LIST_PAGE);
+            model.setViewName( ModelView.VIEW_ASMT_LIST_USER_PAGE);
         }
         catch(Exception e)
         {
@@ -69,7 +69,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/assessment_list.vw")
+    @RequestMapping( value = "/asmt_list.vw")
     public ModelAndView getAssessmentList(  @RequestParam( name = "assessmentName" , defaultValue = "", required = false ) 
                                             String assessmentName, 
                                             @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
@@ -105,7 +105,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/assessment_details.vw")
+    @RequestMapping( value = "/asmt_details.vw")
     public ModelAndView getAssessmentDetails(@RequestParam( "assessment_id" ) long assessmentId, Pageable pageable )
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
@@ -146,7 +146,7 @@ public class AssessmentController
             AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
 
             sData.setAssessmentProcess( process );
-            model.setViewName( ModelView.VIEW_ASMT_INIT_PROCESS_PAGE); 
+            model.setViewName( ModelView.VIEW_ASMT_PROCESS_INIT_PAGE); 
         }
         catch(Exception e)
         {
@@ -177,11 +177,11 @@ public class AssessmentController
 
             if(process.getState() == AssessmentProcessState.Finished.getId())
             {
-                model.setViewName( ModelView.VIEW_ASMT_END_PROCESS_PAGE); 
+                model.setViewName( ModelView.VIEW_ASMT_PROCESS_END_PAGE); 
             }
             else
             {
-                model.setViewName( ModelView.VIEW_ASMT_START_PROCESS_PAGE); 
+                model.setViewName( ModelView.VIEW_ASMT_PROCESS_START_PAGE); 
             }
             
         }
@@ -213,7 +213,7 @@ public class AssessmentController
             sData.setAssessmentProcess( null );
             //------------------------------------
             model.addObject( "assessmentProcess", process );
-            model.setViewName( ModelView.VIEW_ASMT_END_PROCESS_PAGE); 
+            model.setViewName( ModelView.VIEW_ASMT_PROCESS_END_PAGE); 
             
         }
         catch(Exception e)

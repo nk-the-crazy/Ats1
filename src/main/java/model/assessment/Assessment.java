@@ -65,7 +65,7 @@ public class Assessment
     @JoinTable( name="assessment_managers",
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-    private Set<User> managers = new HashSet<User>();
+    private Set<User> inspectors = new HashSet<User>();
     // *********************************************
 
     // *********************************************
@@ -180,18 +180,18 @@ public class Assessment
     }
 
 
-    public Set<User> getManagers()
+    public Set<User> getInspectors()
     {
-        return managers;
+        return inspectors;
     }
 
 
-    public void setManagers( Set<User> managers )
+    public void setInspectors( Set<User> inspectors )
     {
-        this.managers = managers;
+        this.inspectors = inspectors;
     }
-    
-    
+
+
     public int getMaxGrade()
     {
         return maxGrade;
@@ -214,9 +214,9 @@ public class Assessment
         participants.add(group );
     }
 
-    public void addManager(User manager) 
+    public void addInspector(User manager) 
     {
-        managers.add(manager );
+        inspectors.add(manager );
     }
 
 
