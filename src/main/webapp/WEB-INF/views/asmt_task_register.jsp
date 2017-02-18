@@ -58,7 +58,7 @@
                         <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                              <form id="task" data-parsley-validate action="asmt_task_register.do" 
-                                  class="form-vertical form-label-left" method="POST">
+                                  class="form-horizontal form-label-left" method="POST">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt.task_register.title" /></h2>
                                      <div style="text-align: right;">
@@ -104,7 +104,7 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><label class="control-label" for="item-name">
+                                                  <th scope="row" class="col-md-3"><label class="control-label-required" for="item-name">
                                                     <spring:message code="label.asmt.task.name" />:</label></th>
                                                   <td class="col-md-7"><input type="text" id="item-name" name="itemName" value="${task.itemName}"
                                                         class="form-control input-sm" required="required"></td>
@@ -116,7 +116,7 @@
                                                         class="form-control input-sm"></td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><label class="control-label" for="item-content">
+                                                  <th scope="row" ><label class="control-label-required" for="item-content">
                                                     <spring:message code="label.asmt.task.item.content" />:</label></th>
                                                   <td><textarea id="item-content" name="itemContent" rows="4" 
                                                        class="resizable_textarea form-control">${task.itemContent}</textarea></td>

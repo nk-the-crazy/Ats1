@@ -7,6 +7,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -135,15 +136,15 @@
                                               <tbody>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
-                                                    <label class="control-label" for="user-name">
-                                                    <spring:message code="label.user.login" />:</label></th>
+                                                    <label class="control-label-required" for="user-name">
+                                                    <span class="danger"><spring:message code="label.user.login" />:</span></label></th>
                                                   <td class="col-md-5"><input type="text" id="user-name" name="userName" value="${user.userName}"
                                                         class="form-control input-sm" required="required">
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
-                                                    <label class="control-label" for="user-email">
+                                                    <label class="control-label-required" for="user-email">
                                                     <spring:message code="label.account_email" />:</label></th>
                                                   <td class="col-md-5"><input type="text" id="user-email" name="email" value="${user.email}"
                                                         class="form-control input-sm" required="required">
@@ -151,7 +152,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
-                                                    <label class="control-label" for="user-password">
+                                                    <label class="control-label-required" for="user-password">
                                                     <spring:message code="label.password" />:</label></th>
                                                   <td class="col-md-5"><input type="password" id="user-password" name="password"
                                                         class="form-control input-sm" required="required">
@@ -172,7 +173,7 @@
                                               <tbody>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
-                                                    <label class="control-label" for="person-lastname">
+                                                    <label class="control-label-required" for="person-lastname">
                                                     <spring:message code="label.user.last_name" />:</label></th>
                                                   <td class="col-md-6">
                                                      <div class="col-md-6 col-sm-6 col-xs-6"><input type="text" 
@@ -182,7 +183,7 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
-                                                    <label class="control-label" for="person-firstName">
+                                                    <label class="control-label-required" for="person-firstName">
                                                     <spring:message code="label.user.first_name" />:</label></th>
                                                   <td><div class="col-md-6 col-sm-6 col-xs-6"><input type="text" 
                                                       id="person-firstName" name="person.firstName" value="${user.person.firstName}"
@@ -426,26 +427,25 @@
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade col-md-8" 
                                              id="tab_content5"  aria-labelledby="groups-tab">
-                                             <c:set var="selectedItemCount" value="${groupIds.length()}" />
-                                             <c:set var="selectedItemStr" value="${groupIds.toString()}" />
-                                             <c:set var="selectedItemIndex" value="0" />
+                                             
+                                             <c:set var="selectedItemCount" value="${fn:length(paramValues.groupIds)}"/>
+                                             <c:set var="selectedItemIndex" value="0"/>
                                              
                                              <div class="bootstrap-duallistbox-container">
                                                 <select multiple="multiple" class="groupDualBox" size="8" name="groupIds">
                                                 <c:forEach var="group" items="${groups}" varStatus="loopCounter">
                                                     <c:set var="selected" value=""/>
-                                                    <c:if test="${selectedItemCount <= selectedItemIndex }">
-                                                        <c:set var="selectedItemIndex" value="${selectedItemIndex + 1}"/>
-                                                        <c:if test="${selectedItemStr.contains(group[0])}">
-                                                            <c:set var="selected" value="selected"/>
-                                                            selected = ${selected } <br>
-                                                        </c:if>
+                                                    <c:if test="${selectedItemIndex <= selectedItemCount }">
+                                                        <c:forEach var="selectedItem" items="${paramValues.groupIds}">
+                                                            <c:if test="${selectedItem == group[0]}">
+                                                                <c:set var="selectedItemIndex" value="${selectedItemIndex + 1 }"/>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </c:if>
-                                                    <option ${selected} value="${group[0]}">${group[1]}</option>
+                                                <option ${selected} value="${group[0]}">${group[1]}</option>
                                                 </c:forEach>
                                                 </select>
                                                 selectedItemCount = ${selectedItemCount } <br>
-                                                selectedItemStr = ${selectedItemStr } <br>
                                                 selectedItemIndex = ${selectedItemIndex } <br>
                                                 
                                            </div>

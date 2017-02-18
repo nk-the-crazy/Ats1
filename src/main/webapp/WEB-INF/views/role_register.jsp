@@ -58,7 +58,7 @@
                         <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="x_panel">
                             <form id="role" data-parsley-validate action="role_register.do" 
-                                  class="form-vertical form-label-left" method="POST">
+                                  class="form-horizontal form-label-left" method="POST">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.role_register.title" /></h2>
                                      <div style="text-align: right;">
@@ -105,7 +105,7 @@
                                               <tbody>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
-                                                    <label class="control-label" for="role-name">
+                                                    <label class="control-label-required" for="role-name">
                                                         <spring:message code="label.role.name" />:</label></th>
                                                   <td class="col-md-5">
                                                     <input type="text" id="role-name" name="name" value="${role.name}"

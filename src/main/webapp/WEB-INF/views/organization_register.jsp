@@ -60,7 +60,7 @@
                         <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="x_panel">
                             <form id="organization" data-parsley-validate action="organization_register.do" 
-                                  class="form-vertical form-label-left" method="POST">
+                                  class="form-horizontal form-label-left" method="POST">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.organization_register.title" /></h2>
                                      <div style="text-align: right;">
@@ -107,7 +107,7 @@
                                               <tbody>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
-                                                      <label class="control-label" for="organization-name">
+                                                      <label class="control-label-required" for="organization-name">
                                                           <spring:message code="label.organization.name" />:</label></th>
                                                       <td class="col-md-5">
                                                        <input type="text" id="organization-name" name="name" value="${organization.name}"

@@ -58,7 +58,7 @@
                         <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="x_panel">
                             <form id="group" data-parsley-validate action="group_register.do" 
-                                  class="form-vertical form-label-left" method="POST">
+                                  class="form-horizontal form-label-left" method="POST">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.group_register.title" /></h2>
                                      <div style="text-align: right;">
@@ -100,7 +100,7 @@
                                               <tbody>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
-                                                    <label class="control-label" for="group-name">
+                                                    <label class="control-label-required" for="group-name">
                                                     <spring:message code="label.group.name" />:</label></th>
                                                   <td class="col-md-5"><input type="text" id="group-name" name="name" value="${group.name}"
                                                         class="form-control input-sm" required="required">
