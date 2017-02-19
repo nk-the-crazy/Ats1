@@ -2,6 +2,7 @@ package service.api.assessment;
 
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskResponse;
+import model.identity.User;
 
 
 public interface AssessmentManager
@@ -45,6 +47,8 @@ public interface AssessmentManager
     AssessmentProcess startProcess( AssessmentProcess process, AssessmentTaskResponse taskResponse );
 
     AssessmentProcess endProcess( AssessmentProcess process );
+
+    Assessment createAssessment( Assessment assessment, User author, List<Long> participantIds );
 
   
 }

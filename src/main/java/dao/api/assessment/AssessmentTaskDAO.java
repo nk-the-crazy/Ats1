@@ -58,6 +58,32 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
 
     
     //********************************************
+    @Query(value = "SELECT t "
+            + " FROM AssessmentTask t "
+            + " WHERE t.complexity=:complexity "
+            + " AND t.modeType=:modeType "
+            + " ORDER BY RAND()" )
+    Page<AssessmentTask> getByModeTypeAndComplexity(@Param("modeType") short modeType,
+                                                    @Param("complexity") short complexity, 
+                                                    Pageable pageable );
+
+    
+    //********************************************
+    @Query(value = "SELECT t "
+            + " FROM AssessmentTask t "
+            + " WHERE t.complexity=:complexity "
+            + " AND t.modeType=:modeType "
+            + " AND t.id IN :ids "
+            + " ORDER BY RAND()" )
+    Page<AssessmentTask> getByModeTypeAndComplexity(@Param("modeType") short modeType,
+                                                    @Param("complexity") short complexity,
+                                                    @Param("ids") List<Long> taskIds,
+                                                    Pageable pageable );
+
+    
+
+    
+    //********************************************
     @Query(value = "SELECT a.id, t.id, t.itemName "
             + " FROM Assessment a "
             + " JOIN a.tasks t "
@@ -73,5 +99,13 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
             + " WHERE a.id=:assessmentId "
             + " ORDER BY RAND()" )
     List<Long> getRandomIdByAssessmentId(@Param("assessmentId") long assessmentId);
+
+    
+   //********************************************
+    @Query( value = "SELECT t.id "
+            + " FROM AssessmentTask t "
+            + " JOIN t.category c "
+            + " WHERE c.id IN :ids" )
+    List<Long> getByCategoryIdIn(@Param("ids") List<Long> taskCategories );
 
 }

@@ -33,7 +33,6 @@
 <!-- Select2 -->
 <link href="resources/lib/select2/dist/css/select2.min.css" rel="stylesheet">
 
-
 <!-- Data Table -->
 <link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css"
     rel="stylesheet">
@@ -137,7 +136,7 @@
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
                                                     <label class="control-label-required" for="user-name">
-                                                    <span class="danger"><spring:message code="label.user.login" />:</span></label></th>
+                                                    <spring:message code="label.user.login" />:</label></th>
                                                   <td class="col-md-5"><input type="text" id="user-name" name="userName" value="${user.userName}"
                                                         class="form-control input-sm" required="required">
                                                   </td>
@@ -256,7 +255,7 @@
                                                   <spring:message code="label.organization" />:</label></th>
                                                   <td>
                                                     <div class="col-md-10">
-                                                    <select id="person-organization" class="select2_single" name="organizationId">
+                                                    <select id="person-organization" class="select2_single form-control" name="organizationId">
                                                         <c:forEach var="organization" items="${organizations}" varStatus="loopCounter"> 
                                                             <option ${organizationId == organization[0] ? 'selected="selected"' : ''}
                                                             value="${organization[0]}">${organization[1]}</option>
@@ -417,13 +416,24 @@
                                         </div>
                                         <div role="tabpanel" class="tab-pane col-md-8 fade" 
                                              id="tab_content4" aria-labelledby="roles-tab">
-                                              <div class="bootstrap-duallistbox-container">
+                                             <c:set var="selectedItemCount" value="${fn:length(paramValues.roleIds)}"/>
+                                             <c:set var="selectedItemIndex" value="0"/>
+                                             <div class="bootstrap-duallistbox-container">
                                                 <select multiple="multiple" class="roleDualBox" size="8" name="roleIds">
                                                 <c:forEach var="role" items="${roles}" varStatus="loopCounter">
-                                                    <option value="${role[0]}">${role[1]}</option>
+                                                    <c:set var="selected" value=""/>
+                                                    <c:if test="${selectedItemIndex < selectedItemCount }">
+                                                        <c:forEach var="selectedItem" items="${paramValues.groupIds}">
+                                                            <c:if test="${selectedItem == role[0]}">
+                                                                <c:set var="selected" value="selected"/>
+                                                                <c:set var="selectedItemIndex" value="${selectedItemIndex + 1 }"/>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <option ${selected} value="${role[0]}">${role[1]}</option>
                                                 </c:forEach>
                                                 </select>
-                                           </div>
+                                             </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade col-md-8" 
                                              id="tab_content5"  aria-labelledby="groups-tab">
@@ -435,20 +445,18 @@
                                                 <select multiple="multiple" class="groupDualBox" size="8" name="groupIds">
                                                 <c:forEach var="group" items="${groups}" varStatus="loopCounter">
                                                     <c:set var="selected" value=""/>
-                                                    <c:if test="${selectedItemIndex <= selectedItemCount }">
+                                                    <c:if test="${selectedItemIndex < selectedItemCount }">
                                                         <c:forEach var="selectedItem" items="${paramValues.groupIds}">
                                                             <c:if test="${selectedItem == group[0]}">
+                                                                <c:set var="selected" value="selected"/>
                                                                 <c:set var="selectedItemIndex" value="${selectedItemIndex + 1 }"/>
                                                             </c:if>
                                                         </c:forEach>
                                                     </c:if>
-                                                <option ${selected} value="${group[0]}">${group[1]}</option>
-                                                </c:forEach>
+                                                    <option ${selected} value="${group[0]}">${group[1]}</option>
+                                                  </c:forEach>
                                                 </select>
-                                                selectedItemCount = ${selectedItemCount } <br>
-                                                selectedItemIndex = ${selectedItemIndex } <br>
-                                                
-                                           </div>
+                                               </div>
                                         </div>
                                     </div>
                                   </div>
@@ -520,7 +528,8 @@
       {
         $(".select2_single").select2({
           placeholder: "",
-          allowClear: false
+          allowClear: false,
+          width:null
         });
       });
     </script>

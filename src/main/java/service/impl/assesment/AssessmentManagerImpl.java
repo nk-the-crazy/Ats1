@@ -1,27 +1,36 @@
 package service.impl.assesment;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import common.exceptions.security.AccessDeniedException;
 import dao.api.assessment.AssessmentDAO;
+import dao.api.assessment.AssessmentTaskCategoryDAO;
 import dao.api.assessment.AssessmentTaskDAO;
 import dao.api.assessment.process.AssessmentProcessDAO;
 import dao.api.assessment.process.AssessmentProcessTaskDAO;
+import dao.api.group.GroupDAO;
 import model.assessment.Assessment;
+import model.assessment.options.TaskFormOptions;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.AssessmentProcessState;
 import model.assessment.process.AssessmentProcessTask;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskResponse;
+import model.identity.User;
 import service.api.assessment.AssessmentManager;
 
 
@@ -44,6 +53,12 @@ public class AssessmentManagerImpl implements AssessmentManager
 
     @Autowired
     AssessmentTaskDAO taskDAO;
+
+    @Autowired
+    GroupDAO groupDAO;
+    
+    @Autowired
+    AssessmentTaskCategoryDAO categoryDAO;
 
     
     /**************************************************
@@ -269,7 +284,69 @@ public class AssessmentManagerImpl implements AssessmentManager
     {
         return taskDAO.getByAssessmentId( assessmentId, pageable );
     }
-    
+
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Assessment createAssessment( Assessment assessment, User author, List<Long> participantIds )
+    {
+        try
+        {
+            List<Long> taskIds = null;
+            List<AssessmentTask> tasks = new ArrayList<AssessmentTask>();
+            Page<AssessmentTask> selectedTasks = null;
+            
+            //------- Select Categories --------------------
+            if(!assessment.getFormOptions().isAllCategories())
+            {
+                taskIds = taskDAO.getByCategoryIdIn( assessment.getFormOptions().getTaskCategories());
+            }
+            
+            
+            for(TaskFormOptions taskOptions : assessment.getFormOptions().getTaskOptions() )
+            {
+                if(taskOptions.getNumber() > 0)
+                {
+                    if(taskIds == null)
+                        selectedTasks = taskDAO.getByModeTypeAndComplexity( taskOptions.getModeType(), 
+                                                                            taskOptions.getComplexity(), 
+                                                                            new PageRequest(0, taskOptions.getNumber()));
+                    else
+                        selectedTasks = taskDAO.getByModeTypeAndComplexity( taskOptions.getModeType(), 
+                                                                            taskOptions.getComplexity(),
+                                                                            taskIds,
+                                                                            new PageRequest(0, taskOptions.getNumber()));
+                    
+                    tasks.addAll( selectedTasks.getContent() );
+                }
+            }
+            
+            assessment. setTasks( new HashSet<AssessmentTask>() ); 
+            
+            
+            //------- Set Tasks -------------------
+            if(!CollectionUtils.isEmpty( tasks ))
+                assessment.setTasks( new HashSet<>(tasks) );
+            
+            //------- Set Participants -------------------
+            if(!CollectionUtils.isEmpty( participantIds ))
+                assessment.setParticipants( groupDAO.getByGroupIdIn(participantIds) );
+            
+            //------- Set Author -------------------
+            if(!CollectionUtils.isEmpty( participantIds ))
+                assessment.setAuthor( author );
+            
+            return assessmentDAO.save( assessment );
+        }
+        catch(Exception e)
+        {
+            logger.error( "Error generating Assessment:", e );
+        }
+        
+        return null;
+    }
 
   
 }

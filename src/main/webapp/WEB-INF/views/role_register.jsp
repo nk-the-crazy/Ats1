@@ -278,7 +278,6 @@
             return false;
         });
         
-        
         function updateRowIndex()
         {
             $('#tbPermissions > tbody  > tr').each(function(rowIndex) 
@@ -290,12 +289,9 @@
                 $(this).find("#chxPermDelete").attr('name','permissions['+rowIndex+'].delete');
             }); 
         }
-        
-       
     
     });    
     </script>
-    
 
 </body>
 </html>

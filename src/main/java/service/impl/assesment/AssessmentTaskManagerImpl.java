@@ -119,17 +119,14 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTask saveTask( AssessmentTask entity , boolean defaultCategory)
+    public AssessmentTask saveTask( AssessmentTask entity , long categoryId)
     {
         isValidTaskName(entity.getItemName());
         
-        if(defaultCategory)
-        {
-            if(entity.getCategory() == null || entity.getCategory().getId() <= 0)
-            {
-                entity.setCategory( getSystemCategory());
-            }
-        }
+        if(categoryId > 0)
+            entity.setCategory( categoryDAO.findOne( categoryId ));
+        else
+            entity.setCategory( getSystemCategory());
         
         return taskDAO.save( entity );
     }
@@ -188,7 +185,16 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
         return categoryDAO.getCategoryTree();
     }
     
-
+    
+    /* *************************************************
+     */
+    @Override
+    public List<AssessmentTaskCategory> getCategoryShortList(String categoryName)
+    {
+        return categoryDAO.getShortListByCategoryName( categoryName );
+    }
+    
+    
     /* *************************************************
      */
     @Override

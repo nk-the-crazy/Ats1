@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import model.assessment.options.AssessmentFormOptions;
 import model.assessment.task.AssessmentTask;
 import model.group.UserGroup;
 import model.identity.User;
@@ -54,6 +55,9 @@ public class Assessment
     @Transient
     private long taskCount = 0;
 
+    @Transient
+    private AssessmentFormOptions formOptions;
+    
     // *********************************************
     @OneToOne (fetch = FetchType.LAZY )
     @JoinColumn(name="author_id")
@@ -66,7 +70,7 @@ public class Assessment
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
     private Set<User> inspectors = new HashSet<User>();
-    // *********************************************
+    // ********************************************* 
 
     // *********************************************
     @ManyToMany (fetch = FetchType.LAZY)
@@ -102,9 +106,7 @@ public class Assessment
         this.name = name;
     }
 
-
-
-
+    
     public Date getStartDate()
     {
         return startDate;
@@ -242,5 +244,19 @@ public class Assessment
     {
         this.taskCount = (short) taskCount;
     }
+
+
+    public AssessmentFormOptions getFormOptions()
+    {
+        return formOptions;
+    }
+
+
+    public void setFormOptions( AssessmentFormOptions formOptions )
+    {
+        this.formOptions = formOptions;
+    }
+    
+    
 
 }

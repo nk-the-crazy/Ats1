@@ -18,7 +18,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.assessment_details.title" /></title>
+<title><spring:message code="label.page.asmt_details.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -48,12 +48,12 @@
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp"><jsp:param name="page"
-                    value="user_details.vw" /></jsp:include>
+                    value="asmt_details.vw" /></jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp"><jsp:param name="page"
-                    value="user_details.vw" /></jsp:include>
+                    value="asmt_details.vw" /></jsp:include>
             <!-- /top navigation -->
 
             <!-- page content -->
@@ -63,7 +63,7 @@
                         <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.assessment_details.title" /></h2>
+                                    <h2><spring:message code="label.page.asmt_details.title" /></h2>
                                      <div style="text-align: right;">
                                         <button type="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
@@ -89,16 +89,12 @@
                                             <spring:message code="label.assessment" /></a>
                                         </li>
                                         <li role="presentation" class="">
-                                            <a href="#tab_content2" id="managers-tab" role="tab" data-toggle="tab" aria-expanded="false">
-                                            <spring:message code="label.assessment.manager" /></a>
-                                        </li>
-                                        <li role="presentation" class="">
-                                            <a href="#tab_content3" id="participants-tab" role="tab" data-toggle="tab" aria-expanded="false">
+                                            <a href="#tab_content2" id="participants-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <i class="fa fa-users">&nbsp;</i>
                                             <spring:message code="label.assessment.participants" /></a>
                                         </li>
                                         <li role="presentation" class="">
-                                            <a href="#tab_content4" id="tasks-tab" role="tab" data-toggle="tab" aria-expanded="false">
+                                            <a href="#tab_content3" id="tasks-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <i class="fa fa-cube">&nbsp;</i>
                                             <spring:message code="label.asmt.task.list" /></a>
                                         </li>
@@ -157,32 +153,7 @@
                                               </tbody>
                                             </table>
                                         </div>
-                                        
-                                        <div id="tab_content2" role="tabpanel" class="tab-pane fade col-md-12" 
-                                             aria-labelledby="managers-tab">
-                                            <table id="" class="dataTable table table-bordered">
-                                              <thead>
-                                                <tr>
-                                                    <th>№</th>
-                                                    <th><spring:message code="label.user.name" /></th>
-                                                    <th><spring:message code="label.user.full_name" /></th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                <!-- *********Manager list ************ -->
-                                                <c:forEach var="user" items="${assessment.inspectors}" varStatus="loopCounter">
-                                                    <tr>
-                                                        <td class="col-md-1">${loopCounter.count }</td>
-                                                        <td><a href="user_details.vw?user_id=${user.id}">
-                                                            <c:out value="${user.userName}"/></a></td>
-                                                        <td><c:out value=""/></td>
-                                                    </tr>
-                                                </c:forEach>
-                                                <!-- *********/Manager list ************ -->
-                                              </tbody>
-                                            </table>                                              
-                                        </div>
-                                        <div id="tab_content3" role="tabpanel" class="tab-pane fade col-md-8" aria-labelledby="participants-tab">
+                                        <div id="tab_content2" role="tabpanel" class="tab-pane fade col-md-8" aria-labelledby="participants-tab">
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
@@ -205,7 +176,7 @@
                                               </tbody>
                                             </table>                                              
                                         </div>
-                                        <div role="tabpanel" class="tab-pane fade col-md-8" id="tab_content4"  aria-labelledby="tasks-tab">
+                                        <div role="tabpanel" class="tab-pane fade col-md-8" id="tab_content3"  aria-labelledby="tasks-tab">
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
@@ -230,7 +201,7 @@
                                             <c:if test="${tasksPage.totalPages > 1}">
                                                 <jsp:include page="include/pagination.jsp">
                                                      <jsp:param name="page" value="asmt_details.vw" />
-                                                     <jsp:param name="addParam" value="assessment_id=${param.asmt_category_id}" />
+                                                     <jsp:param name="addParam" value="assessment_id=${param.assessment_id}" />
                                                      <jsp:param name="totalPages" value="${tasksPage.totalPages}" />
                                                      <jsp:param name="totalElements" value="${tasksPage.totalElements}" />
                                                      <jsp:param name="currentIndex" value="${tasksPage.number}" />

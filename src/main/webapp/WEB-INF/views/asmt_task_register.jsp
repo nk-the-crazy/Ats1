@@ -28,6 +28,9 @@
 <!-- NProgress -->
 <link href="resources/lib/nprogress/nprogress.css" rel="stylesheet">
 
+<!-- Select2 -->
+<link href="resources/lib/select2/dist/css/select2.css" rel="stylesheet">
+
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
 
@@ -37,6 +40,7 @@
 
 </head>
 <!-- ***************************** -->
+<c:set var="categories" value="${requestScope.categoryShortList}"/>
 <!-- ***************************** -->
 <body class="nav-md">
     <div class="container body">
@@ -160,13 +164,20 @@
                                                     </select>
                                                   </td>
                                                 </tr>
-                                                <%-- 
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.asmt.task.category.name" />:</th>
-                                                  <td class="col-lg-3"><a href="asmt_category_details.vw?asmt_category_id=${task.category.id }">
-                                                  <c:out value="${task.category.name}"/></a></td>
-                                                </tr>
-                                                --%>
+                                                  <th scope="row" ><label class="control-label" for="person-organization">
+                                                  <spring:message code="label.asmt.task.category" />:</label></th>
+                                                  <td>
+                                                  <div class="col-md-10">
+                                                    <select id="task-category" class="select2_single form-control" name="categoryId">
+                                                        <c:forEach var="category" items="${categories}" varStatus="loopCounter"> 
+                                                            <option ${categoryId == category[0] ? 'selected="selected"' : ''}
+                                                            value="${category[0]}">${category[1]}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                    </div>
+                                                  </td>
+                                                </tr>                                            
                                               </tbody>
                                             </table>
                                         </div>
@@ -186,16 +197,28 @@
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr>
-                                                    <td id="dvIndex" class="col-md-1">1</td>
-                                                    <td class="col-md-2">
-                                                        <input class="form-control input-sm" type="text" id="txItemOptionGrade" name="options[0].itemOptionGrade"></td>
-                                                    <td><input class="form-control input-sm" type="text" id="txItemOption" name="options[0].itemOption"></td>
-                                                    <td><button class="btn btn-danger btn-remove btn-xs" type="button">
-                                                                <i class="fa fa-close"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                  <c:if test="${empty task.options}">
+                                                    <tr>
+                                                        <td id="dvIndex" class="col-md-1">1</td>
+                                                        <td class="col-md-2">
+                                                            <input class="form-control input-sm" type="text" value="0" id="txItemOptionGrade" name="options[0].itemOptionGrade"></td>
+                                                        <td><input class="form-control input-sm" type="text" id="txItemOption" name="options[0].itemOption"></td>
+                                                        <td><button class="btn btn-danger btn-remove btn-xs" type="button">
+                                                             <i class="fa fa-close"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                  </c:if>
+                                                  <c:forEach var="option" items="${task.options}" varStatus="loopCounter">
+                                                  <tr>
+                                                        <td id="dvIndex" class="col-md-1">1</td>
+                                                        <td class="col-md-2">
+                                                            <input class="form-control input-sm" type="text" value="${option.itemOptionGrade }" id="txItemOptionGrade" name="options[${loopCounter.index }].itemOptionGrade"></td>
+                                                        <td><input class="form-control input-sm" type="text" value="${option.txItemOption }" id="txItemOption" name="options[${loopCounter.index }].itemOption"></td>
+                                                        <td><button class="btn btn-danger btn-remove btn-xs" type="button">
+                                                            <i class="fa fa-close"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                        </c:forEach>
                                               </tbody>
                                             </table>
                                         </div>
@@ -229,12 +252,26 @@
     <!-- NProgress -->
     <script src="resources/lib/nprogress/nprogress.js"></script>
 
-    <!-- Custom Theme Scripts -->
-    <script src="resources/js/custom.min.js"></script>
-
     <!-- Dat Tables -->
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    
+     <!-- Select2 -->
+    <script src="resources/lib/select2/dist/js/select2.min.js"></script>
+    
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="resources/js/custom.min.js"></script>
+     <script>
+      $(document).ready(function() 
+      {
+    	  $(".select2_single").select2({
+          placeholder: "",
+          allowClear: false
+        });
+      });
+    </script>
+    
     <script type="text/javascript">
     $(document).ready(function()
     {
@@ -250,7 +287,7 @@
         }
     });
     </script>
-        <script type="text/javascript">
+    <script type="text/javascript">
     
     $(document).ready(function() 
     {

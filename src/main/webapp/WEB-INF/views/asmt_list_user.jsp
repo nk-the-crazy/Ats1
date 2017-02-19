@@ -19,7 +19,7 @@ common.utils.system.SystemUtils"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.user_assessments.title" /></title>
+<title><spring:message code="label.page.asmt_list_user.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -48,13 +48,13 @@ common.utils.system.SystemUtils"%>
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp">
-                <jsp:param name="page" value="assessment_private_list.vw" />
+                <jsp:param name="page" value="asmt_list_user.vw" />
             </jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp">
-                <jsp:param name="page" value="user_assessment_list.vw" />
+                <jsp:param name="page" value="asmt_list_user.vw" />
             </jsp:include>
             <!-- /top navigation -->
 
@@ -65,7 +65,7 @@ common.utils.system.SystemUtils"%>
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.user_assessments.title" /></h2>
+                                    <h2><spring:message code="label.page.asmt_list_user.title" /></h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">

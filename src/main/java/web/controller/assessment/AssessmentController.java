@@ -1,20 +1,26 @@
 package web.controller.assessment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import common.utils.StringUtils;
 import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
@@ -23,6 +29,8 @@ import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskResponse;
 import model.common.session.SessionData;
 import service.api.assessment.AssessmentManager;
+import service.api.assessment.AssessmentTaskManager;
+import service.api.group.GroupManager;
 import web.common.view.ModelView;
 
 @Controller
@@ -34,6 +42,23 @@ public class AssessmentController
 
     @Autowired
     private AssessmentManager assessmentManager;
+    
+    @Autowired
+    private GroupManager groupManager;
+    
+    @Autowired
+    private AssessmentTaskManager taskManager;
+    
+    /*******************************************************
+     * 
+     */
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) 
+    {
+        SimpleDateFormat dateFormat = StringUtils.getShortDateFormat();
+        dateFormat.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
     
     /*******************************************************
      * 
@@ -225,5 +250,45 @@ public class AssessmentController
         return model;
         
     }
-
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_register.vw")
+    public String registerAssessmentView(Model model)
+    {
+        model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
+        model.addAttribute( "categoryShortList", taskManager.getCategoryShortList( "" ) );
+        
+        return ModelView.VIEW_ASMT_REGISTER_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_register.do")
+    public String registerUser( @ModelAttribute( "assessment" ) Assessment assessment,
+                                @RequestParam( name = "participantIds" , required = false ) List<Long> participantIds,
+                                Model model, HttpSession session )
+    {
+        try
+        {
+            SessionData sData = (SessionData)session.getAttribute( "sessionData" ); 
+            assessment = assessmentManager.createAssessment( assessment, sData.getUser(), participantIds);
+            return "redirect:asmt_details.vw?assessment_id=" + assessment.getId();
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error registering assessment:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return registerAssessmentView(model);
+    }
 }

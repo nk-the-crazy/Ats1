@@ -40,9 +40,9 @@ public interface AssessmentTaskManager
 
     AssessmentTaskCategory getSystemCategory();
 
-    AssessmentTask saveTask( AssessmentTask entity, boolean defaultCategory );
-
     AssessmentTaskCategory saveTaskCategory( AssessmentTaskCategory category, long parentCategoryId );
 
-    
+    List<AssessmentTaskCategory> getCategoryShortList( String categoryName );
+
+    AssessmentTask saveTask( AssessmentTask task, long categoryId );
 }
