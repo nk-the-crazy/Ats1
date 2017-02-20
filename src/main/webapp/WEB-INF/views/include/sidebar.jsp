@@ -4,6 +4,7 @@
         errorPage="../error.jsp"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!-- ************************************* -->
 
 <div class="col-md-3 left_col menu_fixed">

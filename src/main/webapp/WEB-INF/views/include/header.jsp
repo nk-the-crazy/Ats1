@@ -41,7 +41,7 @@
 					<ul class="dropdown-menu dropdown-usermenu pull-right">
                         <li><a href="edit_password.vw"><i class="fa fa-unlock pull-left"></i>
                              <spring:message code="label.menu.change_password"/></a></li>
-						<li><a href=""><i class="fa fa-question-circle pull-left">
+						<li><a href="resources/manual/index.html"><i class="fa fa-question-circle pull-left">
                               </i><spring:message code="label.menu.help"/></a></li>
 						<li><a href="logout.do"><i class="fa fa-sign-out pull-left"></i>
                               <spring:message code="label.menu.logout"/></a></li>
