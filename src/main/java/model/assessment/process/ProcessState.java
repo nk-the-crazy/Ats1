@@ -1,6 +1,6 @@
 package model.assessment.process;
 
-public enum AssessmentProcessState
+public enum ProcessState
 {
     Ready(1),
     Started(2),
@@ -10,7 +10,7 @@ public enum AssessmentProcessState
     private int id;
 
 
-    private AssessmentProcessState( int id )
+    private ProcessState( int id )
     {
         this.id = id;
     }

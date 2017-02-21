@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +17,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import common.exceptions.assessment.TimeExpiredException;
 import common.exceptions.security.AccessDeniedException;
 import dao.api.assessment.AssessmentDAO;
-import dao.api.assessment.AssessmentTaskCategoryDAO;
-import dao.api.assessment.AssessmentTaskDAO;
-import dao.api.assessment.process.AssessmentProcessDAO;
-import dao.api.assessment.process.AssessmentProcessTaskDAO;
+import dao.api.assessment.process.ProcessDAO;
+import dao.api.assessment.process.ProcessResponseDAO;
+import dao.api.assessment.task.AssessmentTaskCategoryDAO;
+import dao.api.assessment.task.AssessmentTaskDAO;
 import dao.api.group.GroupDAO;
 import model.assessment.Assessment;
 import model.assessment.options.TaskFormOptions;
-import model.assessment.process.AssessmentProcess;
-import model.assessment.process.AssessmentProcessState;
-import model.assessment.process.AssessmentProcessTask;
+import model.assessment.process.Process;
+import model.assessment.process.ProcessResponse;
+import model.assessment.process.ProcessState;
 import model.assessment.task.AssessmentTask;
-import model.assessment.task.AssessmentTaskResponse;
 import model.identity.User;
 import service.api.assessment.AssessmentManager;
 
@@ -46,10 +47,10 @@ public class AssessmentManagerImpl implements AssessmentManager
     AssessmentDAO assessmentDAO;
 
     @Autowired
-    AssessmentProcessDAO processDAO;
+    ProcessDAO processDAO;
 
     @Autowired
-    AssessmentProcessTaskDAO processTaskDAO;
+    ProcessResponseDAO processResponseDAO;
 
     @Autowired
     AssessmentTaskDAO taskDAO;
@@ -65,7 +66,7 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public AssessmentProcess initProcess(long assessmentId, long userId)
+    public Process initProcess(long assessmentId, long userId)
     {
         Assessment assessment = assessmentDAO.getByIdAndUserId( assessmentId, userId );
         
@@ -73,23 +74,20 @@ public class AssessmentManagerImpl implements AssessmentManager
         {
             throw new AccessDeniedException("User is not permitted to take assessment.");
         }
+        else if(assessment.getStatus() != 1 )
+        {
+            throw new AccessDeniedException("Assessment is ended or disabled");
+        }
         else
         {
-            AssessmentProcess process = createAssessmentProcess();
+            Process process = createAssessmentProcess();
             process.setAssessment( assessment );
+            process.setTaskIds( taskDAO.getRandomIdByAssessmentId( assessment.getId() ) );
+            process.setState( ProcessState.Ready.getId() );
             
-            
-            for(AssessmentTask task : assessment.getTasks() )
-            {
-                AssessmentProcessTask processTask = new AssessmentProcessTask();
-                processTask.setTaskDetails( task );
-                process.addProcessTask( processTask );
-            }
-            
-            saveAssessmentProcess( process );
-
             return process;
         }
+
     }
     
     
@@ -97,22 +95,51 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public AssessmentProcess startProcess( AssessmentProcess process , AssessmentTaskResponse taskResponse)
+    public ProcessResponse startProcess( Process process, ProcessResponse processResponse , int nextTaskIndex)
     {
-        if(process.getState() == AssessmentProcessState.Ready.getId() )
+        ProcessResponse response = null;
+        
+        try
         {
-            process.setState( AssessmentProcessState.Started.getId() );
-            process.setStartDate( new Date(System.currentTimeMillis()) );
-            process.setEndDate( process.getStartDate() );
+            if(isTimeExpired( process.getAssessment().getTime(), process.getEndDate() ))
+            {
+                throw new TimeExpiredException("Time is expired for Assessment:"+ process.getAssessment().getName());
+            }
+
+            //*******************************************************
+            if(process.getState() == ProcessState.Ready.getId() )
+            {
+                process.setState( ProcessState.Started.getId() );
+            }
+            else
+            {
+                process.setEndDate( new Date(System.currentTimeMillis()) );
+                process.addProcessResponse( processResponse );
+                processDAO.save( process );
+            }
+            
+            //*******************************************************
+    
+            response = processResponseDAO.getByTaskId( getTaskIdByIndex(nextTaskIndex, process) );
+            
+            if(response == null)
+            {
+                response = new ProcessResponse(); 
+                response.setTask( getTaskByIndex(nextTaskIndex, process ) ); 
+            }
         }
-        else
+        catch ( TimeExpiredException e )
         {
-            process.setEndDate( new Date(System.currentTimeMillis()) );
+            endProcess( process);
+            logger.error( e.toString(), e );
+        }
+        catch(Exception e)
+        {
+            logger.error( e.toString(), e );
         }
         
-        processDAO.save( process );
-        
-        return process;
+        return response;
+
     }
     
 
@@ -121,26 +148,59 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public AssessmentProcess endProcess( AssessmentProcess process)
+    public Process endProcess( Process process)
     {
-        process.setState( AssessmentProcessState.Finished.getId() );
+        process.setState( ProcessState.Finished.getId() );
         process.setEndDate( new Date(System.currentTimeMillis()) );
         
-        return process;
+        return processDAO.save( process );
     }
     
-
+    
+    /**************************************************
+     * 
+     */
+    private long getTaskIdByIndex( int taskIndexm, Process process )
+    {
+        return process.getTaskIds().get( taskIndexm );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    private AssessmentTask getTaskByIndex( int taskIndexm, Process process )
+    {
+        return taskDAO.getByTaskId( getTaskIdByIndex(taskIndexm, process) );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    private boolean isTimeExpired( int time, Date lastActiveDate )
+    {
+        lastActiveDate = DateUtils.addMinutes( lastActiveDate, time );
+        Date currentDate = new Date(System.currentTimeMillis());
+        
+        if( lastActiveDate.getTime() < currentDate.getTime())
+            return true;
+        else 
+            return false;
+    }
+    
+    
     /**************************************************
      * 
      */
     @Override
-    public AssessmentProcess createAssessmentProcess()
+    public Process createAssessmentProcess()
     {
-        AssessmentProcess process = null;
+        Process process = null;
 
         try
         {
-            process = new AssessmentProcess();
+            process = new Process();
         }
         catch ( Exception e )
         {
@@ -182,7 +242,7 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public AssessmentProcess saveAssessmentProcess( AssessmentProcess process )
+    public Process saveAssessmentProcess( Process process )
     {
         try
         {
@@ -327,15 +387,15 @@ public class AssessmentManagerImpl implements AssessmentManager
             
             
             //------- Set Tasks -------------------
-            if(!CollectionUtils.isEmpty( tasks ))
+            if( !CollectionUtils.isEmpty( tasks ))
                 assessment.setTasks( new HashSet<>(tasks) );
             
             //------- Set Participants -------------------
-            if(!CollectionUtils.isEmpty( participantIds ))
+            if (!CollectionUtils.isEmpty( participantIds ))
                 assessment.setParticipants( groupDAO.getByGroupIdIn(participantIds) );
             
             //------- Set Author -------------------
-            if(!CollectionUtils.isEmpty( participantIds ))
+            if( author != null )
                 assessment.setAuthor( author );
             
             return assessmentDAO.save( assessment );
@@ -348,5 +408,4 @@ public class AssessmentManagerImpl implements AssessmentManager
         return null;
     }
 
-  
 }

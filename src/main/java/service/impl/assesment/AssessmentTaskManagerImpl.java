@@ -13,11 +13,11 @@ import org.springframework.util.CollectionUtils;
 
 import com.google.common.base.Strings;
 
-import dao.api.assessment.AssessmentTaskCategoryDAO;
-import dao.api.assessment.AssessmentTaskDAO;
+import dao.api.assessment.task.AssessmentTaskCategoryDAO;
+import dao.api.assessment.task.AssessmentTaskDAO;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
-import model.assessment.task.AssessmentTaskOption;
+import model.assessment.task.AssessmentTaskDetail;
 import service.api.assessment.AssessmentTaskManager;
 
 @Service("taskManagerService")
@@ -68,15 +68,15 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTaskOption createTaskDetails( String itemOption, float itemOptionGrade)
+    public AssessmentTaskDetail createTaskDetails( String itemDetail, float itemGrade)
     {
-        AssessmentTaskOption taskDetails = null;
+        AssessmentTaskDetail taskDetails = null;
         
         try 
         {
-            taskDetails = new AssessmentTaskOption();
-            taskDetails.setItemOptionGrade( itemOptionGrade );
-            taskDetails.setItemOption( itemOption );
+            taskDetails = new AssessmentTaskDetail();
+            taskDetails.setItemGrade( itemGrade );
+            taskDetails.setItemDetail( itemDetail );
         }
         catch(Exception e) 
         {

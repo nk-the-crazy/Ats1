@@ -1,7 +1,6 @@
 package web.controller.assessment;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,12 +20,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import common.utils.StringUtils;
 import model.assessment.Assessment;
-import model.assessment.process.AssessmentProcess;
-import model.assessment.process.AssessmentProcessState;
+import model.assessment.process.Process;
+import model.assessment.process.ProcessResponse;
 import model.assessment.task.AssessmentTask;
-import model.assessment.task.AssessmentTaskResponse;
 import model.common.session.SessionData;
 import service.api.assessment.AssessmentManager;
 import service.api.assessment.AssessmentTaskManager;
@@ -59,6 +58,7 @@ public class AssessmentController
         dateFormat.setLenient(true);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
+    
     
     /*******************************************************
      * 
@@ -160,7 +160,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_init_process.do")
+    @RequestMapping( value = "/asmt_process_init.do")
     public ModelAndView initAssessementProcess(@RequestParam( "assessment_id" ) long assessmentId , HttpSession session)
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
@@ -168,7 +168,7 @@ public class AssessmentController
         try
         {
             SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
+            Process process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
 
             sData.setAssessmentProcess( process );
             model.setViewName( ModelView.VIEW_ASMT_PROCESS_INIT_PAGE); 
@@ -188,9 +188,9 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_start_process.do")
-    public ModelAndView startAssessementProcess( @RequestParam( name = "taskIndex" , defaultValue = "0", required = false ) int taskIndex, 
-                                                 @ModelAttribute( "taskResponses" ) ArrayList<AssessmentTaskResponse> taskResponses,
+    @RequestMapping( value = "/asmt_process_start.do")
+    public ModelAndView startAssessementProcess( @RequestParam( name = "taskIndex" , defaultValue = "0", required = false ) int nextTaskIndex, 
+                                                 @ModelAttribute( "processTask" ) ProcessResponse processResponse,
                                                  HttpSession session )
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
@@ -198,17 +198,9 @@ public class AssessmentController
         try
         {
             SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            AssessmentProcess process = assessmentManager.startProcess( sData.getAssessmentProcess(), null);
-
-            if(process.getState() == AssessmentProcessState.Finished.getId())
-            {
-                model.setViewName( ModelView.VIEW_ASMT_PROCESS_END_PAGE); 
-            }
-            else
-            {
-                model.setViewName( ModelView.VIEW_ASMT_PROCESS_START_PAGE); 
-            }
-            
+            processResponse = assessmentManager.startProcess(sData.getAssessmentProcess(), processResponse, nextTaskIndex);
+            model.addObject( "processResponse" , processResponse );
+            model.setViewName( ModelView.VIEW_ASMT_PROCESS_START_PAGE); 
         }
         catch(Exception e)
         {
@@ -224,7 +216,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_end_process.do")
+    @RequestMapping( value = "/asmt_process_end.do")
     public ModelAndView endAssessementProcess( HttpSession session )
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
@@ -232,7 +224,7 @@ public class AssessmentController
         try
         {
             SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            AssessmentProcess process = assessmentManager.endProcess( sData.getAssessmentProcess());
+            Process process = assessmentManager.endProcess( sData.getAssessmentProcess());
 
             //------- Remove from session --------
             sData.setAssessmentProcess( null );
@@ -269,7 +261,7 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/asmt_register.do")
-    public String registerUser( @ModelAttribute( "assessment" ) Assessment assessment,
+    public String registerAssessment( @ModelAttribute( "assessment" ) Assessment assessment,
                                 @RequestParam( name = "participantIds" , required = false ) List<Long> participantIds,
                                 Model model, HttpSession session )
     {
@@ -291,4 +283,28 @@ public class AssessmentController
         
         return registerAssessmentView(model);
     }
+    
+    
+
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_results.vw")
+    public String assessmentResultsView(Model model)
+    {
+        return ModelView.VIEW_ASMT_RESULTS_PAGE;
+    }
+    
+    
+
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_results_user.vw")
+    public String assessmentUserResultsView(Model model)
+    {
+        return ModelView.VIEW_ASMT_RESULTS_USER_PAGE;
+    }
+    
+    
 }

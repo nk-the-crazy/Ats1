@@ -80,7 +80,7 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
             + " FROM Assessment a "
             + " JOIN a.participants p "
             + " JOIN FETCH a.tasks t "
-            + " JOIN FETCH t.options o "
+            + " JOIN FETCH t.details o "
             
             + " WHERE p.id in "
             + " ( SELECT g.id FROM UserGroup g JOIN g.users u "

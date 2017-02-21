@@ -48,9 +48,11 @@ public class ModelView
     public static String VIEW_ASMT_LIST_PAGE  = "asmt_list";
     public static String VIEW_ASMT_DETAILS_PAGE  = "asmt_details";
     public static String VIEW_ASMT_LIST_USER_PAGE  = "asmt_list_user";
+    public static String VIEW_ASMT_RESULTS_PAGE  = "asmt_results";
+    public static String VIEW_ASMT_RESULTS_USER_PAGE  = "asmt_results_user";
     
     //Process
-    public static String VIEW_ASMT_PROCESS_INIT_PAGE  = "asmt_process_init_";
+    public static String VIEW_ASMT_PROCESS_INIT_PAGE  = "asmt_process_init";
     public static String VIEW_ASMT_PROCESS_START_PAGE  = "asmt_process_start";
     public static String VIEW_ASMT_PROCESS_END_PAGE  = "asmt_process_end";
     

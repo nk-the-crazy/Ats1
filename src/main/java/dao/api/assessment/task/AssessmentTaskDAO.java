@@ -1,4 +1,4 @@
-package dao.api.assessment;
+package dao.api.assessment.task;
 
 import java.util.List;
 
@@ -43,9 +43,17 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
     @Query(value = "SELECT t "
             + " FROM AssessmentTask t "
             + " LEFT JOIN FETCH t.category c "
-            + " LEFT JOIN FETCH t.options d "
+            + " LEFT JOIN FETCH t.details d "
             + " WHERE t.id=:taskId " )
     AssessmentTask getFullDetails(@Param("taskId") long taskId );
+
+    
+    //********************************************
+    @Query(value = "SELECT t "
+            + " FROM AssessmentTask t "
+            + " LEFT JOIN FETCH t.details d "
+            + " WHERE t.id=:taskId " )
+    AssessmentTask getByTaskId(@Param("taskId") long taskId );
 
 
     //********************************************

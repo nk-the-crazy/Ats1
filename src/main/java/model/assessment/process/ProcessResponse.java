@@ -1,7 +1,7 @@
 package model.assessment.process;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,12 +18,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import model.assessment.task.AssessmentTask;
-import model.assessment.task.AssessmentTaskResponse;
 
 
 @Entity
-@Table( name = "asmt_process_task" )
-public class AssessmentProcessTask
+@Table( name = "asmt_process_response" )
+public class ProcessResponse
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,21 +33,21 @@ public class AssessmentProcessTask
     // *********************************************
     @OneToOne(  fetch = FetchType.LAZY )
     @JoinColumn(name = "task_id")
-    private AssessmentTask taskDetails;
+    private AssessmentTask task;
     // *********************************************    
     
     // *********************************************    
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="process_id")
-    private AssessmentProcess process;
+    private Process process;
     // *********************************************    
     
     // *********************************************
     @OneToMany( cascade = CascadeType.ALL , fetch = FetchType.LAZY )
     @JoinTable( name="asmt_process_responses", 
-                joinColumns=@JoinColumn(name="process_task_id" ),
-                inverseJoinColumns=@JoinColumn(name="response_id"))
-    private Set<AssessmentTaskResponse> responses = new HashSet<AssessmentTaskResponse>();
+                joinColumns=@JoinColumn(name="response_id" ),
+                inverseJoinColumns=@JoinColumn(name="details_id"))
+    private List<ProcessResponseDetail> details = new ArrayList<ProcessResponseDetail>();
     // *********************************************    
 
     public long getId()
@@ -56,44 +55,48 @@ public class AssessmentProcessTask
         return id;
     }
 
-    
-    public AssessmentTask getTaskDetails()
+   
+    public AssessmentTask getTask()
     {
-        return taskDetails;
-    }
-    
-
-    public void setTaskDetails( AssessmentTask taskDetails )
-    {
-        this.taskDetails = taskDetails;
-    }
-    
-
-    public Set<AssessmentTaskResponse> getResponses()
-    {
-        return responses;
+        return task;
     }
 
-    public void setResponses( Set<AssessmentTaskResponse> responses )
+
+    public void setTask( AssessmentTask task )
     {
-        this.responses = responses;
-    }
-    
-    public void addResponse( AssessmentTaskResponse response )
-    {
-        this.responses.add( response );
+        this.task = task;
     }
 
-    public AssessmentProcess getProcess()
+
+    public List<ProcessResponseDetail> getDetails()
+    {
+        return details;
+    }
+
+
+    public void setDetails( List<ProcessResponseDetail> details )
+    {
+        this.details = details;
+    }
+
+    public void addResponseDetail( ProcessResponseDetail detail )
+    {
+        this.details.add( detail );
+    }
+ 
+    public Process getProcess()
     {
         return process;
     }
 
-    public void setProcess( AssessmentProcess process )
+    public void setProcess( Process process )
     {
         this.process = process;
+        
+        if (!process.getResponses().contains(this)) 
+        { 
+            process.getResponses().add(this);
+        }
     }
-    
-    
-    
+
 }

@@ -41,6 +41,7 @@
 <c:set var="assessment" value="${requestScope.assessmentDetails}"/>
 <c:set var="tasksPage" value="${requestScope.assessmentTasks}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
+<jsp:useBean id="now" class="java.util.Date" />
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -68,10 +69,6 @@
                                         <button type="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
                                                 <spring:message code="label.action.edit"/>
-                                        </button>
-                                        <button type="button" class="btn btn-success btn-xs">
-                                            <i class="fa fa-line-chart"></i>&nbsp;
-                                                <spring:message code="label.assessment.result"/>
                                         </button>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">
                                             <i class="fa fa-chevron-left"></i>&nbsp;
@@ -145,9 +142,16 @@
                                                   <td><fmt:formatDate pattern="${dateFormatShort }" value="${assessment.endDate}" /></td>
                                                 </tr>
                                                 <tr>
+                                                  <c:set var="asmt_status" value="${assessment.status }"/>
+                                                  <c:if test="${assessment.endDate < now }"><c:set var="asmt_status" value="2"/></c:if>
+                                                  <c:choose>
+                                                    <c:when test="${asmt_status == 2}"><c:set var="status_color" value="warning"/></c:when>
+                                                    <c:when test="${asmt_status == 3}"><c:set var="status_color" value="danger"/></c:when>
+                                                    <c:otherwise><c:set var="status_color" value=""/></c:otherwise>
+                                                  </c:choose>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
-                                                  <td  class="${assessment.status == 1  ? '' : 'danger'}">
-                                                        ${SystemUtils.getAttribute('system.attrib.assessment.status',assessment.status, locale)}
+                                                  <td  class="${status_color}">
+                                                        ${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status, locale)}
                                                   </td>
                                                 </tr>
                                               </tbody>
@@ -176,7 +180,7 @@
                                               </tbody>
                                             </table>                                              
                                         </div>
-                                        <div role="tabpanel" class="tab-pane fade col-md-8" id="tab_content3"  aria-labelledby="tasks-tab">
+                                        <div role="tabpanel" class="tab-pane fade col-md-10" id="tab_content3"  aria-labelledby="tasks-tab">
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>

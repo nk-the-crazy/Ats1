@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table( name = "asmt_task_option" )
-public class AssessmentTaskOption
+@Table( name = "asmt_task_detail" )
+public class AssessmentTaskDetail
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class AssessmentTaskOption
     private long id;
     
     @Column(name = "item_grade")
-    private float itemOptionGrade = 0;
+    private float itemGrade = 0;
     
-    @Column(name = "item_option")
-    private String itemOption;
+    @Column(name = "item_detail")
+    private String itemDetail;
     
     
     //***********************************
@@ -28,7 +28,6 @@ public class AssessmentTaskOption
     {
         return id;
     }
-
     
 
     public void setId( long id )
@@ -37,27 +36,26 @@ public class AssessmentTaskOption
     }
 
 
-
-    public float getItemOptionGrade()
+    public float getItemGrade()
     {
-        return itemOptionGrade;
+        return itemGrade;
     }
 
 
-    public void setItemOptionGrade( float itemOptionGrade )
+    public void setItemGrade( float itemGrade )
     {
-        this.itemOptionGrade = itemOptionGrade;
+        this.itemGrade = itemGrade;
     }
 
-    public String getItemOption()
+    public String getItemDetail()
     {
-        return itemOption;
+        return itemDetail;
     }
 
 
-    public void setItemOption( String itemOption )
+    public void setItemDetail( String itemDetail )
     {
-        this.itemOption = itemOption;
+        this.itemDetail = itemDetail;
     }
-  
+
 }

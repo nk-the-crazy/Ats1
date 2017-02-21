@@ -56,10 +56,10 @@ public class AssessmentTask
     // *********************************************
      
     @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-    @JoinTable(name="asmt_task_options", 
+    @JoinTable(name="asmt_task_details", 
           joinColumns=@JoinColumn(name="task_id" , nullable = false),
-          inverseJoinColumns=@JoinColumn(name="options_id"))
-    private List<AssessmentTaskOption> options = new ArrayList<AssessmentTaskOption>();
+          inverseJoinColumns=@JoinColumn(name="details_id"))
+    private List<AssessmentTaskDetail> details = new ArrayList<AssessmentTaskDetail>();
 
     // *********************************************
     public long getId()
@@ -138,14 +138,14 @@ public class AssessmentTask
         this.category = category;
     }
 
-    public List<AssessmentTaskOption> getOptions()
+    public List<AssessmentTaskDetail> getDetails()
     {
-        return options;
+        return details;
     }
 
-    public void setOptions( List<AssessmentTaskOption> options )
+    public void setDetails( List<AssessmentTaskDetail> details )
     {
-        this.options = options;
+        this.details = details;
     }
 
     public void setId( long id )
@@ -153,9 +153,9 @@ public class AssessmentTask
         this.id = id;
     }
     
-    public void addDetails(AssessmentTaskOption data) 
+    public void addDetail(AssessmentTaskDetail detail) 
     {
-        options.add( data );
+        details.add( detail );
     }
 
     public float getItemGrade()

@@ -47,11 +47,12 @@ model.common.session.SessionData" %>
 
 <!-- ***************************** -->
 <c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
-<c:set var="taskCount" value="${process.tasks.size()}"/>
+<c:set var="taskCount" value="${process.taskIds.size()}"/>
 <c:set var="taskIndex" value="${(param.taskIndex + 1) >= taskCount ? taskCount - 1 : param.taskIndex}"/>
-<c:set var="processTask" value="${process.tasks.get(taskIndex)}"/>
-<c:set var="taskOptions" value="${processTask.taskDetails.options}"/>
+<c:set var="task" value="${processResponse.task}"/>
+<c:set var="taskDetails" value="${task.details}"/>
 <c:set var="processTime" value="${process.assessment.time}"/>
+
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 
 
@@ -88,12 +89,7 @@ model.common.session.SessionData" %>
 								</div>
 								<div class="x_content">
                                    <div class="col-md-12">
-                                   <c:set value="${processTask }" var="processTask" scope="request"/>
-                                   <% 
-                                   
-                                   
-                                   %>
-                                   <form action="asmt_start_process.do" method="post">
+                                   <form action="asmt_process_start.do" method="post">
                                     <input type="hidden" name="taskIndex" value="${taskIndex+1}">
                                     <table class="table table-bordered dataTable">
                                       <thead>
@@ -126,26 +122,24 @@ model.common.session.SessionData" %>
                                         <tr>
                                           <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.content" /></th>
                                           <td class="col-md-10 tasks-panel" colspan="5">
-                                            <c:out value="${processTask.taskDetails.itemContent}"/>
+                                            <c:out value="${task.itemContent}"/>
                                           </td>
                                         </tr>
                                         <tr>
                                           <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.options" /></th>
                                           <td class="col-md-10 tasks-panel" colspan="5">
                                            <div class="form-group">
-                                           <input type="hidden" name="taskResponses[0].grade" value="10">
-                                              <c:forEach var="taskOption" items="${taskOptions}" varStatus="loopCounter">
+                                             <c:forEach var="taskDetail" items="${taskDetails}" varStatus="loopCounter">
                                                <c:choose>
-                                               <%-- Single Choice --%>
-                                               
-                                                  <c:when test="${processTask.taskDetails.modeType == 1}">
+                                                  <%-- Single Choice --%>
+                                                  <c:when test="${task.modeType == 1}">
                                                      <div class="radio">
-                                                        <label><input type="radio" name="option[0].id" value="${taskOption.id}"/>
-                                                          &#${loopCounter.index + 65}; ) ${taskOption.itemOption }</label>
+                                                        <label><input type="radio" name="details[0].taskDetail.id" value="${taskDetail.id}"/>
+                                                          &#${loopCounter.index + 65}; ) ${taskDetail.itemDetail }</label>
                                                       </div>
                                                   </c:when>
                                                   <%-- Multiple Choice --%>
-                                                  <c:when test="${processTask.taskDetails.modeType == 2}">
+                                                  <c:when test="${task.modeType == 2}">
                                                      <div class="checkbox">
                                                         <label>
                                                           <input type="checkbox"  name="optionsRadios" value="">
@@ -153,14 +147,14 @@ model.common.session.SessionData" %>
                                                      </div>
                                                   </c:when>
                                                   <%-- Multiple Choice --%>
-                                                  <c:when test="${processTask.taskDetails.modeType == 4}">
+                                                  <c:when test="${tasks.modeType == 4}">
                                                      <div class="text">
                                                            <label>&#${loopCounter.index + 65}; )</label>
                                                            <input type="text" size="35" name="optionsRadios" value="">
                                                      </div>
                                                   </c:when>
                                                   <%-- Esse ---------------%>
-                                                  <c:when test="${processTask.taskDetails.modeType == 5}">
+                                                  <c:when test="${task.modeType == 5}">
                                                      <c:if test="${loopCounter.index == 0 }">
                                                          <div class="col-md-12 col-sm-12 col-xs-12">
                                                             <textarea rows="14" class="resizable_textarea form-control"></textarea>

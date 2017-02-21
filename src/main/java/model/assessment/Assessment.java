@@ -47,7 +47,7 @@ public class Assessment
     private short maxGrade = 100;
 
     @Column(name = "time")
-    private long time = 1;
+    private int time = 1;
 
     @Column(name = "status")
     private int status = 1;
@@ -222,13 +222,13 @@ public class Assessment
     }
 
 
-    public long getTime()
+    public int getTime()
     {
         return time;
     }
 
 
-    public void setTime( long time )
+    public void setTime( int time )
     {
         this.time = time;
     }

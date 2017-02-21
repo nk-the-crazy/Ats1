@@ -16,12 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import model.assessment.Assessment;
 import model.identity.User;
 
 @Entity
 @Table( name = "asmt_process" )
-public class AssessmentProcess
+public class Process
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +31,10 @@ public class AssessmentProcess
     private long id;
     
     @Column(name = "start_date") 
-    private Date startDate;
+    private Date startDate = new Date(System.currentTimeMillis());
     
     @Column(name = "end_date") 
-    private Date endDate;
+    private Date endDate = new Date(System.currentTimeMillis());
     
     @Column(name = "state") 
     private short state = 1;
@@ -52,8 +54,14 @@ public class AssessmentProcess
     
     // *********************************************
     @OneToMany(mappedBy="process" , cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-    private List<AssessmentProcessTask> tasks = new ArrayList<AssessmentProcessTask>();
+    private List<ProcessResponse> responses = new ArrayList<ProcessResponse>();
     // *********************************************    
+    
+    
+    // *********************************************
+    @Transient
+    List<Long> taskIds;
+ 
 
     public long getId()
     {
@@ -106,14 +114,14 @@ public class AssessmentProcess
         this.assessment = assessment;
     }
 
-    public List<AssessmentProcessTask> getTasks()
+    public List<ProcessResponse> getResponses()
     {
-        return tasks;
+        return responses;
     }
 
-    public void setTasks( List<AssessmentProcessTask> tasks )
+    public void setResponses( List<ProcessResponse> responses )
     {
-        this.tasks = tasks;
+        this.responses = responses;
     }
 
     public int getState()
@@ -125,11 +133,26 @@ public class AssessmentProcess
     {
         this.state = (short)state;
     }
-
-    public void addProcessTask(AssessmentProcessTask processTask)
-    {
-        this.tasks.add( processTask );
-    }
     
+    
+    public void addProcessResponse(ProcessResponse response)
+    {
+        this.responses.add( response );
+        
+        if (response.getProcess() != this) 
+        {
+            response.setProcess( this);
+        }
+    }
+
+    public List<Long> getTaskIds()
+    {
+        return taskIds;
+    }
+
+    public void setTaskIds( List<Long> taskIds )
+    {
+        this.taskIds = taskIds;
+    }
 
 }

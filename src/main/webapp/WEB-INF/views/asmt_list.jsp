@@ -44,6 +44,7 @@ common.utils.system.SystemUtils"%>
 <!-- ***************************** -->
 <c:set var="assessmentsPage" value="${requestScope.assessmentsPage}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
+<jsp:useBean id="now" class="java.util.Date" />
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -131,14 +132,21 @@ common.utils.system.SystemUtils"%>
                                         <!-- *********Assessment list ************ -->
                                         <c:set var="index" value="${assessmentsPage.number * assessmentsPage.size}" />
                                         <c:forEach var="assessment" items="${assessmentsPage.content}" varStatus="loopCounter">
-                                            <tr class="${assessment.status == 1 ? '' : 'danger'}">
+                                            <c:set var="asmt_status" value="${assessment.status }"/>
+                                            <c:if test="${assessment.endDate < now }"><c:set var="asmt_status" value="2"/></c:if>
+                                            <c:choose>
+                                                <c:when test="${asmt_status == 2}"><c:set var="status_color" value="warning"/></c:when>
+                                                <c:when test="${asmt_status == 3}"><c:set var="status_color" value="danger"/></c:when>
+                                                <c:otherwise><c:set var="status_color" value=""/></c:otherwise>
+                                            </c:choose>
+                                            <tr class="${status_color}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="asmt_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',assessment.status,locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status,locale)}</td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Assessment list ************ -->

@@ -41,6 +41,7 @@ common.utils.system.SystemUtils"%>
 <!-- ***************************** -->
 <c:set var="assessmentsPage" value="${requestScope.assessmentsPage}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
+<jsp:useBean id="now" class="java.util.Date" />
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -62,7 +63,7 @@ common.utils.system.SystemUtils"%>
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt_list_user.title" /></h2>
@@ -85,6 +86,8 @@ common.utils.system.SystemUtils"%>
                                         <!-- *********Assessment list ************ -->
                                         <c:set var="index" value="${assessmentsPage.number * assessmentsPage.size}" />
                                         <c:forEach var="assessment" items="${assessmentsPage.content}" varStatus="loopCounter">
+                                            <c:set var="asmt_status" value="${assessment.status }"/>
+                                            <c:if test="${assessment.endDate < now }"><c:set var="asmt_status" value="2"/></c:if>
                                             <tr class="${assessment.status == 1 ? '' : 'warning'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><c:out value="${assessment.name}"/></td>
@@ -92,18 +95,14 @@ common.utils.system.SystemUtils"%>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
                                                 <td class="col-md-1">
-                                                    <a href="asmt_init_process.do?assessment_id=${assessment.id}" 
-                                                         class="btn btn-primary btn-xs" role="button">
-                                                        <i class="fa fa-clock-o"></i>&nbsp;
-                                                            <spring:message code="label.assessment.start"/>
-                                                    </a>
+                                                    <c:if test="${asmt_status == 1 }">
+                                                        <a href="asmt_process_init.do?assessment_id=${assessment.id}" 
+                                                             class="btn btn-primary btn-xs" role="button">
+                                                            <i class="fa fa-clock-o"></i>&nbsp;
+                                                                <spring:message code="label.assessment.start"/>
+                                                        </a>
+                                                    </c:if>
                                                 </td>
-                                                <td>
-                                                    <a href="asmt_init_process.do?assessment_id=${assessment.id}" 
-                                                       role="button" class="btn btn-success btn-xs">
-                                                        <i class="fa fa-line-chart"></i><spring:message code="label.assessment.result"/>
-                                                    </a>
-                                                 </td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Assessment list ************ -->

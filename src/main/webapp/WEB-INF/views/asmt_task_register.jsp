@@ -187,7 +187,7 @@
                                             <button id="btnAddRow" class="btn btn-success btn-xs" type="button">
                                                     <i class="fa fa-plus">&nbsp;<spring:message code="label.asmt.task.item.option.register" /></i>
                                             </button>
-                                            <table id="tbTaskOptions" class="dataTable table table-bordered">
+                                            <table id="tbTaskDetails" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
@@ -197,23 +197,23 @@
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                  <c:if test="${empty task.options}">
+                                                  <c:if test="${empty task.details}">
                                                     <tr>
                                                         <td id="dvIndex" class="col-md-1">1</td>
                                                         <td class="col-md-2">
-                                                            <input class="form-control input-sm" type="text" value="0" id="txItemOptionGrade" name="options[0].itemOptionGrade"></td>
-                                                        <td><input class="form-control input-sm" type="text" id="txItemOption" name="options[0].itemOption"></td>
+                                                            <input class="form-control input-sm" type="text" value="0" id="txItemGrade" name="details[0].itemGrade"></td>
+                                                        <td><input class="form-control input-sm" type="text" id="txItemDetail" name="details[0].itemDetail"></td>
                                                         <td><button class="btn btn-danger btn-remove btn-xs" type="button">
                                                              <i class="fa fa-close"></i></button>
                                                         </td>
                                                     </tr>
                                                   </c:if>
-                                                  <c:forEach var="option" items="${task.options}" varStatus="loopCounter">
+                                                  <c:forEach var="detail" items="${task.details}" varStatus="loopCounter">
                                                   <tr>
                                                         <td id="dvIndex" class="col-md-1">1</td>
                                                         <td class="col-md-2">
-                                                            <input class="form-control input-sm" type="text" value="${option.itemOptionGrade }" id="txItemOptionGrade" name="options[${loopCounter.index }].itemOptionGrade"></td>
-                                                        <td><input class="form-control input-sm" type="text" value="${option.txItemOption }" id="txItemOption" name="options[${loopCounter.index }].itemOption"></td>
+                                                            <input class="form-control input-sm" type="text" value="${detail.itemGrade }" id="txItemGrade" name="details[${loopCounter.index }].itemGrade"></td>
+                                                        <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetails" name="details[${loopCounter.index }].itemDetails"></td>
                                                         <td><button class="btn btn-danger btn-remove btn-xs" type="button">
                                                             <i class="fa fa-close"></i></button>
                                                         </td>
@@ -292,7 +292,7 @@
     $(document).ready(function() 
     {
         //Disable the Remove Button
-        var rowCount = $('#tbTaskOptions > tbody:last > tr').length;
+        var rowCount = $('#tbTaskDetails > tbody:last > tr').length;
         if(rowCount == 1) 
         {
             document.getElementsByClassName('btn-remove')[0].disabled = true;
@@ -302,14 +302,14 @@
         {
             e.preventDefault();
             
-            var controlForm = $('#tbTaskOptions');
-            var currentEntry = $('#tbTaskOptions > tbody > tr:last');
+            var controlForm = $('#tbTaskDetails');
+            var currentEntry = $('#tbTaskDetails > tbody > tr:last');
             var newEntry = $(currentEntry.clone()).appendTo(controlForm);
             //newEntry.find('input').val('');                                         
             //Remove the Data - as it is cloned from the above
             
             //Add the button  
-            var rowCount = $('#tbTaskOptions > tbody:last > tr').length;
+            var rowCount = $('#tbTaskDetails > tbody:last > tr').length;
             if(rowCount > 1) 
             {
                 var removeButtons = document.getElementsByClassName('btn-remove');
@@ -326,7 +326,7 @@
             $(this).parents('tr:first').remove();
             
             //Disable the Remove Button
-            var rowCount = $('#tbTaskOptions >tbody:last >tr').length;
+            var rowCount = $('#tbTaskDetails >tbody:last >tr').length;
             if(rowCount == 1) 
             {
                 document.getElementsByClassName('btn-remove')[0].disabled = true;
@@ -342,11 +342,11 @@
         
         function updateRowIndex()
         {
-            $('#tbTaskOptions > tbody  > tr').each(function(rowIndex) 
+            $('#tbTaskDetails > tbody  > tr').each(function(rowIndex) 
             {
             	$(this).find("#dvIndex").html(rowIndex + 1);
-            	$(this).find("#txItemOptionGrade").attr('name','options['+rowIndex+'].itemOptionGrade');
-                $(this).find("#txItemOption").attr('name','options['+rowIndex+'].itemOption');
+            	$(this).find("#txItemGrade").attr('name','details['+rowIndex+'].itemGrade');
+                $(this).find("#txItemDetail").attr('name','details['+rowIndex+'].itemDetail');
             }); 
         }
 

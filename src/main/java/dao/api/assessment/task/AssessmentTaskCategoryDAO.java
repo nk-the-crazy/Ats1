@@ -1,4 +1,4 @@
-package dao.api.assessment;
+package dao.api.assessment.task;
 
 import java.util.List;
 

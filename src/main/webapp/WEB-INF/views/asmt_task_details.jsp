@@ -154,11 +154,11 @@
                                               </thead>
                                               <tbody>
                                                 <!-- *********Task Details list************ -->
-                                                <c:forEach var="options" items="${task.options}" varStatus="loopCounter">
+                                                <c:forEach var="detail" items="${task.details}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${loopCounter.count }</td>
-                                                        <td class="col-md-2"><c:out value="${options.itemOptionGrade}"/></td>
-                                                        <td><c:out value="${options.itemOption}"/></td>
+                                                        <td class="col-md-2"><c:out value="${detail.itemGrade}"/></td>
+                                                        <td><c:out value="${detail.itemDetail}"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <!-- *********Task Details list ************ -->

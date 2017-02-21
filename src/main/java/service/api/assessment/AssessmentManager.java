@@ -8,9 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import model.assessment.Assessment;
-import model.assessment.process.AssessmentProcess;
+import model.assessment.process.Process;
+import model.assessment.process.ProcessResponse;
 import model.assessment.task.AssessmentTask;
-import model.assessment.task.AssessmentTaskResponse;
 import model.identity.User;
 
 
@@ -32,23 +32,23 @@ public interface AssessmentManager
 
     Object getAssessmentDetails( long assessmentId );
 
-    AssessmentProcess initProcess( long assessmentId, long userId );
+    Process initProcess( long assessmentId, long userId );
+    
+    ProcessResponse startProcess( Process assessmentProcess, ProcessResponse processResponse, int nextTaskIndex );
+    
+    Process endProcess( Process process );
 
     Assessment createAssessment( String name, Date startDate, Date endDate, int time, int type );
 
     Assessment getAssessmentByIdAndUserId( long assessmentId, long userId );
 
-    AssessmentProcess saveAssessmentProcess( AssessmentProcess process );
+    Process saveAssessmentProcess( Process process );
 
-    AssessmentProcess createAssessmentProcess();
+    Process createAssessmentProcess();
 
     Page<AssessmentTask> getAssessmentTasks( long assessmentId, Pageable pageable );
 
-    AssessmentProcess startProcess( AssessmentProcess process, AssessmentTaskResponse taskResponse );
-
-    AssessmentProcess endProcess( AssessmentProcess process );
-
     Assessment createAssessment( Assessment assessment, User author, List<Long> participantIds );
 
-  
+    
 }

@@ -1,4 +1,4 @@
-package model.assessment.task;
+package model.assessment.process;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,30 +11,29 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import model.assessment.task.AssessmentTaskDetail;
+
 
 @Entity
-@Table( name = "asmt_process_response" )
-public class AssessmentTaskResponse
+@Table( name = "asmt_process_response_detail" )
+public class ProcessResponseDetail
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "short_response")
-    private String shortResponse; 
-    
     @Column(name = "grade")
     float grade = 0;
     
     @Column(name = "response")
     @Lob
-    private String response;    
+    private String itemResponse;    
     
     // *********************************************
     @OneToOne(  fetch = FetchType.LAZY )
-    @JoinColumn(name = "task_option_id")
-    private AssessmentTaskOption option;
+    @JoinColumn(name = "task_detail_id")
+    private AssessmentTaskDetail taskDetail;
     // *********************************************  
 
     public long getId()
@@ -42,34 +41,24 @@ public class AssessmentTaskResponse
         return id;
     }
 
-    public String getShortResponse()
+    public String getItemResponse()
     {
-        return shortResponse;
+        return itemResponse;
     }
 
-    public void setShortResponse( String shortResponse )
+    public void setItemResponse( String itemResponse )
     {
-        this.shortResponse = shortResponse;
+        this.itemResponse = itemResponse;
     }
 
-    public String getResponse()
+    public AssessmentTaskDetail getTaskDetail()
     {
-        return response;
+        return taskDetail;
     }
 
-    public void setResponse( String response )
+    public void setTaskDetail( AssessmentTaskDetail taskDetail )
     {
-        this.response = response;
-    }
-
-    public AssessmentTaskOption getOption()
-    {
-        return option;
-    }
-
-    public void setOption( AssessmentTaskOption option )
-    {
-        this.option = option;
+        this.taskDetail = taskDetail;
     }
 
     public float getGrade()
