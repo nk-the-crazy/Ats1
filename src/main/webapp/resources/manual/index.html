@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="css/fixed-navbar.min.css" rel="stylesheet" class="skins" type="text/css" />
+<link href="lib/tree/css/skin-lion/ui.easytree.css" rel="stylesheet" type="text/css" />
+<link href="css/custom.css" rel="stylesheet" class="skins" type="text/css" />
+<!-- Font Awesome -->
+<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<title>Руководство</title>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-3">
+                <nav class="navbar navbar-default navbar-fixed-side">
+                    <div class="navbar-header">
+                        <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                            <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+                                class="icon-bar"></span> <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="./index.html">Руководство Ats1</a>
+                    </div>
+ 
+                    <div class="form-group">
+                         <input class="form-control input-sm" placeholder="Search">
+                         
+                    </div>
+                    <!-- Context -->
+                    
+                    <div id="ContextTree">
+                        <ul>
+                            <li class="isFolder">Общие Сведения
+                                <ul>
+                                    <li><a href="javascript:loadContent('overview.html');">Общие Сведения</a></li>
+                                </ul>
+                            </li>
+                            <li class="isFolder">Политика Безопасности
+                                <ul>
+                                    <li><a href="javascript:loadContent('overview.html');">Общее Описание</a></li>
+                                </ul>
+                            </li>
+                            <li class="isFolder">Уравление Пользователями
+                                <ul>
+                                    <li><a href="javascript:loadContent('overview.html');">Общее Описание</a></li>
+                                    <li><a href="javascript:loadContent('overview.html');">Регистрация Пользователя</a></li>
+                                </ul>
+                            </li>
+                            <li class="isFolder">Уравление Группами
+                                <ul>
+                                    <li><a href="javascript:loadContent('overview.html');">Общее Описание</a></li>
+                                </ul>
+                            </li>
+                            <li class="isFolder">Тестирование
+                                <ul>
+                                    <li><a href="javascript:loadContent('overview.html');">Общее Описание</a></li>
+                                </ul>
+                            </li>
+                            <li class="isFolder">Управление Тестовыми Задачами
+                                <ul>
+                                    <li><a href="javascript:loadContent('overview.html');">Общее Описание</a></li>
+                                </ul>
+                            </li>
+                            <li class="isFolder">Системные Настройки
+                                <ul>
+                                    <li></li>
+                                    <li>Sub Node 2</li>
+                                    <li>Sub Node 3</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-sm-9 col-md-9">
+                <div id="imgProgress"><img src="images/ajax-loader.gif" style="width:40px; margin-top:10px; "></div>
+                <div id="Content">
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+    <script src="lib/jquery/js/jquery.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/tree/js/jquery.easytree.min.js"></script>
+    	
+    <script>
+    //*************************
+    $(document).ready(function() 
+    {
+    	loadContent('overview.html');
+    });
+    
+    //*************************
+	function loadContent(pageUrl)
+	{
+		$("#imgProgress").show();
+        
+		$.ajax(
+	    {
+	        url:pageUrl,
+	        success: function (response) 
+	        {
+	        	$("#imgProgress").hide();
+	        	$('#Content').html(response);
+	        },
+	        error: function () {
+	            $('#Content').html('Error loading Page!');
+	        },
+	    });
+		    
+		
+	}
+    //*************************
+	</script>
+    
+    <script>
+    $('#ContextTree').easytree(
+    {
+        allowActivate: true,
+        disabledDnd: false,
+        slidingTime: 0
+    });
+    </script>
+
+</body>
+</html>

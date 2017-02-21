@@ -59,7 +59,6 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
     @Query(value = "SELECT a "
             + " FROM Assessment a "
             + " LEFT JOIN FETCH a.author  at "
-            + " LEFT JOIN FETCH a.managers m "
             + " LEFT JOIN FETCH a.participants p "
 
             + " WHERE a.id=:assessmentId " )
@@ -81,7 +80,7 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
             + " FROM Assessment a "
             + " JOIN a.participants p "
             + " JOIN FETCH a.tasks t "
-            + " JOIN FETCH t.options o "
+            + " JOIN FETCH t.details o "
             
             + " WHERE p.id in "
             + " ( SELECT g.id FROM UserGroup g JOIN g.users u "

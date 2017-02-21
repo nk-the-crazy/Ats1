@@ -13,11 +13,11 @@ import org.springframework.util.CollectionUtils;
 
 import com.google.common.base.Strings;
 
-import dao.api.assessment.AssessmentTaskCategoryDAO;
-import dao.api.assessment.AssessmentTaskDAO;
+import dao.api.assessment.task.AssessmentTaskCategoryDAO;
+import dao.api.assessment.task.AssessmentTaskDAO;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
-import model.assessment.task.AssessmentTaskOption;
+import model.assessment.task.AssessmentTaskDetail;
 import service.api.assessment.AssessmentTaskManager;
 
 @Service("taskManagerService")
@@ -68,15 +68,15 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTaskOption createTaskDetails( String itemOption, float itemOptionGrade)
+    public AssessmentTaskDetail createTaskDetails( String itemDetail, float itemGrade)
     {
-        AssessmentTaskOption taskDetails = null;
+        AssessmentTaskDetail taskDetails = null;
         
         try 
         {
-            taskDetails = new AssessmentTaskOption();
-            taskDetails.setItemOptionGrade( itemOptionGrade );
-            taskDetails.setItemOption( itemOption );
+            taskDetails = new AssessmentTaskDetail();
+            taskDetails.setItemGrade( itemGrade );
+            taskDetails.setItemDetail( itemDetail );
         }
         catch(Exception e) 
         {
@@ -119,17 +119,14 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTask saveTask( AssessmentTask entity , boolean defaultCategory)
+    public AssessmentTask saveTask( AssessmentTask entity , long categoryId)
     {
         isValidTaskName(entity.getItemName());
         
-        if(defaultCategory)
-        {
-            if(entity.getCategory() == null || entity.getCategory().getId() <= 0)
-            {
-                entity.setCategory( getSystemCategory());
-            }
-        }
+        if(categoryId > 0)
+            entity.setCategory( categoryDAO.findOne( categoryId ));
+        else
+            entity.setCategory( getSystemCategory());
         
         return taskDAO.save( entity );
     }
@@ -188,7 +185,16 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
         return categoryDAO.getCategoryTree();
     }
     
-
+    
+    /* *************************************************
+     */
+    @Override
+    public List<AssessmentTaskCategory> getCategoryShortList(String categoryName)
+    {
+        return categoryDAO.getShortListByCategoryName( categoryName );
+    }
+    
+    
     /* *************************************************
      */
     @Override

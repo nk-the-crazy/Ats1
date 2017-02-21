@@ -173,8 +173,8 @@
                                              <!------------- Pagination -------------->
                                             <c:if test="${usersPage.totalPages > 1}">
                                                 <jsp:include page="include/pagination.jsp">
-                                                     <jsp:param name="page" value="user_details.vw" />
-                                                     <jsp:param name="addParam" value="group_id=${param.group_id}" />
+                                                     <jsp:param name="page" value="role_details.vw" />
+                                                     <jsp:param name="addParam" value="role_id=${param.role_id}" />
                                                      <jsp:param name="totalPages" value="${usersPage.totalPages}" />
                                                      <jsp:param name="totalElements" value="${usersPage.totalElements}" />
                                                      <jsp:param name="currentIndex" value="${usersPage.number}" />

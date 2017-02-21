@@ -28,6 +28,9 @@
 <!-- NProgress -->
 <link href="resources/lib/nprogress/nprogress.css" rel="stylesheet">
 
+<!-- Select2 -->
+<link href="resources/lib/select2/dist/css/select2.css" rel="stylesheet">
+
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
 
@@ -37,6 +40,7 @@
 
 </head>
 <!-- ***************************** -->
+<c:set var="categories" value="${requestScope.categoryShortList}"/>
 <!-- ***************************** -->
 <body class="nav-md">
     <div class="container body">
@@ -58,7 +62,7 @@
                         <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                              <form id="task" data-parsley-validate action="asmt_task_register.do" 
-                                  class="form-vertical form-label-left" method="POST">
+                                  class="form-horizontal form-label-left" method="POST">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt.task_register.title" /></h2>
                                      <div style="text-align: right;">
@@ -104,7 +108,7 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><label class="control-label" for="item-name">
+                                                  <th scope="row" class="col-md-3"><label class="control-label-required" for="item-name">
                                                     <spring:message code="label.asmt.task.name" />:</label></th>
                                                   <td class="col-md-7"><input type="text" id="item-name" name="itemName" value="${task.itemName}"
                                                         class="form-control input-sm" required="required"></td>
@@ -116,7 +120,7 @@
                                                         class="form-control input-sm"></td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><label class="control-label" for="item-content">
+                                                  <th scope="row" ><label class="control-label-required" for="item-content">
                                                     <spring:message code="label.asmt.task.item.content" />:</label></th>
                                                   <td><textarea id="item-content" name="itemContent" rows="4" 
                                                        class="resizable_textarea form-control">${task.itemContent}</textarea></td>
@@ -160,13 +164,20 @@
                                                     </select>
                                                   </td>
                                                 </tr>
-                                                <%-- 
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.asmt.task.category.name" />:</th>
-                                                  <td class="col-lg-3"><a href="asmt_category_details.vw?asmt_category_id=${task.category.id }">
-                                                  <c:out value="${task.category.name}"/></a></td>
-                                                </tr>
-                                                --%>
+                                                  <th scope="row" ><label class="control-label" for="person-organization">
+                                                  <spring:message code="label.asmt.task.category" />:</label></th>
+                                                  <td>
+                                                  <div class="col-md-10">
+                                                    <select id="task-category" class="select2_single form-control" name="categoryId">
+                                                        <c:forEach var="category" items="${categories}" varStatus="loopCounter"> 
+                                                            <option ${categoryId == category[0] ? 'selected="selected"' : ''}
+                                                            value="${category[0]}">${category[1]}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                    </div>
+                                                  </td>
+                                                </tr>                                            
                                               </tbody>
                                             </table>
                                         </div>
@@ -176,7 +187,7 @@
                                             <button id="btnAddRow" class="btn btn-success btn-xs" type="button">
                                                     <i class="fa fa-plus">&nbsp;<spring:message code="label.asmt.task.item.option.register" /></i>
                                             </button>
-                                            <table id="tbTaskOptions" class="dataTable table table-bordered">
+                                            <table id="tbTaskDetails" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
@@ -186,16 +197,28 @@
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr>
-                                                    <td id="dvIndex" class="col-md-1">1</td>
-                                                    <td class="col-md-2">
-                                                        <input class="form-control input-sm" type="text" id="txItemOptionGrade" name="options[0].itemOptionGrade"></td>
-                                                    <td><input class="form-control input-sm" type="text" id="txItemOption" name="options[0].itemOption"></td>
-                                                    <td><button class="btn btn-danger btn-remove btn-xs" type="button">
-                                                                <i class="fa fa-close"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                  <c:if test="${empty task.details}">
+                                                    <tr>
+                                                        <td id="dvIndex" class="col-md-1">1</td>
+                                                        <td class="col-md-2">
+                                                            <input class="form-control input-sm" type="text" value="0" id="txItemGrade" name="details[0].itemGrade"></td>
+                                                        <td><input class="form-control input-sm" type="text" id="txItemDetail" name="details[0].itemDetail"></td>
+                                                        <td><button class="btn btn-danger btn-remove btn-xs" type="button">
+                                                             <i class="fa fa-close"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                  </c:if>
+                                                  <c:forEach var="detail" items="${task.details}" varStatus="loopCounter">
+                                                  <tr>
+                                                        <td id="dvIndex" class="col-md-1">1</td>
+                                                        <td class="col-md-2">
+                                                            <input class="form-control input-sm" type="text" value="${detail.itemGrade }" id="txItemGrade" name="details[${loopCounter.index }].itemGrade"></td>
+                                                        <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetails" name="details[${loopCounter.index }].itemDetails"></td>
+                                                        <td><button class="btn btn-danger btn-remove btn-xs" type="button">
+                                                            <i class="fa fa-close"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                        </c:forEach>
                                               </tbody>
                                             </table>
                                         </div>
@@ -229,12 +252,26 @@
     <!-- NProgress -->
     <script src="resources/lib/nprogress/nprogress.js"></script>
 
-    <!-- Custom Theme Scripts -->
-    <script src="resources/js/custom.min.js"></script>
-
     <!-- Dat Tables -->
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    
+     <!-- Select2 -->
+    <script src="resources/lib/select2/dist/js/select2.min.js"></script>
+    
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="resources/js/custom.min.js"></script>
+     <script>
+      $(document).ready(function() 
+      {
+    	  $(".select2_single").select2({
+          placeholder: "",
+          allowClear: false
+        });
+      });
+    </script>
+    
     <script type="text/javascript">
     $(document).ready(function()
     {
@@ -250,12 +287,12 @@
         }
     });
     </script>
-        <script type="text/javascript">
+    <script type="text/javascript">
     
     $(document).ready(function() 
     {
         //Disable the Remove Button
-        var rowCount = $('#tbTaskOptions > tbody:last > tr').length;
+        var rowCount = $('#tbTaskDetails > tbody:last > tr').length;
         if(rowCount == 1) 
         {
             document.getElementsByClassName('btn-remove')[0].disabled = true;
@@ -265,14 +302,14 @@
         {
             e.preventDefault();
             
-            var controlForm = $('#tbTaskOptions');
-            var currentEntry = $('#tbTaskOptions > tbody > tr:last');
+            var controlForm = $('#tbTaskDetails');
+            var currentEntry = $('#tbTaskDetails > tbody > tr:last');
             var newEntry = $(currentEntry.clone()).appendTo(controlForm);
             //newEntry.find('input').val('');                                         
             //Remove the Data - as it is cloned from the above
             
             //Add the button  
-            var rowCount = $('#tbTaskOptions > tbody:last > tr').length;
+            var rowCount = $('#tbTaskDetails > tbody:last > tr').length;
             if(rowCount > 1) 
             {
                 var removeButtons = document.getElementsByClassName('btn-remove');
@@ -289,7 +326,7 @@
             $(this).parents('tr:first').remove();
             
             //Disable the Remove Button
-            var rowCount = $('#tbTaskOptions >tbody:last >tr').length;
+            var rowCount = $('#tbTaskDetails >tbody:last >tr').length;
             if(rowCount == 1) 
             {
                 document.getElementsByClassName('btn-remove')[0].disabled = true;
@@ -305,11 +342,11 @@
         
         function updateRowIndex()
         {
-            $('#tbTaskOptions > tbody  > tr').each(function(rowIndex) 
+            $('#tbTaskDetails > tbody  > tr').each(function(rowIndex) 
             {
             	$(this).find("#dvIndex").html(rowIndex + 1);
-            	$(this).find("#txItemOptionGrade").attr('name','options['+rowIndex+'].itemOptionGrade');
-                $(this).find("#txItemOption").attr('name','options['+rowIndex+'].itemOption');
+            	$(this).find("#txItemGrade").attr('name','details['+rowIndex+'].itemGrade');
+                $(this).find("#txItemDetail").attr('name','details['+rowIndex+'].itemDetail');
             }); 
         }
 

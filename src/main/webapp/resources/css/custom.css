@@ -2057,6 +2057,11 @@ span.section {
   padding-top: 1px;
   text-align:left; }
 
+.form-horizontal .control-label-required {
+  padding-top: 1px;
+  text-align:left; 
+  color: red; }
+
 .form-control:focus {
   border-color: #CCD0D7;
   box-shadow: none !important; }

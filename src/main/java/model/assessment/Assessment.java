@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import model.assessment.options.AssessmentFormOptions;
 import model.assessment.task.AssessmentTask;
 import model.group.UserGroup;
 import model.identity.User;
@@ -46,7 +47,7 @@ public class Assessment
     private short maxGrade = 100;
 
     @Column(name = "time")
-    private long time = 1;
+    private int time = 1;
 
     @Column(name = "status")
     private int status = 1;
@@ -54,6 +55,9 @@ public class Assessment
     @Transient
     private long taskCount = 0;
 
+    @Transient
+    private AssessmentFormOptions formOptions;
+    
     // *********************************************
     @OneToOne (fetch = FetchType.LAZY )
     @JoinColumn(name="author_id")
@@ -65,8 +69,8 @@ public class Assessment
     @JoinTable( name="assessment_managers",
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-    private Set<User> managers = new HashSet<User>();
-    // *********************************************
+    private Set<User> inspectors = new HashSet<User>();
+    // ********************************************* 
 
     // *********************************************
     @ManyToMany (fetch = FetchType.LAZY)
@@ -102,9 +106,7 @@ public class Assessment
         this.name = name;
     }
 
-
-
-
+    
     public Date getStartDate()
     {
         return startDate;
@@ -180,18 +182,18 @@ public class Assessment
     }
 
 
-    public Set<User> getManagers()
+    public Set<User> getInspectors()
     {
-        return managers;
+        return inspectors;
     }
 
 
-    public void setManagers( Set<User> managers )
+    public void setInspectors( Set<User> inspectors )
     {
-        this.managers = managers;
+        this.inspectors = inspectors;
     }
-    
-    
+
+
     public int getMaxGrade()
     {
         return maxGrade;
@@ -214,19 +216,19 @@ public class Assessment
         participants.add(group );
     }
 
-    public void addManager(User manager) 
+    public void addInspector(User manager) 
     {
-        managers.add(manager );
+        inspectors.add(manager );
     }
 
 
-    public long getTime()
+    public int getTime()
     {
         return time;
     }
 
 
-    public void setTime( long time )
+    public void setTime( int time )
     {
         this.time = time;
     }
@@ -242,5 +244,19 @@ public class Assessment
     {
         this.taskCount = (short) taskCount;
     }
+
+
+    public AssessmentFormOptions getFormOptions()
+    {
+        return formOptions;
+    }
+
+
+    public void setFormOptions( AssessmentFormOptions formOptions )
+    {
+        this.formOptions = formOptions;
+    }
+    
+    
 
 }

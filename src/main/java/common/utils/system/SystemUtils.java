@@ -159,4 +159,23 @@ public class SystemUtils
     }
     
     
+    
+    /* ********************************************
+     * 
+     * */
+    public static int getTimingLatecy() 
+    {
+        try
+        { 
+            String str = messagesBundle.getMessage( "system.app.timing.latecy", null, null);
+            
+            
+            return Integer.parseInt( str );
+        }
+        catch ( Exception e )
+        {
+            return 0;
+        }
+    }
+
 }

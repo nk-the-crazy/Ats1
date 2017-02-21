@@ -35,7 +35,8 @@
             <div class="text-center text-center">
               <h1 class="error-number">500</h1>
               <h2>Internal System Error</h2>
-              <p><%=exception.toString() %><a href="#">Report this?</a>
+              <p><%=exception.toString() %></p>
+              <p><a href="#">Report this?</a>
               </p>
               <div class="mid_center">
                 <h3>Search</h3>

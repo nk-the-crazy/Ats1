@@ -4,6 +4,7 @@
         errorPage="../error.jsp"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!-- ************************************* -->
 
 <div class="col-md-3 left_col menu_fixed">
@@ -33,9 +34,9 @@
                         <spring:message code="label.menu.assessment" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="user_assessments_list.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
-                            <li><a href="assessment_register.vw"><spring:message code="label.menu.assessment.register" /></a></li>
-                            <li><a href="assessment_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
+                            <li><a href="asmt_list_user.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
+                            <li><a href="asmt_register.vw"><spring:message code="label.menu.assessment.register" /></a></li>
+                            <li><a href="asmt_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
                         </ul></li>
                     <li><a><i class="fa fa-cubes"></i> 
                         <spring:message code="label.menu.task.list" /><span
@@ -55,11 +56,12 @@
                         <spring:message code="label.menu.reports" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="chartjs.html">Chart JS</a></li>
-                            <li><a href="chartjs2.html">Chart JS2</a></li>
-                            <li><a href="morisjs.html">Moris JS</a></li>
-                            <li><a href="echarts.html">ECharts</a></li>
-                            <li><a href="other_charts.html">Other Charts</a></li>
+                            <li><a href="asmt_results.vw">
+                                <spring:message code="label.menu.reports.result" />
+                             </a></li>
+                            <li><a href="asmt_results_user.vw">
+                                <spring:message code="label.menu.reports.result.user" />
+                             </a></li>
                         </ul></li>
                     <li><a><i class="fa fa-gears"></i> <spring:message
                                 code="label.menu.system_settings" /> <span

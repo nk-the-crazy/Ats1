@@ -144,8 +144,9 @@ public class AssessmentTaskController
      * 
      */
     @RequestMapping("/asmt_task_register.vw")
-    public String registerTaskView()
+    public String registerTaskView(Model model)
     {
+        model.addAttribute( "categoryShortList", taskManager.getCategoryShortList( "" ));
         return ModelView.VIEW_ASMT_TASK_REGISTER_PAGE;
     }
     
@@ -154,27 +155,27 @@ public class AssessmentTaskController
      * 
      */
     @RequestMapping( value = "/asmt_task_register.do")
-    public ModelAndView registerTask( @ModelAttribute( "task" ) AssessmentTask task)
+    public String registerTask( @ModelAttribute( "task" ) AssessmentTask task, 
+                                @RequestParam( name = "categoryId" ) long categoryId,
+                                Model model)
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_ASMT_TASK_REGISTER_PAGE );
-        
         try
         {
-            task = taskManager.saveTask( task , true );
+            task = taskManager.saveTask( task , categoryId );
             
-            return new ModelAndView("redirect:asmt_task_details.vw?asmt_task_id=" + task.getId() );
+            return "redirect:asmt_task_details.vw?asmt_task_id=" + task.getId();
         }
         catch(IllegalArgumentException e)
         {
-            model.addObject( "errorMessage", "message.error.attribute.invalid");
+            model.addAttribute("errorMessage", "message.error.attribute.invalid");
         }
         catch(Exception e)
         {
             logger.error( " **** Error registering assessment task:", e ); 
-            model.addObject( "errorMessage", "message.error.system" );
+            model.addAttribute( "errorMessage", "message.error.system" );
         }
         
-        return model;
+        return registerTaskView(model);
         
     }
     
