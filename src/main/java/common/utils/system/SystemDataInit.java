@@ -174,8 +174,20 @@ public class SystemDataInit
             else
             {
                 category = taskManager.createTaskCategory( "Category-"+x, "Details of Category-"+x , 2);
-                AssessmentTask task1 = createDefaultTasks(x) ;
-                AssessmentTask task2 = createDefaultTasks(x+1) ;
+                
+                AssessmentTask task1 = null;
+                AssessmentTask task2 = null; 
+                
+                if(x < 10)
+                {
+                    task1 = createDefaultTasks(x , 1) ;
+                    task2 = createDefaultTasks(x+1, 1) ;
+                }
+                else
+                {
+                    task1 = createDefaultTasks(x , 2) ;
+                    task2 = createDefaultTasks(x+1, 2) ;
+                }
                 
                 category.addTask( task1 );
                 category.addTask( task2 );
@@ -203,9 +215,9 @@ public class SystemDataInit
     
     
     //******************************************
-    private AssessmentTask createDefaultTasks(int index) 
+    private AssessmentTask createDefaultTasks(int index, int type) 
     {
-        AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?",10, 2, 1, 1);
+        AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?",10, 2, type, 1);
                 
         AssessmentTaskDetail det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
         AssessmentTaskDetail det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );

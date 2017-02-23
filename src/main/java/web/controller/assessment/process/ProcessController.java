@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import common.exceptions.assessment.TimeExpiredException;
-import model.assessment.process.Process;
+import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
 import model.common.session.SessionData;
 import service.api.assessment.AssessmentManager;
@@ -30,6 +30,7 @@ public class ProcessController
     @Autowired
     private AssessmentManager assessmentManager;
     
+   
     
     /*******************************************************
      * 
@@ -42,7 +43,7 @@ public class ProcessController
         try
         {
             SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            Process process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
+            AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
 
             sData.setAssessmentProcess( process );
             model.setViewName( ModelView.VIEW_ASMT_PROCESS_INIT_PAGE); 
@@ -103,7 +104,7 @@ public class ProcessController
         try
         {
             SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            Process process = assessmentManager.endProcess( sData.getAssessmentProcess() , processResponse);
+            AssessmentProcess process = assessmentManager.endProcess( sData.getAssessmentProcess() , processResponse);
 
             //------- Remove from session --------
             sData.setAssessmentProcess( null );

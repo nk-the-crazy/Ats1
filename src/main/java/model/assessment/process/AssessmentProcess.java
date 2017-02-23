@@ -23,7 +23,7 @@ import model.identity.User;
 
 @Entity
 @Table( name = "asmt_process" )
-public class Process
+public class AssessmentProcess
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +50,7 @@ public class Process
     @ManyToOne(  fetch = FetchType.LAZY )
     @JoinColumn(name = "assessment_id")
     private Assessment assessment;
-    // *********************************************    
+    // *********************************************  
     
     // *********************************************
     @OneToMany(mappedBy="process" , cascade = CascadeType.ALL, fetch = FetchType.LAZY )

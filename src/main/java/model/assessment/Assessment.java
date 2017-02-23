@@ -1,7 +1,9 @@
 package model.assessment;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,11 +15,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import model.assessment.options.AssessmentFormOptions;
+import model.assessment.process.AssessmentProcess;
 import model.assessment.task.AssessmentTask;
 import model.group.UserGroup;
 import model.identity.User;
@@ -87,6 +91,12 @@ public class Assessment
         inverseJoinColumns=@JoinColumn(name="task_id", referencedColumnName="id"))
     private Set<AssessmentTask> tasks = new HashSet<AssessmentTask>();
     // *********************************************
+
+    
+    // *********************************************
+    @OneToMany(mappedBy="assessment" ,fetch = FetchType.LAZY )
+    private List<AssessmentProcess> processes = new ArrayList<AssessmentProcess>();
+    // *********************************************    
 
     
     public long getId()
@@ -256,7 +266,28 @@ public class Assessment
     {
         this.formOptions = formOptions;
     }
-    
-    
 
+
+    public List<AssessmentProcess> getProcesses()
+    {
+        return processes;
+    }
+
+
+    public void setProcesses( List<AssessmentProcess> processes )
+    {
+        this.processes = processes;
+    }
+    
+    
+    public void addProcess(AssessmentProcess process)
+    {
+        this.processes.add( process );
+        
+        if (process.getAssessment() != this) 
+        {
+            process.setAssessment( this);
+        }
+    }
+    
 }

@@ -158,10 +158,10 @@ model.common.session.SessionData" %>
                                                      <div class="checkbox">
                                                         <label>
                                                           <input type="checkbox" name="details.taskDetail.id" value="${taskDetail.id}">
-                                                          &#${loopCounter.index + 65}; ) ${taskOption.itemOption }</label>
+                                                          &#${loopCounter.index + 65}; ) ${taskDetail.itemDetail }</label>
                                                      </div>
                                                   </c:when>
-                                                  <%-- Multiple Choice --%>
+                                                  <%-- Short Text Choice --%>
                                                   <c:when test="${tasks.modeType == 4}">
                                                      <div class="text">
                                                            <label>&#${loopCounter.index + 65}; )</label>

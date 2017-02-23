@@ -72,7 +72,7 @@ public class AssessmentController
                     
             if(sData != null)
             {
-                Page<Assessment> asmtsPage = assessmentManager.getAssessmentsByUserId( sData.getUser().getId(), pageable );
+                Page<Assessment> asmtsPage = assessmentManager.getAssignedAssessments( sData.getUser().getId(), pageable );
                     
                 model.addObject( "assessmentsPage", asmtsPage );
             }
@@ -152,10 +152,7 @@ public class AssessmentController
         return model;
         
     }
-    
 
-    
-   
     
     /*******************************************************
      * 

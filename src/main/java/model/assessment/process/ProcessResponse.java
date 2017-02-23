@@ -39,7 +39,7 @@ public class ProcessResponse
     // *********************************************    
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="process_id")
-    private Process process;
+    private AssessmentProcess process;
     // *********************************************    
     
     // *********************************************
@@ -90,12 +90,12 @@ public class ProcessResponse
     }
  
     
-    public Process getProcess()
+    public AssessmentProcess getProcess()
     {
         return process;
     }
 
-    public void setProcess( Process process )
+    public void setProcess( AssessmentProcess process )
     {
         this.process = process;
         

@@ -106,11 +106,48 @@
                                           </td>
                                         </tr>
                                         <tr>
+                                          <c:set var="asmt_status" value="${process.assessment.status }"/>
+                                          <c:set var="process_state" value="${process.state }"/>
+                                          <c:if test="${process.assessment.endDate < now }"><c:set var="asmt_status" value="2"/></c:if>
+                                          <c:choose>
+                                            <c:when test="${asmt_status == 2}"><c:set var="status_color" value="warning"/></c:when>
+                                            <c:when test="${asmt_status == 3}"><c:set var="status_color" value="danger"/></c:when>
+                                            <c:otherwise>
+                                              <c:choose>
+                                                <c:when test="${process_state == 2}">
+                                                    <c:set var="asmt_status" value="5"/>
+                                                    <c:set var="status_color" value="danger"/>
+                                                </c:when>
+                                                <c:when test="${process_state == 3}">
+                                                    <c:set var="asmt_status" value="4"/>
+                                                    <c:set var="status_color" value="success"/>
+                                                </c:when>
+                                                <c:otherwise><c:set var="status_color" value=""/></c:otherwise>
+                                              </c:choose>
+                                            </c:otherwise>
+                                          </c:choose>
+                                          <th scope="row" ><spring:message code="label.data.status" />:</th>
+                                          <td  class="${status_color}">
+                                          
+                                          State= ${process_state}
+                                                ${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status, locale)}
+                                          </td>
+                                        </tr>
+                                        <tr>
                                           <th scope="row" ></th>
-                                          <td><a href="asmt_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
+                                          <td>
+                                            <c:if test="${asmt_status == 1 }">
+                                              <a href="asmt_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
                                                 <i class="fa fa-clock-o"></i>&nbsp;
                                                 <spring:message code="label.assessment.start"/>
                                                </a> 
+                                             </c:if>
+                                            <c:if test="${asmt_status == 5 }">
+                                              <a href="asmt_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
+                                                <i class="fa fa-clock-o"></i>&nbsp;
+                                                <spring:message code="label.action.resume"/>
+                                               </a> 
+                                             </c:if>
                                            </td>
                                         </tr>
                                       </tbody>

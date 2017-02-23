@@ -79,7 +79,8 @@ common.utils.system.SystemUtils"%>
                                                 <th><spring:message code="label.assessment.type" /></th>
                                                 <th><spring:message code="label.date.start" /></th>
                                                 <th><spring:message code="label.date.end" /></th>
-                                                <th colspan="2"></th>
+                                                <th><spring:message code="label.data.status" /></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -88,12 +89,18 @@ common.utils.system.SystemUtils"%>
                                         <c:forEach var="assessment" items="${assessmentsPage.content}" varStatus="loopCounter">
                                             <c:set var="asmt_status" value="${assessment.status }"/>
                                             <c:if test="${assessment.endDate < now }"><c:set var="asmt_status" value="2"/></c:if>
-                                            <tr class="${assessment.status == 1 ? '' : 'warning'}">
+                                            <c:choose>
+                                                <c:when test="${asmt_status == 2}"><c:set var="status_color" value="warning"/></c:when>
+                                                <c:when test="${asmt_status == 3}"><c:set var="status_color" value="danger"/></c:when>
+                                                <c:otherwise><c:set var="status_color" value=""/></c:otherwise>
+                                            </c:choose>
+                                            <tr class="${status_color}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><c:out value="${assessment.name}"/></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
+                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status,locale)}</td>
                                                 <td class="col-md-1">
                                                     <c:if test="${asmt_status == 1 }">
                                                         <a href="asmt_process_init.do?assessment_id=${assessment.id}" 
