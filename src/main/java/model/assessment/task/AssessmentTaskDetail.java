@@ -16,8 +16,8 @@ public class AssessmentTaskDetail
     @Column(name = "id")
     private long id;
     
-    @Column(name = "item_grade")
-    private float itemGrade = 0;
+    @Column(name = "item_grade_ratio")
+    private float itemGradeRatio = 0;
     
     @Column(name = "item_detail")
     private String itemDetail;
@@ -36,16 +36,16 @@ public class AssessmentTaskDetail
     }
 
 
-    public float getItemGrade()
+    public float getItemGradeRatio()
     {
-        return itemGrade;
+        return itemGradeRatio;
     }
 
-
-    public void setItemGrade( float itemGrade )
+    public void setItemGradeRatio( float itemGradeRatio )
     {
-        this.itemGrade = itemGrade;
+        this.itemGradeRatio = itemGradeRatio;
     }
+
 
     public String getItemDetail()
     {

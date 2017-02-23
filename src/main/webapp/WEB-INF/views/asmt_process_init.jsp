@@ -37,7 +37,7 @@
 </head>
 <!-- ***************************** -->
 <c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
-<c:set var="responses" value="${process.responses}"/>
+<c:set var="taskCount" value="${process.taskIds.size()}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 <!-- ***************************** -->
 
@@ -93,7 +93,7 @@
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.asmt.task.count" />:</th>
-                                          <td><c:out value="${responses.size()}"/></td>
+                                          <td><c:out value="${taskCount}"/></td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.assessment.maxgrade" />:</th>

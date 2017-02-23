@@ -68,14 +68,14 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
-    public AssessmentTaskDetail createTaskDetails( String itemDetail, float itemGrade)
+    public AssessmentTaskDetail createTaskDetails( String itemDetail, float itemGradeRatio)
     {
         AssessmentTaskDetail taskDetails = null;
         
         try 
         {
             taskDetails = new AssessmentTaskDetail();
-            taskDetails.setItemGrade( itemGrade );
+            taskDetails.setItemGradeRatio( itemGradeRatio );
             taskDetails.setItemDetail( itemDetail );
         }
         catch(Exception e) 

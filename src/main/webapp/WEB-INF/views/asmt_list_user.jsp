@@ -99,7 +99,7 @@ common.utils.system.SystemUtils"%>
                                                         <a href="asmt_process_init.do?assessment_id=${assessment.id}" 
                                                              class="btn btn-primary btn-xs" role="button">
                                                             <i class="fa fa-clock-o"></i>&nbsp;
-                                                                <spring:message code="label.assessment.start"/>
+                                                                <spring:message code="label.assessment.take"/>
                                                         </a>
                                                     </c:if>
                                                 </td>

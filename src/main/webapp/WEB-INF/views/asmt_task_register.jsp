@@ -201,7 +201,7 @@
                                                     <tr>
                                                         <td id="dvIndex" class="col-md-1">1</td>
                                                         <td class="col-md-2">
-                                                            <input class="form-control input-sm" type="text" value="0" id="txItemGrade" name="details[0].itemGrade"></td>
+                                                            <input class="form-control input-sm" type="text" value="0" id="txItemGradeRatio" name="details[0].itemGradeRatio"></td>
                                                         <td><input class="form-control input-sm" type="text" id="txItemDetail" name="details[0].itemDetail"></td>
                                                         <td><button class="btn btn-danger btn-remove btn-xs" type="button">
                                                              <i class="fa fa-close"></i></button>
@@ -212,7 +212,7 @@
                                                   <tr>
                                                         <td id="dvIndex" class="col-md-1">1</td>
                                                         <td class="col-md-2">
-                                                            <input class="form-control input-sm" type="text" value="${detail.itemGrade }" id="txItemGrade" name="details[${loopCounter.index }].itemGrade"></td>
+                                                            <input class="form-control input-sm" type="text" value="${detail.itemGrade }" id="txItemGradeRatio" name="details[${loopCounter.index }].itemGradeRatio"></td>
                                                         <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetails" name="details[${loopCounter.index }].itemDetails"></td>
                                                         <td><button class="btn btn-danger btn-remove btn-xs" type="button">
                                                             <i class="fa fa-close"></i></button>
@@ -345,7 +345,7 @@
             $('#tbTaskDetails > tbody  > tr').each(function(rowIndex) 
             {
             	$(this).find("#dvIndex").html(rowIndex + 1);
-            	$(this).find("#txItemGrade").attr('name','details['+rowIndex+'].itemGrade');
+            	$(this).find("#txItemGradeRatio").attr('name','details['+rowIndex+'].itemGradeRatio');
                 $(this).find("#txItemDetail").attr('name','details['+rowIndex+'].itemDetail');
             }); 
         }

@@ -29,6 +29,7 @@ import model.assessment.Assessment;
 import model.assessment.options.TaskFormOptions;
 import model.assessment.process.Process;
 import model.assessment.process.ProcessResponse;
+import model.assessment.process.ProcessResponseDetail;
 import model.assessment.process.ProcessState;
 import model.assessment.task.AssessmentTask;
 import model.identity.User;
@@ -80,22 +81,34 @@ public class AssessmentManagerImpl implements AssessmentManager
         }
         else
         {
-            Process process = createAssessmentProcess();
-            process.setAssessment( assessment );
-            process.setTaskIds( taskDAO.getRandomIdByAssessmentId( assessment.getId() ) );
-            process.setState( ProcessState.Ready.getId() );
+            Process process = processDAO.getByAssessmentId( assessmentId );
             
-            return process;
+            if(process == null)
+            {
+                process = createAssessmentProcess();
+                process.setAssessment( assessment );
+            }
+            
+            if(process.getState() != ProcessState.Finished.getId() )
+            {
+                process.setState( ProcessState.Ready.getId() );
+                process.setTaskIds( taskDAO.getRandomIdByAssessmentId( assessment.getId() ) );
+                return process;
+            }
+            else
+            {
+                throw new AccessDeniedException("Assessment Test is not allowed."); 
+            }
         }
-
     }
     
     
-    /**************************************************
+    /**
+     * @throws TimeExpiredException ************************************************
      * 
      */
     @Override
-    public ProcessResponse startProcess( Process process, ProcessResponse processResponse , int nextTaskIndex)
+    public ProcessResponse startProcess( Process process, ProcessResponse processResponse , int nextTaskIndex) throws TimeExpiredException
     {
         ProcessResponse response = null;
         
@@ -114,24 +127,31 @@ public class AssessmentManagerImpl implements AssessmentManager
             else
             {
                 process.setEndDate( new Date(System.currentTimeMillis()) );
-                process.addProcessResponse( processResponse );
                 processDAO.save( process );
+                
+                processResponse.setProcess( process );
+                
+                if(!CollectionUtils.isEmpty( processResponse.getDetails() ))
+                {
+                    processResponseDAO.save( processResponse );
+                }
             }
             
             //*******************************************************
-    
-            response = processResponseDAO.getByTaskId( getTaskIdByIndex(nextTaskIndex, process) );
+            response = processResponseDAO.getByProcessAndTaskId( process.getId(), getTaskIdByIndex(nextTaskIndex, process) );
             
             if(response == null)
             {
                 response = new ProcessResponse(); 
-                response.setTask( getTaskByIndex(nextTaskIndex, process ) ); 
             }
+            
+            response.setTask( getTaskByIndex(nextTaskIndex, process ) ); 
         }
         catch ( TimeExpiredException e )
         {
-            endProcess( process);
             logger.error( e.toString(), e );
+            
+            throw e;
         }
         catch(Exception e)
         {
@@ -143,15 +163,16 @@ public class AssessmentManagerImpl implements AssessmentManager
     }
     
 
-    
     /**************************************************
      * 
      */
     @Override
-    public Process endProcess( Process process)
+    public Process endProcess( Process process , ProcessResponse processResponse)
     {
         process.setState( ProcessState.Finished.getId() );
         process.setEndDate( new Date(System.currentTimeMillis()) );
+        processResponse.setProcess( process );
+        processResponseDAO.save( processResponse );
         
         return processDAO.save( process );
     }
@@ -160,9 +181,15 @@ public class AssessmentManagerImpl implements AssessmentManager
     /**************************************************
      * 
      */
-    private long getTaskIdByIndex( int taskIndexm, Process process )
+    private long getTaskIdByIndex( int taskIndex, Process process )
     {
-        return process.getTaskIds().get( taskIndexm );
+        if(taskIndex >= process.getTaskIds().size())
+        {
+            taskIndex = process.getTaskIds().size() - 1;
+            return process.getTaskIds().get( taskIndex ); 
+        }
+        else
+            return process.getTaskIds().get(taskIndex);
     }
     
     
@@ -172,6 +199,20 @@ public class AssessmentManagerImpl implements AssessmentManager
     private AssessmentTask getTaskByIndex( int taskIndexm, Process process )
     {
         return taskDAO.getByTaskId( getTaskIdByIndex(taskIndexm, process) );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    private float calculateGrade( float percentage, float grade )
+    {
+        if(percentage == 0 || grade == 0 )
+            return 0;
+        else
+        {
+            return (percentage*grade)/100;
+        }
     }
     
     

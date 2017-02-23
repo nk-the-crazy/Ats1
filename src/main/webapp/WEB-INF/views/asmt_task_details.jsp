@@ -157,7 +157,7 @@
                                                 <c:forEach var="detail" items="${task.details}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${loopCounter.count }</td>
-                                                        <td class="col-md-2"><c:out value="${detail.itemGrade}"/></td>
+                                                        <td class="col-md-2"><c:out value="${detail.itemGradeRatio}"/></td>
                                                         <td><c:out value="${detail.itemDetail}"/></td>
                                                     </tr>
                                                 </c:forEach>

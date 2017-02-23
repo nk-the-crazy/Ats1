@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import common.exceptions.assessment.TimeExpiredException;
 import model.assessment.Assessment;
 import model.assessment.process.Process;
 import model.assessment.process.ProcessResponse;
@@ -34,9 +35,9 @@ public interface AssessmentManager
 
     Process initProcess( long assessmentId, long userId );
     
-    ProcessResponse startProcess( Process assessmentProcess, ProcessResponse processResponse, int nextTaskIndex );
+    ProcessResponse startProcess( Process assessmentProcess, ProcessResponse processResponse, int nextTaskIndex ) throws TimeExpiredException;
     
-    Process endProcess( Process process );
+    Process endProcess( Process process, ProcessResponse processResponse );
 
     Assessment createAssessment( String name, Date startDate, Date endDate, int time, int type );
 

@@ -48,7 +48,7 @@ public class AssessmentRestController
     {
         try 
         {
-            assessmentManager.endProcess( null );
+            assessmentManager.endProcess( null , null );
             return "";
         }
         catch(Exception e) 

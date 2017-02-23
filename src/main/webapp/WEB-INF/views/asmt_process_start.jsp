@@ -14,7 +14,6 @@ model.common.session.SessionData" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- ************************************* -->
 
@@ -49,8 +48,8 @@ model.common.session.SessionData" %>
 <c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
 <c:set var="taskCount" value="${process.taskIds.size()}"/>
 <c:set var="taskIndex" value="${(param.taskIndex + 1) >= taskCount ? taskCount - 1 : param.taskIndex}"/>
-<c:set var="task" value="${processResponse.task}"/>
-<c:set var="taskDetails" value="${task.details}"/>
+<c:set var="task" value="${requestScope.processResponse.task}"/>
+<c:set var="taskDetails" value="${task.detailsRandom}"/>
 <c:set var="processTime" value="${process.assessment.time}"/>
 
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
@@ -81,16 +80,26 @@ model.common.session.SessionData" %>
 									<h2><spring:message code="label.page.assessment_start.title"/>
                                      &nbsp;&nbsp;-&nbsp;&nbsp;${process.assessment.name}</h2>
                                      <div class="btn-group pull-right">
-                                      <a href="asmt_end_process.do" role="button" class="btn btn-primary btn-xs">
-                                        <i class="fa fa-check-square-o"></i>&nbsp;
-                                        <spring:message code="label.assessment.end"/></a>
+                                      <button type="button" class="btn btn-primary btn-xs" onclick="endAssessmentProcess()">
+                                        <i class="fa fa-check-square-o"></i>&nbsp;                  
+                                        <spring:message code="label.assessment.end"/></button>
                                     </div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
+                                  <!-- ---------------------- -->
+                                  <c:if test="${requestScope.errorMessage != null}">
+                                      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                           <spring:message code="${requestScope.errorMessage}"/>
+                                      </div>
+                                  </c:if>
+                                  <!-- ---------------------- -->
                                    <div class="col-md-12">
-                                   <form action="asmt_process_start.do" method="post">
-                                    <input type="hidden" name="taskIndex" value="${taskIndex+1}">
+                                   <form method="POST" id="processResponse" name="processResponse" action="asmt_process_start.do">
+                                    <input type="hidden" name="taskIndex" value="${taskIndex+1}" id="inpTaskIndex">
+                                    <input type="hidden" name="taskState" value="2" id="inpTaskState">
+                                    <input type="hidden" name="id"      value="${processResponse.id}">
+                                    <input type="hidden" name="task.id" value="${processResponse.task.id}">
                                     <table class="table table-bordered dataTable">
                                       <thead>
                                         <tr>
@@ -133,16 +142,22 @@ model.common.session.SessionData" %>
                                                <c:choose>
                                                   <%-- Single Choice --%>
                                                   <c:when test="${task.modeType == 1}">
+                                                  <c:if test="${(not empty processResponse.details[0].id) && loopCounter.index == 0}">
+                                                    <input type="hidden" name="details[0].id" value="${processResponse.details[0].id}">
+                                                  </c:if>
+                                                  <div class="input-item-detail">
                                                      <div class="radio">
-                                                        <label><input type="radio" name="details[0].taskDetail.id" value="${taskDetail.id}"/>
+                                                        <label><input ${processResponse.details[0].taskDetail.id == taskDetail.id ? 'checked=checked' : ''} 
+                                                                type="radio" name="details[0].taskDetail.id" value="${taskDetail.id}"/>
                                                           &#${loopCounter.index + 65}; ) ${taskDetail.itemDetail }</label>
+                                                      </div>
                                                       </div>
                                                   </c:when>
                                                   <%-- Multiple Choice --%>
                                                   <c:when test="${task.modeType == 2}">
                                                      <div class="checkbox">
                                                         <label>
-                                                          <input type="checkbox"  name="optionsRadios" value="">
+                                                          <input type="checkbox" name="details.taskDetail.id" value="${taskDetail.id}">
                                                           &#${loopCounter.index + 65}; ) ${taskOption.itemOption }</label>
                                                      </div>
                                                   </c:when>
@@ -173,18 +188,17 @@ model.common.session.SessionData" %>
                                           <th scope="row" ></th>
                                           <td><button type="submit" id="btnNextStep" class="btn btn-success btn-xs">
                                                 <i class="fa fa-share"></i>&nbsp;
-                                                <spring:message code="label.asmt.task.response.save"/>
+                                                <spring:message code="label.asmt.task.response.save.next"/>
                                                </button> 
                                           </td>
                                           <td >
                                           </td>
                                           <td colspan="3">
                                             <div class="pull-right" style="display:inline;">
-                                                 <a href="asmt_start_process.do?taskIndex=${taskIndex + 1 }" 
-                                                    role="button" id="btnNextStep" class="btn btn-primary btn-xs">
+                                                 <button type="submit" id="btnNextStep" class="btn btn-primary btn-xs" onclick="setTaskIndex()">
                                                     <spring:message code="label.action.jump"/>
-                                                </a>
-                                                 <select id="assessment-type" class="input-select-sm" name="assessmentType" style="border: 1px solid grey;">
+                                                </button>
+                                                 <select id="selTaskIndex" class="input-select-sm" style="border: 1px solid grey;">
                                                     <c:forEach begin="0" end="${taskCount - 1}"  var="item"> 
                                                         <option ${item == taskIndex ? 'selected="selected"' : ''}
                                                         value="${item}">${item + 1}</option>
@@ -225,6 +239,21 @@ model.common.session.SessionData" %>
 	
     <!-- Custom Theme Scripts -->
     <script src="resources/js/custom.min.js"></script>
+    <script>
+    
+    function setTaskIndex()
+    {
+    	$('#inpTaskIndex').val($('#selTaskIndex').val());
+    }
+    
+    function endAssessmentProcess()
+    {
+        $('#inpTaskState').val(3);
+        $('#processResponse').attr("action", "asmt_process_end.do");
+        $("#processResponse").submit();
+    }
+    
+    </script>
     
     <!-- Timer -->
     <script type="text/javascript" src="resources/lib/jquery.countdown-2.2.0/jquery.countdown.js"></script>

@@ -56,9 +56,7 @@ public class Process
     @OneToMany(mappedBy="process" , cascade = CascadeType.ALL, fetch = FetchType.LAZY )
     private List<ProcessResponse> responses = new ArrayList<ProcessResponse>();
     // *********************************************    
-    
-    
-    // *********************************************
+
     @Transient
     List<Long> taskIds;
  

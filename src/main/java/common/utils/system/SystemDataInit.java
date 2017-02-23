@@ -230,7 +230,7 @@ public class SystemDataInit
         {
             Date startDate = DateUtils.addDays( new Date(System.currentTimeMillis()), -1 );
             Date endDate = DateUtils.addDays( new Date(System.currentTimeMillis()), x );
-            Assessment asmt =  assessmentManager.createAssessment( "New Assessment-"+x, startDate , endDate,3 , 2 );
+            Assessment asmt =  assessmentManager.createAssessment( "New Assessment-"+x, startDate , endDate,10 , 2 );
             
             asmt.setAuthor( identityManager.getUser( 1 ) );
             
