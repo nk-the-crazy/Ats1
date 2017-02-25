@@ -150,8 +150,9 @@
                                                   <th scope="row" class="col-md-3">
                                                     <label class="control-label" for="assessment-maxgrade">
                                                     <spring:message code="label.assessment.maxgrade" />:</label></th>
-                                                  <td class="col-md-5"><input type="text" id="assessment-maxgrade" name="maxgrade" value="${assessment.maxGrade}"
-                                                        class="form-control input-sm" required="required">
+                                                  <td class="col-md-5"><input type="text" id="assessment-maxgrade" name="maxgrade" 
+                                                      value="${empty assessment.maxGrade ? '100' : assessment.maxGrade}"
+                                                      class="form-control input-sm" required="required">
                                                   </td>
                                                 </tr>
                                                 <tr>
@@ -159,7 +160,8 @@
                                                     <label class="control-label-required" for="assessment-time">
                                                     <spring:message code="label.date.time" /> (<spring:message code="label.date.time.minutes" />):
                                                     </label></th>
-                                                  <td class="col-md-5"><input type="text" id="assessment-time" name="time" value="${assessment.time}"
+                                                  <td class="col-md-5"><input type="text" id="assessment-time" name="time" 
+                                                      value="${empty assessment.time ? '10' : assessment.time}"
                                                         class="form-control input-sm" required="required">
                                                   </td>
                                                 </tr>

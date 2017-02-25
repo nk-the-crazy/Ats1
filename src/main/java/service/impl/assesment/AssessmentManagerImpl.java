@@ -4,6 +4,7 @@ package service.impl.assesment;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
@@ -29,9 +30,12 @@ import model.assessment.Assessment;
 import model.assessment.options.TaskFormOptions;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
+import model.assessment.process.ProcessResponseDetail;
 import model.assessment.process.ProcessState;
 import model.assessment.task.AssessmentTask;
+import model.assessment.task.AssessmentTaskDetail;
 import model.identity.User;
+import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
 
 
@@ -66,9 +70,9 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public AssessmentProcess initProcess(long assessmentId, long userId)
+    public AssessmentProcess initProcess(long assessmentId, User user)
     {
-        Assessment assessment = assessmentDAO.getByIdAndUserId( assessmentId, userId );
+        Assessment assessment = assessmentDAO.getByIdAndUserId( assessmentId, user.getId() );
         
         if(assessment == null)
         {
@@ -80,30 +84,28 @@ public class AssessmentManagerImpl implements AssessmentManager
         }
         else
         {
-            AssessmentProcess process = processDAO.getByAssessmentAndUserId( assessmentId, userId );
+            AssessmentProcess process = processDAO.getByAssessmentAndUserId( assessmentId, user.getId() );
             
             if(process == null)
             {
                 process = createAssessmentProcess();
                 process.setAssessment( assessment );
+                process.setUser( user );
                 process.setState( ProcessState.Ready.getId() );
             }
             
             if(process.getState() != ProcessState.Finished.getId() )
             {
                 process.setTaskIds( taskDAO.getRandomIdByAssessmentId( assessment.getId() ) );
-                return process;
             }
-            else
-            {
-                throw new AccessDeniedException("Assessment Test is not allowed."); 
-            }
+            
+            return process;
         }
     }
     
     
-    /**
-     * @throws TimeExpiredException ************************************************
+    /* ************************************************
+     * @throws TimeExpiredException 
      * 
      */
     @Override
@@ -113,8 +115,16 @@ public class AssessmentManagerImpl implements AssessmentManager
         
         try
         {
+            if(process.getState() == ProcessState.Finished.getId())
+            {
+                throw new TimeExpiredException("Process already finished (Test passed):"+ process.getAssessment().getName());
+            }
+            
             if(isTimeExpired( process.getAssessment().getTime(), process.getEndDate() ))
             {
+                //-----End Process if time expired -------------
+                endProcess(process, null);
+                //----------------------------------------------
                 throw new TimeExpiredException("Time is expired for Assessment:"+ process.getAssessment().getName());
             }
 
@@ -122,20 +132,32 @@ public class AssessmentManagerImpl implements AssessmentManager
             if(process.getState() == ProcessState.Ready.getId() )
             {
                 process.setState( ProcessState.Started.getId() );
+                processDAO.save( process );
             }
             else
             {
                 process.setEndDate( new Date(System.currentTimeMillis()) );
                 processDAO.save( process );
                 
-                
                 if(!CollectionUtils.isEmpty( processResponse.getDetails() ))
                 {
-                    //processResponseDAO.removeResponseDetails( processResponse.getId() );
                     if(processResponse.getId() > 0)
                         processResponseDAO.delete( processResponse.getId() );
                     
-                    processResponse.setProcess( process );
+                    Iterator<ProcessResponseDetail> itr = processResponse.getDetails().iterator();
+                    
+                    while (itr.hasNext()) 
+                    {
+                        ProcessResponseDetail responseDetail = itr.next();
+                        if(responseDetail.getTaskDetail() == null) 
+                            itr.remove();
+                        else
+                            responseDetail.setGrade( calculateGrade( process.getCurrentTask() , 
+                                                                     responseDetail.getTaskDetail().getId() ));   
+                    }
+                   
+                    
+                    processResponse.setProcessLazy( process );
                     processResponseDAO.save( processResponse );
                 }
             }
@@ -148,7 +170,10 @@ public class AssessmentManagerImpl implements AssessmentManager
                 response = new ProcessResponse(); 
             }
             
-            response.setTask( getTaskByIndex(nextTaskIndex, process ) ); 
+            AssessmentTask task = getTaskByIndex(nextTaskIndex, process );
+            
+            process.setCurrentTask( task );
+            response.setTask( task ); 
         }
         catch ( TimeExpiredException e )
         {
@@ -166,18 +191,21 @@ public class AssessmentManagerImpl implements AssessmentManager
     }
     
 
-    /**************************************************
+    /* *********************************
      * 
      */
     @Override
-    public AssessmentProcess endProcess( AssessmentProcess process , ProcessResponse processResponse)
+    public void endProcess( AssessmentProcess process , ProcessResponse processResponse)
     {
+        if(!CollectionUtils.isEmpty( processResponse.getDetails() ))
+        {
+            //processResponse.setProcess( process );
+            //processResponseDAO.save( processResponse );
+        }
+        
         process.setState( ProcessState.Finished.getId() );
         process.setEndDate( new Date(System.currentTimeMillis()) );
-        processResponse.setProcess( process );
-        processResponseDAO.save( processResponse );
-        
-        return processDAO.save( process );
+        process = processDAO.save( process );
     }
     
     
@@ -217,6 +245,28 @@ public class AssessmentManagerImpl implements AssessmentManager
         {
             return (percentage*grade)/100;
         }
+    }
+    
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public float calculateGrade( AssessmentTask task , long taskDetailId)
+    {
+        AssessmentTaskDetail detail = null;
+        
+        for(AssessmentTaskDetail sdetail: task.getDetails())
+        {
+            if(sdetail.getId() == taskDetailId)
+            {
+                detail = sdetail;
+                break;
+            }
+        }
+        
+        return calculateGrade( detail == null ? 0 : detail.getItemGradeRatio(), task.getItemGrade() );
     }
     
     
@@ -377,7 +427,7 @@ public class AssessmentManagerImpl implements AssessmentManager
     @Override
     public Page<Assessment> getAssignedAssessments( long userId, Pageable pageable )
     {
-        return assessmentDAO.getByUserId( userId, pageable ); 
+        return assessmentDAO.getAssignedByUserId( userId, pageable ); 
     }
     
 
@@ -388,6 +438,24 @@ public class AssessmentManagerImpl implements AssessmentManager
     public Page<Assessment> getAssessmentsByDetails( String assessmentName, Date startDateFrom , short assessmentType, Pageable pageable )
     {
         return assessmentDAO.getByDetails(assessmentName, startDateFrom, assessmentType, pageable);
+    }
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentResult getAssessmentResult( long processId )
+    {
+        return processDAO.getResultById( processId );
+    }
+    
+    
+    @Override
+    public Page<Object> getAssessmentResults( String lastName, Date startDateFrom, Pageable pageable )
+    {
+        // TODO Auto-generated method stub
+        return processDAO.getResults( lastName, startDateFrom, pageable );
     }
 
 
@@ -462,5 +530,6 @@ public class AssessmentManagerImpl implements AssessmentManager
         
         return null;
     }
+
 
 }

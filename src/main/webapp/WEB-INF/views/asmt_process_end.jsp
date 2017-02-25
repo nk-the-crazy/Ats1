@@ -19,7 +19,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.assessment_end.title"/></title>
+<title><spring:message code="label.page.asmt_process_end.title"/></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css"
@@ -36,8 +36,8 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 </head>
 <!-- ***************************** -->
-<c:set var="process" value="${requestScope.assessmentProcess}"/>
-<c:set var="tasks" value="${process.tasks}"/>
+<c:set var="process" value="${assessmentResult.process}"/>
+<c:set var="assessment" value="${process.assessment}"/>
 <c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
 <!-- ***************************** -->
 
@@ -61,7 +61,7 @@
 						<div class="col-md-8 col-sm-8 col-xs-8">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2><spring:message code="label.page.assessment_end.title"/></h2>
+									<h2><spring:message code="label.page.asmt_process_end.title"/></h2>
                                     
 									<div class="clearfix"></div>
 								</div>
@@ -77,29 +77,52 @@
                                       <tbody>
                                         <tr>
                                           <th scope="row" class="col-md-2"><spring:message code="label.assessment.name" />:</th>
-                                          <td colspan="3"><c:out value="${process.assessment.name}"/></td>
+                                          <td colspan="3"><c:out value="${assessment.name}"/></td>
                                         </tr>
-                                        <tr>
-                                          <th scope="row" class="col-md-2 success"><spring:message code="label.date.time" />:</th>
-                                          <td class="col-md-4"><c:out value="${process.assessment.time}"/>&nbsp;&nbsp;
-                                            <spring:message code="label.date.time.minutes" />
-                                          </td>
-                                          <th scope="row" class="col-md-2 success"><spring:message code="label.date.time.elapsed" />:</th>
-                                          <td class="col-md-4"><c:out value="${StringUtils.millisToDetails(process.timeElapsed)}"/>&nbsp;&nbsp;
-                                            <spring:message code="label.date.time.minutes" />
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row"><spring:message code="label.asmt.task.count" />:</th>
-                                          <td><c:out value="${tasks.size()}"/></td>
-                                          <th scope="row"><spring:message code="label.asmt.task.respond" />:</th>
-                                          <td><c:out value="${tasks.size()}"/></td>
-                                        </tr>
+                                        <thead>
+                                            <tr>
+                                                <th colspan="4"></th>
+                                            </tr>
+                                      </thead>
                                         <tr>
                                           <th scope="row" ><spring:message code="label.date.start" /></th>
                                           <td><fmt:formatDate pattern="${dateTimeFormatShort }" value="${process.startDate}" /></td>
                                           <th scope="row" ><spring:message code="label.date.end" /></th>
                                           <td><fmt:formatDate pattern="${dateTimeFormatShort }" value="${process.endDate}" /></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                          <th scope="row" class="col-md-3"><spring:message code="label.date.time" />:</th>
+                                          <td class="col-md-4"><c:out value="${assessment.time}"/>&nbsp;&nbsp;
+                                            <spring:message code="label.date.time.minutes" />
+                                          </td>
+                                          <th scope="row" class="col-md-2"><spring:message code="label.date.time.elapsed" />:</th>
+                                          <td class="col-md-4"><c:out value="${StringUtils.millisToDetails(process.timeElapsed)}"/>&nbsp;&nbsp;
+                                            <spring:message code="label.date.time.minutes" />
+                                          </td>
+                                        </tr>
+                                         <thead>
+                                            <tr>
+                                                <th colspan="4"></th>
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                          <th scope="row" class="col-md-2 success"><spring:message code="label.asmt.task.count"/> :</th>
+                                          <td>${assessmentResult.taskCount }</td>
+                                          <th scope="row" class="col-md-2 success"><spring:message code="label.asmt.task.respond" />:</th>
+                                          <td>${assessmentResult.responseCount }</td>
+                                        </tr>
+                                        <tr>
+                                          <th scope="row" class="col-md-2 success"><spring:message code="label.assessment.maxgrade" />:</th>
+                                          <td>${assessment.maxGrade}</td>
+                                          <th scope="row" class="col-md-2 success"><spring:message code="label.assessment.score" />:</th>
+                                          <td><c:out value="${assessmentResult.score}"/></td>
+                                        </tr>
+                                        <tr>
+                                          <th scope="row" class="col-md-2 success"><spring:message code="label.asmt.result.item.count.true"/>:</th>
+                                          <td>${assessmentResult.rightResponseCount }</td>
+                                          <th scope="row" class="col-md-2 success"><spring:message code="label.asmt.result.item.count.false" />:</th>
+                                          <td>${assessmentResult.responseCount - assessmentResult.rightResponseCount}</td>
                                         </tr>
                                       </tbody>
                                     </table>

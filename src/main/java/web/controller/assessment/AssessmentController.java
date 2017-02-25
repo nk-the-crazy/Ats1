@@ -206,15 +206,38 @@ public class AssessmentController
     }
     
     
-
     /*******************************************************
      * 
      */
-    @RequestMapping("/asmt_results_user.vw")
-    public String assessmentUserResultsView(Model model)
-    {
-        return ModelView.VIEW_ASMT_RESULTS_USER_PAGE;
+    @RequestMapping( value = "/asmt_results_user.vw")
+    public ModelAndView getAssessmentList(  @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
+                                            String lastName, 
+                                            @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
+                                            String startDateFromStr, 
+                                            @RequestParam( name = "startDateTo" , defaultValue = "01.01.2020", required = false ) 
+                                            String startDateToStr,
+                                            Pageable pageable )
+    {         
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+            
+        try
+        {
+            Date startDateFrom = StringUtils.stringToDate( startDateFromStr );
+            //Date startDateTo = StringUtils.stringToDate( startDateToStr );
+            
+            Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,pageable );
+                    
+            model.addObject( "resultsPage", resultsPage );
+            model.setViewName( ModelView.VIEW_ASMT_RESULTS_USER_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting Assessment result list:", e );        
+            model.addObject( "errorData", e );
+        }
+        
+        return model;
     }
     
-    
+
 }

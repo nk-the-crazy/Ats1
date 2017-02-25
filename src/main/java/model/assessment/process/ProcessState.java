@@ -4,7 +4,7 @@ public enum ProcessState
 {
     Ready(1),
     Started(2),
-    Finished(4);
+    Finished(3);
 
     private final static int groupId = 3;
     private int id;

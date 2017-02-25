@@ -42,4 +42,4 @@ public interface ProcessResponseDAO extends JpaRepository<ProcessResponse, Long>
             + " WHERE pr.id=:responseId ) ")
     void removeResponseDetails( @Param("responseId") long responseId);
 
-   }
+     }

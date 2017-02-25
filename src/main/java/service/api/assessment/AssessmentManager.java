@@ -13,6 +13,7 @@ import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
 import model.assessment.task.AssessmentTask;
 import model.identity.User;
+import model.report.assessment.AssessmentResult;
 
 
 public interface AssessmentManager
@@ -33,11 +34,11 @@ public interface AssessmentManager
 
     Object getAssessmentDetails( long assessmentId );
 
-    AssessmentProcess initProcess( long assessmentId, long userId );
+    AssessmentProcess initProcess( long assessmentId, User user );
     
     ProcessResponse startProcess( AssessmentProcess assessmentProcess, ProcessResponse processResponse, int nextTaskIndex ) throws TimeExpiredException;
     
-    AssessmentProcess endProcess( AssessmentProcess process, ProcessResponse processResponse );
+    void endProcess( AssessmentProcess process, ProcessResponse processResponse );
 
     Assessment createAssessment( String name, Date startDate, Date endDate, int time, int type );
 
@@ -55,5 +56,9 @@ public interface AssessmentManager
 
     Page<Assessment> getAssignedAssessments( long userId, Pageable pageable );
 
-    
+    float calculateGrade( AssessmentTask task, long taskDetailId );
+
+    AssessmentResult getAssessmentResult( long processId );
+
+    Page<Object> getAssessmentResults( String lastName, Date startDateFrom, Pageable pageable );
 }

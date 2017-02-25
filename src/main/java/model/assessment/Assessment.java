@@ -1,9 +1,7 @@
 package model.assessment;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -95,7 +93,7 @@ public class Assessment
     
     // *********************************************
     @OneToMany(mappedBy="assessment" ,fetch = FetchType.LAZY )
-    private List<AssessmentProcess> processes = new ArrayList<AssessmentProcess>();
+    private Set<AssessmentProcess> processes = new HashSet<AssessmentProcess>();
     // *********************************************    
 
     
@@ -268,13 +266,13 @@ public class Assessment
     }
 
 
-    public List<AssessmentProcess> getProcesses()
+    public Set<AssessmentProcess> getProcesses()
     {
         return processes;
     }
 
 
-    public void setProcesses( List<AssessmentProcess> processes )
+    public void setProcesses( Set<AssessmentProcess> processes )
     {
         this.processes = processes;
     }

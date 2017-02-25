@@ -181,11 +181,11 @@ public class SystemDataInit
                 if(x < 10)
                 {
                     task1 = createDefaultTasks(x , 1) ;
-                    task2 = createDefaultTasks(x+1, 1) ;
+                    task2 = createDefaultTasks(x+1, 2) ;
                 }
                 else
                 {
-                    task1 = createDefaultTasks(x , 2) ;
+                    task1 = createDefaultTasks(x , 1) ;
                     task2 = createDefaultTasks(x+1, 2) ;
                 }
                 

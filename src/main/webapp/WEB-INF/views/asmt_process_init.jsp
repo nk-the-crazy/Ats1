@@ -19,7 +19,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.assessment_init.title"/></title>
+<title><spring:message code="label.page.asmt_process_init.title"/></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css"
@@ -61,7 +61,7 @@
 						<div class="col-md-6 col-sm-6 col-xs-6">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2><spring:message code="label.page.assessment_init.title"/></h2>
+									<h2><spring:message code="label.page.asmt_process_init.title"/></h2>
                                     
 									<div class="clearfix"></div>
 								</div>
@@ -130,6 +130,7 @@
                                           <td  class="${status_color}">
                                           
                                           State= ${process_state}
+                                          =Status= ${asmt_status}
                                                 ${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status, locale)}
                                           </td>
                                         </tr>

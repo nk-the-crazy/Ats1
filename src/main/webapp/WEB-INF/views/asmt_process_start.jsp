@@ -26,7 +26,7 @@ model.common.session.SessionData" %>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.assessment_start.title"/></title>
+<title><spring:message code="label.page.asmt_process_start.title"/></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css"
@@ -77,7 +77,7 @@ model.common.session.SessionData" %>
 						<div class="col-md-10 col-sm-10 col-xs-10">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2><spring:message code="label.page.assessment_start.title"/>
+									<h2><spring:message code="label.page.asmt_process_start.title"/>
                                      &nbsp;&nbsp;-&nbsp;&nbsp;${process.assessment.name}</h2>
                                      <div class="btn-group pull-right">
                                       <button type="button" class="btn btn-primary btn-xs" onclick="endAssessmentProcess()">
@@ -155,24 +155,41 @@ model.common.session.SessionData" %>
                                                   </c:when>
                                                   <%-- Multiple Choice --%>
                                                   <c:when test="${task.modeType == 2}">
-                                                     <div class="checkbox">
-                                                        <label>
-                                                          <input type="checkbox" name="details.taskDetail.id" value="${taskDetail.id}">
-                                                          &#${loopCounter.index + 65}; ) ${taskDetail.itemDetail }</label>
+                                                     <div class="input-item-detail">
+                                                         <div class="checkbox">
+                                                            <label>
+                                                              <c:set var="isChecked" value=""/>
+                                                              <c:forEach var="responseDetail" items="${processResponse.details}" varStatus="counter">
+                                                                <c:if test="${taskDetail.id == responseDetail.taskDetail.id}">
+                                                                    <c:set var="isChecked" value="checked"/>
+                                                                </c:if>  
+                                                              </c:forEach>
+                                                              <input type="checkbox" ${isChecked} name="details[${loopCounter.index}].taskDetail.id" 
+                                                                     value="${taskDetail.id}" class="checkbox-multi-choice">
+                                                              &#${loopCounter.index + 65}; ) ${taskDetail.itemDetail }</label>
+                                                         </div>
                                                      </div>
                                                   </c:when>
                                                   <%-- Short Text Choice --%>
                                                   <c:when test="${tasks.modeType == 4}">
-                                                     <div class="text">
-                                                           <label>&#${loopCounter.index + 65}; )</label>
-                                                           <input type="text" size="35" name="optionsRadios" value="">
+                                                     <div class="input-item-detail">
+                                                         <div class="text">
+                                                               <label>&#${loopCounter.index + 65}; )</label>
+                                                               <input type="hidden" name="details[${loopCounter.index}].id" value="${taskDetail.id}">
+                                                               <input type="hidden" name="details[${loopCounter.index}].taskDetail.id" value="${processResponse.details[loopCounter.index].taskDetail.id}">
+                                                               <input type="text" size="35" name="details[${loopCounter.index}].itemResponse" value="${processResponse.details[loopCounter.index].itemResponse}">
+                                                         </div>
                                                      </div>
                                                   </c:when>
                                                   <%-- Esse ---------------%>
                                                   <c:when test="${task.modeType == 5}">
                                                      <c:if test="${loopCounter.index == 0 }">
+                                                         <input type="hidden" name="details[0].id" value="${taskDetail.id}">
+                                                         <input type="hidden" name="details[0].taskDetail.id" value="${processResponse.details[0].taskDetail.id}">
                                                          <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <textarea rows="14" class="resizable_textarea form-control"></textarea>
+                                                            <textarea rows="14" name="details[0].itemResponse" class="resizable_textarea form-control">
+                                                            ${processResponse.details[0].itemResponse}
+                                                            </textarea>
                                                          </div>
                                                      </c:if>
                                                   </c:when>

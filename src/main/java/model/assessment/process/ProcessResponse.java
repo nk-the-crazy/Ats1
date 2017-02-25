@@ -99,10 +99,16 @@ public class ProcessResponse
     {
         this.process = process;
         
-        /*
         if (!process.getResponses().contains(this)) 
         { 
             process.getResponses().add(this);
-        }*/
+        }
     }
+    
+    
+    public void setProcessLazy( AssessmentProcess process )
+    {
+        this.process = process;
+    }
+
 }

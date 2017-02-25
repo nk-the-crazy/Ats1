@@ -1,18 +1,25 @@
 package web.controller.assessment.process;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import common.exceptions.assessment.TimeExpiredException;
+import common.utils.StringUtils;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
 import model.common.session.SessionData;
@@ -31,7 +38,16 @@ public class ProcessController
     private AssessmentManager assessmentManager;
     
    
-    
+    /*******************************************************
+     * 
+     */
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) 
+    {
+        SimpleDateFormat dateFormat = StringUtils.getShortDateFormat();
+        dateFormat.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
     /*******************************************************
      * 
      */
@@ -43,7 +59,7 @@ public class ProcessController
         try
         {
             SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
+            AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser() );
 
             sData.setAssessmentProcess( process );
             model.setViewName( ModelView.VIEW_ASMT_PROCESS_INIT_PAGE); 
@@ -96,31 +112,41 @@ public class ProcessController
      * 
      */
     @RequestMapping( value = "/asmt_process_end.do")
-    public ModelAndView endAssessementProcess( @ModelAttribute( "processResponse" ) ProcessResponse processResponse,
-                                               HttpSession session )
+    public String endAssessementProcess( @ModelAttribute( "processResponse" ) ProcessResponse processResponse,
+                                         HttpSession session, Model model )
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
-        
         try
         {
             SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            AssessmentProcess process = assessmentManager.endProcess( sData.getAssessmentProcess() , processResponse);
-
+            assessmentManager.endProcess( sData.getAssessmentProcess() , processResponse);
+            
             //------- Remove from session --------
+            long processId = sData.getAssessmentProcess().getId();
             sData.setAssessmentProcess( null );
             //------------------------------------
-            model.addObject( "assessmentProcess", process );
-            model.setViewName( ModelView.VIEW_ASMT_PROCESS_END_PAGE); 
+            return "redirect:asmt_process_end.vw?asmt_process_id=" + processId;
             
         }
         catch(Exception e)
         {
             logger.error( " **** Error ending assessment Details:", e ); 
-            model.addObject( "errorData", e );
+            model.addAttribute( "errorMessage", "message.error.system" );
+            return ModelView.VIEW_SYSTEM_ERROR_PAGE;
         }
+
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_process_end.vw")
+    public String endAssessementProcessView(@RequestParam( name = "asmt_process_id") long processId, Model model)
+    {
+        Object process = assessmentManager.getAssessmentResult( processId );
+        model.addAttribute( "assessmentResult", process );
         
-        return model;
-        
+        return ModelView.VIEW_ASMT_PROCESS_END_PAGE;
     }
     
 }
