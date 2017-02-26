@@ -5,6 +5,7 @@
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- ************************************* -->
 
 <div class="col-md-3 left_col menu_fixed">
@@ -24,6 +25,7 @@
 
         <!-- sidebar menu -->
         <hr>
+        
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <ul class="nav side-menu">
@@ -36,6 +38,7 @@
                             <li><a href="asmt_list_user.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
                             <li><a href="asmt_register.vw"><spring:message code="label.menu.assessment.register" /></a></li>
                             <li><a href="asmt_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
+                            <li><a href="asmt_process_list.vw"><spring:message code="label.menu.process.list" /></a></li>
                         </ul></li>
                     <li><a><i class="fa fa-cubes"></i> 
                         <spring:message code="label.menu.task.list" /><span

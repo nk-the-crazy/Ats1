@@ -49,7 +49,7 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
     
    
     // ********************************************
-    @Query(value = " SELECT p, a, usr, prn, 0, COUNT(DISTINCT r.id), "
+    @Query(value = " SELECT p, a, usr, prn, (SELECT COUNT(tsk.id) from a.tasks tsk), COUNT(DISTINCT r.id), "
                  +  " SUM(CASE WHEN rd.grade>0 THEN 1 ELSE 0 END), SUM(rd.grade) "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.assessment a "
@@ -60,7 +60,17 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
                  +  " WHERE LOWER(prn.lastName) LIKE LOWER(CONCAT('%',:lastName, '%')) AND "
                  +  " p.startDate>=:startDateFrom "
                  +  " GROUP BY usr.id, prn.id, p.id, a.id "
-                 +  " ORDER BY p.startDate DESC ")
+                 +  " ORDER BY p.startDate DESC " , 
+         countQuery = " SELECT count(p.id) "
+                         +  " FROM AssessmentProcess p "  
+                         +  " JOIN p.assessment a "
+                         +  " JOIN p.responses r "
+                         +  " JOIN r.details rd "
+                         +  " JOIN p.user usr "
+                         +  " JOIN usr.person prn "
+                         +  " WHERE LOWER(prn.lastName) LIKE LOWER(CONCAT('%',:lastName, '%')) AND "
+                         +  " p.startDate>=:startDateFrom "
+                         +  " GROUP BY usr.id, prn.id, p.id, a.id ")
     Page<Object> getResults( @Param("lastName") String lastName ,
                              @Param("startDateFrom") Date startDateFrom, 
                              Pageable pageable );

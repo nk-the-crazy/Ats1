@@ -186,13 +186,19 @@
                                                 <tr>
                                                     <th>№</th>
                                                     <th><spring:message code="label.asmt.task.item.name" /></th>
+                                                    <th><spring:message code="label.asmt.task.mode.type" /></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
                                                 <!-- *********Task list ************ -->
                                                 <c:set var="index" value="${tasksPage.number * tasksPage.size}" />
                                                 <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
-                                                    <tr>
+                                                    <c:choose>
+                                                        <c:when test="${task[3] == 2}"><c:set var = "status_color" value="info"/></c:when>
+                                                        <c:when test="${task[3] == 5}"><c:set var = "status_color" value="warning"/></c:when>
+                                                    <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
+                                                    </c:choose>
+                                                    <tr class="${status_color}">
                                                         <td class="col-md-1">${index + loopCounter.count }</td>
                                                         <td><a href="asmt_task_details.vw?asmt_task_id=${task[1]}">
                                                             <c:out value="${task[2]}"/></a></td>

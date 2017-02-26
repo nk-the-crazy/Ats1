@@ -451,12 +451,34 @@ public class AssessmentManagerImpl implements AssessmentManager
     }
     
     
+    /**************************************************
+     * 
+     */
     @Override
-    public Page<Object> getAssessmentResults( String lastName, Date startDateFrom, Pageable pageable )
+    public Page<Object> getAssessmentResults( String lastName, Date startDateFrom , Pageable pageable )
     {
         return processDAO.getResults( lastName, startDateFrom, pageable );
     }
 
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public Page<ProcessResponse> getProcessResponses( long processId , Pageable pageable )
+    {
+        return processResponseDAO.getByProcessId( processId, pageable );
+    }
+
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public String getResponseContent( long responseId )
+    {
+        return processResponseDAO.getResponseContent(responseId);
+    }
 
     /**************************************************
      * 

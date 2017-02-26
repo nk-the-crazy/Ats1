@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import common.utils.StringUtils;
 import model.assessment.Assessment;
+import model.assessment.process.ProcessResponse;
 import model.assessment.task.AssessmentTask;
 import model.common.session.SessionData;
 import model.report.assessment.AssessmentResult;
@@ -238,15 +239,18 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/asmt_result_details.vw")
-    public ModelAndView getAssessmentResultDetailsView(  @RequestParam( name = "asmt_process_id" ) long processId )
+    public ModelAndView getAssessmentResultDetailsView( @RequestParam( name = "asmt_process_id" ) long processId,
+                                                        Pageable pageable)
     {         
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
             
         try
         {
             AssessmentResult result = assessmentManager.getAssessmentResult( processId);
+            Page<ProcessResponse> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
                     
             model.addObject( "assessmentResult", result );
+            model.addObject( "responsesPage", responsesPage );
             model.setViewName( ModelView.VIEW_ASMT_RESULT_DETAILS_PAGE);
         }
         catch(Exception e)

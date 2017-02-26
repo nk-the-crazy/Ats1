@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -23,6 +25,7 @@ import common.utils.StringUtils;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
 import model.common.session.SessionData;
+import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
 import web.common.view.ModelView;
 
@@ -148,5 +151,69 @@ public class ProcessController
         
         return ModelView.VIEW_ASMT_PROCESS_END_PAGE;
     }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_process_list.vw")
+    public ModelAndView getAssessmentResultListView(  @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
+                                            String lastName, 
+                                            @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
+                                            String startDateFromStr, 
+                                            @RequestParam( name = "startDateTo" , defaultValue = "01.01.2020", required = false ) 
+                                            String startDateToStr,
+                                            Pageable pageable )
+    {         
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+            
+        try
+        {
+            Date startDateFrom = StringUtils.stringToDate( startDateFromStr );
+            //Date startDateTo = StringUtils.stringToDate( startDateToStr );
+            
+            Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,pageable );
+                    
+            model.addObject( "resultsPage", resultsPage );
+            model.setViewName( ModelView.VIEW_ASMT_PROCESS_LIST_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting Assessment process list:", e );        
+            model.addObject( "errorData", e );
+        }
+        
+        return model;
+    }
+    
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_process_details.vw")
+    public ModelAndView getAssessmentResultDetailsView( @RequestParam( name = "asmt_process_id" ) long processId,
+                                                        Pageable pageable)
+    {         
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+            
+        try
+        {
+            AssessmentResult result = assessmentManager.getAssessmentResult( processId);
+            Page<ProcessResponse> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
+                    
+            model.addObject( "assessmentResult", result );
+            model.addObject( "responsesPage", responsesPage );
+            model.setViewName( ModelView.VIEW_ASMT_PROCESS_DETAILS_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting Assessment process details:", e );        
+            model.addObject( "errorData", e );
+        }
+        
+        return model;
+    }
+
     
 }

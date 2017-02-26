@@ -16,6 +16,7 @@ import model.identity.User;
 import model.report.assessment.AssessmentResult;
 
 
+
 public interface AssessmentManager
 {
 
@@ -61,4 +62,8 @@ public interface AssessmentManager
     AssessmentResult getAssessmentResult( long processId );
 
     Page<Object> getAssessmentResults( String lastName, Date startDateFrom, Pageable pageable );
+
+    Page<ProcessResponse> getProcessResponses( long processId, Pageable pageable );
+
+    String getResponseContent( long responseId );
 }

@@ -19,7 +19,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.asmt_result_list.title" /></title>
+<title><spring:message code="label.page.asmt_process_list.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -69,24 +69,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.asmt_result_list.title" /></h2>
-                                    <div class="btn-group pull-right">
-                                         <button data-toggle="dropdown" class="btn btn-success dropdown-toggle btn-xs" 
-                                          type="button" aria-expanded="false"><i class="fa fa-files-o"></i>&nbsp;
-                                            <spring:message code="label.action.export"/>&nbsp;&nbsp;<span class="caret"></span>
-                                         </button>
-                                         <ul role="menu" class="dropdown-menu">
-                                          <li><a href="#"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
-                                          </li>
-                                          <li class="divider"></li>
-                                          <li><a href="#"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
-                                          </li>
-                                          <li class="divider"></li>
-                                          <li><a href="#"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.doc"/></a>
-                                          </li>
-                                          <li class="divider"></li>
-                                         </ul>
-                                    </div>
+                                    <h2><spring:message code="label.page.asmt_process_list.title" /></h2>
                                   <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
@@ -264,6 +247,10 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
 				"pagingType" : "full_numbers",
 				"paging" : false,
 				"info" : false,
+                "language": 
+                {
+                    "emptyTable": '<spring:message code="message.info.records.notfound" />'
+                },
 				'columnDefs': 
 				 [
 		            { orderable: false, "width": "1%",  targets: [0] },

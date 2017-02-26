@@ -184,8 +184,10 @@ model.common.session.SessionData" %>
                                                   <%-- Esse ---------------%>
                                                   <c:when test="${task.modeType == 5}">
                                                      <c:if test="${loopCounter.index == 0 }">
-                                                         <input type="hidden" name="details[0].id" value="${taskDetail.id}">
-                                                         <input type="hidden" name="details[0].taskDetail.id" value="${processResponse.details[0].taskDetail.id}">
+                                                         <input type="hidden" name="details[0].taskDetail.id" value="${taskDetail.id}">
+                                                         <c:if test="${(not empty processResponse.details[0].id) && loopCounter.index == 0}">
+                                                            <input type="hidden" name="details[0].id" value="${processResponse.details[0].id}">
+                                                         </c:if>
                                                          <div class="col-md-12 col-sm-12 col-xs-12">
                                                             <textarea rows="14" name="details[0].itemResponse" class="resizable_textarea form-control">
                                                             ${processResponse.details[0].itemResponse}
