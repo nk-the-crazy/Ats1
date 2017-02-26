@@ -51,6 +51,8 @@ public class ProcessController
         dateFormat.setLenient(true);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
+    
+    
     /*******************************************************
      * 
      */
@@ -157,13 +159,13 @@ public class ProcessController
      * 
      */
     @RequestMapping( value = "/asmt_process_list.vw")
-    public ModelAndView getAssessmentResultListView(  @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
-                                            String lastName, 
-                                            @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
-                                            String startDateFromStr, 
-                                            @RequestParam( name = "startDateTo" , defaultValue = "01.01.2020", required = false ) 
-                                            String startDateToStr,
-                                            Pageable pageable )
+    public ModelAndView getAssessmentResultListView( @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
+                                                     String lastName, 
+                                                     @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
+                                                     String startDateFromStr, 
+                                                     @RequestParam( name = "startDateTo" , defaultValue = "01.01.2020", required = false ) 
+                                                     String startDateToStr,
+                                                     Pageable pageable )
     {         
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
             
@@ -172,7 +174,7 @@ public class ProcessController
             Date startDateFrom = StringUtils.stringToDate( startDateFromStr );
             //Date startDateTo = StringUtils.stringToDate( startDateToStr );
             
-            Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,pageable );
+            Page<AssessmentProcess> resultsPage = assessmentManager.getProcessList( lastName, startDateFrom,pageable );
                     
             model.addObject( "resultsPage", resultsPage );
             model.setViewName( ModelView.VIEW_ASMT_PROCESS_LIST_PAGE);

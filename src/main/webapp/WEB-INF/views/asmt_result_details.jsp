@@ -222,11 +222,6 @@
                                         </div>
                                         <div id="itemResponseTabContent" role="tabpanel" class="tab-pane col-md-12 fade in" 
                                               aria-labelledby="item-response-tab">
-                                                  <button role="button" class="btn btn-primary btn-xs" 
-                                                    id="btnLoadResponseContent" onclick="">
-                                                    <i class="fa fa-star-half-o"></i>&nbsp;
-                                                    <spring:message code="label.asmt.task.item.grade"/>
-                                                  </button>
                                                   <div id="imgProgress"><img src="images/ajax-loader.gif" style="width:40px; margin-top:10px; display:none"></div>
                                                   <div id="dvItemContent" class="item-response-content" style="display:none">
                                               </div>

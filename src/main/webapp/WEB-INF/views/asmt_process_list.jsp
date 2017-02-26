@@ -66,14 +66,14 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-11 col-sm-11 col-xs-11">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt_process_list.title" /></h2>
                                   <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form id="user_search" data-parsley-validate action="asmt_results_user.vw"
+                                    <form id="user_search" data-parsley-validate action="asmt_process_list.vw"
                                         class="form-horizontal form-label-left">
                                        <div class="form-group">
                                             <div class="col-md-2 col-sm-2 col-xs-2">
@@ -107,25 +107,18 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                                 <th></th>
                                                 <th><spring:message code="label.user.full_name" /></th>
                                                 <th><spring:message code="label.assessment.name" /></th>
-                                                <th><spring:message code="label.date.start" /></th>
                                                 <th><spring:message code="label.data.status" /></th>
-                                                <th><spring:message code="label.assessment.score" /></th>
-                                                <th><spring:message code="label.asmt.task.respond" /></th>
-                                                <th><spring:message code="label.asmt.result.item.count.all"/></th>
-                                                
+                                                <th><spring:message code="label.date.start" /></th>
+                                                <th><spring:message code="label.date.end" /></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         <!-- *********Process list ************ -->
                                         <c:set var="index" value="${resultsPage.number * resultsPage.size}" />
-                                        <c:forEach var="results" items="${resultsPage.content}" varStatus="loopCounter">
-                                            <c:set var="process" value="${results[0]}"/>
+                                        <c:forEach var="result" items="${resultsPage.content}" varStatus="loopCounter">
+                                            <c:set var="process" value="${result[0]}"/>
                                             <c:set var="assessment" value="${process.assessment}"/>
                                             <c:set var="user" value="${process.user}"/>
-                                            <c:set var="taskCount" value="${results[4]}"/>
-                                            <c:set var="responseCount" value="${results[5]}"/>
-                                            <c:set var="rightResponseCount" value="${results[6]}"/>
-                                            <c:set var="score" value="${results[7]}"/>
                                             <c:set var="process_state" value="${process.state}"/>
                                             <c:choose>
                                                 <c:when test="${process_state == 2}">
@@ -144,7 +137,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                             <tr class="${status_color}">
                                                 <td>&nbsp;${index + loopCounter.count }</td>
                                                 <td><a class="btn btn-primary btn-xs btn-td" 
-                                                        href="asmt_result_details.vw?asmt_process_id=${process.id }" role="button" aria-expanded="false">
+                                                        href="asmt_process_details.vw?asmt_process_id=${process.id }" role="button" aria-expanded="false">
                                                         <i class="fa fa-folder-open"></i>&nbsp;
                                                  </a></td>
                                                 <td><a href="user_details.vw?user_id=${user.id}">
@@ -152,14 +145,9 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                                     <c:out value="${user.person.firstName}"/></a></td>
                                                 <td><a href="asmt_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
-                                                <td><fmt:formatDate pattern="${dateFormatShort}" value="${process.startDate}" /></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status,locale)}</td>
-                                                <td><c:out value="${score}"/></td>
-                                                <td><c:out value="${responseCount}"/></td>
-                                                <td class="col-md-2">
-                                                 <c:out value="${rightResponseCount}"/>&nbsp;-&nbsp;<c:out value="${responseCount - rightResponseCount}"/>
-                                                </td>
-                                                
+                                                <td><fmt:formatDate pattern="${dateFormatShort}" value="${process.startDate}" /></td>
+                                                <td><fmt:formatDate pattern="${dateFormatShort}" value="${process.endDate}" /></td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Process list ************ -->

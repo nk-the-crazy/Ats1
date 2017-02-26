@@ -175,8 +175,10 @@ model.common.session.SessionData" %>
                                                      <div class="input-item-detail">
                                                          <div class="text">
                                                                <label>&#${loopCounter.index + 65}; )</label>
-                                                               <input type="hidden" name="details[${loopCounter.index}].id" value="${taskDetail.id}">
-                                                               <input type="hidden" name="details[${loopCounter.index}].taskDetail.id" value="${processResponse.details[loopCounter.index].taskDetail.id}">
+                                                               <input type="hidden" name="details[${loopCounter.index}].taskDetail.id" value="${taskDetail.id}">
+                                                               <c:if test="${(not empty processResponse.details[loopCounter.index].id)}">
+                                                                    <input type="hidden" name="details[0].id" value="${processResponse.details[0].id}">
+                                                                </c:if>
                                                                <input type="text" size="35" name="details[${loopCounter.index}].itemResponse" value="${processResponse.details[loopCounter.index].itemResponse}">
                                                          </div>
                                                      </div>
@@ -189,9 +191,7 @@ model.common.session.SessionData" %>
                                                             <input type="hidden" name="details[0].id" value="${processResponse.details[0].id}">
                                                          </c:if>
                                                          <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <textarea rows="14" name="details[0].itemResponse" class="resizable_textarea form-control">
-                                                            ${processResponse.details[0].itemResponse}
-                                                            </textarea>
+                                                            <textarea rows="14" name="details[0].itemResponse" class="resizable_textarea form-control">${processResponse.details[0].itemResponse}</textarea>
                                                          </div>
                                                      </c:if>
                                                   </c:when>
