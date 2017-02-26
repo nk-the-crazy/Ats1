@@ -30,6 +30,7 @@
 
 <!-- Select2 -->
 <link href="resources/lib/select2/dist/css/select2.css" rel="stylesheet">
+<link href="resources/lib/select2/dist/css/select2-bootstrap.css" rel="stylesheet">
 
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
@@ -114,9 +115,10 @@
                                                         class="form-control input-sm" required="required"></td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><label class="control-label" for="grade">
+                                                  <th scope="row" ><label class="control-label-required" for="grade">
                                                     <spring:message code="label.asmt.task.item.grade" />:</label></th>
-                                                  <td><input type="text" id="item-name" name="itemGrade" value="${task.itemGrade}"
+                                                  <td><input type="text" id="item-name" name="itemGrade" 
+                                                        value="${empty task.itemGrade ? '10' : task.itemGrade}"
                                                         class="form-control input-sm"></td>
                                                 </tr>
                                                 <tr>
@@ -168,7 +170,7 @@
                                                   <th scope="row" ><label class="control-label" for="person-organization">
                                                   <spring:message code="label.asmt.task.category" />:</label></th>
                                                   <td>
-                                                  <div class="col-md-10">
+                                                  <div class="col-md-11">
                                                     <select id="task-category" class="select2_single form-control" name="categoryId">
                                                         <c:forEach var="category" items="${categories}" varStatus="loopCounter"> 
                                                             <option ${categoryId == category[0] ? 'selected="selected"' : ''}
@@ -201,7 +203,7 @@
                                                     <tr>
                                                         <td id="dvIndex" class="col-md-1">1</td>
                                                         <td class="col-md-2">
-                                                            <input class="form-control input-sm" type="text" value="0" id="txItemGrade" name="details[0].itemGrade"></td>
+                                                            <input class="form-control input-sm" type="text" value="0" id="txItemGradeRatio" name="details[0].itemGradeRatio"></td>
                                                         <td><input class="form-control input-sm" type="text" id="txItemDetail" name="details[0].itemDetail"></td>
                                                         <td><button class="btn btn-danger btn-remove btn-xs" type="button">
                                                              <i class="fa fa-close"></i></button>
@@ -209,16 +211,16 @@
                                                     </tr>
                                                   </c:if>
                                                   <c:forEach var="detail" items="${task.details}" varStatus="loopCounter">
-                                                  <tr>
-                                                        <td id="dvIndex" class="col-md-1">1</td>
-                                                        <td class="col-md-2">
-                                                            <input class="form-control input-sm" type="text" value="${detail.itemGrade }" id="txItemGrade" name="details[${loopCounter.index }].itemGrade"></td>
-                                                        <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetails" name="details[${loopCounter.index }].itemDetails"></td>
-                                                        <td><button class="btn btn-danger btn-remove btn-xs" type="button">
-                                                            <i class="fa fa-close"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                        </c:forEach>
+                                                      <tr>
+                                                            <td id="dvIndex" class="col-md-1">1</td>
+                                                            <td class="col-md-2">
+                                                                <input class="form-control input-sm" type="text" value="${detail.itemGradeRatio }" id="txItemGradeRatio" name="details[${loopCounter.index }].itemGradeRatio"></td>
+                                                            <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetails" name="details[${loopCounter.index }].itemDetails"></td>
+                                                            <td><button class="btn btn-danger btn-remove btn-xs" type="button">
+                                                                <i class="fa fa-close"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
                                               </tbody>
                                             </table>
                                         </div>
@@ -254,24 +256,14 @@
 
     <!-- Dat Tables -->
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     
      <!-- Select2 -->
     <script src="resources/lib/select2/dist/js/select2.min.js"></script>
     
-    <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     
     <!-- Custom Theme Scripts -->
     <script src="resources/js/custom.min.js"></script>
-     <script>
-      $(document).ready(function() 
-      {
-    	  $(".select2_single").select2({
-          placeholder: "",
-          allowClear: false
-        });
-      });
-    </script>
-    
     <script type="text/javascript">
     $(document).ready(function()
     {
@@ -287,6 +279,17 @@
         }
     });
     </script>
+    
+    <script>
+      $(document).ready(function() 
+      {
+    	  $(".select2_single").select2({
+          placeholder: "",
+          allowClear: false
+        });
+      });
+    </script>
+    
     <script type="text/javascript">
     
     $(document).ready(function() 
@@ -345,7 +348,7 @@
             $('#tbTaskDetails > tbody  > tr').each(function(rowIndex) 
             {
             	$(this).find("#dvIndex").html(rowIndex + 1);
-            	$(this).find("#txItemGrade").attr('name','details['+rowIndex+'].itemGrade');
+            	$(this).find("#txItemGradeRatio").attr('name','details['+rowIndex+'].itemGradeRatio');
                 $(this).find("#txItemDetail").attr('name','details['+rowIndex+'].itemDetail');
             }); 
         }

@@ -174,8 +174,20 @@ public class SystemDataInit
             else
             {
                 category = taskManager.createTaskCategory( "Category-"+x, "Details of Category-"+x , 2);
-                AssessmentTask task1 = createDefaultTasks(x) ;
-                AssessmentTask task2 = createDefaultTasks(x+1) ;
+                
+                AssessmentTask task1 = null;
+                AssessmentTask task2 = null; 
+                
+                if(x < 10)
+                {
+                    task1 = createDefaultTasks(x , 1) ;
+                    task2 = createDefaultTasks(x+1, 2) ;
+                }
+                else
+                {
+                    task1 = createDefaultTasks(x , 1) ;
+                    task2 = createDefaultTasks(x+1, 2) ;
+                }
                 
                 category.addTask( task1 );
                 category.addTask( task2 );
@@ -203,9 +215,9 @@ public class SystemDataInit
     
     
     //******************************************
-    private AssessmentTask createDefaultTasks(int index) 
+    private AssessmentTask createDefaultTasks(int index, int type) 
     {
-        AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?",10, 2, 1, 1);
+        AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?",10, 2, type, 1);
                 
         AssessmentTaskDetail det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
         AssessmentTaskDetail det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );
@@ -230,7 +242,7 @@ public class SystemDataInit
         {
             Date startDate = DateUtils.addDays( new Date(System.currentTimeMillis()), -1 );
             Date endDate = DateUtils.addDays( new Date(System.currentTimeMillis()), x );
-            Assessment asmt =  assessmentManager.createAssessment( "New Assessment-"+x, startDate , endDate,3 , 2 );
+            Assessment asmt =  assessmentManager.createAssessment( "New Assessment-"+x, startDate , endDate,10 , 2 );
             
             asmt.setAuthor( identityManager.getUser( 1 ) );
             

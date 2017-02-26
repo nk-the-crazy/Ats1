@@ -39,12 +39,12 @@ public class ProcessResponse
     // *********************************************    
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="process_id")
-    private Process process;
+    private AssessmentProcess process;
     // *********************************************    
     
     // *********************************************
     @OneToMany( cascade = CascadeType.ALL , fetch = FetchType.LAZY )
-    @JoinTable( name="asmt_process_responses", 
+    @JoinTable( name="asmt_process_response_details", 
                 joinColumns=@JoinColumn(name="response_id" ),
                 inverseJoinColumns=@JoinColumn(name="details_id"))
     private List<ProcessResponseDetail> details = new ArrayList<ProcessResponseDetail>();
@@ -54,8 +54,13 @@ public class ProcessResponse
     {
         return id;
     }
+    
+    public void setId( long id )
+    {
+        this.id = id;
+    }
 
-   
+    
     public AssessmentTask getTask()
     {
         return task;
@@ -84,12 +89,13 @@ public class ProcessResponse
         this.details.add( detail );
     }
  
-    public Process getProcess()
+    
+    public AssessmentProcess getProcess()
     {
         return process;
     }
 
-    public void setProcess( Process process )
+    public void setProcess( AssessmentProcess process )
     {
         this.process = process;
         
@@ -97,6 +103,12 @@ public class ProcessResponse
         { 
             process.getResponses().add(this);
         }
+    }
+    
+    
+    public void setProcessLazy( AssessmentProcess process )
+    {
+        this.process = process;
     }
 
 }

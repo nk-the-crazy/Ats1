@@ -40,6 +40,11 @@ public class ProcessResponseDetail
     {
         return id;
     }
+    
+    public void setId( long id )
+    {
+        this.id = id;
+    }
 
     public String getItemResponse()
     {
@@ -70,6 +75,6 @@ public class ProcessResponseDetail
     {
         this.grade = grade;
     }
-    
 
+   
 }

@@ -23,10 +23,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import common.utils.StringUtils;
 import model.assessment.Assessment;
-import model.assessment.process.Process;
 import model.assessment.process.ProcessResponse;
 import model.assessment.task.AssessmentTask;
 import model.common.session.SessionData;
+import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
 import service.api.assessment.AssessmentTaskManager;
 import service.api.group.GroupManager;
@@ -74,7 +74,7 @@ public class AssessmentController
                     
             if(sData != null)
             {
-                Page<Assessment> asmtsPage = assessmentManager.getAssessmentsByUserId( sData.getUser().getId(), pageable );
+                Page<Assessment> asmtsPage = assessmentManager.getAssignedAssessments( sData.getUser().getId(), pageable );
                     
                 model.addObject( "assessmentsPage", asmtsPage );
             }
@@ -154,95 +154,7 @@ public class AssessmentController
         return model;
         
     }
-    
 
-    
-    /*******************************************************
-     * 
-     */
-    @RequestMapping( value = "/asmt_process_init.do")
-    public ModelAndView initAssessementProcess(@RequestParam( "assessment_id" ) long assessmentId , HttpSession session)
-    {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
-        
-        try
-        {
-            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            Process process = assessmentManager.initProcess( assessmentId, sData.getUser().getId() );
-
-            sData.setAssessmentProcess( process );
-            model.setViewName( ModelView.VIEW_ASMT_PROCESS_INIT_PAGE); 
-        }
-        catch(Exception e)
-        {
-            logger.error( " **** Error initializing assessment :", e ); 
-            model.addObject( "errorData", e );
-        }
-        
-        return model;
-        
-    }
-    
-
-
-    /*******************************************************
-     * 
-     */
-    @RequestMapping( value = "/asmt_process_start.do")
-    public ModelAndView startAssessementProcess( @RequestParam( name = "taskIndex" , defaultValue = "0", required = false ) int nextTaskIndex, 
-                                                 @ModelAttribute( "processTask" ) ProcessResponse processResponse,
-                                                 HttpSession session )
-    {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
-        
-        try
-        {
-            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            processResponse = assessmentManager.startProcess(sData.getAssessmentProcess(), processResponse, nextTaskIndex);
-            model.addObject( "processResponse" , processResponse );
-            model.setViewName( ModelView.VIEW_ASMT_PROCESS_START_PAGE); 
-        }
-        catch(Exception e)
-        {
-            logger.error( " **** Error starting assessment Details:", e ); 
-            model.addObject( "errorData", e );
-        }
-        
-        return model;
-        
-    }
-    
-
-    /*******************************************************
-     * 
-     */
-    @RequestMapping( value = "/asmt_process_end.do")
-    public ModelAndView endAssessementProcess( HttpSession session )
-    {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
-        
-        try
-        {
-            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            Process process = assessmentManager.endProcess( sData.getAssessmentProcess());
-
-            //------- Remove from session --------
-            sData.setAssessmentProcess( null );
-            //------------------------------------
-            model.addObject( "assessmentProcess", process );
-            model.setViewName( ModelView.VIEW_ASMT_PROCESS_END_PAGE); 
-            
-        }
-        catch(Exception e)
-        {
-            logger.error( " **** Error ending assessment Details:", e ); 
-            model.addObject( "errorData", e );
-        }
-        
-        return model;
-        
-    }
-    
     
     /*******************************************************
      * 
@@ -286,25 +198,71 @@ public class AssessmentController
     
     
 
+   
+    
     /*******************************************************
      * 
      */
-    @RequestMapping("/asmt_results.vw")
-    public String assessmentResultsView(Model model)
-    {
-        return ModelView.VIEW_ASMT_RESULTS_PAGE;
+    @RequestMapping( value = "/asmt_result_list.vw")
+    public ModelAndView getAssessmentResultListView(  @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
+                                            String lastName, 
+                                            @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
+                                            String startDateFromStr, 
+                                            @RequestParam( name = "startDateTo" , defaultValue = "01.01.2020", required = false ) 
+                                            String startDateToStr,
+                                            Pageable pageable )
+    {         
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+            
+        try
+        {
+            Date startDateFrom = StringUtils.stringToDate( startDateFromStr );
+            //Date startDateTo = StringUtils.stringToDate( startDateToStr );
+            
+            Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,pageable );
+                    
+            model.addObject( "resultsPage", resultsPage );
+            model.setViewName( ModelView.VIEW_ASMT_RESULT_LIST_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting Assessment result list:", e );        
+            model.addObject( "errorData", e );
+        }
+        
+        return model;
     }
     
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_result_details.vw")
+    public ModelAndView getAssessmentResultDetailsView( @RequestParam( name = "asmt_process_id" ) long processId,
+                                                        Pageable pageable)
+    {         
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+            
+        try
+        {
+            AssessmentResult result = assessmentManager.getAssessmentResult( processId);
+            Page<ProcessResponse> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
+                    
+            model.addObject( "assessmentResult", result );
+            model.addObject( "responsesPage", responsesPage );
+            model.setViewName( ModelView.VIEW_ASMT_RESULT_DETAILS_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting Assessment result details:", e );        
+            model.addObject( "errorData", e );
+        }
+        
+        return model;
+    }
     
 
-    /*******************************************************
-     * 
-     */
-    @RequestMapping("/asmt_results_user.vw")
-    public String assessmentUserResultsView(Model model)
-    {
-        return ModelView.VIEW_ASMT_RESULTS_USER_PAGE;
-    }
     
-    
+
 }

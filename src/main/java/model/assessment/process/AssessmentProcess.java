@@ -1,8 +1,9 @@
 package model.assessment.process;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,11 +20,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import model.assessment.Assessment;
+import model.assessment.task.AssessmentTask;
 import model.identity.User;
 
 @Entity
 @Table( name = "asmt_process" )
-public class Process
+public class AssessmentProcess
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,17 +52,18 @@ public class Process
     @ManyToOne(  fetch = FetchType.LAZY )
     @JoinColumn(name = "assessment_id")
     private Assessment assessment;
-    // *********************************************    
+    // *********************************************  
     
     // *********************************************
     @OneToMany(mappedBy="process" , cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-    private List<ProcessResponse> responses = new ArrayList<ProcessResponse>();
+    private Set<ProcessResponse> responses = new HashSet<ProcessResponse>();
     // *********************************************    
-    
-    
-    // *********************************************
+
     @Transient
     List<Long> taskIds;
+ 
+    @Transient
+    AssessmentTask currentTask = null;
  
 
     public long getId()
@@ -114,12 +117,12 @@ public class Process
         this.assessment = assessment;
     }
 
-    public List<ProcessResponse> getResponses()
+    public Set<ProcessResponse> getResponses()
     {
         return responses;
     }
 
-    public void setResponses( List<ProcessResponse> responses )
+    public void setResponses( Set<ProcessResponse> responses )
     {
         this.responses = responses;
     }
@@ -154,5 +157,17 @@ public class Process
     {
         this.taskIds = taskIds;
     }
+
+    public AssessmentTask getCurrentTask()
+    {
+        return currentTask;
+    }
+
+    public void setCurrentTask( AssessmentTask currentTask )
+    {
+        this.currentTask = currentTask;
+    }
+    
+    
 
 }

@@ -92,7 +92,7 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
 
     
     //********************************************
-    @Query(value = "SELECT a.id, t.id, t.itemName "
+    @Query(value = "SELECT a.id, t.id, t.itemName, t.modeType "
             + " FROM Assessment a "
             + " JOIN a.tasks t "
             + " WHERE a.id=:assessmentId "

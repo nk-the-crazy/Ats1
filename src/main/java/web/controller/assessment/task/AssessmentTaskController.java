@@ -1,4 +1,4 @@
-package web.controller.assessment;
+package web.controller.assessment.task;
 
 import java.util.List;
 

@@ -63,7 +63,7 @@ common.utils.system.SystemUtils"%>
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="col-md-10 col-sm-10 col-xs-10">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt_list_user.title" /></h2>
@@ -79,28 +79,69 @@ common.utils.system.SystemUtils"%>
                                                 <th><spring:message code="label.assessment.type" /></th>
                                                 <th><spring:message code="label.date.start" /></th>
                                                 <th><spring:message code="label.date.end" /></th>
-                                                <th colspan="2"></th>
+                                                <th><spring:message code="label.data.status" /></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         <!-- *********Assessment list ************ -->
                                         <c:set var="index" value="${assessmentsPage.number * assessmentsPage.size}" />
-                                        <c:forEach var="assessment" items="${assessmentsPage.content}" varStatus="loopCounter">
+                                        <c:forEach var="object" items="${assessmentsPage.content}" varStatus="loopCounter">
+                                            <c:set var="assessment" value="${object[0]}"/>
+                                            <c:set var="process" value="${object[1]}"/>
+                                            
+                                            <c:set var="process_state" value="${empty process  ? '1':process.state}"/>
                                             <c:set var="asmt_status" value="${assessment.status }"/>
+                                            <c:set var="overall_status" value="${assessment.status }"/>
                                             <c:if test="${assessment.endDate < now }"><c:set var="asmt_status" value="2"/></c:if>
-                                            <tr class="${assessment.status == 1 ? '' : 'warning'}">
+                                            <c:choose>
+                                                <c:when test="${asmt_status == 3}"><c:set var="status_color" value="danger"/></c:when>
+                                                <c:otherwise>
+                                                    <c:choose>
+                                                        <c:when test="${process_state == 2}">
+                                                            <c:set var="overall_status" value="5"/>
+                                                            <c:set var="status_color" value="danger"/>
+                                                        </c:when>
+                                                        <c:when test="${process_state == 3}">
+                                                            <c:set var="overall_status" value="4"/>
+                                                            <c:set var="status_color" value="success"/>
+                                                        </c:when>
+                                                        <c:otherwise><c:set var="status_color" value=""/></c:otherwise>
+                                                    </c:choose>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <tr class="${status_color}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><c:out value="${assessment.name}"/></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
+                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status,locale)}</td>
                                                 <td class="col-md-1">
-                                                    <c:if test="${asmt_status == 1 }">
-                                                        <a href="asmt_process_init.do?assessment_id=${assessment.id}" 
-                                                             class="btn btn-primary btn-xs" role="button">
-                                                            <i class="fa fa-clock-o"></i>&nbsp;
-                                                                <spring:message code="label.assessment.start"/>
-                                                        </a>
+                                                    <c:if test="${asmt_status != 2 }">
+                                                        <c:choose>
+                                                            <c:when test="${asmt_status == 1 && process_state == 1 }">
+                                                                <a href="asmt_process_init.do?assessment_id=${assessment.id}" 
+                                                                     class="btn btn-primary btn-xs" role="button">
+                                                                    <i class="fa fa-clock-o"></i>&nbsp;
+                                                                        <spring:message code="label.assessment.take"/>
+                                                                </a>
+                                                            </c:when>
+                                                            <c:when test="${asmt_status == 1 && process_state == 2 }">
+                                                                <a href="asmt_process_init.do?assessment_id=${assessment.id}" 
+                                                                     class="btn btn-primary btn-xs" role="button">
+                                                                    <i class="fa fa-clock-o"></i>&nbsp;
+                                                                        <spring:message code="label.action.resume"/>
+                                                                </a>
+                                                            </c:when>
+                                                            <c:when test="${ process_state == 3 }">
+                                                                <a href="asmt_process_end.vw?asmt_process_id=${process.id}" 
+                                                                     class="btn btn-primary btn-xs" role="button">
+                                                                    <i class="fa fa-line-chart"></i>&nbsp;
+                                                                        <spring:message code="label.assessment.result"/>
+                                                                </a>
+                                                            </c:when>
+                                                        </c:choose>
                                                     </c:if>
                                                 </td>
                                             </tr>
