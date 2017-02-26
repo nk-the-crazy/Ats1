@@ -128,9 +128,6 @@
                                           </c:choose>
                                           <th scope="row" ><spring:message code="label.data.status" />:</th>
                                           <td  class="${status_color}">
-                                          
-                                          State= ${process_state}
-                                          =Status= ${asmt_status}
                                                 ${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status, locale)}
                                           </td>
                                         </tr>

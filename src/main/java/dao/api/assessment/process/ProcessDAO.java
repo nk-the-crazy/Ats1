@@ -49,18 +49,18 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
     
    
     // ********************************************
-    @Query(value = " SELECT new model.report.assessment.AssessmentResult(" 
-                 +  " p, usr.id, COUNT(DISTINCT r.id), "
-                 +  " SUM(CASE WHEN rd.grade>0 THEN 1 ELSE 0 END), SUM(rd.grade)) "
+    @Query(value = " SELECT p, a, usr, prn, 0, COUNT(DISTINCT r.id), "
+                 +  " SUM(CASE WHEN rd.grade>0 THEN 1 ELSE 0 END), SUM(rd.grade) "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.assessment a "
                  +  " JOIN p.responses r "
                  +  " JOIN r.details rd "
                  +  " JOIN p.user usr "
                  +  " JOIN usr.person prn "
-                 +  " WHERE LOWER(a.name) LIKE LOWER(CONCAT('%',:lastName, '%')) AND "
-                 +  " a.startDate>=:startDateFrom ) "
-                 +  " GROUP BY usr.id, prn.id, p.id, a.id ")
+                 +  " WHERE LOWER(prn.lastName) LIKE LOWER(CONCAT('%',:lastName, '%')) AND "
+                 +  " p.startDate>=:startDateFrom "
+                 +  " GROUP BY usr.id, prn.id, p.id, a.id "
+                 +  " ORDER BY p.startDate DESC ")
     Page<Object> getResults( @Param("lastName") String lastName ,
                              @Param("startDateFrom") Date startDateFrom, 
                              Pageable pageable );

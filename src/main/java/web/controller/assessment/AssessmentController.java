@@ -25,6 +25,7 @@ import common.utils.StringUtils;
 import model.assessment.Assessment;
 import model.assessment.task.AssessmentTask;
 import model.common.session.SessionData;
+import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
 import service.api.assessment.AssessmentTaskManager;
 import service.api.group.GroupManager;
@@ -196,21 +197,13 @@ public class AssessmentController
     
     
 
-    /*******************************************************
-     * 
-     */
-    @RequestMapping("/asmt_results.vw")
-    public String assessmentResultsView(Model model)
-    {
-        return ModelView.VIEW_ASMT_RESULTS_PAGE;
-    }
-    
+   
     
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_results_user.vw")
-    public ModelAndView getAssessmentList(  @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
+    @RequestMapping( value = "/asmt_result_list.vw")
+    public ModelAndView getAssessmentResultListView(  @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
                                             String lastName, 
                                             @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
                                             String startDateFromStr, 
@@ -228,7 +221,7 @@ public class AssessmentController
             Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,pageable );
                     
             model.addObject( "resultsPage", resultsPage );
-            model.setViewName( ModelView.VIEW_ASMT_RESULTS_USER_PAGE);
+            model.setViewName( ModelView.VIEW_ASMT_RESULT_LIST_PAGE);
         }
         catch(Exception e)
         {
@@ -238,6 +231,34 @@ public class AssessmentController
         
         return model;
     }
+    
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_result_details.vw")
+    public ModelAndView getAssessmentResultDetailsView(  @RequestParam( name = "asmt_process_id" ) long processId )
+    {         
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+            
+        try
+        {
+            AssessmentResult result = assessmentManager.getAssessmentResult( processId);
+                    
+            model.addObject( "assessmentResult", result );
+            model.setViewName( ModelView.VIEW_ASMT_RESULT_DETAILS_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting Assessment result details:", e );        
+            model.addObject( "errorData", e );
+        }
+        
+        return model;
+    }
+    
+
     
 
 }

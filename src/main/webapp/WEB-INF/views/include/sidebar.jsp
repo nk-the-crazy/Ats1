@@ -55,11 +55,8 @@
                         <spring:message code="label.menu.reports" /><span
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="asmt_results.vw">
-                                <spring:message code="label.menu.reports.result" />
-                             </a></li>
-                            <li><a href="asmt_results_user.vw">
-                                <spring:message code="label.menu.reports.result.user" />
+                            <li><a href="asmt_result_list.vw">
+                                <spring:message code="label.menu.reports.result.list" />
                              </a></li>
                         </ul></li>
                     <li><a><i class="fa fa-gears"></i> <spring:message

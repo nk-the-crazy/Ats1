@@ -1386,20 +1386,22 @@ ul.msg_list li a .message {
   box-shadow: none;
   display: none;
   float: left;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight:bold;
   left: 0;
   list-style: none outside none;
-  padding: 0;
+  padding: 1 0;
   position: absolute;
   text-shadow: none;
   top: 100%;
   z-index: 9998;
-  border: 1px solid #D9DEE4;
+  border: 1px solid #0080c0;
   border-top-left-radius: 0;
   border-top-right-radius: 0; }
 
 .dropdown-menu > li > a {
-  color: #5A738E; }
+  color: #5A738E;
+ }
 
 .navbar-nav .open .dropdown-menu {
   position: absolute;
@@ -1884,7 +1886,8 @@ button,
   font-weight: bold; }
 
 .btn-td {
-  margin: 1px 1px 1px 1px;
+  margin:0px 1px 0px 0px;
+  padding: 0px 6px 0px;
   
 ;}
 
@@ -2791,7 +2794,7 @@ ul.count2 li span {
 
 /* *********  /widgets  **************************** */
 .divider {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #93dcff;
   margin: 10px; }
 
 .divider-dashed {

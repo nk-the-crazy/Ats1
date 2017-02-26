@@ -454,7 +454,6 @@ public class AssessmentManagerImpl implements AssessmentManager
     @Override
     public Page<Object> getAssessmentResults( String lastName, Date startDateFrom, Pageable pageable )
     {
-        // TODO Auto-generated method stub
         return processDAO.getResults( lastName, startDateFrom, pageable );
     }
 

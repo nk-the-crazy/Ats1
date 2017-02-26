@@ -3,7 +3,7 @@
         pageEncoding="UTF-8" 
         errorPage="error.jsp" %>
 <%@page import="model.identity.*,org.springframework.data.domain.Page,
-common.utils.system.SystemUtils"%>
+common.utils.system.SystemUtils,common.utils.StringUtils"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -19,7 +19,7 @@ common.utils.system.SystemUtils"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.asmt_results_user.title" /></title>
+<title><spring:message code="label.page.asmt_result_list.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -52,7 +52,7 @@ common.utils.system.SystemUtils"%>
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp">
-                <jsp:param name="page" value="asmt_results_user.vw" />
+                <jsp:param name="page" value="asmt_result_list.vw" />
             </jsp:include>
             <!-- /sidebar -->
 
@@ -66,44 +66,44 @@ common.utils.system.SystemUtils"%>
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-11 col-sm-11 col-xs-11">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.asmt_results_user.title" /></h2>
+                                    <h2><spring:message code="label.page.asmt_result_list.title" /></h2>
                                     <div class="btn-group pull-right">
-                                      <button type="button" class="btn btn-success btn-xs">
-                                        <i class="fa fa-plus"></i>&nbsp;
-                                                <spring:message code="label.menu.assessment.register"/></button>
+                                         <button data-toggle="dropdown" class="btn btn-success dropdown-toggle btn-xs" 
+                                          type="button" aria-expanded="false"><i class="fa fa-files-o"></i>&nbsp;
+                                            <spring:message code="label.action.export"/>&nbsp;&nbsp;<span class="caret"></span>
+                                         </button>
+                                         <ul role="menu" class="dropdown-menu">
+                                          <li><a href="#"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
+                                          </li>
+                                          <li class="divider"></li>
+                                          <li><a href="#"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
+                                          </li>
+                                          <li class="divider"></li>
+                                          <li><a href="#"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.doc"/></a>
+                                          </li>
+                                          <li class="divider"></li>
+                                         </ul>
                                     </div>
                                   <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form id="user_search" data-parsley-validate action="asmt_list.vw"
+                                    <form id="user_search" data-parsley-validate action="asmt_results_user.vw"
                                         class="form-horizontal form-label-left">
                                        <div class="form-group">
                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label class="control-label" for="assessment-name">
-                                                    <spring:message code="label.assessment.name" />:</label>
-                                                <input type="text" id="assessment-name" name="assessmentName" value="${param.assessmentName}"
+                                                <label class="control-label" for="user-lastname">
+                                                    <spring:message code="label.user.last_name" />:</label>
+                                                <input type="text" id="user-lastname" name="lastName" value="${param.lastName}"
                                                        class="form-control input-sm">
                                             </div>
                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label class="control-label" for="assessment-date">
+                                                <label class="control-label" for="process-date">
                                                     <spring:message code="label.date.start" /></label>
-                                                <input id="assessment-date" type="text" class="date-picker form-control input-sm" 
+                                                <input id="process-date" type="text" class="date-picker form-control input-sm" 
                                                 name="startDateFrom" value="${param.startDateFrom}">
-                                             </div>
-                                             <div class="col-md-3 col-sm-3 col-xs-3">
-                                                 <label class="control-label" for="assessment-type">
-                                                       <spring:message code="label.asmt.task.mode.type" />:</label>
-                                                 <select id="assessment-type" class="form-control input-select-sm" name="assessmentType">
-                                                    <option value="0"><spring:message code="label.data.all" /></option>
-                                                    <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                        items="${SystemUtils.getAttributes('system.attrib.assessment.type',locale)}"> 
-                                                        <option ${param.assessmentType == (loopCounter.count) ? 'selected="selected"' : ''}
-                                                        value="${loopCounter.count}">${systemAttr}</option>
-                                                    </c:forEach>
-                                                 </select>
                                              </div>
                                              <div>
                                                 <div>&nbsp;</div>
@@ -121,42 +121,74 @@ common.utils.system.SystemUtils"%>
                                         <thead>
                                             <tr>
                                                 <th>№</th>
+                                                <th></th>
+                                                <th><spring:message code="label.user.full_name" /></th>
                                                 <th><spring:message code="label.assessment.name" /></th>
-                                                <th><spring:message code="label.assessment.type" /></th>
                                                 <th><spring:message code="label.date.start" /></th>
-                                                <th><spring:message code="label.date.end" /></th>
                                                 <th><spring:message code="label.data.status" /></th>
+                                                <th><spring:message code="label.assessment.score" /></th>
+                                                <th><spring:message code="label.asmt.task.respond" /></th>
+                                                <th><spring:message code="label.asmt.result.item.count.all"/></th>
+                                                
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <!-- *********Assessment list ************ -->
+                                        <!-- *********Process list ************ -->
                                         <c:set var="index" value="${resultsPage.number * resultsPage.size}" />
-                                        <c:forEach var="assessment" items="${resultsPage.content}" varStatus="loopCounter">
-                                            <c:set var="asmt_status" value="${assessment.status }"/>
-                                            <c:if test="${assessment.endDate < now }"><c:set var="asmt_status" value="2"/></c:if>
+                                        <c:forEach var="results" items="${resultsPage.content}" varStatus="loopCounter">
+                                            <c:set var="process" value="${results[0]}"/>
+                                            <c:set var="assessment" value="${process.assessment}"/>
+                                            <c:set var="user" value="${process.user}"/>
+                                            <c:set var="taskCount" value="${results[4]}"/>
+                                            <c:set var="responseCount" value="${results[5]}"/>
+                                            <c:set var="rightResponseCount" value="${results[6]}"/>
+                                            <c:set var="score" value="${results[7]}"/>
+                                            <c:set var="process_state" value="${process.state}"/>
                                             <c:choose>
-                                                <c:when test="${asmt_status == 2}"><c:set var="status_color" value="warning"/></c:when>
-                                                <c:when test="${asmt_status == 3}"><c:set var="status_color" value="danger"/></c:when>
-                                                <c:otherwise><c:set var="status_color" value=""/></c:otherwise>
+                                                <c:when test="${process_state == 2}">
+                                                    <c:set var="overall_status" value="5"/>
+                                                    <c:set var="status_color" value="danger"/>
+                                                </c:when>
+                                                <c:when test="${process_state == 3}">
+                                                    <c:set var="overall_status" value="4"/>
+                                                    <c:set var="status_color" value=""/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:set var="overall_status" value="1"/>
+                                                    <c:set var="status_color" value=""/>
+                                                </c:otherwise>
                                             </c:choose>
                                             <tr class="${status_color}">
-                                                <td class="col-md-1">${index + loopCounter.count }</td>
+                                                <td>&nbsp;${index + loopCounter.count }</td>
+                                                <td>
+                                                  <a class="btn btn-primary btn-xs btn-td" 
+                                                        href="asmt_result_details.vw?asmt_process_id=${process.id }" role="button" aria-expanded="false">
+                                                        <i class="fa fa-folder-open"></i>&nbsp;
+                                                    </a>  
+                                                </td>
+                                                <td><a href="user_details.vw?user_id=${user.id}">
+                                                    <c:out value="${user.person.lastName}"/>&nbsp;
+                                                    <c:out value="${user.person.firstName}"/></a></td>
                                                 <td><a href="asmt_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
-                                                <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
-                                                <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status,locale)}</td>
+                                                <td><fmt:formatDate pattern="${dateFormatShort}" value="${process.startDate}" /></td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status,locale)}</td>
+                                                <td><c:out value="${score}"/></td>
+                                                <td><c:out value="${responseCount}"/></td>
+                                                <td class="col-md-2">
+                                                 <c:out value="${rightResponseCount}"/>&nbsp;-&nbsp;<c:out value="${responseCount - rightResponseCount}"/>
+                                                </td>
+                                                
                                             </tr>
                                         </c:forEach>
-                                        <!-- *********/Assessment list ************ -->
+                                        <!-- *********/Process list ************ -->
                                         </tbody>
                                     </table>
                                     
                                     <!------------- Pagination -------------->
                                     <c:if test="${resultsPage.totalPages > 1}">
                                         <jsp:include page="include/pagination.jsp">
-                                             <jsp:param name="page" value="asmt_results_user.vw" />
+                                             <jsp:param name="page" value="asmt_result_list.vw" />
                                              <jsp:param name="totalPages" value="${resultsPage.totalPages}" />
                                              <jsp:param name="totalElements" value="${resultsPage.totalElements}" />
                                              <jsp:param name="currentIndex" value="${resultsPage.number}" />
@@ -233,7 +265,12 @@ common.utils.system.SystemUtils"%>
 				"searching" : false,
 				"pagingType" : "full_numbers",
 				"paging" : false,
-				"info" : false
+				"info" : false,
+				'columnDefs': 
+				 [
+		            { orderable: false, "width": "1%",  targets: [0] },
+		            { orderable: false, "width": "1%",  targets: [1] }
+		         ]
 
 			});
 		});
