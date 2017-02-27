@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import common.utils.StringUtils;
 import model.assessment.Assessment;
@@ -64,14 +65,13 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/asmt_list_user.vw")
-    public ModelAndView getUserAssessmentsList( HttpSession session , Pageable pageable )
+    
+    public ModelAndView getUserAssessmentsList( @AuthenticationPrincipal SessionData sData, Pageable pageable )
     {         
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
             
         try
         {
-            SessionData sData =  (SessionData)session.getAttribute( "sessionData" );
-                    
             if(sData != null)
             {
                 Page<Assessment> asmtsPage = assessmentManager.getAssignedAssessments( sData.getUser().getId(), pageable );

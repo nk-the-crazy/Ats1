@@ -75,5 +75,23 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
                              @Param("startDateFrom") Date startDateFrom, 
                              Pageable pageable );
     
+    
+    // ********************************************
+    @Query(value = " SELECT p, a, usr, prn "
+                 +  " FROM AssessmentProcess p "  
+                 +  " JOIN p.assessment a "
+                 +  " JOIN p.responses r "
+                 +  " JOIN p.user usr "
+                 +  " JOIN usr.person prn "
+                 +  " WHERE LOWER(prn.lastName) LIKE LOWER(CONCAT('%',:lastName, '%')) AND "
+                 +  " p.startDate>=:startDateFrom "
+                 +  " GROUP BY usr.id, prn.id, p.id, a.id "
+                 +  " ORDER BY p.startDate DESC ")
+    Page<AssessmentProcess> getAll( @Param("lastName") String lastName ,
+                         @Param("startDateFrom") Date startDateFrom, 
+                         Pageable pageable );
+    
+   
+    
    
 }

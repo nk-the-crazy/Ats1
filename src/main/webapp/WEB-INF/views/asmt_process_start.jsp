@@ -45,7 +45,7 @@ model.common.session.SessionData" %>
 </head>
 
 <!-- ***************************** -->
-<c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
+<c:set var="process" value="${sessionScope.activeProcess}"/>
 <c:set var="taskCount" value="${process.taskIds.size()}"/>
 <c:set var="taskIndex" value="${(param.taskIndex + 1) >= taskCount ? taskCount - 1 : param.taskIndex}"/>
 <c:set var="task" value="${requestScope.processResponse.task}"/>
@@ -96,6 +96,7 @@ model.common.session.SessionData" %>
                                   <!-- ---------------------- -->
                                    <div class="col-md-12">
                                    <form method="POST" id="processResponse" name="processResponse" action="asmt_process_start.do">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" name="taskIndex" value="${taskIndex+1}" id="inpTaskIndex">
                                     <input type="hidden" name="taskState" value="2" id="inpTaskState">
                                     <input type="hidden" name="id"      value="${processResponse.id}">
@@ -175,8 +176,10 @@ model.common.session.SessionData" %>
                                                      <div class="input-item-detail">
                                                          <div class="text">
                                                                <label>&#${loopCounter.index + 65}; )</label>
-                                                               <input type="hidden" name="details[${loopCounter.index}].id" value="${taskDetail.id}">
-                                                               <input type="hidden" name="details[${loopCounter.index}].taskDetail.id" value="${processResponse.details[loopCounter.index].taskDetail.id}">
+                                                               <input type="hidden" name="details[${loopCounter.index}].taskDetail.id" value="${taskDetail.id}">
+                                                               <c:if test="${(not empty processResponse.details[loopCounter.index].id)}">
+                                                                    <input type="hidden" name="details[0].id" value="${processResponse.details[0].id}">
+                                                                </c:if>
                                                                <input type="text" size="35" name="details[${loopCounter.index}].itemResponse" value="${processResponse.details[loopCounter.index].itemResponse}">
                                                          </div>
                                                      </div>
@@ -189,9 +192,7 @@ model.common.session.SessionData" %>
                                                             <input type="hidden" name="details[0].id" value="${processResponse.details[0].id}">
                                                          </c:if>
                                                          <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <textarea rows="14" name="details[0].itemResponse" class="resizable_textarea form-control">
-                                                            ${processResponse.details[0].itemResponse}
-                                                            </textarea>
+                                                            <textarea rows="14" name="details[0].itemResponse" class="resizable_textarea form-control">${processResponse.details[0].itemResponse}</textarea>
                                                          </div>
                                                      </c:if>
                                                   </c:when>

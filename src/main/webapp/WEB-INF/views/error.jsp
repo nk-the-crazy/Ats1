@@ -38,6 +38,10 @@
 <!-- ***************************** -->
 <c:set var="errorData" value="${requestScope.errorData}"/>
 <c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
+<c:if test="${empty errorData}">
+    <c:set var="errorData" value="${exception}"/>   
+</c:if>
+
 <!-- ***************************** -->
 
 <body class="nav-md">

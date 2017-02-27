@@ -59,6 +59,7 @@
                             <div class="x_panel">
                             <form id="category" data-parsley-validate action="asmt_category_register.do" 
                                   class="form-vertical form-label-left" method="POST">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="parentCategoryId" value="${requestScope.parentCategoryId }"/>
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt.category_register.title" /></h2>

@@ -13,8 +13,6 @@
 
 
 	<context:component-scan base-package="web.controller" />
-	<context:component-scan base-package="web.interceptor" />
-    
 	
 	<!-- ******* CSS and JS *************************************** -->
 
@@ -33,6 +31,7 @@
 	                </bean>
 	            </property>
             </bean>
+            <bean class="org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver" />
 	    </mvc:argument-resolvers>
 	</mvc:annotation-driven>
     

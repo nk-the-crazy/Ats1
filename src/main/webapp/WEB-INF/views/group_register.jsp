@@ -59,6 +59,7 @@
                             <div class="x_panel">
                             <form id="group" data-parsley-validate action="group_register.do" 
                                   class="form-horizontal form-label-left" method="POST">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.group_register.title" /></h2>
                                      <div style="text-align: right;">

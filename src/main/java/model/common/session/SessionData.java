@@ -1,8 +1,6 @@
 package model.common.session;
 
 import java.util.Date;
-
-import model.assessment.process.AssessmentProcess;
 import model.identity.User;
 
 
@@ -11,13 +9,19 @@ public class SessionData
 	private User user = null;
 	private String token = "";
 	private Date lastLogin = null;
-    private AssessmentProcess process= null;
-
+	
 	
 	/* ********************************
 	 * 
 	 */
-	public SessionData(User user)
+	public SessionData()
+    {
+    }
+	
+	/* ********************************
+     * 
+     */
+    public SessionData(User user)
 	{
 		if(user != null)
 		{
@@ -60,18 +64,6 @@ public class SessionData
     public void setLastLogin( Date lastLogin )
     {
         this.lastLogin = lastLogin;
-    }
-
-
-    public AssessmentProcess getAssessmentProcess()
-    {
-        return process;
-    }
-
-
-    public void setAssessmentProcess( AssessmentProcess assessmentProcess )
-    {
-        this.process = assessmentProcess;
     }
 
 }

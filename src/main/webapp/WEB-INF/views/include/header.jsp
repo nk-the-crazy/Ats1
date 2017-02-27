@@ -20,7 +20,7 @@
     <c:set var="localeStr" value="Кыргызча"/>
   </c:when>
   <c:otherwise>
-    <c:set var="localeStr" value="English"/>
+    <c:set var="localeStr" value="Русский"/>
   </c:otherwise>
 </c:choose>
 <!-- ************************************* -->
@@ -32,8 +32,9 @@
 			<div class="nav toggle">
 				<a id="menu_toggle"><i class="fa fa-bars"></i></a>
 			</div>
-
-			<ul class="nav navbar-nav navbar-right">
+            <form id="formHeaderMenu" action="logout.do" method="POST">
+			<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+            <ul class="nav navbar-nav navbar-right">
 				<li class=""><a href="javascript:;" data-toggle="dropdown"
 					aria-expanded="false"> <i class="fa fa-user"></i>
                     <span>&nbsp;&nbsp;<b>${sessionScope.sessionData.user.userName}</b></span>
@@ -43,7 +44,7 @@
                              <spring:message code="label.menu.change_password"/></a></li>
 						<li><a href="resources/manual/index.html"><i class="fa fa-question-circle pull-left">
                               </i><spring:message code="label.menu.help"/></a></li>
-						<li><a href="logout.do"><i class="fa fa-sign-out pull-left"></i>
+						<li><a href="#" onclick="submitLogoutForm();" id="logoutLink"><i class="fa fa-sign-out pull-left"></i>
                               <spring:message code="label.menu.logout"/></a></li>
 					</ul></li>
 				<li class=""><a href="javascript:;" data-toggle="dropdown"
@@ -55,7 +56,15 @@
 						<li><a href="changelocale.do?locale=ky">Кыргызча</a></li>
 					</ul></li>
 			</ul>
+            </form>
 		</nav>
 	</div>
 </div>
+<script> 
+function submitLogoutForm()
+{ 
+	$('#formHeaderMenu').submit();
+}
+
+</script>
 <!-- /top navigation -->

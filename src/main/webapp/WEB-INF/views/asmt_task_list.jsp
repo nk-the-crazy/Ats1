@@ -217,7 +217,11 @@ common.utils.system.SystemUtils"%>
 				"searching" : false,
 				"pagingType" : "full_numbers",
 				"paging" : false,
-				"info" : false
+				"info" : false,
+				"language": 
+                {
+                    "emptyTable": '<spring:message code="message.info.records.notfound" />'
+                },
 
 			});
 		});

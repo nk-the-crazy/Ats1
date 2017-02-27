@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
 /**
@@ -118,10 +120,10 @@ public class Permission
         this.item = (short)item;
     }
 
-    public List<String> asString()
+    public List<GrantedAuthority> asString()
     {
-        List<String> perms = new ArrayList<>();
-
+        List<GrantedAuthority> perms = new ArrayList<>();
+        perms.add(new SimpleGrantedAuthority(PermissionItem.values()[this.item].name()));
         return perms;
     }
 }

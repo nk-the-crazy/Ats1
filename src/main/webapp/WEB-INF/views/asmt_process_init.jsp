@@ -36,7 +36,7 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 </head>
 <!-- ***************************** -->
-<c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
+<c:set var="process" value="${sessionScope.activeProcess}"/>
 <c:set var="taskCount" value="${process.taskIds.size()}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 <!-- ***************************** -->

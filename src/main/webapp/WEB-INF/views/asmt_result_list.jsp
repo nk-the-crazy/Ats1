@@ -90,7 +90,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                   <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form id="user_search" data-parsley-validate action="asmt_results_user.vw"
+                                    <form id="user_search" data-parsley-validate action="asmt_result_list.vw"
                                         class="form-horizontal form-label-left">
                                        <div class="form-group">
                                             <div class="col-md-2 col-sm-2 col-xs-2">
@@ -264,6 +264,10 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
 				"pagingType" : "full_numbers",
 				"paging" : false,
 				"info" : false,
+				"language": 
+                {
+                    "emptyTable": '<spring:message code="message.info.records.notfound" />'
+                },
 				'columnDefs': 
 				 [
 		            { orderable: false, "width": "1%",  targets: [0] },

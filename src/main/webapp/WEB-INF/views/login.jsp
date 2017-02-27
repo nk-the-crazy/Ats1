@@ -47,6 +47,7 @@
                 <section class="login_content">
                     <div class="login_content_title"><spring:message code="label.page.login.title"/></div>
                     <form id="login-form" action="login.do" method="POST" data-parsley-validate class="form-horizontal form-label-left">
+                      <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                       <!-- ---------------------- -->
                       <c:if test="${requestScope.errorMessage != null}">
                           <div class="alert alert-danger alert-dismissible fade in" role="alert">

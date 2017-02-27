@@ -69,6 +69,7 @@
                             <div class="x_panel">
                              <form id="assessment" data-parsley-validate action="asmt_register.do" 
                                   class="form-horizontal form-label-left" method="POST">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt_register.title" /></h2>
                                      <div style="text-align: right;">
