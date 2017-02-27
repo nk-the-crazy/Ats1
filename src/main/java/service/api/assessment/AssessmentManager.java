@@ -68,4 +68,6 @@ public interface AssessmentManager
     String getResponseContent( long responseId );
 
     Page<AssessmentProcess> getProcessList( String lastName, Date startDateFrom, Pageable pageable );
+
+    void evaluateResponse( User user, float grade, String comment, long responseDetailId );
 }

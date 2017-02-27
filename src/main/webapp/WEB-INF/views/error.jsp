@@ -38,15 +38,19 @@
 <!-- ***************************** -->
 <c:set var="errorData" value="${requestScope.errorData}"/>
 <c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
+<c:if test="${empty errorData}">
+    <c:set var="errorData" value="${exception}"/>   
+</c:if>
+
 <!-- ***************************** -->
 
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
-			<!-- sidebar -->
+			<!-- sidebar
 			<jsp:include page="include/sidebar.jsp"><jsp:param name="page"
 					value="error.vw" /></jsp:include>
-			<!-- /sidebar -->
+			/sidebar -->
 
 			<!-- top navigation -->
 			<jsp:include page="include/header.jsp"><jsp:param name="page"

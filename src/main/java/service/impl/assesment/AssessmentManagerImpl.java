@@ -23,6 +23,8 @@ import common.exceptions.security.AccessDeniedException;
 import dao.api.assessment.AssessmentDAO;
 import dao.api.assessment.process.ProcessDAO;
 import dao.api.assessment.process.ProcessResponseDAO;
+import dao.api.assessment.process.ProcessResponseDetailDAO;
+import dao.api.assessment.process.ProcessResponseEvaluationDAO;
 import dao.api.assessment.task.AssessmentTaskCategoryDAO;
 import dao.api.assessment.task.AssessmentTaskDAO;
 import dao.api.group.GroupDAO;
@@ -31,6 +33,7 @@ import model.assessment.options.TaskFormOptions;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
 import model.assessment.process.ProcessResponseDetail;
+import model.assessment.process.ProcessResponseEvaluation;
 import model.assessment.process.ProcessState;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskDetail;
@@ -55,6 +58,12 @@ public class AssessmentManagerImpl implements AssessmentManager
 
     @Autowired
     ProcessResponseDAO processResponseDAO;
+
+    @Autowired
+    ProcessResponseDetailDAO responseDetailDAO;
+
+    @Autowired
+    ProcessResponseEvaluationDAO evaluationDAO;
 
     @Autowired
     AssessmentTaskDAO taskDAO;
@@ -141,8 +150,9 @@ public class AssessmentManagerImpl implements AssessmentManager
                 
                 if(!CollectionUtils.isEmpty( processResponse.getDetails() ))
                 {
-                    if(processResponse.getId() > 0)
-                        processResponseDAO.delete( processResponse.getId() );
+                    // ----------Remove previous responses -----------
+                    processResponseDAO.delete( processResponse.getId() );
+                    // -----------------------------------------------
                     
                     Iterator<ProcessResponseDetail> itr = processResponse.getDetails().iterator();
                     
@@ -471,7 +481,6 @@ public class AssessmentManagerImpl implements AssessmentManager
     }
 
 
-   
     /**************************************************
      * 
      */
@@ -490,6 +499,30 @@ public class AssessmentManagerImpl implements AssessmentManager
     {
         return processResponseDAO.getResponseContent(responseId);
     }
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public void evaluateResponse( User user, float grade, String comment, long responseDetailId )
+    {
+        ProcessResponseDetail respDetail = responseDetailDAO.findOne( responseDetailId );
+            
+        if(respDetail != null)
+        {
+            respDetail.setGrade( grade );
+            respDetail = responseDetailDAO.save( respDetail );
+            
+            ProcessResponseEvaluation evaluation = new ProcessResponseEvaluation();
+            evaluation.setUser( user );
+            evaluation.setGrade( grade );
+            evaluation.setResponseDetail( respDetail );
+            evaluation.setComment( comment );
+            evaluationDAO.save( evaluation );
+        }
+    }
+    
 
     /**************************************************
      * 

@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
 @Table( name = "role" )
 public class Role
@@ -97,8 +99,17 @@ public class Role
     {
         this.details = details;
     }
-    
-    
-    
+
    
+    public List<GrantedAuthority> getPermissionsAsString()
+    {
+        List<GrantedAuthority> permissionList = new ArrayList<>();
+        for(Permission permission:permissions)
+        {
+            permissionList.addAll( permission.asString());
+        }
+        
+        return permissionList; 
+    }
+  
 }

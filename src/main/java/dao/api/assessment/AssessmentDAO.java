@@ -58,11 +58,11 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
     //********************************************
     @Query(value = "SELECT DISTINCT a , ps "
             + " FROM Assessment a "
-            + " LEFT JOIN a.processes ps "
+            + " LEFT JOIN a.processes ps WITH ps.user.id=:userId "
             + " JOIN a.participants p "
             + " WHERE p.id in "
             + " ( SELECT g.id FROM UserGroup g JOIN g.users u "
-            + "   WHERE u.id = :userId ) "
+            + "   WHERE u.id = :userId) "
             + " ORDER BY a.startDate DESC " )
     Page<Assessment> getAssignedByUserId( @Param("userId") long userId, Pageable pageable );
 

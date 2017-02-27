@@ -84,7 +84,19 @@ public class IdentityController
 	
 	/*******************************************************
      * 
-     * */
+     
+    @RequestMapping( value = "/logout.do", method = RequestMethod.GET )
+    public String logoutUser( HttpSession session )
+    {
+        session.removeAttribute( "sessionData" );
+        return ModelView.VIEW_LOGIN_PAGE;
+    }
+    */
+	
+	
+	/*******************************************************
+     * 
+     * 
     @RequestMapping( value = "/login.do", method = RequestMethod.POST )
     public ModelAndView loginUser( @RequestParam( "userName" ) String userName, 
                                    @RequestParam( "password" ) String password, HttpSession session )
@@ -121,7 +133,7 @@ public class IdentityController
         
         return model;
         
-    }
+    }*/
     
 
     /*******************************************************
@@ -286,15 +298,6 @@ public class IdentityController
         
     }
     
-	/*******************************************************
-	 * 
-	 */
-	@RequestMapping( value = "/logout.do", method = RequestMethod.GET )
-	public String logoutUser( HttpSession session )
-	{
-		session.removeAttribute( "sessionData" );
-		return ModelView.VIEW_LOGIN_PAGE;
-	}
 	
 	
 	/*******************************************************

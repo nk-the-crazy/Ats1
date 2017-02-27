@@ -216,6 +216,29 @@ public class ProcessController
         
         return model;
     }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_response_evaluation.mvw")
+    public ModelAndView getResponseEvaluationView(@RequestParam( "asmt_response_detail_id" ) long responseDetailId)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+        
+        try
+        {
+            model.setViewName( "modal/"+ModelView.VIEW_ASMT_RESPONSE_EVALUATION_PAGE); 
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting ResponseEvaluationView :", e ); 
+            model.addObject( "errorData", e );
+        }
+        
+        return model;
+        
+    }
 
     
 }

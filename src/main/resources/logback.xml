@@ -10,7 +10,7 @@
 	</appender>
 
 	<!-- Set log level for Spring framework -->
-	<logger name="org.springframework" level="DEBUG" additivity="false">
+	<logger name="org.springframework" level="ERROR" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 
@@ -20,9 +20,9 @@
 	
 
 	<!-- Log all SQL DDL statements as they are executed -->
-	<logger name="org.hibernate.tool.hbm2ddl" level="INFO" />
+	<logger name="org.hibernate.tool.hbm2ddl" level="ERROR" />
 
-	<root level="INFO">
+	<root level="ERROR">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

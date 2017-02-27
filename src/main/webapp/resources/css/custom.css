@@ -3517,6 +3517,12 @@ a.hiddenanchor {
 .login_content form input[type="submit"], #content form .submit {
   float: left;
   margin-left: 38px; }
+  
+ .modal-dialog-center {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
 
 .button a {
   background: url(http://cssdeck.com/uploads/media/items/8/8bcLQqF.png) 0 -112px no-repeat;
@@ -3590,7 +3596,7 @@ div[data-role="editor-toolbar"] {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 0;
-  min-height: 26px; }
+  min-height: 36px; }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
   color: #73879C;

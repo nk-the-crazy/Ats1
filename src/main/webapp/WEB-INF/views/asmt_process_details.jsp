@@ -204,12 +204,13 @@
                                         </div>
                                         <div id="itemResponseTabContent" role="tabpanel" class="tab-pane col-md-12 fade in" 
                                               aria-labelledby="item-response-tab">
-                                                  <button role="button" class="btn btn-primary btn-xs" 
-                                                    id="btnLoadResponseContent" onclick="">
+                                                  <a role="button" class="btn btn-primary btn-xs" href="" style="display:none"
+                                                    id="btnEvaluate" rel="modal">
                                                     <i class="fa fa-star-half-o"></i>&nbsp;
                                                     <spring:message code="label.asmt.task.item.grade"/>
-                                                  </button>
-                                                  <div id="imgProgress"><img src="images/ajax-loader.gif" style="width:40px; margin-top:10px; display:none"></div>
+                                                  </a>
+                                                  <div class="modal-container"></div>
+                                                  <div id="imgProgress"><img src="resources/images/ajax-loader.gif" style="width:40px; margin-top:10px; display:none"></div>
                                                   <div id="dvItemContent" class="item-response-content" style="display:none">
                                               </div>
                                         </div>
@@ -270,13 +271,16 @@
         $("#dvItemContent").hide();
     	$("#imgProgress").show();
     	$('#assessmentResultDetailsTab a[href="#itemResponseTabContent"]').tab('show')
+    	var sURL = "rest/assessment/response/content?asmt_response_detail_id="+responseDetailsId;
         
         $.ajax(
         {
-            url:"rest/assessment/response/content/"+responseDetailsId,
+            url:sURL,
             success: function (response) 
             {
                 $("#imgProgress").hide();
+                $("#btnEvaluate").attr('href' , 'asmt_response_evaluation.mvw?asmt_response_detail_id='+responseDetailsId);
+                $("#btnEvaluate").show();
                 $('#dvItemContent').html(response);
                 $("#dvItemContent").show();
             },
@@ -285,10 +289,25 @@
                 $("#imgProgress").hide();
                 $('dvItemContent').html('Error loading Page!');
                 $("#dvItemContent").show();
+                $("#btnEvaluate").hide();
             },
         });
  
     }
+    
+    $('a[rel=modal]').on('click', function(evt) 
+    {
+        evt.preventDefault();
+        
+        $('.modal-container')
+            .load($(this).attr('href'), function (responseText, textStatus) {
+                if ( textStatus === 'success' || 
+                     textStatus === 'notmodified') 
+                {
+                	$('#modalEvaluation').modal().show();
+                }
+        });
+    });
     </script>
     
 

@@ -3,7 +3,7 @@ package web.common.view;
 public class ModelView
 {
     //Error
-    public static String VIEW_SYSTEM_ERROR_PAGE  = "system_error";
+    public static String VIEW_SYSTEM_ERROR_PAGE  = "error";
 
     
     //Identity
@@ -59,7 +59,7 @@ public class ModelView
     public static String VIEW_ASMT_PROCESS_DETAILS_PAGE  = "asmt_process_details";
     
     //Evaluation
-    public static String VIEW_ASMT_RESPONSE_EVALUATION_PAGE  = "asmt_response_evaliation";
+    public static String VIEW_ASMT_RESPONSE_EVALUATION_PAGE  = "asmt_response_evaluation";
     
     //Task
     public static String VIEW_ASMT_CATEGORY_REGISTER_PAGE  = "asmt_category_register";

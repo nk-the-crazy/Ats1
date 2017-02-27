@@ -22,7 +22,7 @@ public class SystemController
     @RequestMapping( "/changelocale.do" )
     public String changeLocale(@RequestParam( "locale" ) String localeType, HttpServletRequest request)
     {
-        try
+        try   
         {
             //String localeStr = (String)request.getSession().getAttribute( "locale" );
             request.getSession().setAttribute( "locale", localeType );

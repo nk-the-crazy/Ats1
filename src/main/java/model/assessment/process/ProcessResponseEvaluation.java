@@ -25,7 +25,7 @@ public class ProcessResponseEvaluation
     private long id;
 
     @Column(name = "date")
-    private Date date;
+    private Date date = new Date(System.currentTimeMillis());
 
     @Column(name = "grade")
     private float grade = 0;

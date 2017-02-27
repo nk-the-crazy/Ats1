@@ -36,10 +36,13 @@
                             class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="asmt_list_user.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
-                            <li><a href="asmt_register.vw"><spring:message code="label.menu.assessment.register" /></a></li>
-                            <li><a href="asmt_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
-                            <li><a href="asmt_process_list.vw"><spring:message code="label.menu.process.list" /></a></li>
+                            <sec:authorize access="hasRole('AssessmentManagement)">
+                                <li><a href="asmt_register.vw"><spring:message code="label.menu.assessment.register" /></a></li>
+                                <li><a href="asmt_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
+                                <li><a href="asmt_process_list.vw"><spring:message code="label.menu.process.list" /></a></li>
+                            </sec:authorize>
                         </ul></li>
+                    <sec:authorize access="hasRole('AssessmentTaskManagement)">
                     <li><a><i class="fa fa-cubes"></i> 
                         <spring:message code="label.menu.task.list" /><span
                             class="fa fa-chevron-down"></span></a>
@@ -53,7 +56,10 @@
                             <li><a href="asmt_category_list.vw"><i class="fa fa-sitemap"></i>
                                 <spring:message code="label.menu.task.category.management" />
                             </a></li>
-                        </ul></li>
+                        </ul>
+                    </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ReportManagement)">
                     <li><a><i class="fa fa-bar-chart-o"></i>
                         <spring:message code="label.menu.reports" /><span
                             class="fa fa-chevron-down"></span></a>
@@ -61,7 +67,10 @@
                             <li><a href="asmt_result_list.vw">
                                 <spring:message code="label.menu.reports.result.list" />
                              </a></li>
-                        </ul></li>
+                        </ul>
+                    </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('IdentityManagement)  and hasRole('GroupManagement')">
                     <li><a><i class="fa fa-gears"></i> <spring:message
                                 code="label.menu.system_settings" /> <span
                             class="fa fa-chevron-down"></span></a>
@@ -116,7 +125,9 @@
                                                 code="label.menu.organization_list" />
                                     </a></li>
                                 </ul></li>
-                        </ul></li>
+                        </ul>
+                    </li>
+                    </sec:authorize>
                 </ul>
             </div>
         </div>

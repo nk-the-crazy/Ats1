@@ -13,8 +13,6 @@
 
 
 	<context:component-scan base-package="web.controller" />
-	<context:component-scan base-package="web.interceptor" />
-    
 	
 	<!-- ******* CSS and JS *************************************** -->
 

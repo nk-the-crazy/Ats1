@@ -18,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import model.group.UserGroup;
 import model.person.Person;
 
@@ -205,6 +207,19 @@ public class User
         { 
             group.getUsers().add(this);
         }
+    }
+    
+    
+    public List<GrantedAuthority> getAuthorities()
+    {
+        List<GrantedAuthority> roleList = new ArrayList<>();
+        
+        for(Role role:roles)
+        {
+            roleList. addAll( role.getPermissionsAsString() );
+        }
+        
+        return roleList; 
     }
     
 

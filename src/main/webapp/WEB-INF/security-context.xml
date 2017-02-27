@@ -1,10 +1,37 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
-                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/security 
-                           http://www.springframework.org/schema/security/spring-security-3.0.xsd">
-         
-     
-</beans>
+                           http://www.springframework.org/schema/security/spring-security.xsd">
+               
+   
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/resources/**" access="permitAll" />
+        <intercept-url pattern="/login*" access="permitAll" />
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
+        <http-basic/>
+        <form-login login-page="/login.vw"
+                    login-processing-url="/login.do"
+                    authentication-failure-url="/login.vw?errorMessage=message.error.invalid_login"
+                    default-target-url="/main.vw"
+                    username-parameter="userName"
+                    password-parameter="password"/>
+        
+        <logout logout-success-url="/login.vw" 
+                logout-url="logout.do" 
+                delete-cookies="JSESSIONID" />
+        <logout/>
+        <!-- 
+        <session-management  invalid-session-url="/login.vw">
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" /> 
+        </session-management> -->
+        
+    </http>
+ 
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="customAuthenticationProvider" />
+    </authentication-manager>
+    
+</beans:beans>
