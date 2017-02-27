@@ -45,7 +45,7 @@ model.common.session.SessionData" %>
 </head>
 
 <!-- ***************************** -->
-<c:set var="process" value="${sessionScope.sessionData.assessmentProcess}"/>
+<c:set var="process" value="${sessionScope.activeProcess}"/>
 <c:set var="taskCount" value="${process.taskIds.size()}"/>
 <c:set var="taskIndex" value="${(param.taskIndex + 1) >= taskCount ? taskCount - 1 : param.taskIndex}"/>
 <c:set var="task" value="${requestScope.processResponse.task}"/>
@@ -96,6 +96,7 @@ model.common.session.SessionData" %>
                                   <!-- ---------------------- -->
                                    <div class="col-md-12">
                                    <form method="POST" id="processResponse" name="processResponse" action="asmt_process_start.do">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" name="taskIndex" value="${taskIndex+1}" id="inpTaskIndex">
                                     <input type="hidden" name="taskState" value="2" id="inpTaskState">
                                     <input type="hidden" name="id"      value="${processResponse.id}">

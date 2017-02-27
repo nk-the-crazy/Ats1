@@ -35,7 +35,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider
         
         if(sessionData != null)
         {
-            return new UsernamePasswordAuthenticationToken(userName, password, sessionData.getUser().getAuthorities() );        
+            return new UsernamePasswordAuthenticationToken(sessionData, password, sessionData.getUser().getAuthorities() );        
         }
         
         logger.error( "Authentication Failed for User:" + userName );
@@ -53,5 +53,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider
         return authentication.equals(
                         UsernamePasswordAuthenticationToken.class);
     }
+    
+    
 
 }

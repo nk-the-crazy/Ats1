@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import model.common.session.SessionData;
 import model.group.UserGroup;
 import model.identity.Role;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -53,6 +53,9 @@ public class IdentityController
 
       
 	
+    /*******************************************************
+     * 
+     * */
     @InitBinder
     protected void initBinder(WebDataBinder binder) 
     {
@@ -82,60 +85,6 @@ public class IdentityController
 	}
 	
 	
-	/*******************************************************
-     * 
-     
-    @RequestMapping( value = "/logout.do", method = RequestMethod.GET )
-    public String logoutUser( HttpSession session )
-    {
-        session.removeAttribute( "sessionData" );
-        return ModelView.VIEW_LOGIN_PAGE;
-    }
-    */
-	
-	
-	/*******************************************************
-     * 
-     * 
-    @RequestMapping( value = "/login.do", method = RequestMethod.POST )
-    public ModelAndView loginUser( @RequestParam( "userName" ) String userName, 
-                                   @RequestParam( "password" ) String password, HttpSession session )
-    {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
-        
-        try
-        {
-            SessionData sData = identityManager.loginUser( userName, password );
-            
-            if ( sData != null )
-            {
-                session.setAttribute( "sessionData", sData );
-               return new ModelAndView("redirect:main.vw");
-            }
-            else
-            {
-                throw new InvalidLoginException("Invalid Login");
-            }
-            
-        }
-        catch(InvalidLoginException e)
-        {
-            logger.error( " **** Invalid Login ", e );        
-            model.addObject( "errorMessage", "message.error.invalid_login");
-            model.setViewName( ModelView.VIEW_LOGIN_PAGE);
-        }
-        catch(Exception e)
-        {
-            logger.error( " **** Error authenticating user", e );        
-            model.addObject( "loginMessage", "message.error.invalid_login");
-            model.setViewName( ModelView.VIEW_LOGIN_PAGE);
-        }
-        
-        return model;
-        
-    }*/
-    
-
     /*******************************************************
      * 
      */
@@ -151,11 +100,12 @@ public class IdentityController
      * */
     @RequestMapping( value = "/edit_password.do", method = RequestMethod.POST )
     public ModelAndView changeUserPassword( @RequestParam( "currentPassword" ) String currentPassword,
-                                            @RequestParam( "newPassword" ) String newPassword, HttpSession session)
+                                            @RequestParam( "newPassword" ) String newPassword,
+                                            @AuthenticationPrincipal SessionData sData)
     {
         
         ModelAndView model = new ModelAndView( ModelView.VIEW_EDIT_PASSWORD_PAGE );
-        SessionData sData = (SessionData)session.getAttribute( "sessionData" );
+        
         
         try
         {

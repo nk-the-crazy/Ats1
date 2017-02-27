@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -35,6 +36,7 @@ public class ProcessController
 {
     //---------------------------------
     private static final Logger logger = LoggerFactory.getLogger(ProcessController.class);
+    private static final String ACTIVE_PROCESS = "activeProcess";
     //---------------------------------
     
     @Autowired
@@ -57,16 +59,17 @@ public class ProcessController
      * 
      */
     @RequestMapping( value = "/asmt_process_init.do")
-    public ModelAndView initAssessementProcess(@RequestParam( "assessment_id" ) long assessmentId , HttpSession session)
+    public ModelAndView initAssessementProcess(@RequestParam( "assessment_id" ) long assessmentId , 
+                                               @AuthenticationPrincipal SessionData userSession,
+                                               HttpSession session)
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
         
         try
         {
-            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            AssessmentProcess process = assessmentManager.initProcess( assessmentId, sData.getUser() );
+            AssessmentProcess process = assessmentManager.initProcess( assessmentId, userSession.getUser() );
 
-            sData.setAssessmentProcess( process );
+            session.setAttribute("activeProcess", process );
             model.setViewName( ModelView.VIEW_ASMT_PROCESS_INIT_PAGE); 
         }
         catch(Exception e)
@@ -90,10 +93,10 @@ public class ProcessController
     {
         try
         {
-            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            processResponse = assessmentManager.startProcess(sData.getAssessmentProcess(), processResponse, nextTaskIndex);
+            AssessmentProcess activeProcess = (AssessmentProcess)session.getAttribute( "activeProcess" );
+            processResponse = assessmentManager.startProcess(activeProcess , processResponse, nextTaskIndex);
             
-            model.addAttribute( "processResponse" , processResponse );
+            model.addAttribute( ACTIVE_PROCESS , processResponse );
             
             return ModelView.VIEW_ASMT_PROCESS_START_PAGE; 
         }
@@ -122,12 +125,12 @@ public class ProcessController
     {
         try
         {
-            SessionData sData = (SessionData)session.getAttribute( "sessionData" );
-            assessmentManager.endProcess( sData.getAssessmentProcess() , processResponse);
+            AssessmentProcess activeProcess = (AssessmentProcess)session.getAttribute( ACTIVE_PROCESS );
+            assessmentManager.endProcess( activeProcess , processResponse);
             
             //------- Remove from session --------
-            long processId = sData.getAssessmentProcess().getId();
-            sData.setAssessmentProcess( null );
+            long processId = activeProcess.getId();
+            session.removeAttribute( ACTIVE_PROCESS );
             //------------------------------------
             return "redirect:asmt_process_end.vw?asmt_process_id=" + processId;
             
@@ -145,7 +148,7 @@ public class ProcessController
     /*******************************************************
      * 
      */
-    @RequestMapping("/asmt_process_end.vw")
+    @RequestMapping(value = "/asmt_process_end.vw")
     public String endAssessementProcessView(@RequestParam( name = "asmt_process_id") long processId, Model model)
     {
         Object process = assessmentManager.getAssessmentResult( processId );

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import web.common.view.ModelView;
+
 
 @Controller
 public class SystemController
@@ -37,5 +39,15 @@ public class SystemController
     }
     
 
+
+    /*******************************************************
+     * 
+     * */
+    @RequestMapping( value={ "/system_error", "/error"} )
+    public String getErrorView()
+    {
+        return ModelView.VIEW_SYSTEM_ERROR_PAGE;
+    }
+    
 
 }

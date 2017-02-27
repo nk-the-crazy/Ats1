@@ -47,10 +47,10 @@
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
-			<!-- sidebar
+			<!-- sidebar -->
 			<jsp:include page="include/sidebar.jsp"><jsp:param name="page"
 					value="error.vw" /></jsp:include>
-			/sidebar -->
+			<!-- /sidebar -->
 
 			<!-- top navigation -->
 			<jsp:include page="include/header.jsp"><jsp:param name="page"
