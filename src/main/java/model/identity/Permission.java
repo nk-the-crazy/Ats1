@@ -123,7 +123,7 @@ public class Permission
     public List<GrantedAuthority> asString()
     {
         List<GrantedAuthority> perms = new ArrayList<>();
-        perms.add(new SimpleGrantedAuthority(PermissionItem.values()[this.item].name()));
+        perms.add(new SimpleGrantedAuthority(PermissionItem.values()[this.item-1].name()));
         return perms;
     }
 }

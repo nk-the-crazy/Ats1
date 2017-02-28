@@ -43,7 +43,7 @@ public class ProcessResponse
     // *********************************************    
     
     // *********************************************
-    @OneToMany( cascade = CascadeType.ALL , fetch = FetchType.LAZY )
+    @OneToMany( cascade = CascadeType.ALL , fetch = FetchType.LAZY , orphanRemoval = true)
     @JoinTable( name="asmt_process_response_details", 
                 joinColumns=@JoinColumn(name="response_id" ),
                 inverseJoinColumns=@JoinColumn(name="details_id"))

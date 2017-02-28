@@ -132,13 +132,24 @@ public class SystemDataInit
         Permission perm2 = identityManager.createPermission( PermissionItem.AssessmentManagement.getId(), true, true, false, false);
         Permission perm3 = identityManager.createPermission( PermissionItem.GroupManagement.getId(), true, true, false, false);
         Permission perm4 = identityManager.createPermission( PermissionItem.AssessmentTaskManagement.getId(), true, true, false, false);
+        Permission perm5 = identityManager.createPermission( PermissionItem.ReportManagement.getId(), true, true, false, false);
         
         Role role = identityManager.createRole( name, "Details:"+name, 2);
         
-        role.addPermission( perm1 );
-        role.addPermission( perm2 );
-        role.addPermission( perm3 );
-        role.addPermission( perm4 );
+        if("User Role".equals( name ))
+        {
+            role.addPermission( identityManager.createPermission( PermissionItem.AssessmentTesting.getId() , true, true, false, false) );
+        }
+        else
+        {
+            role.addPermission( perm1 );
+            role.addPermission( perm2 );
+            role.addPermission( perm3 );
+            role.addPermission( perm4 );
+            role.addPermission( perm5 ); 
+        }
+        
+        
         
         identityManager.saveRole( role );
         

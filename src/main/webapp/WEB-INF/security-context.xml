@@ -10,22 +10,48 @@
     <global-method-security secured-annotations="enabled" />
     
     <http auto-config="true" use-expressions="true">
+        
+        <!-- 403 error page -->
+        <access-denied-handler error-page="/access_error_403" />  
+        
+        <!-- intercept url  -->
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/login*" access="permitAll" />
+        
+        <intercept-url pattern="/asmt_process*"   access="hasAuthority('AssessmentManagement')"/>
+        <intercept-url pattern="/asmt_test*"      access="hasAuthority('AssessmentManagement')"/>
+        <intercept-url pattern="/asmt_result*"    access="hasAuthority('AssessmentManagement')"/>
+        <intercept-url pattern="/asmt_response*"  access="hasAuthority('AssessmentManagement')"/>
+                                                          
+        <intercept-url pattern="/asmt_task*"      access="hasAuthority('AssessmentTaskManagement')"/>
+        <intercept-url pattern="/asmt_category*"  access="hasAuthority('AssessmentTaskManagement')"/>
+        
+        <intercept-url pattern="/user*"           access="hasAuthority('IdentityManagement')"/>
+        <intercept-url pattern="/role*"           access="hasAuthority('IdentityManagement')"/>
+        <intercept-url pattern="/organization*"   access="hasAuthority('IdentityManagement')"/>
+
+        <intercept-url pattern="/group*"          access="hasAuthority('GroupManagement')"/>
+
         <intercept-url pattern="/**" access="isAuthenticated()"/>
+        <!-- /intercept url  -->
+
         <http-basic/>
-        <form-login login-page="/login.vw"
+        
+        <!-- form login -->
+        <form-login login-page="/login.vw" 
                     login-processing-url="/login.do"
+                    always-use-default-target="true"
                     authentication-failure-url="/login.vw?errorMessage=message.error.invalid_login"
                     default-target-url="/main.vw"
                     username-parameter="userName"
-                    password-parameter="password"/>
+                    password-parameter="password" />
         
         <logout logout-url="/logout.do"
                 logout-success-url="/login.vw" 
                 invalidate-session="true" 
                 delete-cookies="JSESSIONID" />
         <logout/>
+        <!-- /form login -->
         <!-- 
         <session-management  invalid-session-url="/login.vw">
             <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" /> 

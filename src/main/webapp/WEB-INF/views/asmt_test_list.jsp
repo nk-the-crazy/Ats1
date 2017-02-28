@@ -52,13 +52,13 @@ common.utils.system.SystemUtils"%>
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp">
-                <jsp:param name="page" value="asmt_list.vw" />
+                <jsp:param name="page" value="asmt_test_list.vw" />
             </jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp">
-                <jsp:param name="page" value="asmt_list.vw" />
+                <jsp:param name="page" value="asmt_test_list.vw" />
             </jsp:include>
             <!-- /top navigation -->
 
@@ -141,7 +141,7 @@ common.utils.system.SystemUtils"%>
                                             </c:choose>
                                             <tr class="${status_color}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
-                                                <td><a href="asmt_details.vw?assessment_id=${assessment.id}">
+                                                <td><a href="asmt_test_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
@@ -156,7 +156,7 @@ common.utils.system.SystemUtils"%>
                                     <!------------- Pagination -------------->
                                     <c:if test="${assessmentsPage.totalPages > 1}">
                                         <jsp:include page="include/pagination.jsp">
-                                             <jsp:param name="page" value="asmt_list.vw" />
+                                             <jsp:param name="page" value="asmt_test_list.vw" />
                                              <jsp:param name="totalPages" value="${assessmentsPage.totalPages}" />
                                              <jsp:param name="totalElements" value="${assessmentsPage.totalElements}" />
                                              <jsp:param name="currentIndex" value="${assessmentsPage.number}" />
@@ -176,7 +176,7 @@ common.utils.system.SystemUtils"%>
 
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
-            <jsp:param name="page" value="assessment_list.vw" />
+            <jsp:param name="page" value="asmt_test_list.vw" />
         </jsp:include>
         <!-- /footer content -->
     </div>

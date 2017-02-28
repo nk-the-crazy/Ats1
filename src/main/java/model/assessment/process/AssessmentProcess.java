@@ -33,10 +33,10 @@ public class AssessmentProcess
     private long id;
     
     @Column(name = "start_date") 
-    private Date startDate = new Date(System.currentTimeMillis());
+    private Date startDate = null;
     
     @Column(name = "end_date") 
-    private Date endDate = new Date(System.currentTimeMillis());
+    private Date endDate = null;
     
     @Column(name = "state") 
     private short state = 1;

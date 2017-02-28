@@ -6,6 +6,7 @@
 	    
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <!-- ************************************* -->
 
@@ -30,14 +31,14 @@
 	<div class="nav_menu">
 		<nav>
 			<div class="nav toggle">
-				<a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
 			</div>
             <form id="formHeaderMenu" action="logout.do" method="POST">
 			<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
             <ul class="nav navbar-nav navbar-right">
 				<li class=""><a href="javascript:;" data-toggle="dropdown"
 					aria-expanded="false"> <i class="fa fa-user"></i>
-                    <span>&nbsp;&nbsp;<b>${sessionScope.sessionData.user.userName}</b></span>
+                    <span>&nbsp;&nbsp;<b><sec:authentication property="principal.username" /></b></span>
 						<span class=" fa fa-angle-down"></span></a>
 					<ul class="dropdown-menu dropdown-usermenu pull-right">
                         <li><a href="edit_password.vw"><i class="fa fa-unlock pull-left"></i>

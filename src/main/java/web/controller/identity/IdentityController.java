@@ -106,7 +106,6 @@ public class IdentityController
         
         ModelAndView model = new ModelAndView( ModelView.VIEW_EDIT_PASSWORD_PAGE );
         
-        
         try
         {
             if(sData == null)
@@ -298,8 +297,11 @@ public class IdentityController
         model.addAttribute( "organizationShortList" , organizationManager.getOrganizationShortListByName( "" ));
         model.addAttribute( "roleShortList" , identityManager.getRoleShortListByRoleName( "" ));
         model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
+
         
         return ModelView.VIEW_USER_REGISTER_PAGE;
+        
+        
     }
     
     

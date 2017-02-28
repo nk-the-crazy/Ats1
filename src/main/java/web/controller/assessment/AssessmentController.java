@@ -3,9 +3,6 @@ package web.controller.assessment;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +61,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_list_user.vw")
+    @RequestMapping( value = "/test_list_user.vw")
     
     public ModelAndView getUserAssessmentsList( @AuthenticationPrincipal SessionData sData, Pageable pageable )
     {         
@@ -84,7 +81,8 @@ public class AssessmentController
         catch(Exception e)
         {
             logger.error( " **** Error getting User assigned Assessment list:", e );        
-            model.addObject( "errorData", e );
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        
         }
         
         return model;
@@ -94,7 +92,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_list.vw")
+    @RequestMapping( value = "/asmt_test_list.vw")
     public ModelAndView getAssessmentList(  @RequestParam( name = "assessmentName" , defaultValue = "", required = false ) 
                                             String assessmentName, 
                                             @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
@@ -120,7 +118,8 @@ public class AssessmentController
         catch(Exception e)
         {
             logger.error( " **** Error getting Assessment list:", e );        
-            model.addObject( "errorData", e );
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        
         }
         
         return model;
@@ -130,7 +129,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_details.vw")
+    @RequestMapping( value = "/asmt_test_details.vw")
     public ModelAndView getAssessmentDetails(@RequestParam( "assessment_id" ) long assessmentId, Pageable pageable )
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
@@ -148,7 +147,8 @@ public class AssessmentController
         catch(Exception e)
         {
             logger.error( " **** Error getting assessment Details:", e );        
-            model.addObject( "errorData", e );
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        
         }
         
         return model;
@@ -159,7 +159,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping("/asmt_register.vw")
+    @RequestMapping( value = "/asmt_test_register.vw" ) 
     public String registerAssessmentView(Model model)
     {
         model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
@@ -172,16 +172,16 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_register.do")
+    @RequestMapping( value = "/asmt_test_register.do" )
     public String registerAssessment( @ModelAttribute( "assessment" ) Assessment assessment,
-                                @RequestParam( name = "participantIds" , required = false ) List<Long> participantIds,
-                                Model model, HttpSession session )
+                                      @RequestParam( name = "participantIds" , required = false ) List<Long> participantIds,
+                                      @AuthenticationPrincipal SessionData sData,
+                                      Model model)
     {
         try
         {
-            SessionData sData = (SessionData)session.getAttribute( "sessionData" ); 
             assessment = assessmentManager.createAssessment( assessment, sData.getUser(), participantIds);
-            return "redirect:asmt_details.vw?assessment_id=" + assessment.getId();
+            return "redirect:asmt_test_details.vw?assessment_id=" + assessment.getId();
         }
         catch(IllegalArgumentException e)
         {
@@ -204,13 +204,13 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/asmt_result_list.vw")
-    public ModelAndView getAssessmentResultListView(  @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
-                                            String lastName, 
-                                            @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
-                                            String startDateFromStr, 
-                                            @RequestParam( name = "startDateTo" , defaultValue = "01.01.2020", required = false ) 
-                                            String startDateToStr,
-                                            Pageable pageable )
+    public ModelAndView getAssessmentResultListView( @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
+                                                     String lastName, 
+                                                     @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
+                                                     String startDateFromStr, 
+                                                     @RequestParam( name = "startDateTo" , defaultValue = "01.01.2020", required = false ) 
+                                                     String startDateToStr,
+                                                     Pageable pageable )
     {         
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
             
@@ -227,7 +227,8 @@ public class AssessmentController
         catch(Exception e)
         {
             logger.error( " **** Error getting Assessment result list:", e );        
-            model.addObject( "errorData", e );
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        
         }
         
         return model;
@@ -256,13 +257,12 @@ public class AssessmentController
         catch(Exception e)
         {
             logger.error( " **** Error getting Assessment result details:", e );        
-            model.addObject( "errorData", e );
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        
         }
         
         return model;
     }
-    
 
-    
 
 }

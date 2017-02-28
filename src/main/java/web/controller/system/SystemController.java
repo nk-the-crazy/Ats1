@@ -50,4 +50,14 @@ public class SystemController
     }
     
 
+    /*******************************************************
+     * 
+     * */
+    @RequestMapping( value="/access_error_403" )
+    public String getAccessErrorView()
+    {
+        return ModelView.VIEW_SYSTEM_ERROR_PAGE+"?errorData=message.error.access.denied";
+    }
+    
+
 }

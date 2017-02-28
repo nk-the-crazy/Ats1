@@ -8,6 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -36,7 +37,7 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 </head>
 <!-- ***************************** -->
-<c:set var="sessionData" value="${sessionScope.sessionData}"/>
+<sec:authentication var="sessionData" property="principal" />
 <c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
 <!-- ***************************** -->
 
@@ -84,7 +85,8 @@
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.account_email" />:</th>
-                                          <td><c:out value="${sessionData.user.email}"/></td>
+                                          <td>
+                                            <c:out value="${sessionData.user.email}"/></td>
                                         </tr>
                                         <tr>
                                           <th scope="row" ><spring:message code="label.user.last_login_date" />:</th>

@@ -121,21 +121,21 @@ common.utils.system.SystemUtils"%>
                                                     <c:if test="${asmt_status != 2 }">
                                                         <c:choose>
                                                             <c:when test="${asmt_status == 1 && process_state == 1 }">
-                                                                <a href="asmt_process_init.do?assessment_id=${assessment.id}" 
+                                                                <a href="test_process_init.do?assessment_id=${assessment.id}" 
                                                                      class="btn btn-primary btn-xs" role="button">
                                                                     <i class="fa fa-clock-o"></i>&nbsp;
                                                                         <spring:message code="label.assessment.take"/>
                                                                 </a>
                                                             </c:when>
                                                             <c:when test="${asmt_status == 1 && process_state == 2 }">
-                                                                <a href="asmt_process_init.do?assessment_id=${assessment.id}" 
+                                                                <a href="test_process_init.do?assessment_id=${assessment.id}" 
                                                                      class="btn btn-primary btn-xs" role="button">
                                                                     <i class="fa fa-clock-o"></i>&nbsp;
                                                                         <spring:message code="label.action.resume"/>
                                                                 </a>
                                                             </c:when>
                                                             <c:when test="${ process_state == 3 }">
-                                                                <a href="asmt_process_end.vw?asmt_process_id=${process.id}" 
+                                                                <a href="test_process_end.vw?asmt_process_id=${process.id}" 
                                                                      class="btn btn-primary btn-xs" role="button">
                                                                     <i class="fa fa-line-chart"></i>&nbsp;
                                                                         <spring:message code="label.assessment.result"/>
