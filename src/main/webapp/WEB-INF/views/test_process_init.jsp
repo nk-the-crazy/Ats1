@@ -135,13 +135,13 @@
                                           <th scope="row" ></th>
                                           <td>
                                             <c:if test="${asmt_status == 1 }">
-                                              <a href="asmt_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
+                                              <a href="test_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
                                                 <i class="fa fa-clock-o"></i>&nbsp;
                                                 <spring:message code="label.assessment.start"/>
                                                </a> 
                                              </c:if>
                                             <c:if test="${asmt_status == 5 }">
-                                              <a href="asmt_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
+                                              <a href="test_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
                                                 <i class="fa fa-clock-o"></i>&nbsp;
                                                 <spring:message code="label.action.resume"/>
                                                </a> 

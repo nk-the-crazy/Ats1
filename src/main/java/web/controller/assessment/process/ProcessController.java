@@ -36,7 +36,8 @@ public class ProcessController
 {
     //---------------------------------
     private static final Logger logger = LoggerFactory.getLogger(ProcessController.class);
-    private static final String ACTIVE_PROCESS = "activeProcess";
+    private static final String ACTIVE_PROCESS  = "activeProcess";
+    private static final String ACTIVE_RESPONSE = "processResponse";
     //---------------------------------
     
     @Autowired
@@ -56,9 +57,9 @@ public class ProcessController
     
     
     /*******************************************************
-     * 
+     *  Initialize Assessment Process
      */
-    @RequestMapping( value = "/asmt_process_init.do")
+    @RequestMapping( value = "/test_process_init.do")
     public ModelAndView initAssessementProcess(@RequestParam( "assessment_id" ) long assessmentId , 
                                                @AuthenticationPrincipal SessionData userSession,
                                                HttpSession session)
@@ -69,13 +70,14 @@ public class ProcessController
         {
             AssessmentProcess process = assessmentManager.initProcess( assessmentId, userSession.getUser() );
 
-            session.setAttribute("activeProcess", process );
+            session.setAttribute(ACTIVE_PROCESS, process );
             model.setViewName( ModelView.VIEW_ASMT_PROCESS_INIT_PAGE); 
         }
         catch(Exception e)
         {
             logger.error( " **** Error initializing assessment :", e ); 
-            model.addObject( "errorData", e );
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );
         }
         
         return model;
@@ -84,9 +86,9 @@ public class ProcessController
 
 
     /*******************************************************
-     * 
+     * Roll and Save Assessment Questions
      */
-    @RequestMapping( value = "/asmt_process_start.do")
+    @RequestMapping( value = "/test_process_start.do")
     public String startAssessementProcess( @RequestParam( name = "taskIndex" , defaultValue = "0", required = false ) int nextTaskIndex, 
                                            @ModelAttribute( "processResponse" ) ProcessResponse processResponse,
                                            HttpSession session, Model model )
@@ -94,9 +96,9 @@ public class ProcessController
         try
         {
             AssessmentProcess activeProcess = (AssessmentProcess)session.getAttribute( "activeProcess" );
-            processResponse = assessmentManager.startProcess(activeProcess , processResponse, nextTaskIndex);
+            processResponse = assessmentManager.startProcess(activeProcess, processResponse, nextTaskIndex);
             
-            model.addAttribute( ACTIVE_PROCESS , processResponse );
+            model.addAttribute( ACTIVE_RESPONSE , processResponse );
             
             return ModelView.VIEW_ASMT_PROCESS_START_PAGE; 
         }
@@ -108,7 +110,8 @@ public class ProcessController
         catch(Exception e)
         {
             logger.error( " **** Error starting assessment Details:", e ); 
-            model.addAttribute( "errorData", e );
+            model.addAttribute( "errorData", "message.error.system");
+            model.addAttribute( "errorDetails", e.toString() );
         }
         
         return ModelView.VIEW_SYSTEM_ERROR_PAGE;
@@ -119,7 +122,7 @@ public class ProcessController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_process_end.do")
+    @RequestMapping( value = "/test_process_end.do")
     public String endAssessementProcess( @ModelAttribute( "processResponse" ) ProcessResponse processResponse,
                                          HttpSession session, Model model )
     {
@@ -132,7 +135,7 @@ public class ProcessController
             long processId = activeProcess.getId();
             session.removeAttribute( ACTIVE_PROCESS );
             //------------------------------------
-            return "redirect:asmt_process_end.vw?asmt_process_id=" + processId;
+            return "redirect:test_process_end.vw?asmt_process_id=" + processId;
             
         }
         catch(Exception e)
@@ -148,7 +151,7 @@ public class ProcessController
     /*******************************************************
      * 
      */
-    @RequestMapping(value = "/asmt_process_end.vw")
+    @RequestMapping(value = "/test_process_end.vw")
     public String endAssessementProcessView(@RequestParam( name = "asmt_process_id") long processId, Model model)
     {
         Object process = assessmentManager.getAssessmentResult( processId );
@@ -214,8 +217,8 @@ public class ProcessController
         catch(Exception e)
         {
             logger.error( " **** Error getting Assessment process details:", e );        
-            model.addObject( "errorData", e );
-        }
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        }
         
         return model;
     }
@@ -236,8 +239,8 @@ public class ProcessController
         catch(Exception e)
         {
             logger.error( " **** Error getting ResponseEvaluationView :", e ); 
-            model.addObject( "errorData", e );
-        }
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        }
         
         return model;
         

@@ -31,7 +31,7 @@ public class ProcessResponseDetail
     private String itemResponse;    
     
     // *********************************************
-    @OneToOne(  fetch = FetchType.LAZY )
+    @OneToOne( fetch = FetchType.LAZY  )
     @JoinColumn(name = "task_detail_id")
     private AssessmentTaskDetail taskDetail;
     // *********************************************  

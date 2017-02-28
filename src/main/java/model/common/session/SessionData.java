@@ -1,6 +1,10 @@
 package model.common.session;
 
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+
 import model.identity.User;
 
 
@@ -65,5 +69,24 @@ public class SessionData
     {
         this.lastLogin = lastLogin;
     }
+    
+    
+    public String getUsername()
+    {
+        return this.user.getUserName();
+    }
+
+    public long getId()
+    {
+        return this.user.getId();
+    }
+    
+    
+    public List<GrantedAuthority> getAuthorities()
+    {
+        return this.user.getAuthorities();
+    }
+
+
 
 }

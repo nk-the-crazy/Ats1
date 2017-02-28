@@ -132,13 +132,24 @@ public class SystemDataInit
         Permission perm2 = identityManager.createPermission( PermissionItem.AssessmentManagement.getId(), true, true, false, false);
         Permission perm3 = identityManager.createPermission( PermissionItem.GroupManagement.getId(), true, true, false, false);
         Permission perm4 = identityManager.createPermission( PermissionItem.AssessmentTaskManagement.getId(), true, true, false, false);
+        Permission perm5 = identityManager.createPermission( PermissionItem.ReportManagement.getId(), true, true, false, false);
         
         Role role = identityManager.createRole( name, "Details:"+name, 2);
         
-        role.addPermission( perm1 );
-        role.addPermission( perm2 );
-        role.addPermission( perm3 );
-        role.addPermission( perm4 );
+        if("User Role".equals( name ))
+        {
+            role.addPermission( identityManager.createPermission( PermissionItem.AssessmentTesting.getId() , true, true, false, false) );
+        }
+        else
+        {
+            role.addPermission( perm1 );
+            role.addPermission( perm2 );
+            role.addPermission( perm3 );
+            role.addPermission( perm4 );
+            role.addPermission( perm5 ); 
+        }
+        
+        
         
         identityManager.saveRole( role );
         
@@ -161,63 +172,98 @@ public class SystemDataInit
 
     
     //******************************************
+    private AssessmentTaskCategory createDefaultCategory(String name , String details , AssessmentTaskCategory parent) 
+    {
+        AssessmentTaskCategory cat = taskManager.createTaskCategory( name, details ,2 );
+        cat.setParent( parent );
+        return taskManager.saveTaskCategory( cat );
+    }    
+    //******************************************
+
     private void createDefaultCategories() 
     {
-        for(int x=1; x < 20; x++) 
-        {
-            AssessmentTaskCategory category = null;
-            
-            if(x == 1)
-            {
-                category = taskManager.createTaskCategory( "Default-"+x, "Default Category-"+x , 1);
-            }
-            else
-            {
-                category = taskManager.createTaskCategory( "Category-"+x, "Details of Category-"+x , 2);
-                
-                AssessmentTask task1 = null;
-                AssessmentTask task2 = null; 
-                
-                if(x < 10)
-                {
-                    task1 = createDefaultTasks(x , 1) ;
-                    task2 = createDefaultTasks(x+1, 2) ;
-                }
-                else
-                {
-                    task1 = createDefaultTasks(x , 1) ;
-                    task2 = createDefaultTasks(x+1, 2) ;
-                }
-                
-                category.addTask( task1 );
-                category.addTask( task2 );
-                
-                for(int a=1; a < 5; a++) 
-                {
-                    AssessmentTaskCategory categoryS1 = taskManager.createTaskCategory( "Category-"+x+"-"+a, "Details of Category-"+x , 2 );
-                    category.addChildCategory( categoryS1 );
-    
-                    for(int b=1; b < 3; b++) 
-                    {
-                        AssessmentTaskCategory categoryS2 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b, "Details of Category-"+x, 2 );
-                        categoryS1.addChildCategory( categoryS2 );
-    
-                        //AssessmentTaskCategory categoryS3 = taskManager.createTaskCategory( "Category-"+x+"-"+a+"-"+b+"-"+b, "Details of Category-"+x );
-                        //categoryS2.addChildCategory( categoryS3 );
-                    }
-                }
-                
-                
-            }
-            taskManager.saveTaskCategory( category );
-        }
+        /*
+        Блок 1.Система управления государственными финансами
+        Финансовое управление и контроль
+        Внутренний контроль
+        Бухгалтерский учет и отчетность
+        Бюджетирование
+        Государственные закупки
+        Блок 2. Базовые знания по внутреннему аудиту
+        Законодательные основы проведения внутреннего аудита в Кыргызской Республике
+        Обязательные аспекты Международных стандартов профессиональной практики внутреннего аудита (IPPF)
+        Понятие риска и процедур внутренних контролей
+        Механизмы и техники проведения внутренних аудитов
+        Блок 3. Практика проведения внутренних аудитов
+        Управление функцией внутреннего аудита
+        Стратегическая и операционная роли внутреннего аудита в системе управления организацией
+        Разработка риск-ориентированного плана деятельности подразделения внутреннего аудита
+        Виды (типы) аудита
+        Аудиторские техники в контексте применения компьютерных технологий
+        Пошаговое управление задачами по внутреннему аудиту (планирование, проведение, наблюдение написание аудиторского отчета (формат) и мониторинг результатов
+        Риски мошенничества и соответствующие контрольные процедуры
+         Блок 4. Элементы необходимых знаний по внутреннему аудиту
+        Управление и управленческая этика
+        Управление рисками
+        Организационная структура
+        Управление финансами
+        Управленческие процессы и соответствующие риски
+        Принципы управления и лидерства, коммуникационная политика
+        Информационные технологии и непрерывность управленческого процесса в контексте построения эффективной системы внутреннего контроля
+        Блок 5. Оценка качества внутреннего аудита
+        Внутренние оценки
+        Внешние оценки
+
+        */
+        
+        
+        AssessmentTaskCategory cat1 = createDefaultCategory("1.Система управления гос. финансами" , 
+                                                            "Система управления государственными финансами", null); 
+        
+        createDefaultCategory("1.1 Финансовое управление и контроль" , 
+                        "Финансовое управление и контроль", cat1); 
+        
+        createDefaultCategory("1.2 Внутренний контроль" , 
+                        "Внутренний контроль", cat1); 
+        
+        createDefaultCategory("1.3 Бухгалтерский учет и отчетность" , 
+                        "Бухгалтерский учет и отчетность", cat1); 
+        
+        createDefaultCategory("1.4 Бюджетирование" , 
+                        "Бюджетирование", cat1); 
+        
+        createDefaultCategory("1.5 Государственные закупки" , 
+                        "Государственные закупки", cat1); 
+        
+        AssessmentTaskCategory cat2 = createDefaultCategory("2.Базовые знания по внутреннему аудиту" , 
+                                                            "Базовые знания по внутреннему аудиту", null); 
+
+        createDefaultCategory("2.1 Законодательные основы" , 
+                        "Законодательные основы проведения внутреннего аудита в Кыргызской Республике", cat2); 
+        
+        createDefaultCategory("2.2 Обязательные аспекты Международных стандартов" , 
+                        "Обязательные аспекты Международных стандартов профессиональной практики внутреннего аудита (IPPF)", cat2); 
+        
+        createDefaultCategory("2.3 Понятие риска и процедур внутренних контролей" , 
+                        "Понятие риска и процедур внутренних контролей", cat2); 
+        
+        createDefaultCategory("2.4 Обязательные аспекты Международных стандартов" , 
+                        "Механизмы и техники проведения внутренних аудитов", cat2); 
+        
+        AssessmentTaskCategory cat3 = createDefaultCategory("3.Практика проведения внутренних аудитов" , 
+                                                            "Практика проведения внутренних аудитов", null); 
+
+
+        createDefaultCategory("3.1 Управление функцией внутреннего аудита" , 
+                        "Управление функцией внутреннего аудита", cat3); 
+       
     }
     
     
     //******************************************
     private AssessmentTask createDefaultTasks(int index, int type) 
     {
-        AssessmentTask task = taskManager.createTask( "Task Item name-1" + index, index+"+3 = ?",10, 2, type, 1);
+        AssessmentTask task = taskManager.createTask( "Вопрос №-" + index, index+"+3 = ?",10, 2, type, 1);
                 
         AssessmentTaskDetail det1 = taskManager.createTaskDetails( "Answer = "+ (index+3), 100 );
         AssessmentTaskDetail det2 = taskManager.createTaskDetails( "Answer = "+ (index+4), 0 );
@@ -237,7 +283,7 @@ public class SystemDataInit
     //******************************************
     private void createDefaultAssessments() 
     {
-        
+        /*
         for(int x=1;x < 10 ; x++  ) 
         {
             Date startDate = DateUtils.addDays( new Date(System.currentTimeMillis()), -1 );
@@ -265,7 +311,7 @@ public class SystemDataInit
                 asmt.addTask( taskManager.getTaskById( 4 ) );
             }
             assessmentManager.saveAssessment( asmt );
-        }
+        }*/
     }
     
 }

@@ -103,8 +103,14 @@ public class AssessmentManagerImpl implements AssessmentManager
                 process.setState( ProcessState.Ready.getId() );
             }
             
+            
             if(process.getState() != ProcessState.Finished.getId() )
             {
+                if(process.getState() == ProcessState.Started.getId())
+                {
+                    process.setState( ProcessState.Resumed.getId() );
+                }
+                
                 process.setTaskIds( taskDAO.getRandomIdByAssessmentId( assessment.getId() ) );
             }
             
@@ -124,22 +130,31 @@ public class AssessmentManagerImpl implements AssessmentManager
         
         try
         {
+            //-----------Check Valid ----------------------------
             if(process.getState() == ProcessState.Finished.getId())
             {
                 throw new TimeExpiredException("Process already finished (Test passed):"+ process.getAssessment().getName());
             }
             
-            if(isTimeExpired( process.getAssessment().getTime(), process.getEndDate() ))
+            if(isTimeExpired( process.getAssessment().getTime(), process.getStartDate() ))
             {
                 //-----End Process if time expired -------------
                 endProcess(process, null);
                 //----------------------------------------------
                 throw new TimeExpiredException("Time is expired for Assessment:"+ process.getAssessment().getName());
             }
-
-            //*******************************************************
+            //----------------------------------------------
+            
             if(process.getState() == ProcessState.Ready.getId() )
             {
+                process.setStartDate( new Date(System.currentTimeMillis()) );
+                process.setEndDate( process.getStartDate() );
+                process.setState( ProcessState.Started.getId() );
+                processDAO.save( process );
+            }
+            else if(process.getState() == ProcessState.Resumed.getId() )
+            {
+                process.setEndDate( new Date(System.currentTimeMillis()) );
                 process.setState( ProcessState.Started.getId() );
                 processDAO.save( process );
             }
@@ -151,7 +166,11 @@ public class AssessmentManagerImpl implements AssessmentManager
                 if(!CollectionUtils.isEmpty( processResponse.getDetails() ))
                 {
                     // ----------Remove previous responses -----------
-                    processResponseDAO.delete( processResponse.getId() );
+                    if(processResponse.getId() > 0)
+                    {
+                        processResponseDAO.delete( processResponse.getId() );
+                        //processResponse.setId( 0 );
+                    }
                     // -----------------------------------------------
                     
                     Iterator<ProcessResponseDetail> itr = processResponse.getDetails().iterator();
@@ -168,22 +187,21 @@ public class AssessmentManagerImpl implements AssessmentManager
                    
                     
                     processResponse.setProcessLazy( process );
-                    processResponseDAO.save( processResponse );
+                    processResponse = processResponseDAO.save( processResponse );
                 }
             }
             
             //*******************************************************
-            response = processResponseDAO.getByProcessAndTaskId( process.getId(), getTaskIdByIndex(nextTaskIndex, process) );
+            response = processResponseDAO.getDetailsByProcessAndTaskId( process.getId(), getTaskIdByIndex(nextTaskIndex, process) );
             
             if(response == null)
             {
                 response = new ProcessResponse(); 
             }
             
-            AssessmentTask task = getTaskByIndex(nextTaskIndex, process );
-            
-            process.setCurrentTask( task );
-            response.setTask( task ); 
+            response.setTask( getTaskByIndex(nextTaskIndex, process ) );
+            process.setCurrentTask( response.getTask() );
+             
         }
         catch ( TimeExpiredException e )
         {
@@ -285,7 +303,10 @@ public class AssessmentManagerImpl implements AssessmentManager
      */
     private boolean isTimeExpired( int time, Date lastActiveDate )
     {
-        lastActiveDate = DateUtils.addMinutes( lastActiveDate, time );
+        if(lastActiveDate == null)
+            return false;
+        
+        lastActiveDate = DateUtils.addSeconds( lastActiveDate, (time * 60) );
         Date currentDate = new Date(System.currentTimeMillis());
         
         if( lastActiveDate.getTime() < currentDate.getTime())

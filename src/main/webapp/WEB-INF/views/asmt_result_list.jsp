@@ -76,7 +76,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                             <spring:message code="label.action.export"/>&nbsp;&nbsp;<span class="caret"></span>
                                          </button>
                                          <ul role="menu" class="dropdown-menu">
-                                          <li><a href="#"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
+                                          <li><a href="asmt_result_list.vw?outputType=2"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
                                           </li>
                                           <li class="divider"></li>
                                           <li><a href="#"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
@@ -167,7 +167,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                                 <td><a href="user_details.vw?user_id=${user.id}">
                                                     <c:out value="${user.person.lastName}"/>&nbsp;
                                                     <c:out value="${user.person.firstName}"/></a></td>
-                                                <td><a href="asmt_details.vw?assessment_id=${assessment.id}">
+                                                <td><a href="asmt_test_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${process.startDate}" /></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status,locale)}</td>

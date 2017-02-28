@@ -8,9 +8,7 @@ common.utils.system.SystemUtils,
 java.util.Locale, 
 model.assessment.*,
 model.assessment.task.*,
-model.assessment.process.*,
-
-model.common.session.SessionData" %>
+model.assessment.process.*" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -62,12 +60,12 @@ model.common.session.SessionData" %>
 		<div class="main_container">
 			<!-- sidebar -->
 			<jsp:include page="include/sidebar.jsp"><jsp:param name="page"
-					value="asmt_start_process.vw" /></jsp:include>
+					value="test_process_start.vw" /></jsp:include>
 			<!-- /sidebar -->
 
 			<!-- top navigation -->
 			<jsp:include page="include/header.jsp"><jsp:param name="page"
-					value="asmt_start_process.vw" /></jsp:include>
+					value="test_process_start.vw" /></jsp:include>
 			<!-- /top navigation -->
 
 			<!-- page content -->
@@ -95,7 +93,7 @@ model.common.session.SessionData" %>
                                   </c:if>
                                   <!-- ---------------------- -->
                                    <div class="col-md-12">
-                                   <form method="POST" id="processResponse" name="processResponse" action="asmt_process_start.do">
+                                   <form method="POST" id="processResponse" name="processResponse" action="test_process_start.do">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" name="taskIndex" value="${taskIndex+1}" id="inpTaskIndex">
                                     <input type="hidden" name="taskState" value="2" id="inpTaskState">
@@ -241,7 +239,7 @@ model.common.session.SessionData" %>
 
 			<!-- footer content -->
 			<jsp:include page="include/footer.jsp"><jsp:param name="page"
-					value="asmt_start_process.vw" /></jsp:include>
+					value="test_process_start.vw" /></jsp:include>
 			<!-- /footer content -->
 		</div>
 	</div>
@@ -269,7 +267,7 @@ model.common.session.SessionData" %>
     function endAssessmentProcess()
     {
         $('#inpTaskState').val(3);
-        $('#processResponse').attr("action", "asmt_process_end.do");
+        $('#processResponse').attr("action", "test_process_end.do");
         $("#processResponse").submit();
     }
     

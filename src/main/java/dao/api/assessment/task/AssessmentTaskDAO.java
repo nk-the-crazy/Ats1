@@ -70,6 +70,7 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
             + " FROM AssessmentTask t "
             + " WHERE t.complexity=:complexity "
             + " AND t.modeType=:modeType "
+            + " AND t.status=1 "
             + " ORDER BY RAND()" )
     Page<AssessmentTask> getByModeTypeAndComplexity(@Param("modeType") short modeType,
                                                     @Param("complexity") short complexity, 
@@ -81,6 +82,7 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
             + " FROM AssessmentTask t "
             + " WHERE t.complexity=:complexity "
             + " AND t.modeType=:modeType "
+            + " AND t.status=1 "
             + " AND t.id IN :ids "
             + " ORDER BY RAND()" )
     Page<AssessmentTask> getByModeTypeAndComplexity(@Param("modeType") short modeType,

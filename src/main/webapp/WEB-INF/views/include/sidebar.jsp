@@ -29,18 +29,21 @@
                     <li><a href="main.vw"><i class="fa fa-home"></i> 
                         <spring:message code="label.menu.home" /> </a>
                     </li>
-                    <c:if test="${!param.page.equals('error.vw')}">
+                    <c:if test="${!param.page.equals('error.vw') && !param.page.equals('asmt_process_start.vw')}">
                         <li><a><i class="fa fa-graduation-cap"></i> 
                             <spring:message code="label.menu.assessment" /><span
                                 class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li><a href="asmt_list_user.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
-                                    <li><a href="asmt_register.vw"><spring:message code="label.menu.assessment.register" /></a></li>
-                                    <li><a href="asmt_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
-                                    <li><a href="asmt_process_list.vw"><spring:message code="label.menu.process.list" /></a></li>
+                                <li><a href="test_list_user.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
+                                    <sec:authorize access="hasAuthority('AssessmentManagement')">
+                                      <li><a href="asmt_test_register.vw"><spring:message code="label.menu.assessment.register" /></a></li>
+                                      <li><a href="asmt_test_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
+                                      <li><a href="asmt_process_list.vw"><spring:message code="label.menu.process.list" /></a></li>
+                                    </sec:authorize>
                             </ul>
                         </li>
-                        <li><a><i class="fa fa-cubes"></i> 
+                        <sec:authorize access="hasAuthority('AssessmentTaskManagement')">
+                         <li><a><i class="fa fa-cubes"></i> 
                             <spring:message code="label.menu.task.list" /><span
                                 class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
@@ -54,8 +57,10 @@
                                     <spring:message code="label.menu.task.category.management" />
                                 </a></li>
                             </ul>
-                        </li>
-                        <li><a><i class="fa fa-bar-chart-o"></i>
+                         </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasAuthority('ReportManagement')">
+                         <li><a><i class="fa fa-bar-chart-o"></i>
                             <spring:message code="label.menu.reports" /><span
                                 class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
@@ -63,8 +68,10 @@
                                     <spring:message code="label.menu.reports.result.list" />
                                  </a></li>
                             </ul>
-                        </li>
-                        <li><a><i class="fa fa-gears"></i> <spring:message
+                         </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyAuthority('IdentityManagement','GroupManagement')">
+                         <li><a><i class="fa fa-gears"></i> <spring:message
                                     code="label.menu.system_settings" /> <span
                                 class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
@@ -119,7 +126,8 @@
                                         </a></li>
                                     </ul></li>
                             </ul>
-                        </li>
+                         </li>
+                        </sec:authorize>
                     </c:if>
                 </ul>
             </div>

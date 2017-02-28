@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -46,6 +47,17 @@ public class SystemController
     @RequestMapping( value={ "/system_error", "/error"} )
     public String getErrorView()
     {
+        return ModelView.VIEW_SYSTEM_ERROR_PAGE;
+    }
+    
+
+    /*******************************************************
+     * 
+     * */
+    @RequestMapping( value="/access_error_403" )
+    public String getAccessErrorView(Model model)
+    {
+        model.addAttribute( "errorData", "message.error.access.denied");
         return ModelView.VIEW_SYSTEM_ERROR_PAGE;
     }
     
