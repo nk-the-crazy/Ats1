@@ -47,67 +47,57 @@
 <body class="nav-md">
     <div class="container body">
         <div class="main_container">
-            <!-- page content -->
-            <div class="right_col" role="main">
-                <div class="">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2>
-                                        <span class="fa fa-exclamation-triangle danger"></span>
-                                        <spring:message code="label.page.error.title" />
-                                    </h2>
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            <div class="row">
+                <div class="col-md-8 col-sm-8 col-xs-8">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>
+                                <span class="fa fa-exclamation-triangle danger"></span>
+                                <spring:message code="label.page.error.title" />
+                            </h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
 
-                                    </ul>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                    <div class="col-md-6">
-                                        <table class="table table-bordered dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row" class="col-md-2"><spring:message
-                                                            code="label.error.type" />:</th>
-                                                    <td class="col-md-5 danger"><spring:message code="${errorData}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="col-md-2"><spring:message
-                                                            code="label.error.cause" />:</th>
-                                                    <td class="col-md-4">
-                                                        <div style="height: 220px;">
-                                                            <c:out value="${errorDetails}" />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row"></th>
-                                                    <td><a href="report_error.vw?" role="button"
-                                                        class="btn btn-danger btn-xs"> <i class="fa fa-phone">&nbsp;&nbsp;</i>
-                                                            <spring:message code="label.action.report.issue" />
-                                                    </a></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="col-md-6">
+                                <table class="table table-bordered dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="col-md-2"><spring:message
+                                                    code="label.error.type" />:</th>
+                                            <td class="col-md-5 danger"><spring:message code="${errorData}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="col-md-2"><spring:message
+                                                    code="label.error.cause" />:</th>
+                                            <td class="col-md-4">
+                                                <div style="height: 220px;">
+                                                    <c:out value="${errorDetails}" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td><a href="report_error.vw?" role="button"
+                                                class="btn btn-danger btn-xs"> <i class="fa fa-phone">&nbsp;&nbsp;</i>
+                                                    <spring:message code="label.action.report.issue" />
+                                            </a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- footer content -->
-            <jsp:include page="include/footer.jsp">
-                <jsp:param name="page" value="error.vw" />
-            </jsp:include>
-            <!-- /footer content -->
         </div>
     </div>
     <!-- /page content -->

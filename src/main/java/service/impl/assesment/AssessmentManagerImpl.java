@@ -100,11 +100,17 @@ public class AssessmentManagerImpl implements AssessmentManager
                 process = createAssessmentProcess();
                 process.setAssessment( assessment );
                 process.setUser( user );
+                process.setState( ProcessState.Ready.getId() );
             }
+            
             
             if(process.getState() != ProcessState.Finished.getId() )
             {
-                process.setState( ProcessState.Ready.getId() );
+                if(process.getState() == ProcessState.Started.getId())
+                {
+                    process.setState( ProcessState.Resumed.getId() );
+                }
+                
                 process.setTaskIds( taskDAO.getRandomIdByAssessmentId( assessment.getId() ) );
             }
             
@@ -163,6 +169,7 @@ public class AssessmentManagerImpl implements AssessmentManager
                     if(processResponse.getId() > 0)
                     {
                         processResponseDAO.delete( processResponse.getId() );
+                        //processResponse.setId( 0 );
                     }
                     // -----------------------------------------------
                     
@@ -180,22 +187,21 @@ public class AssessmentManagerImpl implements AssessmentManager
                    
                     
                     processResponse.setProcessLazy( process );
-                    processResponseDAO.save( processResponse );
+                    processResponse = processResponseDAO.save( processResponse );
                 }
             }
             
             //*******************************************************
-            response = processResponseDAO.getByProcessAndTaskId( process.getId(), getTaskIdByIndex(nextTaskIndex, process) );
+            response = processResponseDAO.getDetailsByProcessAndTaskId( process.getId(), getTaskIdByIndex(nextTaskIndex, process) );
             
             if(response == null)
             {
                 response = new ProcessResponse(); 
             }
             
-            AssessmentTask task = getTaskByIndex(nextTaskIndex, process );
-            
-            process.setCurrentTask( task );
-            response.setTask( task ); 
+            response.setTask( getTaskByIndex(nextTaskIndex, process ) );
+            process.setCurrentTask( response.getTask() );
+             
         }
         catch ( TimeExpiredException e )
         {

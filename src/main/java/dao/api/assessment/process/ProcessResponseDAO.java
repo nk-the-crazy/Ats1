@@ -11,26 +11,16 @@ import model.assessment.process.ProcessResponse;
 
 public interface ProcessResponseDAO extends JpaRepository<ProcessResponse, Long>
 {
-    //********************************************
-    @Query(value = "SELECT t "
-            + " FROM ProcessResponse t "
-            + " JOIN FETCH t.task tt "
-            
-            + " WHERE t.id=:processResponseId ")
-    ProcessResponse getById( @Param("processResponseId") long processResponseId);
-    
     
     //********************************************
-    @Query(value = "SELECT t "
-            + " FROM ProcessResponse t "
-            + " LEFT JOIN t.task s " 
-            + " LEFT JOIN s.details sd " 
-            + " LEFT JOIN t.process p "
-            + " LEFT JOIN FETCH t.details d "
+    @Query(value = "SELECT r "
+            + " FROM ProcessResponse r "
+            + " LEFT JOIN FETCH r.details rd "
             
-            + " WHERE s.id=:taskId "
-            + " AND p.id=:processId ")
-    ProcessResponse getByProcessAndTaskId( @Param("processId") long processId, @Param("taskId") long taskId);
+            + " WHERE r.task.id=:taskId "
+            + " AND   r.process.id=:processId ")
+    ProcessResponse getDetailsByProcessAndTaskId( @Param("processId") long processId, 
+                                                  @Param("taskId") long taskId);
 
     
     //********************************************
@@ -43,6 +33,14 @@ public interface ProcessResponseDAO extends JpaRepository<ProcessResponse, Long>
             
             + " WHERE pr.id=:responseId ) ")
     void removeResponseDetails( @Param("responseId") long responseId);
+    
+    
+    //********************************************
+    @Modifying
+    @Query(value = "DELETE FROM ProcessResponse r"
+            
+            + " WHERE r.id=:responseId ) ")
+    void deleteById( @Param("responseId") long responseId);
     
     
     

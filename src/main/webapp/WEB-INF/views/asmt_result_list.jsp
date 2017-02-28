@@ -76,7 +76,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                             <spring:message code="label.action.export"/>&nbsp;&nbsp;<span class="caret"></span>
                                          </button>
                                          <ul role="menu" class="dropdown-menu">
-                                          <li><a href="#"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
+                                          <li><a href="asmt_result_list.vw?outputType=2"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
                                           </li>
                                           <li class="divider"></li>
                                           <li><a href="#"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>

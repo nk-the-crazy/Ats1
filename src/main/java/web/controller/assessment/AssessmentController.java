@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,7 @@ public class AssessmentController
     
     @Autowired
     private AssessmentTaskManager taskManager;
+    
     
     /*******************************************************
      * 
@@ -204,7 +206,9 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/asmt_result_list.vw")
-    public ModelAndView getAssessmentResultListView( @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
+    public ModelAndView getAssessmentResultListView( @RequestParam( name = "outputType" , defaultValue = "1", required = false ) 
+                                                     int outputType,
+                                                     @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
                                                      String lastName, 
                                                      @RequestParam( name = "startDateFrom" , defaultValue = "01.01.2016", required = false ) 
                                                      String startDateFromStr, 
@@ -219,10 +223,19 @@ public class AssessmentController
             Date startDateFrom = StringUtils.stringToDate( startDateFromStr );
             //Date startDateTo = StringUtils.stringToDate( startDateToStr );
             
-            Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,pageable );
-                    
-            model.addObject( "resultsPage", resultsPage );
-            model.setViewName( ModelView.VIEW_ASMT_RESULT_LIST_PAGE);
+            if(outputType == 1)
+            {
+                Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,pageable );
+                        
+                model.addObject( "resultsPage", resultsPage );
+                model.setViewName( ModelView.VIEW_ASMT_RESULT_LIST_PAGE);
+            }
+            else if(outputType == 2)
+            {
+                Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,new PageRequest(0, 100000) );
+                
+                return new ModelAndView( "viewXLSAssessmentResults", "resultsPage", resultsPage);
+            }
         }
         catch(Exception e)
         {
