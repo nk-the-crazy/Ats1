@@ -177,7 +177,7 @@
                                                         <td class="col-md-1">${index + loopCounter.count }</td>
                                                         <td><a href="asmt_task_details.vw?asmt_task_id=${task.id}">
                                                             <c:out value="${task.itemContent}"/></a></td>
-                                                        <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task.modeType,locale)}</td>
+                                                        <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task.modeType)}</td>
                                                         <td><c:out value="${responseDetail.grade}"/></td>
                                                         <td><button class="btn btn-primary btn-xs btn-td" 
                                                             onclick ="loadResponseContent(${responseDetail.id });" type="button" aria-expanded="false">

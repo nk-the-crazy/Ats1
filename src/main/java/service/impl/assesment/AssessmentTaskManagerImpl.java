@@ -200,7 +200,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
     @Override
     public AssessmentTaskCategory getCategoryDetails(long categoryId)
     {
-        return categoryDAO.findOne( categoryId );
+        return categoryDAO.getDetailsById( categoryId );
     }
     
 

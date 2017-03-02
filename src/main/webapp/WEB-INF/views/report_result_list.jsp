@@ -19,7 +19,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.asmt_result_list.title" /></title>
+<title><spring:message code="label.page.report_result_list.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -69,20 +69,20 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.asmt_result_list.title" /></h2>
+                                    <h2><spring:message code="label.page.report_result_list.title" /></h2>
                                     <div class="btn-group pull-right">
                                          <button data-toggle="dropdown" class="btn btn-success dropdown-toggle btn-xs" 
                                           type="button" aria-expanded="false"><i class="fa fa-files-o"></i>&nbsp;
                                             <spring:message code="label.action.export"/>&nbsp;&nbsp;<span class="caret"></span>
                                          </button>
                                          <ul role="menu" class="dropdown-menu">
-                                          <li><a href="asmt_result_list.vw?outputType=2"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
+                                          <li><a href="report_result_list.vw?outputType=2"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
                                           </li>
                                           <li class="divider"></li>
-                                          <li><a href="#"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
+                                          <li><a href="report_result_list.vw?outputType=4"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.pdf"/></a>
                                           </li>
                                           <li class="divider"></li>
-                                          <li><a href="#"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.doc"/></a>
+                                          <li><a href="report_result_list.vw?outputType=3"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.doc"/></a>
                                           </li>
                                           <li class="divider"></li>
                                          </ul>
@@ -161,7 +161,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                             <tr class="${status_color}">
                                                 <td>&nbsp;${index + loopCounter.count }</td>
                                                 <td><a class="btn btn-primary btn-xs btn-td" 
-                                                        href="asmt_result_details.vw?asmt_process_id=${process.id }" role="button" aria-expanded="false">
+                                                        href="report_result_details.vw?asmt_process_id=${process.id }" role="button" aria-expanded="false">
                                                         <i class="fa fa-folder-open"></i>&nbsp;
                                                  </a></td>
                                                 <td><a href="user_details.vw?user_id=${user.id}">
@@ -170,7 +170,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                                 <td><a href="asmt_test_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${process.startDate}" /></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status,locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status)}</td>
                                                 <td><c:out value="${score}"/></td>
                                                 <td><c:out value="${responseCount}"/></td>
                                                 <td class="col-md-2">

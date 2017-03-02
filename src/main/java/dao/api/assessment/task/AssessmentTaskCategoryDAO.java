@@ -22,7 +22,7 @@ public interface AssessmentTaskCategoryDAO extends  JpaRepository<AssessmentTask
     @Query(value = "SELECT c "
             + " FROM AssessmentTaskCategory c "
             + " WHERE c.type=1" )
-   List<AssessmentTaskCategory> getSystemCategory();
+    List<AssessmentTaskCategory> getSystemCategory();
     
     
     //********************************************
@@ -31,5 +31,13 @@ public interface AssessmentTaskCategoryDAO extends  JpaRepository<AssessmentTask
             + " WHERE LOWER(c.name) LIKE LOWER(CONCAT('%',:categoryName, '%')) "
             + " ORDER BY c.name")
     List<AssessmentTaskCategory> getShortListByCategoryName(@Param("categoryName") String categoryName );
+
+    
+    //********************************************
+    @Query(value = "SELECT c "
+            + " FROM AssessmentTaskCategory c "
+            + " LEFT JOIN FETCH c.parent p "
+            + " WHERE c.id = :categoryId" )
+    AssessmentTaskCategory getDetailsById(@Param("categoryId") long categoryId );
 
 }

@@ -13,6 +13,7 @@
 
 
 	<context:component-scan base-package="web.controller" />
+    <context:component-scan base-package="web.view" />
 	
 	<!-- ******* CSS and JS *************************************** -->
 

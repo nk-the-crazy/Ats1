@@ -67,9 +67,13 @@ public class SystemDataInit
     //******************************************
     public void initializeSystemData() 
     {
-        createDefaultUsers();
-        createDefaultCategories();
-        createDefaultAssessments();
+        
+        if(identityManager.getUser( 1 ) == null)
+        {
+            createDefaultUsers();
+            createDefaultCategories();
+            //createDefaultAssessments();
+        }
     }
 
     //******************************************
@@ -78,19 +82,19 @@ public class SystemDataInit
     {
         Organization organization = createDefaultOrganizations();
         
-        UserGroup group = groupManager.createGroup( "Группа Аудиторов 1", "Группа Аудиторов - Desc 1", 1 );
+        UserGroup group = groupManager.createGroup( "Группа Аудиторов г.Бишкек", "Группа Аудиторов - Бишкек 1", 1 );
         groupManager.saveGroup( group );
         
-        UserGroup group1 = groupManager.createGroup( "Группа Аудиторов 2", "Группа Аудиторов - Desc 2", 1 );
+        UserGroup group1 = groupManager.createGroup( "Группа Аудиторов г. Ош", "Группа Аудиторов - Ош 2", 1 );
         groupManager.saveGroup( group1 );
         
-        UserGroup group2 = groupManager.createGroup( "Группа Аудиторов 3", "Группа Аудиторов - Desc 3", 1 );
+        UserGroup group2 = groupManager.createGroup( "Группа Аудиторов г. ЖА", "Группа Аудиторов - ЖА 3", 1 );
         groupManager.saveGroup( group2 );
         
-        Role role1 = createDefaultRoles("Administrator Role"); 
-        Role role2 = createDefaultRoles("Task Manager"); 
-        Role role3 = createDefaultRoles("Assessment Manager"); 
-        Role role4 = createDefaultRoles("User Role"); 
+        Role role1 = createDefaultRoles("Системный Администратор" ,1); 
+        Role role2 = createDefaultRoles("Оператор задач (заданий)" ,1); 
+        Role role3 = createDefaultRoles("Менеджер Тестирования", 2); 
+        Role role4 = createDefaultRoles("Пользователь", 10); 
         
         for(int x=1; x < 30; x++) 
         {
@@ -126,7 +130,7 @@ public class SystemDataInit
         }
     }
     
-    private Role createDefaultRoles(String name) 
+    private Role createDefaultRoles(String name, int type) 
     {
         Permission perm1 = identityManager.createPermission( PermissionItem.IdentityManagement.getId(), true, true, false, false);
         Permission perm2 = identityManager.createPermission( PermissionItem.AssessmentManagement.getId(), true, true, false, false);
@@ -136,7 +140,7 @@ public class SystemDataInit
         
         Role role = identityManager.createRole( name, "Details:"+name, 2);
         
-        if("User Role".equals( name ))
+        if(type == 10)
         {
             role.addPermission( identityManager.createPermission( PermissionItem.AssessmentTesting.getId() , true, true, false, false) );
         }
@@ -220,8 +224,21 @@ public class SystemDataInit
         AssessmentTaskCategory cat1 = createDefaultCategory("1.Система управления гос. финансами" , 
                                                             "Система управления государственными финансами", null); 
         
-        createDefaultCategory("1.1 Финансовое управление и контроль" , 
+        AssessmentTaskCategory catX = createDefaultCategory("1.1 Финансовое управление и контроль" , 
                         "Финансовое управление и контроль", cat1); 
+        
+        //*************************************
+        for(int x=1;x < 21; x++)
+        {
+            AssessmentTask task = createDefaultTasks(x,1);
+            
+            if(x > 10)
+            {
+                task = createDefaultTasks(x,2);
+            }
+            catX.addTask( task );
+        }
+        taskManager.saveTaskCategory( catX );
         
         createDefaultCategory("1.2 Внутренний контроль" , 
                         "Внутренний контроль", cat1); 
@@ -283,7 +300,7 @@ public class SystemDataInit
     //******************************************
     private void createDefaultAssessments() 
     {
-        /*
+        
         for(int x=1;x < 10 ; x++  ) 
         {
             Date startDate = DateUtils.addDays( new Date(System.currentTimeMillis()), -1 );
@@ -311,7 +328,7 @@ public class SystemDataInit
                 asmt.addTask( taskManager.getTaskById( 4 ) );
             }
             assessmentManager.saveAssessment( asmt );
-        }*/
+        }
     }
     
 }

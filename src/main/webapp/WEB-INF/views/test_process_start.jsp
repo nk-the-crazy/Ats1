@@ -170,7 +170,7 @@ model.assessment.process.*" %>
                                                      </div>
                                                   </c:when>
                                                   <%-- Short Text Choice --%>
-                                                  <c:when test="${tasks.modeType == 4}">
+                                                  <c:when test="${tasks.modeType == 3}">
                                                      <div class="input-item-detail">
                                                          <div class="text">
                                                                <label>&#${loopCounter.index + 65}; )</label>
@@ -183,7 +183,7 @@ model.assessment.process.*" %>
                                                      </div>
                                                   </c:when>
                                                   <%-- Esse ---------------%>
-                                                  <c:when test="${task.modeType == 5}">
+                                                  <c:when test="${task.modeType == 4}">
                                                      <c:if test="${loopCounter.index == 0 }">
                                                          <input type="hidden" name="details[0].taskDetail.id" value="${taskDetail.id}">
                                                          <c:if test="${(not empty processResponse.details[0].id) && loopCounter.index == 0}">

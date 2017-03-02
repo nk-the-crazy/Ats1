@@ -1,5 +1,6 @@
 package model.identity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,13 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table( name = "role" )
-public class Role
+public class Role implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -698589184542976283L;
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id" )

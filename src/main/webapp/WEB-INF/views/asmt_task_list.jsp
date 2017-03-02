@@ -107,7 +107,7 @@ common.utils.system.SystemUtils"%>
                                                 <td><select id="mode-type" class="form-control input-select-sm" name="taskModeType">
                                                         <option value="0"><spring:message code="label.data.all" /></option>
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.task.mode.type',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.task.mode.type')}"> 
                                                             <option ${param.taskModeType == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -150,12 +150,12 @@ common.utils.system.SystemUtils"%>
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="asmt_task_details.vw?asmt_task_id=${task[0]}">
                                                     <c:out value="${task[1]}"/></a></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.task.complexity',task[3],locale)}</td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode',task[3],locale)}</td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[4],locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.complexity',task[3])}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode',task[3])}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[4])}</td>
                                                 <td><a href="asmt_category_details.vw?asmt_category_id=${task[6] }">
                                                     <c:out value="${task[7]}"/></a></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.data.status',task[5],locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.data.status',task[5])}</td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Task list ************ -->

@@ -121,7 +121,7 @@ common.utils.system.SystemUtils"%>
                                                     <fmt:formatDate pattern="${dateTimeFormatShort }" value="${user[2]}" />
                                                 </td>
                                                 <td class="col-md-2">
-                                                   ${SystemUtils.getAttribute('system.attrib.data.status',user[3],locale)}
+                                                   ${SystemUtils.getAttribute('system.attrib.data.status',user[3])}
                                                 </td>
                                             </tr>
                                         </c:forEach>

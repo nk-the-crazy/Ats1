@@ -3,6 +3,9 @@ package common.utils;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -122,5 +125,52 @@ public class StringUtils
     {
         return shortDateFormatter;
     }
+    
+    
+    /* ********************************************
+     * 
+     * */
+    public static String toUTF8(String str) 
+    {
+      try
+        {    
+            return new String(str.getBytes("UTF-8"));
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            // ignore
+            return "";
+        }
+    }
+    
+    
+    /* ********************************************
+     * 
+     * */ 
+    public static float getIdenticRatio(String source, String target)
+    {
+        try
+        {
+            int maxLength = (source.length() > target.length()) ? source.length():target.length();
+            int distance = org.apache.commons.lang.StringUtils.getLevenshteinDistance( source, target );
+            float ratio = 0;
+            
+            if(distance == 0)
+                return 100;
+            else
+            {
+                ratio = 100 - ((float)(distance * 100) / maxLength);
+                
+                return ratio < 50 ? 0 : ratio;
+            }
+        }
+        catch(Exception e)
+        {
+            ///ignore error return 0
+            return 0; 
+        }
+    } 
+    
+    
 
 }

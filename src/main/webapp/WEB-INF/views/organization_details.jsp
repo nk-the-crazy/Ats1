@@ -64,10 +64,10 @@
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.organization_details.title" /></h2>
                                      <div style="text-align: right;">
-                                        <button type="button" class="btn btn-info btn-xs">
+                                        <a href="organization_edit.vw?organization_id=${param.organization_id}" role="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
                                                 <spring:message code="label.action.edit"/>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">
                                             <i class="fa fa-chevron-left"></i>&nbsp;
                                                 <spring:message code="label.action.back"/>
@@ -113,7 +113,7 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
                                                   <td  class="${organization.status == 1 ? '' : 'danger'}">
-                                                      ${SystemUtils.getAttribute('system.attrib.data.status',organization.status,locale)}
+                                                      ${SystemUtils.getAttribute('system.attrib.data.status',organization.status)}
                                                    </td>
                                                 </tr>
                                                 <tr>
@@ -123,13 +123,13 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.organization.sector" />:</th>
                                                   <td>
-                                                      ${SystemUtils.getAttribute('system.attrib.organization.sector',organization.detail.sector,locale)}
+                                                      ${SystemUtils.getAttribute('system.attrib.organization.sector',organization.detail.sector)}
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.organization.activity" />:</th>
                                                   <td>
-                                                      ${SystemUtils.getAttribute('system.attrib.organization.activity',organization.detail.activity,locale)}
+                                                      ${SystemUtils.getAttribute('system.attrib.organization.activity',organization.detail.activity)}
                                                   </td>
                                                 </tr>
                                                 <tr>
@@ -150,13 +150,13 @@
                                                 <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.address.country" />:</th>
                                                   <td class="col-md-8">
-                                                    ${SystemUtils.getAttribute('system.attrib.address.country',organization.address.countryId,locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.address.country',organization.address.countryId)}
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><spring:message code="label.address.region" />:</th>
                                                   <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.address.region.2',organization.address.regionId,locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.address.region.2',organization.address.regionId)}
                                                   </td>
                                                 </tr>
                                                 <tr>

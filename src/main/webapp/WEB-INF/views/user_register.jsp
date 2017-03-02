@@ -32,6 +32,7 @@
 
 <!-- Select2 -->
 <link href="resources/lib/select2/dist/css/select2.min.css" rel="stylesheet">
+<link href="resources/lib/select2/dist/css/select2-bootstrap.css" rel="stylesheet">
 
 <!-- Data Table -->
 <link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css"
@@ -205,7 +206,7 @@
                                                   <td><div class="col-md-6 col-sm-6 col-xs-6">
                                                     <select id="person-gender" class="form-control input-select-sm" name="person.detail.gender">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.user.gender',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.user.gender')}"> 
                                                             <option ${user.person.detail.gender == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -229,7 +230,7 @@
                                                   <td><div class="col-md-6 col-sm-6 col-xs-6">
                                                     <select id="person-marital" class="form-control input-select-sm" name="person.detail.maritalStatus">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.user.marital',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.user.marital')}"> 
                                                             <option ${user.person.detail.maritalStatus == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -256,7 +257,7 @@
                                                   <spring:message code="label.organization" />:</label></th>
                                                   <td>
                                                     <div class="col-md-10">
-                                                    <select id="person-organization" class="select2_single form-control" name="organizationId">
+                                                    <select id="person-organization" class="select2_single" name="organizationId">
                                                         <c:forEach var="organization" items="${organizations}" varStatus="loopCounter"> 
                                                             <option ${organizationId == organization[0] ? 'selected="selected"' : ''}
                                                             value="${organization[0]}">${organization[1]}</option>
@@ -338,9 +339,9 @@
                                                   <td class="col-md-5">
                                                     <div class="col-md-6">
                                                     <select id="address-country-id" class="form-control input-select-sm" 
-                                                        name="address.countryId">
+                                                        name="person.address.countryId">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.address.country',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.address.country')}"> 
                                                             <option ${user.person.address.countryId == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -355,9 +356,9 @@
                                                   <td>
                                                     <div class="col-md-6">
                                                     <select id="address-region-id" class="form-control input-select-sm" 
-                                                        name="address.regionId">
+                                                        name="person.address.regionId">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.address.region.2',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.address.region.2')}"> 
                                                             <option ${user.person.address.regionId == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -368,21 +369,21 @@
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="address-city">
                                                     <spring:message code="label.address.city" />:</label></th>
-                                                  <td><div class="col-md-6"><input type="text" id="address-city" name="address.city" 
+                                                  <td><div class="col-md-6"><input type="text" id="address-city" name="person.address.city" 
                                                        value="${user.person.address.city}" class="form-control input-sm"></div>
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="address-primary">
                                                     <spring:message code="label.address.primary" />:</label></th>
-                                                  <td><input type="text" id="address-primary" name="address.primaryAddress" 
+                                                  <td><input type="text" id="address-primary" name="person.address.primaryAddress" 
                                                         value="${user.person.address.primaryAddress}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="address-secondary">
                                                     <spring:message code="label.address.secondary" />:</label></th>
-                                                  <td><input type="text" id="address-secondary" name="address.secondaryAddress" 
+                                                  <td><input type="text" id="address-secondary" name="person.address.secondaryAddress" 
                                                       value="${user.person.address.secondaryAddress}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
@@ -394,21 +395,21 @@
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="contacts-phone">
                                                     <spring:message code="label.contacts.phone" />:</label></th>
-                                                  <td><input type="text" id="contacts-phone" name="contact.phone"
+                                                  <td><input type="text" id="contacts-phone" name="person.contact.phone"
                                                         value="${user.person.contact.phone}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="contacts-email">
                                                     <spring:message code="label.contacts.email" />:</label></th>
-                                                  <td><input type="text" id="contacts-email" name="contact.email"
+                                                  <td><input type="text" id="contacts-email" name="person.contact.email"
                                                         value="${user.person.contact.email}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><label class="control-label" for="contacts-secondary">
                                                     <spring:message code="label.contacts.secondary" />:</label></th>
-                                                  <td><input type="text" id="contacts-secondary" name="contact.secondaryContacts"
+                                                  <td><input type="text" id="contacts-secondary" name="person.contact.secondaryContacts"
                                                         value="${user.person.contact.secondaryContacts}" class="form-control input-sm">
                                                   </td>
                                                 </tr>
@@ -473,7 +474,7 @@
 
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
-            <jsp:param name="page" value="user_details.vw" />
+            <jsp:param name="page" value="user_edit.vw" />
         </jsp:include>
         <!-- /footer content -->
     </div>
@@ -529,8 +530,7 @@
       {
         $(".select2_single").select2({
           placeholder: "",
-          allowClear: false,
-          width:null
+          allowClear: false
         });
       });
     </script>

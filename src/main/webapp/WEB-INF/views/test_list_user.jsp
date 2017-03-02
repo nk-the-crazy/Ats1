@@ -113,10 +113,10 @@ common.utils.system.SystemUtils"%>
                                             <tr class="${status_color}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><c:out value="${assessment.name}"/></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type )}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
-                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status,locale)}</td>
+                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status)}</td>
                                                 <td class="col-md-1">
                                                     <c:if test="${asmt_status != 2 }">
                                                         <c:choose>

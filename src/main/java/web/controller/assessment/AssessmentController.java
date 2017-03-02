@@ -29,7 +29,7 @@ import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
 import service.api.assessment.AssessmentTaskManager;
 import service.api.group.GroupManager;
-import web.common.view.ModelView;
+import web.view.ModelView;
 
 @Controller
 public class AssessmentController
@@ -205,7 +205,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_result_list.vw")
+    @RequestMapping( value = "/report_result_list.vw")
     public ModelAndView getAssessmentResultListView( @RequestParam( name = "outputType" , defaultValue = "1", required = false ) 
                                                      int outputType,
                                                      @RequestParam( name = "lastName" , defaultValue = "", required = false ) 
@@ -228,13 +228,19 @@ public class AssessmentController
                 Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,pageable );
                         
                 model.addObject( "resultsPage", resultsPage );
-                model.setViewName( ModelView.VIEW_ASMT_RESULT_LIST_PAGE);
+                model.setViewName( ModelView.VIEW_REPORT_RESULT_LIST_PAGE);
             }
             else if(outputType == 2)
             {
                 Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,new PageRequest(0, 100000) );
                 
-                return new ModelAndView( "viewXLSAssessmentResults", "resultsPage", resultsPage);
+                return new ModelAndView( ModelView.VIEW_REPORT_RESULT_LIST_XLS, "resultsPage", resultsPage);
+            }
+            else if(outputType == 4)
+            {
+                Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,new PageRequest(0, 100000) );
+                
+                return new ModelAndView( ModelView.VIEW_REPORT_RESULT_LIST_PDF, "resultsPage", resultsPage);
             }
         }
         catch(Exception e)
@@ -252,7 +258,7 @@ public class AssessmentController
     /*******************************************************
      * 
      */
-    @RequestMapping( value = "/asmt_result_details.vw")
+    @RequestMapping( value = "/report_result_details.vw")
     public ModelAndView getAssessmentResultDetailsView( @RequestParam( name = "asmt_process_id" ) long processId,
                                                         Pageable pageable)
     {         
@@ -265,7 +271,7 @@ public class AssessmentController
                     
             model.addObject( "assessmentResult", result );
             model.addObject( "responsesPage", responsesPage );
-            model.setViewName( ModelView.VIEW_ASMT_RESULT_DETAILS_PAGE);
+            model.setViewName( ModelView.VIEW_REPORT_RESULT_DETAILS_PAGE);
         }
         catch(Exception e)
         {

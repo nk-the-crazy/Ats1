@@ -4,9 +4,8 @@ public enum AssessmentTaskType
 {
     SingleChoice(1),
     MultipleChoice(2),
-    MatchCase(3),
-    ShortAnswer(4),
-    Essay(5);
+    ShortAnswer(3),
+    Essay(4);
 
     private final static int groupId = 3;
     private int id;

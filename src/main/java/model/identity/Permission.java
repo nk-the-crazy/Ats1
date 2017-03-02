@@ -1,6 +1,7 @@
 package model.identity;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Entity
 @Table( name = "permission" )
 @Access( AccessType.FIELD )
-public class Permission
+public class Permission implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6237190276035909858L;
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id" )

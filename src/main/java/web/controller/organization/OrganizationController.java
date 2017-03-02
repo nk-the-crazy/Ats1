@@ -6,15 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import model.organization.Organization;
 import model.person.Person;
 import service.api.organization.OrganizationManager;
-import web.common.view.ModelView;
 import web.controller.organization.OrganizationController;
+import web.view.ModelView;
 
 @Controller
 public class OrganizationController
@@ -94,7 +96,7 @@ public class OrganizationController
      * 
      */
     @RequestMapping( value = "/organization_register.do")
-    public ModelAndView registerOrganizationView( @ModelAttribute( "organization" ) Organization organization )
+    public ModelAndView registerOrganization( @ModelAttribute( "organization" ) Organization organization )
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_ORGANIZATION_REGISTER_PAGE );
         
@@ -117,6 +119,46 @@ public class OrganizationController
         return model;
         
     }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/organization_edit.vw")
+    public String editOrganizationView(@RequestParam( "organization_id" ) long organizationId, Model model)
+    {
+        model.addAttribute( "organizationDetails" , organizationManager.getOrganizationDetails( organizationId ));
+        return ModelView.VIEW_ORGANIZATION_EDIT_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/organization_edit.do")
+    public String editOrganization( @ModelAttribute( "group" ) Organization organization, Model model)
+    {
+
+        try
+        {
+            organization = organizationManager.saveOrganization( organization );
+            
+            return "redirect:organization_details.vw?organization_id=" + organization.getId();
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error editing organization data:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return editOrganizationView(organization.getId(), model);
+
+    }
+
    
     
 }

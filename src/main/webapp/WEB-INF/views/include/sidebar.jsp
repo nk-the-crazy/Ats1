@@ -64,7 +64,7 @@
                             <spring:message code="label.menu.reports" /><span
                                 class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li><a href="asmt_result_list.vw">
+                                <li><a href="report_result_list.vw">
                                     <spring:message code="label.menu.reports.result.list" />
                                  </a></li>
                             </ul>

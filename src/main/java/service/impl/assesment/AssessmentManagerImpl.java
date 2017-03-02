@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 
 import common.exceptions.assessment.TimeExpiredException;
 import common.exceptions.security.AccessDeniedException;
+import common.utils.StringUtils;
 import dao.api.assessment.AssessmentDAO;
 import dao.api.assessment.process.ProcessDAO;
 import dao.api.assessment.process.ProcessResponseDAO;
@@ -37,6 +38,7 @@ import model.assessment.process.ProcessResponseEvaluation;
 import model.assessment.process.ProcessState;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskDetail;
+import model.assessment.task.AssessmentTaskType;
 import model.identity.User;
 import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
@@ -181,8 +183,11 @@ public class AssessmentManagerImpl implements AssessmentManager
                         if(responseDetail.getTaskDetail() == null) 
                             itr.remove();
                         else
+                        {
                             responseDetail.setGrade( calculateGrade( process.getCurrentTask() , 
-                                                                     responseDetail.getTaskDetail().getId() ));   
+                                                                     responseDetail.getTaskDetail().getId(),
+                                                                     responseDetail.getItemResponse() ));  
+                        } 
                     }
                    
                     
@@ -281,7 +286,7 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public float calculateGrade( AssessmentTask task , long taskDetailId)
+    public float calculateGrade( AssessmentTask task , long taskDetailId , String source)
     {
         AssessmentTaskDetail detail = null;
         
@@ -294,7 +299,23 @@ public class AssessmentManagerImpl implements AssessmentManager
             }
         }
         
-        return calculateGrade( detail == null ? 0 : detail.getItemGradeRatio(), task.getItemGrade() );
+        if(detail == null)
+            return 0;
+        else
+        {
+            float grade = calculateGrade( detail.getItemGradeRatio(), task.getItemGrade() );
+            
+            if(task.getModeType() == AssessmentTaskType.ShortAnswer.getId())
+            {
+                float identicalRatio = StringUtils.getIdenticRatio( source , detail.getItemDetail() );
+                return calculateGrade( identicalRatio, grade );
+            }
+            else
+            {
+                return grade;
+            }
+        }
+        
     }
     
     

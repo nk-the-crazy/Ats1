@@ -28,7 +28,7 @@ import model.assessment.process.ProcessResponse;
 import model.common.session.SessionData;
 import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
-import web.common.view.ModelView;
+import web.view.ModelView;
 
 
 @Controller

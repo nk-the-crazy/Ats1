@@ -136,7 +136,7 @@ common.utils.system.SystemUtils"%>
                                                 <td class="col-md-1"><c:out value="${group[6]}"/></td>
                                                 <td><c:out value="${group[5]}"/></td>
                                                 <td class="col-md-1">
-                                                    ${SystemUtils.getAttribute('system.attrib.data.status',group[2],locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.data.status',group[2])}
                                                 </td>
                                             </tr>
                                         </c:forEach>

@@ -128,7 +128,7 @@
                                                   <td>
                                                     <select id="organization-sector" class="form-control input-select-sm" name="detail.sector">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.organization.sector',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.organization.sector')}"> 
                                                             <option ${organization.detail.sector == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -141,7 +141,7 @@
                                                   <td>
                                                     <select id="organization-activity" class="form-control input-select-sm" name="detail.activity">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.organization.activity',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.organization.activity')}"> 
                                                             <option ${organization.detail.activity == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -176,7 +176,7 @@
                                                     <select id="address-country-id" class="form-control input-select-sm" 
                                                         name="address.countryId">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.address.country',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.address.country')}"> 
                                                             <option ${organization.address.countryId == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -191,7 +191,7 @@
                                                     <select id="address-region-id" class="form-control input-select-sm" 
                                                         name="address.regionId">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.address.region.2',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.address.region.2')}"> 
                                                             <option ${organization.address.regionId == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>

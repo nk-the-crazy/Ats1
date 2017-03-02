@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import model.person.Person;
 import service.api.person.PersonManager;
-import web.common.view.ModelView;
+import web.view.ModelView;
 
 @Controller
 public class PersonController

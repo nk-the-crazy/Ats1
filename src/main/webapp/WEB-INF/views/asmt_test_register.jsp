@@ -140,7 +140,7 @@
                                                   <td><div class="col-md-10 col-sm-10 col-xs-10">
                                                     <select id="assessment-type" class="form-control input-select-sm" name="type">
                                                         <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.assessment.type',locale)}"> 
+                                                            items="${SystemUtils.getAttributes('system.attrib.assessment.type')}"> 
                                                             <option ${assessment.type == (loopCounter.count) ? 'selected="selected"' : ''}
                                                             value="${loopCounter.count}">${systemAttr}</option>
                                                         </c:forEach>
@@ -240,7 +240,7 @@
                                                             <select id="selTaskMode" class="form-control input-select-sm" 
                                                                 name="formOptions.taskOptions[0].modeType">
                                                                 <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.task.mode.type',locale)}"> 
+                                                                    items="${SystemUtils.getAttributes('system.attrib.task.mode.type')}"> 
                                                                     <option value="${loopCounter.count}">${systemAttr}</option>
                                                                 </c:forEach>
                                                             </select>
@@ -249,7 +249,7 @@
                                                             <select id="selTaskComplexity" class="form-control input-select-sm" 
                                                                 name="formOptions.taskOptions[0].complexity">
                                                                 <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.task.complexity',locale)}"> 
+                                                                    items="${SystemUtils.getAttributes('system.attrib.task.complexity')}"> 
                                                                     <option value="${loopCounter.count}">${systemAttr}</option>
                                                                 </c:forEach>
                                                             </select>
@@ -268,7 +268,7 @@
                                                             <select id="selTaskMode" class="form-control input-select-sm" 
                                                                 name="formOptions.taskOptions[0].modeType">
                                                                 <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.task.mode.type',locale)}"> 
+                                                                    items="${SystemUtils.getAttributes('system.attrib.task.mode.type')}"> 
                                                                     <option ${option.modeType == (loopCounter.count) ? 'selected="selected"' : ''}
                                                                     value="${loopCounter.count}">${systemAttr}</option>
                                                                 </c:forEach>
@@ -278,7 +278,7 @@
                                                             <select id="selTaskComplexity" class="form-control input-select-sm" 
                                                                 name="formOptions.taskOptions[0].complexity">
                                                                 <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.task.complexity',locale)}"> 
+                                                                    items="${SystemUtils.getAttributes('system.attrib.task.complexity')}"> 
                                                                     <option ${option.complexity == (loopCounter.count) ? 'selected="selected"' : ''}
                                                                     value="${loopCounter.count}">${systemAttr}</option>
                                                                 </c:forEach>

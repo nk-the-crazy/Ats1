@@ -128,7 +128,7 @@
                                         <div role="tabpanel" class="tab-pane col-md-10 fade" 
                                              id="tab_content2" aria-labelledby="permissions-tab">
                                             <button id="btnAddRow" class="btn btn-success btn-xs" type="button">
-                                                    <i class="fa fa-plus"> Add Permission</i>
+                                                    <i class="fa fa-plus"><spring:message code="label.permission.add" /></i>
                                             </button>
                                             <table id="tbPermissions" class="dataTable table table-bordered">
                                               <thead>
@@ -148,7 +148,7 @@
                                                             <select id="selPermObj" class="form-control input-select-sm" 
                                                                 name="permissions[0].item">
                                                                 <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.permission',locale)}"> 
+                                                                    items="${SystemUtils.getAttributes('system.attrib.permission')}"> 
                                                                     <option value="${loopCounter.count}">${systemAttr}</option>
                                                                 </c:forEach>
                                                             </select>
