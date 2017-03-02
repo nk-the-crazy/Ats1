@@ -99,7 +99,7 @@ common.utils.system.SystemUtils"%>
                                                  <select id="assessment-type" class="form-control input-select-sm" name="assessmentType">
                                                     <option value="0"><spring:message code="label.data.all" /></option>
                                                     <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                        items="${SystemUtils.getAttributes('system.attrib.assessment.type',locale)}"> 
+                                                        items="${SystemUtils.getAttributes('system.attrib.assessment.type')}"> 
                                                         <option ${param.assessmentType == (loopCounter.count) ? 'selected="selected"' : ''}
                                                         value="${loopCounter.count}">${systemAttr}</option>
                                                     </c:forEach>
@@ -143,10 +143,10 @@ common.utils.system.SystemUtils"%>
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="asmt_test_details.vw?assessment_id=${assessment.id}">
                                                     <c:out value="${assessment.name}"/></a></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type ,locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.type', assessment.type )}</td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.startDate}" /></td>
                                                 <td><fmt:formatDate pattern="${dateFormatShort}" value="${assessment.endDate}" /></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status,locale)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status)}</td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Assessment list ************ -->

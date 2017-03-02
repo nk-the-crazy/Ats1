@@ -12,6 +12,8 @@
                         
 
 
+    <import resource="security-context.xml"/>
+    
     <context:component-scan base-package="service" />
     <context:component-scan base-package="common" />
     <context:component-scan base-package="web" />

@@ -1,5 +1,6 @@
 package model.group;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +21,15 @@ import model.identity.User;
 
 @Entity
 @Table( name = "user_group" )
-@Access( AccessType.FIELD )public class UserGroup
+@Access( AccessType.FIELD )
+public class UserGroup implements Serializable
 {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5991753394548347179L;
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id" )
@@ -48,6 +56,11 @@ import model.identity.User;
     public short getType()
     {
         return type;
+    }
+    
+    public void setId( long id )
+    {
+        this.id = id;
     }
 
     public void setType( int type )
@@ -120,6 +133,7 @@ import model.identity.User;
             user.getGroups().add(this);
         }
     }
+    
     
     
 }

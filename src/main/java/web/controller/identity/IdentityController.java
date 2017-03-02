@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import model.common.session.SessionData;
 import model.group.UserGroup;
 import model.identity.Role;
@@ -12,6 +14,7 @@ import model.identity.User;
 import service.api.group.GroupManager;
 import service.api.identity.IdentityManager;
 import service.api.organization.OrganizationManager;
+import web.view.ModelView;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +35,6 @@ import org.springframework.web.servlet.ModelAndView;
 import common.exceptions.security.InvalidLoginException;
 import common.exceptions.security.InvalidPasswordException;
 import common.utils.StringUtils;
-import web.common.view.ModelView;
 
 
 @Controller
@@ -194,6 +196,58 @@ public class IdentityController
         
     }
     
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/user_edit.vw")
+    public String editUserView(@RequestParam( "user_id" ) long userId, Model model , HttpSession session)
+    {
+        
+        User userDetails = identityManager.getUserFullDetails( userId);
+        model.addAttribute( "userDetails" , userDetails );
+        model.addAttribute( "organizationShortList" , organizationManager.getOrganizationShortListByName( "" ));
+        model.addAttribute( "roleShortList" , identityManager.getRoleShortListByRoleName( "" ));
+        model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
+        
+        session.setAttribute( "psw", userDetails.getPassword() );
+        return ModelView.VIEW_USER_EDIT_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/user_edit.do")
+    public String editUser( @ModelAttribute( "user" ) User user, Model model , HttpSession session)
+    {
+
+        try
+        {
+            String pws = (String)session.getAttribute( "psw" );
+            user.setPassword( pws );
+            session.removeAttribute( "psw" );
+            
+            user = identityManager.saveUser( user );
+            
+            return "redirect:user_details.vw?user_id=" + user.getId();
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error editing user:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return editRoleView(user.getId(),model);
+
+        
+    }
+    
+    
 	
     /*******************************************************
      * 
@@ -262,6 +316,47 @@ public class IdentityController
     /*******************************************************
      * 
      */
+    @RequestMapping("/role_edit.vw")
+    public String editRoleView(@RequestParam( "role_id" ) long roleId, Model model)
+    {
+        model.addAttribute( "roleDetails" , identityManager.getRoleDetails( roleId ) );
+        return ModelView.VIEW_ROLE_EDIT_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/role_edit.do")
+    public String editRole( @ModelAttribute( "role" ) Role role, Model model)
+    {
+
+        try
+        {
+            role = identityManager.saveRole( role );
+            
+            return "redirect:role_details.vw?role_id=" + role.getId();
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error registering assessment:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return editRoleView(role.getId(),model);
+
+        
+    }
+    
+    
+    
+    /*******************************************************
+     * 
+     */
     @RequestMapping( value = "/role_register.do")
     public ModelAndView registerRole( @ModelAttribute( "role" ) Role role)
     {
@@ -279,7 +374,7 @@ public class IdentityController
         }
         catch(Exception e)
         {
-            logger.error( " **** Error registering role:", e ); 
+            logger.error( " **** Error editing role:", e ); 
             model.addObject( "errorMessage", "message.error.system" );
         }
         
@@ -297,11 +392,8 @@ public class IdentityController
         model.addAttribute( "organizationShortList" , organizationManager.getOrganizationShortListByName( "" ));
         model.addAttribute( "roleShortList" , identityManager.getRoleShortListByRoleName( "" ));
         model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
-
         
         return ModelView.VIEW_USER_REGISTER_PAGE;
-        
-        
     }
     
     

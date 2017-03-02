@@ -1,6 +1,7 @@
 package model.identity;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,8 +27,13 @@ import model.person.Person;
 
 @Entity
 @Table(name = "userl")
-public class User
+public class User implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7670305959229965814L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

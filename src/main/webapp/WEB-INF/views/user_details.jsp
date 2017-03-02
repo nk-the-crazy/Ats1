@@ -66,10 +66,10 @@
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.user_details.title" /></h2>
                                      <div style="text-align: right;">
-                                        <button type="button" class="btn btn-info btn-xs">
+                                        <a href="user_edit.vw?user_id=${param.user_id}" role="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
                                                 <spring:message code="label.action.edit"/>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">
                                             <i class="fa fa-chevron-left"></i>&nbsp;
                                                 <spring:message code="label.action.back"/>
@@ -158,7 +158,7 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.gender" />:</th>
                                                   <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.user.gender',user.person.detail.gender,locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.user.gender',user.person.detail.gender)}
                                                   </td>
                                                 </tr>
                                                 <tr>
@@ -169,7 +169,7 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.marital_status" />:</th>
                                                   <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.user.marital',user.person.detail.maritalStatus,locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.user.marital',user.person.detail.maritalStatus)}
                                                   </td>
                                                 </tr>
                                                 <tr>
@@ -230,13 +230,13 @@
                                                 <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.address.country" />:</th>
                                                   <td class="col-md-8">
-                                                    ${SystemUtils.getAttribute('system.attrib.address.country',user.person.address.countryId,locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.address.country',user.person.address.countryId)}
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row"><spring:message code="label.address.region" />:</th>
                                                   <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.address.region.2',user.person.address.regionId,locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.address.region.2',user.person.address.regionId)}
                                                   </td>
                                                 </tr>
                                                 <tr>

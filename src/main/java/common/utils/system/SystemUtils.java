@@ -1,5 +1,6 @@
 package common.utils.system;
 
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -10,11 +11,11 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
-
 
 @Component
 @Scope("singleton")
@@ -54,6 +55,7 @@ public class SystemUtils
     
     }
     
+    
     /* ********************************************
      * 
      * */
@@ -77,7 +79,7 @@ public class SystemUtils
     {
         try
         { 
-            return messagesBundle.getMessage( key, null, Locale.getDefault() );
+            return messagesBundle.getMessage( key, null, LocaleContextHolder.getLocale() );
         }
         catch ( Exception e )
         {
@@ -125,6 +127,16 @@ public class SystemUtils
     /* ********************************************
      * 
      * */
+    public static List<String> getAttributes(String key) 
+    {
+        return getAttributes( key, LocaleContextHolder.getLocale());  
+               
+    }
+    
+    
+    /* ********************************************
+     * 
+     * */
     private static String getAttribute(String key, int index, Locale locale) 
     {
         try
@@ -159,6 +171,15 @@ public class SystemUtils
     }
     
     
+    /* ********************************************
+     * 
+     * */
+    public static String getAttribute(String key, int index) 
+    {
+        return  getAttribute( key, index, LocaleContextHolder.getLocale());
+    }
+    
+    
     
     /* ********************************************
      * 
@@ -177,5 +198,7 @@ public class SystemUtils
             return 0;
         }
     }
-
+    
+    
+   
 }

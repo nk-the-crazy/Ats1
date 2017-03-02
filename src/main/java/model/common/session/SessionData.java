@@ -1,5 +1,6 @@
 package model.common.session;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -8,9 +9,11 @@ import org.springframework.security.core.GrantedAuthority;
 import model.identity.User;
 
 
-public class SessionData
+public class SessionData implements Serializable
 {
-	private User user = null;
+    private static final long serialVersionUID = -7268790185554157310L;
+
+    private User user = null;
 	private String token = "";
 	private Date lastLogin = null;
 	

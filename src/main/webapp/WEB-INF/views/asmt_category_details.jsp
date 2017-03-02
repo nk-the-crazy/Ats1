@@ -141,7 +141,7 @@
                                               </tbody>
                                             </table>
                                              <!------------- Pagination -------------->
-                                            <c:if test="${usersPage.totalPages > 1}">
+                                            <c:if test="${tasksPage.totalPages > 1}">
                                                 <jsp:include page="include/pagination.jsp">
                                                      <jsp:param name="page" value="asmt_category_details.vw" />
                                                      <jsp:param name="addParam" value="asmt_category_id=${param.asmt_category_id}" />

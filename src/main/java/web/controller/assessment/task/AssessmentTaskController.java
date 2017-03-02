@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
 import service.api.assessment.AssessmentTaskManager;
-import web.common.view.ModelView;
+import web.view.ModelView;
 
 
 @Controller
@@ -183,6 +183,47 @@ public class AssessmentTaskController
     /*******************************************************
      * 
      */
+    @RequestMapping("/asmt_task_edit.vw")
+    public String editTaskView( @RequestParam( name = "asmt_task_id" ) long taskId, Model model)
+    {
+        model.addAttribute( "categoryShortList", taskManager.getCategoryShortList( "" ));
+        model.addAttribute( "taskDetails", taskManager.getTaskFullDetails( taskId ));
+        
+        return ModelView.VIEW_ASMT_TASK_EDIT_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_task_edit.do")
+    public String editTask( @ModelAttribute( "task" ) AssessmentTask task, 
+                            Model model)
+    {
+        try
+        {
+            task = taskManager.saveTask( task );
+            
+            return "redirect:asmt_task_details.vw?asmt_task_id=" + task.getId();
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute("errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error editing assessment task:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return editTaskView(task.getId(), model);
+        
+    }
+    
+
+    /*******************************************************
+     * 
+     */
     @RequestMapping("/asmt_category_register.vw")
     public String registerCategoryView( @RequestParam( name = "asmt_category_id" , defaultValue = "0", required = false )
                                         long categoryId, Model model)
@@ -221,6 +262,47 @@ public class AssessmentTaskController
         return model;
         
     }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_category_edit.vw")
+    public String editCategoryView(@RequestParam( "asmt_category_id" ) long categoryId, Model model)
+    {
+        model.addAttribute( "categoryDetails" , taskManager.getCategoryDetails( categoryId ));
+        return ModelView.VIEW_ASMT_CATEGORY_EDIT_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_category_edit.do")
+    public String editCategory( @ModelAttribute( "category" ) AssessmentTaskCategory category, Model model)
+    {
+
+        try
+        {
+            category = taskManager.saveTaskCategory( category );
+            
+            return "redirect:asmt_category_details.vw?asmt_category_id=" + category.getId();
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error editing category data:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return editCategoryView(category.getId(), model);
+
+    }
+
+   
    
 }
 

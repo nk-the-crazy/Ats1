@@ -297,6 +297,7 @@ public class IdentityManagerImpl implements IdentityManager
     }
     
     
+    
     /**************************************************
      * 
      */
@@ -305,7 +306,7 @@ public class IdentityManagerImpl implements IdentityManager
     {
         isValidUserName( user.getUserName() );
         isValidPassword( user.getUserName(), user.getPassword() );
-
+        
         try
         {
             String salt = SecurityUtils.generateSecureRandom();

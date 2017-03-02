@@ -65,10 +65,10 @@
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.group_details.title" /></h2>
                                      <div style="text-align: right;">
-                                        <button type="button" class="btn btn-info btn-xs">
+                                        <a href="group_edit.vw?group_id=${param.group_id}" role="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
                                                 <spring:message code="label.action.edit"/>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">
                                             <i class="fa fa-chevron-left"></i>&nbsp;
                                                 <spring:message code="label.action.back"/>

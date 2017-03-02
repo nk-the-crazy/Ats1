@@ -55,6 +55,17 @@ public class Organization
     @OneToMany(mappedBy="organization", fetch = FetchType.LAZY)
     private Set<Person> personList = new HashSet<>();
 
+    
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId( long id )
+    {
+        this.id = id;
+    }
+
     public String getCode()
     {
         return code;
@@ -83,11 +94,6 @@ public class Organization
     public void setDetail( OrganizationDetail detail )
     {
         this.detail = detail;
-    }
-
-     public long getId()
-    {
-        return id;
     }
 
     public int getType()
@@ -150,8 +156,5 @@ public class Organization
     {
         this.contact = contact;
     }
-    
-    
-
     
 }
