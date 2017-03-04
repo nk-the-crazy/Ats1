@@ -9,6 +9,11 @@
     font-size: 13px;
 }
 
+.info-task-type{
+    
+    
+}
+
 .item-response-content
 {
     word-wrap: break-word;
@@ -1903,6 +1908,10 @@ button,
 .btn-group-vertical .btn, .btn-group .btn {
   margin-bottom: 0;
   margin-right: 0; }
+  
+  .btn-top-group{
+    border-left: 1px solid #DBDBDB;  
+  }
 
 .mail_list_column {
   border-left: 1px solid #DBDBDB; }

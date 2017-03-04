@@ -56,7 +56,7 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-10 col-sm-10 col-xs-10">
+                        <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt.task_details.title" /></h2>
@@ -86,7 +86,7 @@
                                         </li>
                                     </ul>
                                     <div id="groupDetailsTabContent" class="tab-content">
-                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
+                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-10 fade active in" 
                                               aria-labelledby="groups-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
@@ -141,7 +141,7 @@
                                             </table>
                                         </div>
                                         
-                                        <div role="tabpanel" class="tab-pane col-md-10 fade" 
+                                        <div role="tabpanel" class="tab-pane col-md-12 fade" 
                                              id="tab_content2" aria-labelledby="task-details-tab">
                                             
                                             <table id="" class="dataTable table table-bordered">

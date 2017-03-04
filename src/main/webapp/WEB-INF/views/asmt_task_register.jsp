@@ -100,7 +100,7 @@
                                         </li>
                                     </ul>
                                     <div id="taskRegisterTabContent" class="tab-content">
-                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
+                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-10 fade active in" 
                                               aria-labelledby="groups-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
@@ -216,7 +216,7 @@
                                                             <td id="dvIndex" class="col-md-1">1</td>
                                                             <td class="col-md-2">
                                                                 <input class="form-control input-sm" type="text" value="${detail.itemGradeRatio }" id="txItemGradeRatio" name="details[${loopCounter.index }].itemGradeRatio"></td>
-                                                            <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetails" name="details[${loopCounter.index }].itemDetails"></td>
+                                                            <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetail" name="details[${loopCounter.index }].itemDetails"></td>
                                                             <td><button class="btn btn-danger btn-remove btn-xs" type="button">
                                                                 <i class="fa fa-close"></i></button>
                                                             </td>

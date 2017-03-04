@@ -61,7 +61,7 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-11 col-sm-11 col-xs-11">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.user_details.title" /></h2>
@@ -117,7 +117,7 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><spring:message code="label.user.login" />:</th>
+                                                  <th scope="row" class="col-md-2"><spring:message code="label.user.login" />:</th>
                                                   <td class="col-md-5"><c:out value="${user.userName}"/></td>
                                                 </tr>
                                                 <tr>
@@ -138,7 +138,7 @@
                                             </table>
                                         </div>
                                         
-                                        <div id="tab_content2" role="tabpanel" class="tab-pane fade col-md-12" 
+                                        <div id="tab_content2" role="tabpanel" class="tab-pane fade col-md-10" 
                                              aria-labelledby="profile-tab">
                                             <table class="dataTable table table-bordered">
                                               <thead>
@@ -156,6 +156,10 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
+                                                  <th scope="row" ><spring:message code="label.user.tax_payer_number" />:</th>
+                                                  <td><c:out value="${user.person.detail.taxPayerNumber}"/></td>
+                                                </tr>
+                                                <tr>
                                                   <th scope="row" ><spring:message code="label.user.gender" />:</th>
                                                   <td>
                                                     ${SystemUtils.getAttribute('system.attrib.user.gender',user.person.detail.gender)}
@@ -165,16 +169,6 @@
                                                   <th scope="row" ><spring:message code="label.user.birth_date" />:</th>
                                                   <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.birthDate}" />
                                                   </td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.user.marital_status" />:</th>
-                                                  <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.user.marital',user.person.detail.maritalStatus)}
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.user.tax_payer_number" />:</th>
-                                                  <td><c:out value="${user.person.detail.taxPayerNumber}"/></td>
                                                 </tr>
                                                 <thead>
                                                     <tr>
@@ -195,7 +189,7 @@
                                                 </tr>
                                                 <thead>
                                                     <tr>
-                                                        <th colspan="2"><spring:message code="label.user.passport" /></th>
+                                                        <th colspan="3"><spring:message code="label.user.passport" /></th>
                                                     </tr>
                                                 </thead>
                                                 <tr>
@@ -212,14 +206,14 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.passport.date.issued" />:</th>
                                                   <td>
-                                                  <c:out value="${user.person.detail.passportIssuedBy}"/>&nbsp;&nbsp;
                                                   <fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.passportIssuedDate}" />
+                                                  &nbsp;&nbsp;<c:out value="${user.person.detail.passportIssuedBy}"/>
                                                   </td>
                                                 </tr>
                                               </tbody>
                                             </table>                                        
                                         </div>
-                                        <div id="tab_content3" role="tabpanel" class="tab-pane fade col-md-12" aria-labelledby="contacts-tab">
+                                        <div id="tab_content3" role="tabpanel" class="tab-pane fade col-md-10" aria-labelledby="contacts-tab">
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
@@ -229,7 +223,7 @@
                                               <tbody>
                                                 <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.address.country" />:</th>
-                                                  <td class="col-md-8">
+                                                  <td class="col-md-7">
                                                     ${SystemUtils.getAttribute('system.attrib.address.country',user.person.address.countryId)}
                                                   </td>
                                                 </tr>
@@ -271,7 +265,7 @@
                                               </tbody>
                                             </table>                                        
                                         </div>
-                                        <div role="tabpanel" class="tab-pane col-md-8 fade" 
+                                        <div role="tabpanel" class="tab-pane col-md-9 fade" 
                                              id="tab_content4" aria-labelledby="roles-tab">
                                             
                                             <table id="" class="dataTable table table-bordered">
@@ -287,16 +281,16 @@
                                                 <c:forEach var="role" items="${user.roles}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${loopCounter.count }</td>
-                                                        <td><a href="role_details.vw?role_id=${role.id}">
+                                                        <td class="col-md-3"><a href="role_details.vw?role_id=${role.id}">
                                                             <c:out value="${role.name}"/></a></td>
-                                                        <td><c:out value="${role.details}"/></td>
+                                                        <td class="col-md-5"><c:out value="${role.details}"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <!-- *********Role list ************ -->
                                               </tbody>
                                             </table>                                              
                                         </div>
-                                        <div role="tabpanel" class="tab-pane fade col-md-12" id="tab_content5"  aria-labelledby="groups-tab">
+                                        <div role="tabpanel" class="tab-pane fade col-md-9" id="tab_content5"  aria-labelledby="groups-tab">
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
@@ -311,9 +305,9 @@
                                                 <c:forEach var="group" items="${groupsPage.content}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${index + loopCounter.count }</td>
-                                                        <td><a href="group_details.vw?group_id=${group[1]}">
+                                                        <td class="col-md-3"><a href="group_details.vw?group_id=${group[1]}">
                                                             <c:out value="${group[2]}"/></a></td>
-                                                        <td><c:out value="${group[3]}"/></td>
+                                                        <td class="col-md-5"><c:out value="${group[3]}"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <!-- *********Group list ************ -->

@@ -56,7 +56,7 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                             <form id="role" data-parsley-validate action="role_edit.do" 
                                   class="form-horizontal form-label-left" method="POST">
@@ -97,7 +97,7 @@
                                         </li>
                                     </ul>
                                     <div id="roleEditTabContent" class="tab-content">
-                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
+                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-9 fade active in" 
                                               aria-labelledby="roles-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
@@ -110,7 +110,7 @@
                                                   <th scope="row" class="col-md-3">
                                                     <label class="control-label-required" for="role-name">
                                                         <spring:message code="label.role.name" />:</label></th>
-                                                  <td class="col-md-5">
+                                                  <td class="col-md-6">
                                                     <input type="text" id="role-name" name="name" value="${role.name}"
                                                         class="form-control input-sm" required="required">
                                                   </td>
@@ -119,7 +119,7 @@
                                                   <th scope="row" class="col-md-3">
                                                     <label class="control-label" for="role-desc">
                                                         <spring:message code="label.role.desc" />:</label></th>
-                                                  <td class="col-md-5">
+                                                  <td class="col-md-6">
                                                     <input type="text" id="role-desc" name="details" value="${role.details}"
                                                         class="form-control input-sm">
                                                   </td>

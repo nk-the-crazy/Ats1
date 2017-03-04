@@ -111,6 +111,7 @@ public class GroupManagerImpl implements GroupManager
         return groupDAO.getShortListByGroupName( groupName );
     }
     
+    
     /**************************************************
      * 
      */
@@ -121,6 +122,7 @@ public class GroupManagerImpl implements GroupManager
     }
     
     
+       
     /**************************************************
      * 
      */

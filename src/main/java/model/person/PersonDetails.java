@@ -25,9 +25,6 @@ public class PersonDetails
     @Column( name = "activity" )
     private String activity;
     
-    @Column(name = "marital_status")
-    private short maritalStatus = 1;
-    
     @Column(name = "birth_date")
     private Date birthDate;
 
@@ -75,50 +72,26 @@ public class PersonDetails
     {
         this.birthDate = birthDate;
     }
-
-
-    
-    public short getMaritalStatus()
-    {
-        return maritalStatus;
-    }
-
-
-    
-    public void setMaritalStatus( short maritalStatus )
-    {
-        this.maritalStatus = maritalStatus;
-    }
-
-
     
     public String getTaxPayerNumber()
     {
         return taxPayerNumber;
     }
-
-
     
     public void setTaxPayerNumber( String taxPayerNumber )
     {
         this.taxPayerNumber = taxPayerNumber;
     }
-
-
     
     public String getPassportSerial()
     {
         return passportSerial;
     }
-
-
     
     public void setPassportSerial( String passportSerial )
     {
         this.passportSerial = passportSerial;
     }
-
-
     
     public String getPassportNumber()
     {

@@ -45,6 +45,13 @@ public interface GroupDAO extends JpaRepository<UserGroup, Long>
             + " WHERE u.id=:userId")
     Page<UserGroup> getByUserId(@Param("userId") long userId , Pageable page );
     
+    //********************************************
+    @Query(value = "SELECT g.id "
+            + " FROM UserGroup g "
+            + " JOIN g.users u "
+            + " WHERE u.id=:userId")
+    List<Long> getIdsByUserId(@Param("userId") long userId );
+    
     
     @Query(value = "SELECT g.id, g.name "
             + " FROM UserGroup g "

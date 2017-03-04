@@ -71,7 +71,7 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-11 col-sm-11 col-xs-11">
                             <div class="x_panel">
                             <form id="user" data-parsley-validate action="user_register.do" 
                                   class="form-horizontal form-label-left" method="POST">
@@ -136,7 +136,7 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                     <label class="control-label-required" for="user-name">
                                                     <spring:message code="label.user.login" />:</label></th>
                                                   <td class="col-md-5"><input type="text" id="user-name" name="userName" value="${user.userName}"
@@ -144,7 +144,7 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                     <label class="control-label-required" for="user-email">
                                                     <spring:message code="label.account_email" />:</label></th>
                                                   <td class="col-md-5"><input type="text" id="user-email" name="email" value="${user.email}"
@@ -152,7 +152,7 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                     <label class="control-label-required" for="user-password">
                                                     <spring:message code="label.password" />:</label></th>
                                                   <td class="col-md-5"><input type="password" id="user-password" name="password"
@@ -163,7 +163,7 @@
                                             </table>
                                         </div>
                                         
-                                        <div id="tab_content2" role="tabpanel" class="tab-pane fade col-md-12" 
+                                        <div id="tab_content2" role="tabpanel" class="tab-pane fade col-md-8" 
                                              aria-labelledby="profile-tab">
                                             <table class="dataTable table table-bordered">
                                               <thead>
@@ -173,7 +173,7 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                     <label class="control-label-required" for="person-lastname">
                                                     <spring:message code="label.user.last_name" />:</label></th>
                                                   <td class="col-md-6">
@@ -183,7 +183,7 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                     <label class="control-label-required" for="person-firstName">
                                                     <spring:message code="label.user.first_name" />:</label></th>
                                                   <td><div class="col-md-6 col-sm-6 col-xs-6"><input type="text" 
@@ -192,11 +192,20 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                     <label class="control-label" for="person-middleName">
                                                     <spring:message code="label.user.middle_name" />:</label></th>
                                                   <td><div class="col-md-6 col-sm-6 col-xs-6"><input type="text" 
                                                       id="person-middleName" name="person.middleName" value="${user.person.middleName}"
+                                                      class="form-control input-sm"></div>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" class="col-md-2">
+                                                    <label class="control-label-required" for="person-taxPayerNumber">
+                                                    <spring:message code="label.user.tax_payer_number" />:</label></th>
+                                                  <td><div class="col-md-6 col-sm-6 col-xs-6"><input type="text" 
+                                                      id="person-taxPayerNumber" name="person.detail.taxPayerNumber" value="${user.person.detail.taxPayerNumber}"
                                                       class="form-control input-sm"></div>
                                                   </td>
                                                 </tr>
@@ -224,28 +233,6 @@
                                                     </div>
                                                   </td>
                                                 </tr>
-                                                <tr>
-                                                  <th scope="row" ><label class="control-label" for="person-marital">
-                                                  <spring:message code="label.user.marital_status" />:</label></th>
-                                                  <td><div class="col-md-6 col-sm-6 col-xs-6">
-                                                    <select id="person-marital" class="form-control input-select-sm" name="person.detail.maritalStatus">
-                                                        <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                            items="${SystemUtils.getAttributes('system.attrib.user.marital')}"> 
-                                                            <option ${user.person.detail.maritalStatus == (loopCounter.count) ? 'selected="selected"' : ''}
-                                                            value="${loopCounter.count}">${systemAttr}</option>
-                                                        </c:forEach>
-                                                    </select></div>
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" class="col-md-3">
-                                                    <label class="control-label" for="person-taxPayerNumber">
-                                                    <spring:message code="label.user.tax_payer_number" />:</label></th>
-                                                  <td><div class="col-md-6 col-sm-6 col-xs-6"><input type="text" 
-                                                      id="person-taxPayerNumber" name="person.detail.taxPayerNumber" value="${user.person.detail.taxPayerNumber}"
-                                                      class="form-control input-sm"></div>
-                                                  </td>
-                                                </tr>
                                                 <thead>
                                                     <tr>
                                                         <th colspan="2"><i class="fa fa-bank"></i>&nbsp;
@@ -257,9 +244,10 @@
                                                   <spring:message code="label.organization" />:</label></th>
                                                   <td>
                                                     <div class="col-md-10">
-                                                    <select id="person-organization" class="select2_single" name="organizationId">
+                                                    <select id="person-organization" class="select2_single" name="person.organization.id">
                                                         <c:forEach var="organization" items="${organizations}" varStatus="loopCounter"> 
-                                                            <option ${organizationId == organization[0] ? 'selected="selected"' : ''}
+                                                            <c:set var="ogznId" value="${user.person.organization.id}"/>
+                                                            <option ${ogznId == organization[0] ? 'selected="selected"' : ''}
                                                             value="${organization[0]}">${organization[1]}</option>
                                                         </c:forEach>
                                                     </select>
@@ -267,7 +255,7 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                     <label class="control-label" for="person-activity">
                                                     <spring:message code="label.user.activity" />:</label></th>
                                                   <td><div  class="col-md-12 col-sm-12 col-xs-12"><input type="text" 
@@ -309,12 +297,12 @@
                                                   <spring:message code="label.user.passport.date.issued" />:</label></th>
                                                   <td>
                                                     <div class="form-group">
-                                                         <span class="col-md-3">
+                                                         <span class="col-md-2">
                                                             <fmt:formatDate pattern="${dateFormatShort }" value="${user.person.detail.passportIssuedDate}" var="psDate"/>
                                                             <input id="passport-issue-date" type="text" class="date-picker form-control input-sm" 
                                                                name="person.detail.passportIssuedDate" value="${psDate}">
                                                          </span>
-                                                         <span class="col-md-3">
+                                                         <span class="col-md-2">
                                                             <input type="text" id="passport-issue-ny" name="person.personDetails.passportIssuedBy" 
                                                                    value="${user.person.detail.passportIssuedBy}" class="form-control input-sm">
                                                           </span>
@@ -324,7 +312,7 @@
                                               </tbody>
                                             </table>                                        
                                         </div>
-                                        <div id="tab_content3" role="tabpanel" class="tab-pane fade col-md-10" aria-labelledby="contacts-tab">
+                                        <div id="tab_content3" role="tabpanel" class="tab-pane fade col-md-8" aria-labelledby="contacts-tab">
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
@@ -333,7 +321,7 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                     <label class="control-label" for="address-country-id">
                                                     <spring:message code="label.address.country" />:</label></th>
                                                   <td class="col-md-5">
@@ -350,7 +338,7 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3">
+                                                  <th scope="row" class="col-md-2">
                                                   <label class="control-label" for="address-region-id">
                                                   <spring:message code="label.address.region" />:</label></th>
                                                   <td>
@@ -416,7 +404,7 @@
                                               </tbody>
                                             </table>                                        
                                         </div>
-                                        <div role="tabpanel" class="tab-pane col-md-8 fade" 
+                                        <div role="tabpanel" class="tab-pane col-md-7 fade" 
                                              id="tab_content4" aria-labelledby="roles-tab">
                                              <c:set var="selectedItemCount" value="${fn:length(paramValues.roleIds)}"/>
                                              <c:set var="selectedItemIndex" value="0"/>
@@ -437,7 +425,7 @@
                                                 </select>
                                              </div>
                                         </div>
-                                        <div role="tabpanel" class="tab-pane fade col-md-8" 
+                                        <div role="tabpanel" class="tab-pane fade col-md-7" 
                                              id="tab_content5"  aria-labelledby="groups-tab">
                                              
                                              <c:set var="selectedItemCount" value="${fn:length(paramValues.groupIds)}"/>

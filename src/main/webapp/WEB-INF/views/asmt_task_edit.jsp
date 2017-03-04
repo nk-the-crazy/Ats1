@@ -102,7 +102,7 @@
                                         </li>
                                     </ul>
                                     <div id="taskEditTabContent" class="tab-content">
-                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
+                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-10 fade active in" 
                                               aria-labelledby="groups-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
@@ -200,7 +200,7 @@
                                             </table>
                                         </div>
                                         
-                                        <div role="tabpanel" class="tab-pane col-md-10 fade" 
+                                        <div role="tabpanel" class="tab-pane col-md-12 fade" 
                                              id="tab_content2" aria-labelledby="task-details-tab">
                                             <button id="btnAddRow" class="btn btn-success btn-xs" type="button">
                                                     <i class="fa fa-plus">&nbsp;<spring:message code="label.asmt.task.item.option.register" /></i>
@@ -228,10 +228,10 @@
                                                   </c:if>
                                                   <c:forEach var="detail" items="${task.details}" varStatus="loopCounter">
                                                       <tr>
-                                                            <td id="dvIndex" class="col-md-1">1</td>
+                                                            <td id="dvIndex" class="col-md-1">${loopCounter.count}</td>
                                                             <td class="col-md-2">
                                                                 <input class="form-control input-sm" type="text" value="${detail.itemGradeRatio }" id="txItemGradeRatio" name="details[${loopCounter.index }].itemGradeRatio"></td>
-                                                            <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetails" name="details[${loopCounter.index }].itemDetail"></td>
+                                                            <td><input class="form-control input-sm" type="text" value="${detail.itemDetail }" id="txItemDetail" name="details[${loopCounter.index }].itemDetail"></td>
                                                             <td><button class="btn btn-danger btn-remove btn-xs" type="button">
                                                                 <i class="fa fa-close"></i></button>
                                                             </td>

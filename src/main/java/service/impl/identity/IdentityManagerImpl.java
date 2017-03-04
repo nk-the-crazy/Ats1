@@ -3,6 +3,7 @@ package service.impl.identity;
 import java.security.AccessControlException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,14 +23,12 @@ import dao.api.group.GroupDAO;
 import dao.api.identity.PermissionDAO;
 import dao.api.identity.RoleDAO;
 import dao.api.identity.UserDAO;
-import dao.api.organization.OrganizationDAO;
 import model.common.session.SessionData;
 import model.group.UserGroup;
 import model.identity.Permission;
 import model.identity.Role;
 import model.identity.User;
 import model.identity.UserType;
-import model.organization.Organization;
 import service.api.identity.IdentityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,9 +53,6 @@ public class IdentityManagerImpl implements IdentityManager
 
     @Autowired
     PermissionDAO permissionDAO;
-    
-    @Autowired
-    OrganizationDAO organizationDAO;
     
     /**************************************************
      * 
@@ -265,18 +261,12 @@ public class IdentityManagerImpl implements IdentityManager
      * 
      */
     @Override
-    public User saveUser( User user , long organizationId , List<Long> roleIds, List<Long> groupIds)
+    public User saveUser( User user, List<Long> roleIds, List<Long> groupIds)
     {
         isValidUserName( user.getUserName() );
         isValidPassword( user.getUserName(), user.getPassword() );
 
-        
-        if(organizationId > 0)
-        {
-            Organization organization = organizationDAO.findOne( organizationId );
-            user.getPerson().setOrganization( organization );
-        }
-        
+   
         if(!CollectionUtils.isEmpty( roleIds ))
         {
             for(long roleId:roleIds)
@@ -444,6 +434,27 @@ public class IdentityManagerImpl implements IdentityManager
      * 
      */
     @Override
+    public List<Long> getUserGroupIds( long userId)
+    {
+        // *********************************
+        try
+        {
+            return groupDAO.getIdsByUserId( userId);
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in get User Group IDs", e );        
+        }
+
+        return Collections.emptyList();
+    }
+    
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
     public Page<Role> getRolesByRoleName( String roleName, Pageable pageable )
     {
         return roleDAO.findByRoleName( roleName, pageable );
@@ -505,7 +516,7 @@ public class IdentityManagerImpl implements IdentityManager
     @Override
     public boolean changeUserPassword( long userId, String oldPassword, String newPassword ) throws Exception
     {
-        User user = null;//identityDAO.find( userId );      
+        User user = userDAO.findById( userId );      
         return changeUserPassword( user, oldPassword, newPassword );
     }
 

@@ -206,6 +206,7 @@ public class IdentityController
         
         User userDetails = identityManager.getUserFullDetails( userId);
         model.addAttribute( "userDetails" , userDetails );
+        model.addAttribute( "userGroupIds" , identityManager.getUserGroupIds( userId ) );
         model.addAttribute( "organizationShortList" , organizationManager.getOrganizationShortListByName( "" ));
         model.addAttribute( "roleShortList" , identityManager.getRoleShortListByRoleName( "" ));
         model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
@@ -402,14 +403,13 @@ public class IdentityController
      */
     @RequestMapping( value = "/user_register.do")
     public String registerUser( Model model, @ModelAttribute( "user" ) User user,
-                                      @RequestParam( name = "organizationId", required = true ) long organizationId,
                                       @RequestParam( name = "roleIds" , required = false ) List<Long> roleIds,
                                       @RequestParam( name = "groupIds", required = false ) List<Long> groupIds)
     {
         try
         {
            
-            user = identityManager.saveUser( user, organizationId, roleIds, groupIds );
+            user = identityManager.saveUser( user, roleIds, groupIds );
             return "redirect:user_details.vw?user_id=" + user.getId();
         }
         catch(InvalidPasswordException e)

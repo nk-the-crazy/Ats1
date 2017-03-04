@@ -63,7 +63,7 @@ common.utils.system.SystemUtils"%>
                 <div class="">
                     <div class="clearfix"></div>
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.roles.title" /></h2>
@@ -112,7 +112,7 @@ common.utils.system.SystemUtils"%>
                                                 <td class="col-md-3"><a href="role_details.vw?role_id=${role.id}">
                                                     <c:out value="${role.name}"/></a>
                                                 </td>
-                                                <td class="col-md-3"><c:out value="${role.details}"/></td>
+                                                <td class="col-md-5"><c:out value="${role.details}"/></td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Role list ************ -->

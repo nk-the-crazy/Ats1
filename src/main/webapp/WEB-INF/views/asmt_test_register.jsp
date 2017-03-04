@@ -65,7 +65,7 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-11 col-sm-11 col-xs-11">
                             <div class="x_panel">
                              <form id="assessment" data-parsley-validate action="asmt_test_register.do" 
                                   class="form-horizontal form-label-left" method="POST">

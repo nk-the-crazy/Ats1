@@ -134,6 +134,23 @@ model.assessment.process.*" %>
                                           </td>
                                         </tr>
                                         <tr>
+                                          <td class="col-md-10" colspan="6">
+                                            
+                                             <c:if test="${task.modeType == 1}">
+                                                 <div class="info-task-type">
+                                                    <spring:message code="message.info.task.type.single_choice"/></div></c:if>
+                                             <c:if test="${task.modeType == 2}">
+                                                 <div class="info-task-type">
+                                                    <spring:message code="message.info.task.type.multi_choice"/></div></c:if>
+                                             <c:if test="${task.modeType == 3}">
+                                                 <div class="info-task-type">
+                                                    <spring:message code="message.info.task.type.short_answer"/></div></c:if>
+                                             <c:if test="${task.modeType == 4}">
+                                                 <div class="info-task-type">
+                                                    <spring:message code="message.info.task.type.esse"/></div></c:if>
+                                          </td>
+                                        </tr>
+                                        <tr>
                                           <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.options" /></th>
                                           <td class="col-md-10 tasks-panel" colspan="5">
                                            <div class="form-group">
