@@ -102,7 +102,7 @@
                                             <a href="#tab_content2" id="result-details-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <spring:message code="label.data.details" /></a>
                                         </li>
-                                        <li role="presentation" class="">
+                                        <li role="presentation" class="" style="display:none">
                                             <a href="#itemResponseTabContent" id="item-response-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <spring:message code="label.asmt.task.response.content" /></a>
                                         </li>
@@ -197,11 +197,15 @@
                                                             <c:out value="${task.itemContent}"/></a></td>
                                                         <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task.modeType)}</td>
                                                         <td><c:out value="${responseDetail.grade}"/></td>
-                                                        <td><button class="btn btn-primary btn-xs btn-td" 
+                                                        <td>
+                                                        <c:if test="${task.modeType == 4}">
+                                                        <button class="btn btn-primary btn-xs btn-td" 
                                                             onclick ="loadResponseContent(${responseDetail.id });" type="button" aria-expanded="false">
                                                             <i class="fa fa-file-o"></i>&nbsp;
                                                             <spring:message code="label.asmt.task.response" />
-                                                        </button></td>
+                                                        </button>
+                                                        </c:if>
+                                                        </td>
                                                     </tr>
                                                 </c:forEach>
                                                 <!-- *********/Task Response list ************ -->

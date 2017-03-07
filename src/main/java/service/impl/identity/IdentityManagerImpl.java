@@ -3,7 +3,9 @@ package service.impl.identity;
 import java.security.AccessControlException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.base.Strings;
 import common.exceptions.security.InvalidLoginException;
@@ -22,15 +25,20 @@ import dao.api.group.GroupDAO;
 import dao.api.identity.PermissionDAO;
 import dao.api.identity.RoleDAO;
 import dao.api.identity.UserDAO;
-import dao.api.organization.OrganizationDAO;
 import model.common.session.SessionData;
 import model.group.UserGroup;
 import model.identity.Permission;
 import model.identity.Role;
 import model.identity.User;
 import model.identity.UserType;
-import model.organization.Organization;
 import service.api.identity.IdentityManager;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,9 +62,6 @@ public class IdentityManagerImpl implements IdentityManager
 
     @Autowired
     PermissionDAO permissionDAO;
-    
-    @Autowired
-    OrganizationDAO organizationDAO;
     
     /**************************************************
      * 
@@ -265,18 +270,12 @@ public class IdentityManagerImpl implements IdentityManager
      * 
      */
     @Override
-    public User saveUser( User user , long organizationId , List<Long> roleIds, List<Long> groupIds)
+    public User saveUser( User user, List<Long> roleIds, List<Long> groupIds)
     {
         isValidUserName( user.getUserName() );
         isValidPassword( user.getUserName(), user.getPassword() );
 
-        
-        if(organizationId > 0)
-        {
-            Organization organization = organizationDAO.findOne( organizationId );
-            user.getPerson().setOrganization( organization );
-        }
-        
+   
         if(!CollectionUtils.isEmpty( roleIds ))
         {
             for(long roleId:roleIds)
@@ -297,6 +296,33 @@ public class IdentityManagerImpl implements IdentityManager
     }
     
     
+    /**************************************************
+     * 
+     */
+    @Override
+    public User updateUser( User user, List<Long> roleIds, List<Long> groupIds)
+    {
+        isValidUserName( user.getUserName() );
+
+   
+        if(!CollectionUtils.isEmpty( roleIds ))
+        {
+            for(long roleId:roleIds)
+            {
+                user.addRole( roleDAO.findOne(roleId ));  
+            }
+        }
+        
+        if(!CollectionUtils.isEmpty( groupIds ))
+        {
+            for(long groupId:groupIds)
+            {
+                user.addGroup( groupDAO.findOne( groupId ));  
+            }
+        }
+        
+        return updateUser( user );
+    }
     
     /**************************************************
      * 
@@ -324,6 +350,27 @@ public class IdentityManagerImpl implements IdentityManager
     }
 
 
+    /**************************************************
+     * 
+     */
+    @Override
+    public User updateUser( User user )
+    {
+        isValidUserName( user.getUserName() );
+        
+        try
+        {
+            return userDAO.save( user );
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in Adduser", e );        
+        }
+
+        return null;
+    }
+    
+    
     /* *************************************************
      */
     @Override
@@ -444,6 +491,27 @@ public class IdentityManagerImpl implements IdentityManager
      * 
      */
     @Override
+    public List<Long> getUserGroupIds( long userId)
+    {
+        // *********************************
+        try
+        {
+            return groupDAO.getIdsByUserId( userId);
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in get User Group IDs", e );        
+        }
+
+        return Collections.emptyList();
+    }
+    
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
     public Page<Role> getRolesByRoleName( String roleName, Pageable pageable )
     {
         return roleDAO.findByRoleName( roleName, pageable );
@@ -505,7 +573,7 @@ public class IdentityManagerImpl implements IdentityManager
     @Override
     public boolean changeUserPassword( long userId, String oldPassword, String newPassword ) throws Exception
     {
-        User user = null;//identityDAO.find( userId );      
+        User user = userDAO.findById( userId );      
         return changeUserPassword( user, oldPassword, newPassword );
     }
 
@@ -552,8 +620,81 @@ public class IdentityManagerImpl implements IdentityManager
 
         return true;
     }
+    
+    
+    @Override
+    public void importUsers( MultipartFile file )
+    {
+        try
+        {
+            String lowerCaseFileName = file.getOriginalFilename().toLowerCase();
 
+            if ( lowerCaseFileName.contains( ".xls" ) )
+            {
+                Workbook offices = null;
 
+                logger.info( "Excel file uploaded:" + lowerCaseFileName );
+
+                try
+                {
+                    if ( lowerCaseFileName.endsWith( ".xlsx" ) )
+                    {
+                        offices = new XSSFWorkbook( file.getInputStream() );
+                    }
+                    else
+                    {
+                        offices = new HSSFWorkbook( file.getInputStream() );
+                    }
+
+                    Sheet worksheet = offices.getSheetAt( 0 );
+                    Iterator<Row> iterator = worksheet.iterator();
+                    User user = null;
+                    int index = 0;
+                    
+                    while ( iterator.hasNext() )
+                    {
+                        index++;
+                        Row currentRow = iterator.next();
+                        Cell currentCell = currentRow.getCell( 0 );
+
+                        if ( currentCell != null && currentCell.getCellType() != Cell.CELL_TYPE_BLANK )
+                        {
+                            int recordType = 0;
+
+                            if ( currentCell.getCellType() == Cell.CELL_TYPE_NUMERIC )
+                                recordType = (int) currentCell.getNumericCellValue();
+                            else if ( currentCell.getCellType() == Cell.CELL_TYPE_STRING )
+                                recordType = Integer.parseInt( currentCell.getStringCellValue() );
+
+                            logger.info( "Excel row:" + index + " column[4]:" + recordType );
+
+                            if ( recordType == 1 ) // Parent Category
+                            {
+                                currentCell = currentRow.getCell( 0 );
+                                user = createUser( "userName", "password", "email", 2 );
+                                userDAO.save( user );
+                                logger.info( "Excel User inserted:" + user.getUserName() );
+                            }
+                        }
+                    }
+                }
+                catch ( Exception e )
+                {
+                    throw e;
+                }
+                finally
+                {
+                    offices.close();
+                }
+
+            }
+        }
+        catch ( Exception e )
+        {
+            logger.error( "******** Error importing data from file:", e );
+        }
+
+    }
   
     /**************************************************
      * 
@@ -606,6 +747,5 @@ public class IdentityManagerImpl implements IdentityManager
             throw new InvalidPasswordException( "Password doesn't match security requirements" );
         }
     }
-
 
 }

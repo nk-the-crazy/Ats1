@@ -59,7 +59,7 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.organization_details.title" /></h2>
@@ -93,7 +93,7 @@
                                         </li>
                                     </ul>
                                     <div id="organizationDetailsTabContent" class="tab-content">
-                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
+                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-9 fade active in" 
                                               aria-labelledby="groups-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
@@ -103,11 +103,11 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><spring:message code="label.organization.code" />:</th>
+                                                  <th scope="row" class="col-md-2"><spring:message code="label.organization.code" />:</th>
                                                   <td class="col-md-5"><c:out value="${organization.code}"/></td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" class="col-md-3"><spring:message code="label.organization.name" />:</th>
+                                                  <th scope="row" class="col-md-2"><spring:message code="label.organization.name" />:</th>
                                                   <td class="col-md-5"><c:out value="${organization.name}"/></td>
                                                 </tr>
                                                 <tr>
@@ -139,7 +139,7 @@
                                               </tbody>
                                             </table>
                                         </div>
-                                        <div id="tab_content3" role="tabpanel" class="tab-pane fade col-md-12" aria-labelledby="contacts-tab">
+                                        <div id="tab_content3" role="tabpanel" class="tab-pane fade col-md-10" aria-labelledby="contacts-tab">
                                             <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
@@ -45,4 +46,6 @@ public interface AssessmentTaskManager
     List<AssessmentTaskCategory> getCategoryShortList( String categoryName );
 
     AssessmentTask saveTask( AssessmentTask task, long categoryId );
+
+    void importTasks( MultipartFile file );
 }

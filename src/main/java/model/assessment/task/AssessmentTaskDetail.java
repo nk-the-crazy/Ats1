@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +21,7 @@ public class AssessmentTaskDetail
     private float itemGradeRatio = 0;
     
     @Column(name = "item_detail")
+    @Lob
     private String itemDetail;
     
     

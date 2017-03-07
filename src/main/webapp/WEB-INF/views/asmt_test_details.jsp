@@ -61,15 +61,15 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-10 col-sm-10 col-xs-10">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt_details.title" /></h2>
                                      <div style="text-align: right;">
-                                        <button type="button" class="btn btn-info btn-xs">
+                                        <a href="asmt_test_edit.vw?assessment_id=${param.assessment_id }" role="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
                                                 <spring:message code="label.action.edit"/>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">
                                             <i class="fa fa-chevron-left"></i>&nbsp;
                                                 <spring:message code="label.action.back"/>
@@ -195,13 +195,14 @@
                                                 <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
                                                     <c:choose>
                                                         <c:when test="${task[3] == 2}"><c:set var = "status_color" value="info"/></c:when>
-                                                        <c:when test="${task[3] == 5}"><c:set var = "status_color" value="warning"/></c:when>
+                                                        <c:when test="${task[3] == 4}"><c:set var = "status_color" value="warning"/></c:when>
                                                     <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
                                                     </c:choose>
                                                     <tr class="${status_color}">
                                                         <td class="col-md-1">${index + loopCounter.count }</td>
                                                         <td><a href="asmt_task_details.vw?asmt_task_id=${task[1]}">
                                                             <c:out value="${task[2]}"/></a></td>
+                                                        <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[3])}</td>
                                                     </tr>
                                                 </c:forEach>
                                                 <!-- *********/Task list ************ -->

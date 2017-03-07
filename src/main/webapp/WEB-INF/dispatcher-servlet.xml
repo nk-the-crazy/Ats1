@@ -65,6 +65,11 @@
 		<property name="defaultLocale" value="ru" />
 	</bean>
 	
+    <!-- ********** MultiPart Resolver *********** -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	   <property name="maxUploadSize" value="10000000" /> <!-- 10 MB -->
+	</bean>
+	
 	<!-- ********** Spring Web Config ********* -->
     <bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
 

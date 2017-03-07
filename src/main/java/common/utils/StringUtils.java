@@ -132,7 +132,7 @@ public class StringUtils
      * */
     public static String toUTF8(String str) 
     {
-      try
+        try
         {    
             return new String(str.getBytes("UTF-8"));
         }
@@ -142,6 +142,34 @@ public class StringUtils
             return "";
         }
     }
+    
+    
+    
+    /* ********************************************
+     * 
+     * */
+    public static String formatSpecial(String str) 
+    {
+        try
+        {    
+            int dot = str.trim().indexOf( "." );
+            
+            if(dot < 5 && dot >= 0)
+            {
+                str = str.substring( dot + 1, str.length());
+            }
+            str = str.replaceAll("\u00A0", "");
+            str = str.trim();
+            
+            return str;
+        }
+        catch ( Exception e )
+        {
+            // ignore
+            return "";
+        }
+    }
+    
     
     
     /* ********************************************

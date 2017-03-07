@@ -49,9 +49,9 @@
                     <form id="login-form" action="login.do" method="POST" data-parsley-validate class="form-horizontal form-label-left">
                       <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                       <!-- ---------------------- -->
-                      <c:if test="${requestScope.errorMessage != null}">
+                      <c:if test="${param.errorMessage != null}">
                           <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                               <spring:message code="${requestScope.errorMessage}"/>
+                               <spring:message code="${param.errorMessage}"/>
                           </div>
                       </c:if>
                       <!-- ---------------------- -->
@@ -60,14 +60,14 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="login-name"><spring:message code="label.user.login"/>:<span class="required"></span>
                         </label>
                         <div class="col-md-8 col-sm-8 col-xs-12">
-                          <input value="admin1" type="text" id="login-name" name="userName" required="required" class="form-control col-md-7 col-xs-12">
+                          <input value="${userName }" type="text" id="login-name" name="userName" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password"><spring:message code="label.password"/>:<span class="required"></span>
                         </label>
                         <div class="col-md-8 col-sm-8 col-xs-12">
-                          <input value="secret" type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                         <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-3">

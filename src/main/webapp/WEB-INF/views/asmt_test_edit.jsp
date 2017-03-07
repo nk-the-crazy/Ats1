@@ -20,7 +20,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><spring:message code="label.page.asmt_register.title" /></title>
+<title><spring:message code="label.page.asmt_edit.title" /></title>
 
 <!-- Bootstrap -->
 <link href="resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -43,9 +43,11 @@
 
 </head>
 <!-- ***************************** -->
+<c:set var="assessment" value="${requestScope.assessmentDetails}"/>
 <c:set var="groups" value="${requestScope.groupShortList}"/>
-<c:set var="categories" value="${requestScope.categoryShortList}"/>
+<c:set var="tasksPage" value="${requestScope.assessmentTasks}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
+<c:set var="assessment.tasks" value="${tasksPage.content}"/>
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -53,12 +55,12 @@
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp"><jsp:param name="page"
-                    value="asmt_register.vw" /></jsp:include>
+                    value="asmt_test_edit.vw" /></jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp"><jsp:param name="page"
-                    value="asmt_register.vw" /></jsp:include>
+                    value="asmt_test_edit.vw" /></jsp:include>
             <!-- /top navigation -->
 
             <!-- page content -->
@@ -67,11 +69,12 @@
                     <div class="row">
                         <div class="col-md-11 col-sm-11 col-xs-11">
                             <div class="x_panel">
-                             <form id="assessment" data-parsley-validate action="asmt_test_register.do" 
+                             <form id="formAssessment" name="assessment" data-parsley-validate action="asmt_test_edit.do" 
                                   class="form-horizontal form-label-left" method="POST">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <input type="hidden" name="id" value="${assessment.id}"/>
                                 <div class="x_title">
-                                    <h2><spring:message code="label.page.asmt_register.title" /></h2>
+                                    <h2><spring:message code="label.page.asmt_edit.title" /></h2>
                                      <div style="text-align: right;">
                                        <button type="submit" class="btn btn-success btn-xs">
                                             <i class="fa fa-floppy-o"></i>&nbsp;
@@ -93,7 +96,7 @@
                                   </c:if>
                                   <!-- ---------------------- -->
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                                    <ul id="assessmentRegisterTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <ul id="assessmentEditTab" class="nav nav-tabs bar_tabs" role="tablist">
                                         <li role="presentation" class="active">
                                             <a href="#tab_content1" id="assessment-tab" role="tab" data-toggle="tab" aria-expanded="true">
                                             <i class="fa fa-graduation-cap">&nbsp;</i>
@@ -108,11 +111,6 @@
                                             <a href="#tab_content3" id="tasks-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <i class="fa fa-cube">&nbsp;</i>
                                             <spring:message code="label.asmt.task.list" /></a>
-                                        </li>
-                                        <li role="presentation" class="">
-                                            <a href="#tab_content4" id="tasks-tab" role="tab" data-toggle="tab" aria-expanded="false">
-                                            <i class="fa fa-cube">&nbsp;</i>
-                                            <spring:message code="label.asmt.task.category.list" /></a>
                                         </li>
                                     </ul>
                                     <div id="assessmentRegisterTabContent" class="tab-content">
@@ -192,16 +190,16 @@
                                             </table>
                                         </div>
                                         <div id="tab_content2" role="tabpanel" class="tab-pane fade col-md-8" aria-labelledby="participants-tab">
-                                             <c:set var="selectedItemCount" value="${fn:length(paramValues.participantIds)}"/>
+                                             <c:set var="selectedItemCount" value="${fn:length(assessment.participants)}"/>
                                              <c:set var="selectedItemIndex" value="0"/>
                                              
                                              <div class="bootstrap-duallistbox-container">
-                                                <select multiple="multiple" class="groupDualBox" size="8" name="participantIds">
+                                                <select id="mselParticipants" multiple="multiple" class="groupDualBox" size="8" name="">
                                                 <c:forEach var="group" items="${groups}" varStatus="loopCounter">
                                                     <c:set var="selected" value=""/>
                                                     <c:if test="${selectedItemIndex < selectedItemCount }">
-                                                        <c:forEach var="selectedItem" items="${paramValues.participantIds}">
-                                                            <c:if test="${selectedItem == group[0]}">
+                                                        <c:forEach var="selectedItem" items="${assessment.participants}">
+                                                            <c:if test="${selectedItem.id == group[0]}">
                                                                 <c:set var="selected" value="selected"/>
                                                                 <c:set var="selectedItemIndex" value="${selectedItemIndex + 1 }"/>
                                                             </c:if>
@@ -213,134 +211,50 @@
                                                </div>                                         
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade col-md-10" id="tab_content3"  aria-labelledby="tasks-tab">
-                                              <button id="btnAddRow" class="btn btn-success btn-xs" type="button">
-                                                    <i class="fa fa-plus">&nbsp;<spring:message code="label.asmt.task.item.option.register" /></i>
-                                            </button>
-                                              <table id="tbTaskFormationDetails" class="table table-bordered dataTable">
+                                            <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
+                                                    <th><spring:message code="label.asmt.task.item.name" /></th>
                                                     <th><spring:message code="label.asmt.task.mode.type" /></th>
-                                                    <th><spring:message code="label.asmt.task.complexity" /></th>
-                                                    <th><spring:message code="label.asmt.task.count" /></th>
                                                     <th></th>
                                                 </tr>
-                                                <tr>
-                                                  <th colspan="5" scope="row">
-                                                    <spring:message code="label.data.count.total" />:
-                                                    <span id="spTotalTaskCount">0</span></th>
-                                               </tr>
                                               </thead>
-                                              
                                               <tbody>
-                                                <c:if test="${empty assessment.formOptions.taskOptions}">
-                                                    <tr>
-                                                        <td id="dvIndex" class="col-md-1">1</td>
-                                                        <td class="col-md-4">
-                                                            <select id="selTaskMode" class="form-control input-select-sm" 
-                                                                name="formOptions.taskOptions[0].modeType">
-                                                                <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.task.mode.type')}"> 
-                                                                    <option value="${loopCounter.count}">${systemAttr}</option>
-                                                                </c:forEach>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-4">
-                                                            <select id="selTaskComplexity" class="form-control input-select-sm" 
-                                                                name="formOptions.taskOptions[0].complexity">
-                                                                <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.task.complexity')}"> 
-                                                                    <option value="${loopCounter.count}">${systemAttr}</option>
-                                                                </c:forEach>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-3"><input class="form-control input-sm taskComplexityCount" type="text" value="0" 
-                                                         id="txTaskNumber" name="formOptions.taskOptions[0].number"></td>
-                                                        <td><button class="btn btn-danger btn-remove btn-xs" type="button">
-                                                             <i class="fa fa-close"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                 </c:if>
-                                                  <c:forEach var="option" items="${assessment.formOptions.taskOptions}" varStatus="loopCounter">
-                                                    <tr>
-                                                        <td id="dvIndex" class="col-md-1">1</td>
-                                                        <td class="col-md-4">
-                                                            <select id="selTaskMode" class="form-control input-select-sm" 
-                                                                name="formOptions.taskOptions[0].modeType">
-                                                                <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.task.mode.type')}"> 
-                                                                    <option ${option.modeType == (loopCounter.count) ? 'selected="selected"' : ''}
-                                                                    value="${loopCounter.count}">${systemAttr}</option>
-                                                                </c:forEach>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-4">
-                                                            <select id="selTaskComplexity" class="form-control input-select-sm" 
-                                                                name="formOptions.taskOptions[0].complexity">
-                                                                <c:forEach var="systemAttr" varStatus="loopCounter"
-                                                                    items="${SystemUtils.getAttributes('system.attrib.task.complexity')}"> 
-                                                                    <option ${option.complexity == (loopCounter.count) ? 'selected="selected"' : ''}
-                                                                    value="${loopCounter.count}">${systemAttr}</option>
-                                                                </c:forEach>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-2"><input class="form-control input-sm taskComplexityCount" type="text" 
-                                                           value="${option.number }" id="txTaskNumber" name="formOptions.taskOptions[0].number"></td>
-                                                        <td><button class="btn btn-danger btn-remove btn-xs" type="button">
-                                                             <i class="fa fa-close"></i></button>
+                                                <!-- *********Task list ************ -->
+                                                <c:set var="index" value="${tasksPage.number * tasksPage.size}" />
+                                                <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
+                                                    <c:choose>
+                                                        <c:when test="${task[3] == 2}"><c:set var = "status_color" value="info"/></c:when>
+                                                        <c:when test="${task[3] == 4}"><c:set var = "status_color" value="warning"/></c:when>
+                                                    <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
+                                                    </c:choose>
+                                                    <tr class="${status_color}">
+                                                        <td class="col-md-1">${index + loopCounter.count }</td>
+                                                        <td><a href="asmt_task_details.vw?asmt_task_id=${task[1]}">
+                                                            <c:out value="${task[2]}"/></a></td>
+                                                        <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[3])}</td>
+                                                        <td><button class="btn btn-danger btn-remove btn-xs btn-td" type="button">
+                                                                <i class="fa fa-close"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
+                                                <!-- *********/Task list ************ -->
                                               </tbody>
                                             </table>
-                                        </div>
-                                        <div id="tab_content4" role="tabpanel" class="tab-pane fade col-md-8" aria-labelledby="categories-tab">
-                                             <table class="table table-bordered dataTable">
-                                             <thead>
-                                                <tr>
-                                                    <th colspan="2"></th>
-                                                </tr>
-                                              </thead>
-                                               <tbody>
-                                                <tr>
-                                                  <th scope="row" class="col-md-3" ><label class="control-label-required" for="cxSelectAllCategories">
-                                                  <spring:message code="label.action.select.all" />:</label></th>
-                                                  <td><div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <input type="checkbox" id="cxSelectAllCategories" value="true" name="formOptions.allCategories" checked="checked"/>
-                                                    </div>
-                                                  </td>
-                                                </tr>
-                                                <thead>
-                                                <tr>
-                                                    <th colspan="2"><spring:message code="label.action.select.fromlist" /></th>
-                                                </tr>
-                                                </thead>
-                                                <tr>
-                                                  <td colspan="2"><div class="col-md-12 col-sm-12 col-xs-12">
-                                                     <c:set var="selectedItemCount" value="${fn:length(assessment.formOptions.taskCategories)}"/>
-                                                     <c:set var="selectedItemIndex" value="0"/>
-                                                     <div class="bootstrap-duallistbox-container">
-                                                        <select multiple="multiple" class="categoryDualBox" size="7" name="formOptions.taskCategories" style="height=100px;">
-                                                        <c:forEach var="category" items="${categories}" varStatus="loopCounter">
-                                                            <c:set var="selected" value=""/>
-                                                            <c:if test="${selectedItemIndex < selectedItemCount }">
-                                                                <c:forEach var="selectedItem" items="${assessment.formOptions.taskCategories}">
-                                                                    <c:if test="${selectedItem == category[0]}">
-                                                                        <c:set var="selected" value="selected"/>
-                                                                        <c:set var="selectedItemIndex" value="${selectedItemIndex + 1 }"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:if>
-                                                            <option ${selected} value="${category[0]}">${category[1]}</option>
-                                                          </c:forEach>
-                                                        </select>
-                                                      </div> 
-                                                    </div>
-                                                  </td>
-                                                </tr>
-                                                </tbody>
-                                             </table>
-                                                                                      
+                                             <!------------- Pagination -------------->
+                                            <c:if test="${tasksPage.totalPages > 1}">
+                                                <jsp:include page="include/pagination.jsp">
+                                                     <jsp:param name="page" value="asmt_test_edit.vw" />
+                                                     <jsp:param name="addParam" value="assessment_id=${param.assessment_id}" />
+                                                     <jsp:param name="totalPages" value="${tasksPage.totalPages}" />
+                                                     <jsp:param name="totalElements" value="${tasksPage.totalElements}" />
+                                                     <jsp:param name="currentIndex" value="${tasksPage.number}" />
+                                                     <jsp:param name="pageableSize" value="${tasksPage.size}" />
+                                                 </jsp:include>
+                                             </c:if>
+                                            <!--------------------------------------->                                              
                                         </div>
                                         
                                     </div>
@@ -357,7 +271,7 @@
 
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
-            <jsp:param name="page" value="asmt_register.vw" />
+            <jsp:param name="page" value="asmt_test_edit.vw" />
         </jsp:include>
         <!-- /footer content -->
     </div>
@@ -384,29 +298,26 @@
     <!-- bootstrap-duallistbox -->
     <script src="resources/lib/bootstrap-duallistbox/dist/duallistbox.min.js"></script>
     <script type="text/javascript">
-    
-    function setOverallCount()
-    {
-        var total = 0;
-        $('.taskComplexityCount').each(function() 
-        {
-            var num = parseInt(this.value, 10);
-            if (!isNaN(num)) 
-            {
-                total += num;
-            }
-        });
-        
-        $("#spTotalTaskCount").text(String(total));
-    };
-    
+    //-----------------------------
     $(document).ready(function()
     {
-    	setOverallCount();
-    	
-    	$('.taskComplexityCount').keyup(function() { setOverallCount(); });
-        
+        $('#formAssessment').on('submit', function(e)
+        {
+            e.preventDefault();
+            createHiddenElements(this);
+            this.submit();
+        });
     });
+    
+    function createHiddenElements(form)
+    {
+         $("#mselParticipants option:selected").each(function (rowIndex) 
+         {
+               var $this = $(this);
+               $(form).append("<input type='hidden' name='participants["+rowIndex+"].id' value='"+$this.val()+"' /> ");
+         });
+    
+    }  
     
     //-------------------------
     
@@ -420,20 +331,7 @@
         infoText: false
         
       });
-  
 
-    var groupsDualListBox = $('.categoryDualBox').bootstrapDualListbox({
-        bootstrap2compatible    : false,
-        nonSelectedListLabel: '<spring:message code="label.asmt.task.category.list" />',
-        selectedListLabel: '<spring:message code="label.asmt.task.category.selected" />',
-        preserveSelectionOnMove: 'moved',
-        moveOnSelect: false,
-        showFilterInputs :true,
-        infoText: false
-      });
-  
- 
-  
     </script>
     <!-- /bootstrap-duallistbox -->
     
@@ -442,11 +340,11 @@
     $(document).ready(function()
     {
         $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-            localStorage.setItem('assessmentRegisterActiveTab', $(e.target).attr('href'));
+            localStorage.setItem('assessmentEditActiveTab', $(e.target).attr('href'));
         });
-        var activeTab = localStorage.getItem('assessmentRegisterActiveTab');
+        var activeTab = localStorage.getItem('assessmentEditActiveTab');
         if(activeTab){
-            $('#assessmentRegisterTab a[href="' + activeTab + '"]').tab('show');
+            $('#assessmentEditTab a[href="' + activeTab + '"]').tab('show');
         }
     });
     </script>
@@ -475,72 +373,7 @@
       });
     </script>
     <!-- /bootstrap-daterangepicker --> 
-    
-     <script type="text/javascript">
-    
-    $(document).ready(function() 
-    {
-        //Disable the Remove Button
-        var rowCount = $('#tbTaskFormationDetails >tbody:last >tr').length;
-        if(rowCount == 1) 
-        {
-            document.getElementsByClassName('btn-remove')[0].disabled = true;
-        }
-        
-        $(document).on('click', '#btnAddRow', function(e) 
-        {
-            e.preventDefault();
-            
-            var controlForm = $('#tbTaskFormationDetails');
-            var currentEntry = $('#tbTaskFormationDetails > tbody > tr:last');
-            var newEntry = $(currentEntry.clone()).appendTo(controlForm);
-            //newEntry.find('input').val('');                                         
-            //Remove the Data - as it is cloned from the above
-            
-            //Add the button  
-            var rowCount = $('#tbTaskFormationDetails >tbody:last >tr').length;
-            if(rowCount > 1) 
-            {
-                var removeButtons = document.getElementsByClassName('btn-remove');
-                for(var i = 0; i < removeButtons.length; i++) 
-                {
-                    removeButtons.item(i).disabled = false;
-                }
-            }
-            
-            updateRowIndex();
-             
-        }).on('click', '.btn-remove', function(e) 
-        {
-            $(this).parents('tr:first').remove();
-            
-            //Disable the Remove Button
-            var rowCount = $('#tbTaskFormationDetails > tbody:last >tr').length;
-            if(rowCount == 1) 
-            {
-                document.getElementsByClassName('btn-remove')[0].disabled = true;
-            }
-    
-            e.preventDefault();
-            
-            updateRowIndex();
-            
-            return false;
-        });
-        
-        function updateRowIndex()
-        {
-            $('#tbTaskFormationDetails > tbody  > tr').each(function(rowIndex) 
-            {
-            	$(this).find("#dvIndex").html(rowIndex + 1);
-            	$(this).find("#selTaskMode").attr('name','formOptions.taskOptions['+rowIndex+'].modeType');
-                $(this).find("#selTaskComplexity").attr('name','formOptions.taskOptions['+rowIndex+'].complexity');
-                $(this).find("#txTaskNumber").attr('name','formOptions.taskOptions['+rowIndex+'].number');
-            }); 
-        }
-    
-    });    
-    </script>
+
     
 
 </body>

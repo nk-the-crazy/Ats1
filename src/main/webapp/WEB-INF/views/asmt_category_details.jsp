@@ -117,7 +117,7 @@
                                             </table>
                                         </div>
                                         
-                                        <div role="tabpanel" class="tab-pane col-md-8 fade" 
+                                        <div role="tabpanel" class="tab-pane col-md-12 fade" 
                                              id="tab_content2" aria-labelledby="tasks-tab">
                                             
                                             <table id="" class="dataTable table table-bordered">

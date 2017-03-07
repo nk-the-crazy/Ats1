@@ -1,5 +1,6 @@
 package web.view.assessment;
 
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
@@ -26,6 +28,7 @@ public class AssessmentResultsXLSView extends AbstractXlsxView  implements Messa
     //---------------------------------
     
     private MessageSource messageSource;
+    private Locale locale = LocaleContextHolder.getLocale() ;
     
     @Override
     protected void buildExcelDocument( Map<String, Object> model, Workbook workbook, HttpServletRequest request,
@@ -46,13 +49,13 @@ public class AssessmentResultsXLSView extends AbstractXlsxView  implements Messa
             // create header row
             Row header = sheet.createRow( 0 );
             header.createCell( 0 ).setCellValue( "№" );
-            header.createCell( 1 ).setCellValue( messageSource.getMessage( "label.user.full_name", null, null) );
-            header.createCell( 2 ).setCellValue( messageSource.getMessage( "label.assessment.name", null, null) );
-            header.createCell( 3 ).setCellValue( messageSource.getMessage( "label.date.start", null, null) );
-            header.createCell( 4 ).setCellValue( messageSource.getMessage( "label.data.status", null, null) );
-            header.createCell( 5 ).setCellValue( messageSource.getMessage( "label.assessment.score", null, null) );
-            header.createCell( 6 ).setCellValue( messageSource.getMessage( "label.asmt.task.respond", null, null));
-            header.createCell( 7 ).setCellValue( messageSource.getMessage( "label.asmt.result.item.count.all", null, null) );
+            header.createCell( 1 ).setCellValue( messageSource.getMessage( "label.user.full_name", null, locale) );
+            header.createCell( 2 ).setCellValue( messageSource.getMessage( "label.assessment.name", null, locale) );
+            header.createCell( 3 ).setCellValue( messageSource.getMessage( "label.date.start", null, locale) );
+            header.createCell( 4 ).setCellValue( messageSource.getMessage( "label.data.status", null, locale) );
+            header.createCell( 5 ).setCellValue( messageSource.getMessage( "label.assessment.score", null, locale) );
+            header.createCell( 6 ).setCellValue( messageSource.getMessage( "label.asmt.task.respond", null, locale));
+            header.createCell( 7 ).setCellValue( messageSource.getMessage( "label.asmt.result.item.count.all", null, locale) );
 
             // Create data cells
             int rowCount = 1;

@@ -1,7 +1,9 @@
 package model.assessment;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -79,7 +81,7 @@ public class Assessment
     @JoinTable( name="assessment_groups",
         joinColumns=@JoinColumn(name="assessment_id", referencedColumnName="id"),
         inverseJoinColumns=@JoinColumn(name="group_id", referencedColumnName="id"))
-    private Set<UserGroup> participants = new HashSet<UserGroup>();
+    private List<UserGroup> participants = new ArrayList<UserGroup>();
     // *********************************************
 
     // *********************************************
@@ -100,6 +102,12 @@ public class Assessment
     public long getId()
     {
         return id;
+    }
+    
+       
+    public void setId(long id)
+    {
+        this.id = id;
     }
     
        
@@ -146,13 +154,13 @@ public class Assessment
     }
 
   
-    public Set<UserGroup> getParticipants()
+    public List<UserGroup> getParticipants()
     {
         return participants;
     }
 
 
-    public void setParticipants( Set<UserGroup> participants )
+    public void setParticipants( List<UserGroup> participants )
     {
         this.participants = participants;
     }

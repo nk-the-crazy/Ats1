@@ -2,7 +2,6 @@ package dao.api.group;
 
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +44,13 @@ public interface GroupDAO extends JpaRepository<UserGroup, Long>
             + " WHERE u.id=:userId")
     Page<UserGroup> getByUserId(@Param("userId") long userId , Pageable page );
     
+    //********************************************
+    @Query(value = "SELECT g.id "
+            + " FROM UserGroup g "
+            + " JOIN g.users u "
+            + " WHERE u.id=:userId")
+    List<Long> getIdsByUserId(@Param("userId") long userId );
+    
     
     @Query(value = "SELECT g.id, g.name "
             + " FROM UserGroup g "
@@ -57,7 +63,7 @@ public interface GroupDAO extends JpaRepository<UserGroup, Long>
     @Query(value = "SELECT g "
             + " FROM UserGroup g "
             + " WHERE g.id IN :ids ")
-    Set<UserGroup> getByGroupIdIn(@Param("ids") List<Long> participantIds );
+    List<UserGroup> getByGroupIdIn(@Param("ids") List<Long> participantIds );
 
 
 }

@@ -1,6 +1,7 @@
 package web.view.assessment;
 
 
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 
 import com.itextpdf.text.BaseColor;
@@ -38,6 +40,7 @@ public class AssessmentResultsPDFView extends AbstractITextPdfView  implements M
     //---------------------------------
     
     private MessageSource messageSource;
+    private Locale locale = LocaleContextHolder.getLocale() ;
     
     @Override
     protected void buildPdfDocument( Map<String, Object> model, Document doc, PdfWriter writer,
@@ -74,19 +77,19 @@ public class AssessmentResultsPDFView extends AbstractITextPdfView  implements M
             
             cell.setPhrase( new Phrase("№",f2));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.user.full_name", null, null),f2));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.user.full_name", null, locale),f2));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.assessment.name", null, null),f2));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.assessment.name", null, locale),f2));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.date.start", null, null),f2));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.date.start", null, locale),f2));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.data.status", null, null),f2 ));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.data.status", null, locale),f2 ));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.assessment.score", null, null),f2 ));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.assessment.score", null, locale),f2 ));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.task.respond", null, null),f2));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.task.respond", null, locale),f2));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.result.item.count.all", null, null),f2 ));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.result.item.count.all", null, locale),f2 ));
             table.addCell( cell );
 
             // Create data cells

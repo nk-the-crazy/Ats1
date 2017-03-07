@@ -75,8 +75,8 @@ common.utils.system.SystemUtils"%>
                                       </button>
                                       <ul class="dropdown-menu" role="menu">
                                         
-                                        <li><a href="#"><i class="fa fa-upload"></i>&nbsp;
-                                                <spring:message code="label.asmt.task.upload"/></a>
+                                        <li><a href="asmt_task_import.vw"><i class="fa fa-upload"></i>&nbsp;
+                                                <spring:message code="label.action.import"/></a>
                                         </li>
                                         <li class="divider"></li>
                                       </ul>
@@ -143,14 +143,14 @@ common.utils.system.SystemUtils"%>
                                         <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
                                             <c:choose>
                                                 <c:when test="${task[4] == 2}"><c:set var = "status_color" value="info"/></c:when>
-                                                <c:when test="${task[4] == 5}"><c:set var = "status_color" value="warning"/></c:when>
+                                                <c:when test="${task[4] == 4}"><c:set var = "status_color" value="warning"/></c:when>
                                                 <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
                                             </c:choose>
                                             <tr class="${status_color}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="asmt_task_details.vw?asmt_task_id=${task[0]}">
                                                     <c:out value="${task[1]}"/></a></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.task.complexity',task[3])}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.complexity',task[2])}</td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.task.mode',task[3])}</td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[4])}</td>
                                                 <td><a href="asmt_category_details.vw?asmt_category_id=${task[6] }">

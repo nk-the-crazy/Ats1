@@ -56,7 +56,7 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-10 col-sm-10 col-xs-10">
+                        <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt.task_details.title" /></h2>
@@ -86,7 +86,7 @@
                                         </li>
                                     </ul>
                                     <div id="groupDetailsTabContent" class="tab-content">
-                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
+                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-10 fade active in" 
                                               aria-labelledby="groups-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
@@ -120,9 +120,14 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.asmt.task.mode.type" />:</th>
-                                                    <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.task.mode.type', task.modeType, locale)}
+                                                   <th scope="row" ><spring:message code="label.asmt.task.mode.type" />:</th>
+                                                   <c:choose>
+                                                        <c:when test="${task.modeType == 2}"><c:set var = "status_color" value="info"/></c:when>
+                                                        <c:when test="${task.modeType == 4}"><c:set var = "status_color" value="warning"/></c:when>
+                                                        <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
+                                                    </c:choose>
+                                                    <td class="${status_color}">
+                                                        ${SystemUtils.getAttribute('system.attrib.task.mode.type', task.modeType, locale)}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -141,7 +146,7 @@
                                             </table>
                                         </div>
                                         
-                                        <div role="tabpanel" class="tab-pane col-md-10 fade" 
+                                        <div role="tabpanel" class="tab-pane col-md-12 fade" 
                                              id="tab_content2" aria-labelledby="task-details-tab">
                                             
                                             <table id="" class="dataTable table table-bordered">

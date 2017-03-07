@@ -25,9 +25,6 @@ public class PersonDetails
     @Column( name = "activity" )
     private String activity;
     
-    @Column(name = "marital_status")
-    private short maritalStatus = 1;
-    
     @Column(name = "birth_date")
     private Date birthDate;
 
@@ -52,7 +49,19 @@ public class PersonDetails
     @Column(name = "details") // Passport NUmber
     private String details = "";
     
-   
+    @Column(name = "institution") // Educational institution
+    private String edcInstitution = "";
+    
+    @Column(name = "qualification") // Educational institution
+    private String qualification = "";
+    
+    @Column(name = "edc_cert_date") // Educational institution
+    private Date edcCertificateDate;
+    
+    @Column(name = "edc_cert_number") // Educational institution
+    private String edcCertificateNumber = "";
+    
+        
 
     /*********************************************************
      * 
@@ -75,50 +84,26 @@ public class PersonDetails
     {
         this.birthDate = birthDate;
     }
-
-
-    
-    public short getMaritalStatus()
-    {
-        return maritalStatus;
-    }
-
-
-    
-    public void setMaritalStatus( short maritalStatus )
-    {
-        this.maritalStatus = maritalStatus;
-    }
-
-
     
     public String getTaxPayerNumber()
     {
         return taxPayerNumber;
     }
-
-
     
     public void setTaxPayerNumber( String taxPayerNumber )
     {
         this.taxPayerNumber = taxPayerNumber;
     }
-
-
     
     public String getPassportSerial()
     {
         return passportSerial;
     }
-
-
     
     public void setPassportSerial( String passportSerial )
     {
         this.passportSerial = passportSerial;
     }
-
-
     
     public String getPassportNumber()
     {
@@ -137,7 +122,11 @@ public class PersonDetails
     {
         return id;
     }
-
+    
+    public void setId( long id )
+    {
+        this.id = id;
+    }
 
     public String getDetails()
     {
@@ -211,4 +200,51 @@ public class PersonDetails
     }
 
 
+    public String getEdcInstitution()
+    {
+        return edcInstitution;
+    }
+
+
+    public void setEdcInstitution( String edcInstitution )
+    {
+        this.edcInstitution = edcInstitution;
+    }
+
+
+    public String getQualification()
+    {
+        return qualification;
+    }
+
+
+    public void setQualification( String qualification )
+    {
+        this.qualification = qualification;
+    }
+
+
+    public Date getEdcCertificateDate()
+    {
+        return edcCertificateDate;
+    }
+
+
+    public void setEdcCertificateDate( Date edcCertificateDate )
+    {
+        this.edcCertificateDate = edcCertificateDate;
+    }
+
+
+    public String getEdcCertificateNumber()
+    {
+        return edcCertificateNumber;
+    }
+
+
+    public void setEdcCertificateNumber( String edcCertificateNumber )
+    {
+        this.edcCertificateNumber = edcCertificateNumber;
+    }
+    
 }

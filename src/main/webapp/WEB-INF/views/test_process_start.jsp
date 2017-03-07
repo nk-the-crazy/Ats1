@@ -126,9 +126,21 @@ model.assessment.process.*" %>
                                         <tr>
                                             <th colspan="6"></th>
                                         </tr>
-                                        </thead> 
+                                        </thead>
                                         <tr>
-                                          <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.content" /></th>
+                                          <th class="col-md-2" rowspan="2"><spring:message code="label.asmt.task.item.content" /></th>
+                                          <td class="col-md-10 info-task-type" colspan="6">
+                                             <c:if test="${task.modeType == 1}">
+                                                    <spring:message code="message.info.task.type.single_choice"/></c:if>
+                                             <c:if test="${task.modeType == 2}">
+                                                    <spring:message code="message.info.task.type.multi_choice"/></c:if>
+                                             <c:if test="${task.modeType == 3}">
+                                                    <spring:message code="message.info.task.type.short_answer"/></c:if>
+                                             <c:if test="${task.modeType == 4}">
+                                                    <spring:message code="message.info.task.type.esse"/></c:if>
+                                          </td>
+                                        </tr>
+                                        <tr>
                                           <td class="col-md-10 tasks-panel" colspan="5">
                                             <c:out value="${task.itemContent}"/>
                                           </td>
@@ -170,7 +182,7 @@ model.assessment.process.*" %>
                                                      </div>
                                                   </c:when>
                                                   <%-- Short Text Choice --%>
-                                                  <c:when test="${tasks.modeType == 3}">
+                                                  <c:when test="${task.modeType == 3}">
                                                      <div class="input-item-detail">
                                                          <div class="text">
                                                                <label>&#${loopCounter.index + 65}; )</label>

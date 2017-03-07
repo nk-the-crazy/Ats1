@@ -60,7 +60,7 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-md-9 col-sm-9 col-xs-9">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.group_details.title" /></h2>
@@ -90,7 +90,7 @@
                                         </li>
                                     </ul>
                                     <div id="groupDetailsTabContent" class="tab-content">
-                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
+                                        <div id="tab_content1" role="tabpanel" class="tab-pane col-md-10 fade active in" 
                                               aria-labelledby="groups-tab">
                                             <table class="table table-bordered dataTable">
                                               <thead>
