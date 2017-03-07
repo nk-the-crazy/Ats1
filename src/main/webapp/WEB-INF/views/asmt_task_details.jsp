@@ -120,9 +120,14 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.asmt.task.mode.type" />:</th>
-                                                    <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.task.mode.type', task.modeType, locale)}
+                                                   <th scope="row" ><spring:message code="label.asmt.task.mode.type" />:</th>
+                                                   <c:choose>
+                                                        <c:when test="${task.modeType == 2}"><c:set var = "status_color" value="info"/></c:when>
+                                                        <c:when test="${task.modeType == 4}"><c:set var = "status_color" value="warning"/></c:when>
+                                                        <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
+                                                    </c:choose>
+                                                    <td class="${status_color}">
+                                                        ${SystemUtils.getAttribute('system.attrib.task.mode.type', task.modeType, locale)}
                                                     </td>
                                                 </tr>
                                                 <tr>

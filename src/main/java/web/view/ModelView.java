@@ -16,6 +16,7 @@ public class ModelView
     public static String VIEW_USER_EDIT_PAGE  = "user_edit";
     public static String VIEW_USER_LIST_PAGE  = "user_list";
     public static String VIEW_USER_DETAILS_PAGE  = "user_details";
+    public static String VIEW_USER_IMPORT_PAGE  = "user_import";
     
     //Role
     public static String VIEW_ROLE_REGISTER_PAGE  = "role_register";
@@ -48,6 +49,7 @@ public class ModelView
     public static String VIEW_ASMT_TASK_EDIT_PAGE  = "asmt_task_edit";
     public static String VIEW_ASMT_TASK_LIST_PAGE  = "asmt_task_list";
     public static String VIEW_ASMT_TASK_DETAILS_PAGE  = "asmt_task_details";
+    public static String VIEW_ASMT_TASK_IMPORT_PAGE  = "asmt_task_import";
     
     //Assessment
     public static String VIEW_ASMT_REGISTER_PAGE  = "asmt_test_register";

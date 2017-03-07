@@ -11,7 +11,12 @@
 
 .info-task-type{
     
-    
+    border: 1px solid #536A7F;
+    margin: 2px;
+    padding: 2px;
+    color: #2f3d48;
+    font-weight: bold;
+    background: #ebebeb;
 }
 
 .item-response-content

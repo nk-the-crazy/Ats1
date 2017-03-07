@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import model.assessment.task.AssessmentTask;
@@ -301,8 +302,53 @@ public class AssessmentTaskController
         return editCategoryView(category.getId(), model);
 
     }
-
-   
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_task_import.vw")
+    public String importTaskView(Model model)
+    {
+        return ModelView.VIEW_ASMT_TASK_IMPORT_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_task_import.do")
+    public String importTask( @RequestParam("file") MultipartFile file, Model model)
+    {
+        try
+        {
+            if (!file.isEmpty()) 
+            {
+                taskManager.importTasks(file);
+                return "redirect:asmt_task_list.vw";
+            }
+            else
+            {
+                throw new IllegalStateException("Invalid File");
+            }
+        } 
+        catch (IllegalStateException e) 
+        {
+            model.addAttribute("errorMessage", "message.error.upload.file.invalid");
+        } 
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute("errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error importing assessment task:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return importTaskView(model);
+        
+    }
    
 }
 

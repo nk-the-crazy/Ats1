@@ -8,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+
+import common.exceptions.security.InvalidLoginException;
 import model.common.session.SessionData;
 import service.api.identity.IdentityManager;
 
@@ -31,16 +33,25 @@ public class CustomAuthenticationProvider implements AuthenticationProvider
         String userName = authentication.getName().trim();
         String password = authentication.getCredentials().toString().trim();
         
-        SessionData sessionData = identityManager.loginUser( userName, password);
-        
-        if(sessionData != null)
+        try
         {
-            return new UsernamePasswordAuthenticationToken(sessionData, password, sessionData.getUser().getAuthorities() );        
+            SessionData sessionData = identityManager.loginUser( userName, password);
+            
+            if(sessionData != null)
+            {
+                return new UsernamePasswordAuthenticationToken(sessionData, password, sessionData.getUser().getAuthorities() );        
+            }
+            else
+            {
+                throw new InvalidLoginException();
+            }
         }
-        
-        logger.error( "Authentication Failed for User:" + userName );
-        
-        return null;
+        catch(Exception e)
+        {
+            logger.error( "Authentication Failed for User:" + userName );
+            
+            return null;
+        }
     }
     
 

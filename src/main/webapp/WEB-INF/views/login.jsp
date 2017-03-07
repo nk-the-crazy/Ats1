@@ -49,9 +49,9 @@
                     <form id="login-form" action="login.do" method="POST" data-parsley-validate class="form-horizontal form-label-left">
                       <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                       <!-- ---------------------- -->
-                      <c:if test="${requestScope.errorMessage != null}">
+                      <c:if test="${param.errorMessage != null}">
                           <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                               <spring:message code="${requestScope.errorMessage}"/>
+                               <spring:message code="${param.errorMessage}"/>
                           </div>
                       </c:if>
                       <!-- ---------------------- -->

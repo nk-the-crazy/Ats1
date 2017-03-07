@@ -66,6 +66,23 @@ common.utils.system.SystemUtils"%>
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.users.title" /></h2>
+                                    <div class="btn-group pull-right">
+                                      <a href="user_register.vw" role="button" class="btn btn-success btn-xs">
+                                        <i class="fa fa-plus"></i>&nbsp;
+                                                <spring:message code="label.menu.register_user"/></a>
+                                      <button type="button" class="btn btn-success btn-xs dropdown-toggle" 
+                                        data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only"></span>
+                                      </button>
+                                      <ul class="dropdown-menu" role="menu">
+                                        
+                                        <li><a href="user_import.vw"><i class="fa fa-upload"></i>&nbsp;
+                                                <spring:message code="label.action.import"/></a>
+                                        </li>
+                                        <li class="divider"></li>
+                                      </ul>
+                                    </div>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">

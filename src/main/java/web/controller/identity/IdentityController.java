@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import common.exceptions.security.InvalidLoginException;
 import common.exceptions.security.InvalidPasswordException;
@@ -212,6 +213,8 @@ public class IdentityController
         model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
         
         session.setAttribute( "psw", userDetails.getPassword() );
+        session.setAttribute( "slt", userDetails.getSalt() );
+        
         return ModelView.VIEW_USER_EDIT_PAGE;
     }
     
@@ -226,10 +229,15 @@ public class IdentityController
         try
         {
             String pws = (String)session.getAttribute( "psw" );
-            user.setPassword( pws );
-            session.removeAttribute( "psw" );
+            String slt = (String)session.getAttribute( "slt" );
             
-            user = identityManager.saveUser( user );
+            user.setPassword( pws );
+            user.setSalt( slt );
+            
+            session.removeAttribute( "psw" );
+            session.removeAttribute( "slt" );
+            
+            user = identityManager.updateUser( user );
             
             return "redirect:user_details.vw?user_id=" + user.getId();
         }
@@ -429,6 +437,55 @@ public class IdentityController
         return registerUserView(model);
         
     }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/user_import.vw")
+    public String importUserView(Model model)
+    {
+        return ModelView.VIEW_USER_IMPORT_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/user_import.do")
+    public String importUser( @RequestParam("file") MultipartFile file, Model model)
+    {
+        try
+        {
+            if (!file.isEmpty()) 
+            {
+                identityManager.importUsers(file);
+                return "redirect:user_list.vw";
+            }
+            else
+            {
+                throw new IllegalStateException("Invalid File");
+            }
+        } 
+        catch (IllegalStateException e) 
+        {
+            model.addAttribute("errorMessage", "message.error.upload.file.invalid");
+        } 
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute("errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error importing user data:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return importUserView(model);
+        
+    }
+    
+
     
 
 }

@@ -48,12 +48,12 @@
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp"><jsp:param name="page"
-                    value="group_details.vw" /></jsp:include>
+                    value="asmt_task_register.vw" /></jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp"><jsp:param name="page"
-                    value="group_details.vw" /></jsp:include>
+                    value="asmt_task_register.vw" /></jsp:include>
             <!-- /top navigation -->
 
             <!-- page content -->
@@ -239,7 +239,7 @@
 
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
-            <jsp:param name="page" value="group_details.vw" />
+            <jsp:param name="page" value="asmt_task_register.vw" />
         </jsp:include>
         <!-- /footer content -->
     </div>

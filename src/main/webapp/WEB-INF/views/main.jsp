@@ -93,6 +93,14 @@
                                           <td><fmt:formatDate pattern="${dateTimeFormatShort }" value="${sessionData.user.lastLogin}" />
                                           </td>
                                         </tr>
+                                        <tr>
+                                          <th scope="row" ><spring:message code="label.user.roles" />:</th>
+                                          <td>
+                                            <c:forEach var="role" items="${sessionData.user.roles}" varStatus="loopCounter">
+                                               ${loopCounter.count}&nbsp;-&nbsp;<c:out value="${role.name }"/><br>
+                                            </c:forEach>
+                                          </td>
+                                        </tr>
                                       </tbody>
                                     </table>
                                     </div>

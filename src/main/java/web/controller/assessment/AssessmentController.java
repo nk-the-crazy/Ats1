@@ -3,6 +3,10 @@ package web.controller.assessment;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,7 +145,6 @@ public class AssessmentController
             Assessment asmtDetails = assessmentManager.getAssessmentFullDetails( assessmentId );
             Page<AssessmentTask> assessmentTasks = assessmentManager.getAssessmentTasks( assessmentId, pageable );
 
-
             model.addObject( "assessmentDetails", asmtDetails );
             model.addObject( "assessmentTasks", assessmentTasks );
             model.setViewName( ModelView.VIEW_ASMT_DETAILS_PAGE);
@@ -199,8 +202,56 @@ public class AssessmentController
     }
     
     
+    /*******************************************************
+     * 
+     */
+    @RequestMapping("/asmt_test_edit.vw")
+    public String editAssessmentView( @RequestParam( name = "assessment_id" ) long assessmentId, 
+                                      Model model, 
+                                      Pageable pageable,
+                                      HttpSession session )
+    {
+        Assessment assessment = assessmentManager.getAssessmentFullDetails( assessmentId );
+        model.addAttribute( "assessmentDetails", assessment );
+        model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
+        model.addAttribute( "assessmentTasks", assessmentManager.getAssessmentTasks( assessmentId, pageable ));
+        
+        session.setAttribute( "tsk", assessment.getTasks());
+        
+        return ModelView.VIEW_ASMT_EDIT_PAGE;
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_test_edit.do")
+    public String editAssessment( @ModelAttribute( "task" ) Assessment assessment, Model model , HttpSession session )
+    {
+        try
+        {
+            @SuppressWarnings("unchecked")
+            Set<AssessmentTask> tasks = (Set<AssessmentTask>)session.getAttribute( "tsk" );
+            
+            assessment.setTasks( tasks );
+            assessment = assessmentManager.saveAssessment( assessment );
+            
+            return "redirect:asmt_test_details.vw?assessment_id=" + assessment.getId();
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute("errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error editing assessment:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return editAssessmentView(assessment.getId(), model , null ,session);
+        
+    }
 
-   
     
     /*******************************************************
      * 

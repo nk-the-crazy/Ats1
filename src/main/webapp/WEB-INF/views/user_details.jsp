@@ -143,13 +143,13 @@
                                             <table class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
-                                                    <th colspan="2"><spring:message code="label.profile" /></th>
+                                                    <th colspan="4"><spring:message code="label.profile" /></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
                                                 <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.user.full_name" />:</th>
-                                                  <td  class="col-md-8">
+                                                  <td colspan="3" class="col-md-8">
                                                   <c:out value="${user.person.lastName}"/>&nbsp;
                                                   <c:out value="${user.person.firstName}"/>&nbsp;
                                                   <c:out value="${user.person.middleName}"/>
@@ -157,58 +157,81 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.tax_payer_number" />:</th>
-                                                  <td><c:out value="${user.person.detail.taxPayerNumber}"/></td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" ><spring:message code="label.user.gender" />:</th>
-                                                  <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.user.gender',user.person.detail.gender)}
-                                                  </td>
+                                                  <td colspan="3"><c:out value="${user.person.detail.taxPayerNumber}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.birth_date" />:</th>
                                                   <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.birthDate}" />
                                                   </td>
+                                                  <th scope="row" ><spring:message code="label.user.gender" />:</th>
+                                                  <td>
+                                                    ${SystemUtils.getAttribute('system.attrib.user.gender',user.person.detail.gender)}
+                                                  </td>
                                                 </tr>
                                                 <thead>
                                                     <tr>
-                                                        <th colspan="2"><i class="fa fa-bank"></i>&nbsp;
-                                                        <spring:message code="label.organization" /></th>
-                                                    </tr>
-                                                </thead>
-                                                <tr>
-                                                  <th scope="row" >
-                                                  <spring:message code="label.organization" />:</th>
-                                                  <td><a href="organization_details.vw?organization_id=${user.person.organization.id}">
-                                                    <c:out value="${user.person.organization.name}"/></a></td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" >
-                                                  <spring:message code="label.user.activity" />:</th>
-                                                  <td><c:out value="${user.person.detail.activity}"/></td>
-                                                </tr>
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="3"><spring:message code="label.user.passport" /></th>
+                                                        <th colspan="4"><spring:message code="label.user.passport" /></th>
                                                     </tr>
                                                 </thead>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.user.passport.number" />:</th>
                                                   <td>
-                                                  <c:out value="${user.person.detail.passportSerial}"/>
-                                                  <c:out value="${user.person.detail.passportNumber}"/></td>
-                                                </tr>
-                                                <tr>
+                                                    <c:out value="${user.person.detail.passportSerial}"/>
+                                                    <c:out value="${user.person.detail.passportNumber}"/>
+                                                  </td>
                                                   <th scope="row" ><spring:message code="label.user.passport.date.valid" />:</th>
                                                   <td><fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.passportValidDate}" />
                                                   </td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><spring:message code="label.user.passport.date.issued" />:</th>
-                                                  <td>
-                                                  <fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.passportIssuedDate}" />
-                                                  &nbsp;&nbsp;<c:out value="${user.person.detail.passportIssuedBy}"/>
+                                                  <th scope="row"><spring:message code="label.user.passport.issued_by" />:</th>
+                                                  <td><c:out value="${user.person.detail.passportIssuedBy}"/>
                                                   </td>
+                                                  <th scope="row"><spring:message code="label.user.passport.date.issued" />:</th>
+                                                  <td>
+                                                    <fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.passportIssuedDate}" />
+                                                  </td>
+                                                </tr>
+                                                 <thead>
+                                                    <tr>
+                                                        <th colspan="4"><i class="fa fa-graduation-cap"></i>&nbsp;
+                                                        <spring:message code="label.education" /></th>
+                                                    </tr>
+                                                </thead>
+                                                <tr>
+                                                  <th scope="row" >
+                                                    <spring:message code="label.education.institution" />:
+                                                  <td><c:out value="${user.person.detail.edcInstitution}"/></td>
+                                                  <th scope="row" >
+                                                    <spring:message code="label.education.qualification" />:</th>
+                                                  <td><c:out value="${user.person.detail.qualification}"/></td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" >
+                                                    <spring:message code="label.education.certificate.number" />:</th>
+                                                   <td>
+                                                    <c:out value="${user.person.detail.edcCertificateNumber}"/>
+                                                  </td>
+                                                  <th scope="row" >
+                                                    <spring:message code="label.education.certificate.date" />:</th>
+                                                   <td>
+                                                    <fmt:formatDate pattern="${dateFormatShort}" value="${user.person.detail.edcCertificateDate}" />
+                                                  </td>
+                                                </tr>
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="4"><i class="fa fa-bank"></i>&nbsp;
+                                                        <spring:message code="label.organization" /></th>
+                                                    </tr>
+                                                </thead>
+                                                <tr>
+                                                  <th scope="row" >
+                                                    <spring:message code="label.organization" />:</th>
+                                                  <td><a href="organization_details.vw?organization_id=${user.person.organization.id}">
+                                                    <c:out value="${user.person.organization.name}"/></a></td>
+                                                  <th scope="row" >
+                                                    <spring:message code="label.user.activity" />:</th>
+                                                  <td><c:out value="${user.person.detail.activity}"/></td>
                                                 </tr>
                                               </tbody>
                                             </table>                                        

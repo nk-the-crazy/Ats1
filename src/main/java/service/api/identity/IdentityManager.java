@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import common.exceptions.security.SystemSecurityException;
 import model.common.session.SessionData;
@@ -65,5 +66,11 @@ public interface IdentityManager
     User saveUser( User user, List<Long> roleIds, List<Long> groupIds );
 
     List<Long> getUserGroupIds( long userId );
+
+    void importUsers( MultipartFile file );
+
+    User updateUser( User user );
+
+    User updateUser( User user, List<Long> roleIds, List<Long> groupIds );
 
 }
