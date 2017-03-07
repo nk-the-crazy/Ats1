@@ -182,7 +182,7 @@ model.assessment.process.*" %>
                                                      </div>
                                                   </c:when>
                                                   <%-- Short Text Choice --%>
-                                                  <c:when test="${tasks.modeType == 3}">
+                                                  <c:when test="${task.modeType == 3}">
                                                      <div class="input-item-detail">
                                                          <div class="text">
                                                                <label>&#${loopCounter.index + 65}; )</label>

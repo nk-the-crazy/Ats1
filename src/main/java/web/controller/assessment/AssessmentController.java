@@ -235,6 +235,7 @@ public class AssessmentController
             
             assessment.setTasks( tasks );
             assessment = assessmentManager.saveAssessment( assessment );
+            session.removeAttribute( "tsk" );
             
             return "redirect:asmt_test_details.vw?assessment_id=" + assessment.getId();
         }
