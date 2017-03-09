@@ -49,9 +49,7 @@ model.assessment.process.*" %>
 <c:set var="task" value="${requestScope.processResponse.task}"/>
 <c:set var="taskDetails" value="${task.detailsRandom}"/>
 <c:set var="processTime" value="${process.assessment.time}"/>
-
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
-
 
 <!-- ***************************** -->
 
@@ -93,7 +91,7 @@ model.assessment.process.*" %>
                                   </c:if>
                                   <!-- ---------------------- -->
                                    <div class="col-md-12">
-                                   <form method="POST" id="processResponse" name="processResponse" action="test_process_start.do">
+                                   <form method="POST" id="formProcessResponse" name="processResponse" action="test_process_start.do">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" name="taskIndex" value="${taskIndex+1}" id="inpTaskIndex">
                                     <input type="hidden" name="taskState" value="2" id="inpTaskState">
@@ -173,10 +171,11 @@ model.assessment.process.*" %>
                                                               <c:forEach var="responseDetail" items="${processResponse.details}" varStatus="counter">
                                                                 <c:if test="${taskDetail.id == responseDetail.taskDetail.id}">
                                                                     <c:set var="isChecked" value="checked"/>
+                                                                    <input type="hidden" name="details[${loopCounter.index}].id" value="${responseDetail.id}">
                                                                 </c:if>  
                                                               </c:forEach>
                                                               <input type="checkbox" ${isChecked} name="details[${loopCounter.index}].taskDetail.id" 
-                                                                     value="${taskDetail.id}" class="checkbox-multi-choice">
+                                                               value="${taskDetail.id}" class="checkbox-multi-choice">
                                                               &#${loopCounter.index + 65}; ) ${taskDetail.itemDetail }</label>
                                                          </div>
                                                      </div>
@@ -213,10 +212,9 @@ model.assessment.process.*" %>
                                             </div>
                                            </td>
                                         </tr>
-                                      
                                         <tr id="btnGroupRow">
                                           <th scope="row" ></th>
-                                          <td><button type="submit" id="btnNextStep" class="btn btn-success btn-xs">
+                                          <td><button type="submit" id="btnSaveNext" class="btn btn-success btn-xs">
                                                 <i class="fa fa-share"></i>&nbsp;
                                                 <spring:message code="label.asmt.task.response.save.next"/>
                                                </button> 
@@ -225,9 +223,9 @@ model.assessment.process.*" %>
                                           </td>
                                           <td colspan="3">
                                             <div class="pull-right" style="display:inline;">
-                                                 <button type="submit" id="btnNextStep" class="btn btn-primary btn-xs" onclick="setTaskIndex()">
+                                                 <a role="button" id="btnNextStep" class="btn btn-primary btn-xs">
                                                     <spring:message code="label.action.jump"/>
-                                                </button>
+                                                </a>
                                                  <select id="selTaskIndex" class="input-select-sm" style="border: 1px solid grey;">
                                                     <c:forEach begin="0" end="${taskCount - 1}"  var="item"> 
                                                         <option ${item == taskIndex ? 'selected="selected"' : ''}
@@ -270,17 +268,42 @@ model.assessment.process.*" %>
     <!-- Custom Theme Scripts -->
     <script src="resources/js/custom.min.js"></script>
     <script>
-    
-    function setTaskIndex()
+    //-----------------------------
+    /*
+    $(document).ready(function()
     {
-    	$('#inpTaskIndex').val($('#selTaskIndex').val());
+        $('#formProcessResponse').on('submit', function(e)
+        {
+            e.preventDefault();
+            createHiddenElements(this);
+            this.submit();
+        });
+    });
+    
+    function createHiddenElements(form)
+    {
+         $("#mselRoles option:selected").each(function (rowIndex) 
+         {
+               var $this = $(this);
+               $(form).append("<input type='hidden' name='roles["+rowIndex+"].id' value='"+$this.val()+"' /> ");
+         });
     }
+    */
+    //-----------------------------
+    
+    
+    $('#btnNextStep').on('click', function(e) 
+    {
+        e.preventDefault();
+        location.href='test_process_start.do?taskIndex='+$('#selTaskIndex').val();
+    });
+    
     
     function endAssessmentProcess()
     {
         $('#inpTaskState').val(3);
-        $('#processResponse').attr("action", "test_process_end.do");
-        $("#processResponse").submit();
+        $('#formProcessResponse').attr("action", "test_process_end.do");
+        $("#formProcessResponse").submit();
     }
     
     </script>

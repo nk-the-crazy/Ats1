@@ -52,9 +52,12 @@ public class Assessment
 
     @Column(name = "time")
     private int time = 1;
+    
+    @Column(name = "eval_method")
+    private short evaluationMethod = 1;
 
     @Column(name = "status")
-    private int status = 1;
+    private short status = 1;
 
     @Transient
     private long taskCount = 0;
@@ -173,8 +176,20 @@ public class Assessment
 
     public void setStatus( int status )
     {
-        this.status = status;
+        this.status = (short)status;
     }
+    
+    public int getEvaluationMethod()
+    {
+        return evaluationMethod;
+    }
+
+
+    public void setEvaluationMethod( int evaluationMethod )
+    {
+        this.evaluationMethod = (short)evaluationMethod;
+    }
+
 
     public Set<AssessmentTask> getTasks()
     {

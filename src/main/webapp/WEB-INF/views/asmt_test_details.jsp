@@ -128,6 +128,12 @@
                                                   <td class="col-md-5"><c:out value="${assessment.maxGrade}"/></td>
                                                 </tr>
                                                 <tr>
+                                                  <th scope="row"><spring:message code="label.assessment.eval.method" />:</th>
+                                                  <td>
+                                                        ${SystemUtils.getAttribute('system.attrib.assessment.eval.method',assessment.evaluationMethod, locale)}
+                                                  </td>
+                                                </tr>
+                                                <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.date.time" />:</th>
                                                   <td class="col-md-5"><c:out value="${assessment.time}"/>&nbsp;&nbsp;
                                                   <spring:message code="label.date.time.minutes" />

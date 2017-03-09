@@ -43,11 +43,10 @@ public class ProcessResponseEvaluation
     // *********************************************
     @OneToOne(  fetch = FetchType.LAZY )
     @JoinColumn(name = "response_detail_id")
-    private ProcessResponseDetail responseDetail;
+    private ProcessResponse response;
     // *********************************************  
     
     
-
     public long getId()
     {
         return id;
@@ -78,16 +77,6 @@ public class ProcessResponseEvaluation
         this.user = user;
     }
 
-    public ProcessResponseDetail getResponseDetail()
-    {
-        return responseDetail;
-    }
-
-    public void setResponseDetail( ProcessResponseDetail responseDetail )
-    {
-        this.responseDetail = responseDetail;
-    }
-
     public Date getDate()
     {
         return date;
@@ -106,6 +95,16 @@ public class ProcessResponseEvaluation
     public void setGrade( float grade )
     {
         this.grade = grade;
+    }
+
+    public ProcessResponse getResponse()
+    {
+        return response;
+    }
+
+    public void setResponse( ProcessResponse response )
+    {
+        this.response = response;
     }
 
 

@@ -29,7 +29,9 @@ public class ProcessResponse
     @Column(name = "id")
     private long id;
     
-    
+    @Column(name = "grade")
+    float grade = 0;
+ 
     // *********************************************
     @OneToOne(  fetch = FetchType.LAZY )
     @JoinColumn(name = "task_id")
@@ -59,8 +61,17 @@ public class ProcessResponse
     {
         this.id = id;
     }
+        
+    public float getGrade()
+    {
+        return grade;
+    }
 
-    
+    public void setGrade( float grade )
+    {
+        this.grade = grade;
+    }
+
     public AssessmentTask getTask()
     {
         return task;

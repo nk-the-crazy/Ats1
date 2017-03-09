@@ -98,7 +98,7 @@ common.utils.system.SystemUtils"%>
                                                 <c:when test="${asmt_status == 3}"><c:set var="status_color" value="danger"/></c:when>
                                                 <c:otherwise>
                                                     <c:choose>
-                                                        <c:when test="${process_state == 2}">
+                                                        <c:when test="${process_state == 2 || process_state == 4}">
                                                             <c:set var="overall_status" value="5"/>
                                                             <c:set var="status_color" value="danger"/>
                                                         </c:when>
@@ -127,7 +127,7 @@ common.utils.system.SystemUtils"%>
                                                                         <spring:message code="label.assessment.take"/>
                                                                 </a>
                                                             </c:when>
-                                                            <c:when test="${asmt_status == 1 && process_state == 2 }">
+                                                            <c:when test="${asmt_status == 1 && (process_state == 2 || process_state == 4) }">
                                                                 <a href="test_process_init.do?assessment_id=${assessment.id}" 
                                                                      class="btn btn-primary btn-xs" role="button">
                                                                     <i class="fa fa-clock-o"></i>&nbsp;
