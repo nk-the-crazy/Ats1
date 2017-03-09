@@ -189,7 +189,7 @@ public class StringUtils
             {
                 ratio = 100 - ((float)(distance * 100) / maxLength);
                 
-                return ratio < 50 ? 0 : ratio;
+                return ratio < 70 ? 0 : ratio;
             }
         }
         catch(Exception e)

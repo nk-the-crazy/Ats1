@@ -21,10 +21,10 @@ import common.utils.StringUtils;
 import model.assessment.process.AssessmentProcess;
 
 
-public class AssessmentResultsXLSView extends AbstractXlsxView  implements MessageSourceAware
+public class ResultsXLSView extends AbstractXlsxView  implements MessageSourceAware
 {
     //---------------------------------
-    private static final Logger logger = LoggerFactory.getLogger(AssessmentResultsXLSView.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResultsXLSView.class);
     //---------------------------------
     
     private MessageSource messageSource;
@@ -54,8 +54,9 @@ public class AssessmentResultsXLSView extends AbstractXlsxView  implements Messa
             header.createCell( 3 ).setCellValue( messageSource.getMessage( "label.date.start", null, locale) );
             header.createCell( 4 ).setCellValue( messageSource.getMessage( "label.data.status", null, locale) );
             header.createCell( 5 ).setCellValue( messageSource.getMessage( "label.assessment.score", null, locale) );
-            header.createCell( 6 ).setCellValue( messageSource.getMessage( "label.asmt.task.respond", null, locale));
-            header.createCell( 7 ).setCellValue( messageSource.getMessage( "label.asmt.result.item.count.all", null, locale) );
+            header.createCell( 6 ).setCellValue( messageSource.getMessage( "label.asmt.task.count", null, locale));
+            header.createCell( 7 ).setCellValue( messageSource.getMessage( "label.asmt.task.respond", null, locale));
+            header.createCell( 8 ).setCellValue( messageSource.getMessage( "label.asmt.result.item.count.all", null, locale) );
 
             // Create data cells
             int rowCount = 1;
@@ -64,6 +65,7 @@ public class AssessmentResultsXLSView extends AbstractXlsxView  implements Messa
             {
                 AssessmentProcess process = (AssessmentProcess) obj[0];
 
+                long taskCount = (long) obj[4];
                 long responseCount = (long) obj[5];
                 long rightResponseCount = (long) obj[6];
                 double score = (double) obj[7];
@@ -76,8 +78,9 @@ public class AssessmentResultsXLSView extends AbstractXlsxView  implements Messa
                 courseRow.createCell( 3 ).setCellValue( StringUtils.dateToStringLong( process.getStartDate() ) );
                 courseRow.createCell( 4 ).setCellValue( "" );
                 courseRow.createCell( 5 ).setCellValue( score );
+                courseRow.createCell( 6 ).setCellValue( taskCount );
                 courseRow.createCell( 7 ).setCellValue( responseCount );
-                courseRow.createCell( 7 ).setCellValue( rightResponseCount + " - " + (responseCount - rightResponseCount) );
+                courseRow.createCell( 8 ).setCellValue( rightResponseCount + " - " + (responseCount - rightResponseCount) );
             }
         }
         catch ( Exception e )

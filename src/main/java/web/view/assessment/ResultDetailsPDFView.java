@@ -33,10 +33,10 @@ import web.view.AbstractITextPdfView;
 /**
  *
  */
-public class AssessmentResultsPDFView extends AbstractITextPdfView  implements MessageSourceAware
+public class ResultDetailsPDFView extends AbstractITextPdfView  implements MessageSourceAware
 {
     //---------------------------------
-    private static final Logger logger = LoggerFactory.getLogger(AssessmentResultsPDFView.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResultDetailsPDFView.class);
     //---------------------------------
     
     private MessageSource messageSource;

@@ -29,7 +29,9 @@ import dao.api.assessment.process.ProcessResponseEvaluationDAO;
 import dao.api.assessment.task.AssessmentTaskCategoryDAO;
 import dao.api.assessment.task.AssessmentTaskDAO;
 import dao.api.group.GroupDAO;
+import dao.api.identity.UserDAO;
 import model.assessment.Assessment;
+import model.assessment.EvaluationMethod;
 import model.assessment.options.TaskFormOptions;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
@@ -59,7 +61,10 @@ public class AssessmentManagerImpl implements AssessmentManager
     ProcessDAO processDAO;
 
     @Autowired
-    ProcessResponseDAO processResponseDAO;
+    UserDAO userDAO;
+
+    @Autowired
+    ProcessResponseDAO responseDAO;
 
     @Autowired
     ProcessResponseDetailDAO responseDetailDAO;
@@ -165,17 +170,12 @@ public class AssessmentManagerImpl implements AssessmentManager
                 process.setEndDate( new Date(System.currentTimeMillis()) );
                 processDAO.save( process );
                 
-                if(!CollectionUtils.isEmpty( processResponse.getDetails() ))
+                if(processResponse != null && !CollectionUtils.isEmpty( processResponse.getDetails() ))
                 {
-                    // ----------Remove previous responses -----------
-                    if(processResponse.getId() > 0)
-                    {
-                        processResponseDAO.delete( processResponse.getId() );
-                        //processResponse.setId( 0 );
-                    }
-                    // -----------------------------------------------
-                    
+                
                     Iterator<ProcessResponseDetail> itr = processResponse.getDetails().iterator();
+                    float totalGrade = 0;
+                    int score = 1;
                     
                     while (itr.hasNext()) 
                     {
@@ -184,20 +184,37 @@ public class AssessmentManagerImpl implements AssessmentManager
                             itr.remove();
                         else
                         {
-                            responseDetail.setGrade( calculateGrade( process.getCurrentTask() , 
-                                                                     responseDetail.getTaskDetail().getId(),
-                                                                     responseDetail.getItemResponse() ));  
+                            float grade = calculateGrade( process.getAssessment().getEvaluationMethod(),
+                                                          process.getCurrentTask(), 
+                                                          responseDetail.getTaskDetail().getId(),
+                                                          responseDetail.getItemResponse() );  
+                            
+                            if(process.getAssessment().getEvaluationMethod() == EvaluationMethod.TrueAnswers.getId())
+                            {
+                                if(grade == 0)
+                                {
+                                    score = 0;
+                                    totalGrade = 0;
+                                }
+                                
+                                if(score != 0)
+                                    totalGrade = grade;
+                            }
+                            else
+                            {
+                                totalGrade += grade;
+                            }
                         } 
                     }
                    
-                    
+                    processResponse.setGrade( totalGrade );
                     processResponse.setProcessLazy( process );
-                    processResponse = processResponseDAO.save( processResponse );
+                    processResponse = responseDAO.save( processResponse );
                 }
             }
             
             //*******************************************************
-            response = processResponseDAO.getDetailsByProcessAndTaskId( process.getId(), getTaskIdByIndex(nextTaskIndex, process) );
+            response = responseDAO.getDetailsByProcessAndTaskId( process.getId(), getTaskIdByIndex(nextTaskIndex, process) );
             
             if(response == null)
             {
@@ -230,14 +247,21 @@ public class AssessmentManagerImpl implements AssessmentManager
     @Override
     public void endProcess( AssessmentProcess process , ProcessResponse processResponse)
     {
-        if(!CollectionUtils.isEmpty( processResponse.getDetails() ))
+        if(processResponse != null )
         {
-            //processResponse.setProcess( process );
-            //processResponseDAO.save( processResponse );
+            if(!CollectionUtils.isEmpty( processResponse.getDetails() ))
+            {
+                //processResponse.setProcess( process );
+                //responseDAO.save( processResponse );
+            }
+        }
+        
+        if(process.getState() == ProcessState.Started.getId() || process.getState() == ProcessState.Resumed.getId())
+        {
+            process.setEndDate( new Date(System.currentTimeMillis()) );
         }
         
         process.setState( ProcessState.Finished.getId() );
-        process.setEndDate( new Date(System.currentTimeMillis()) );
         process = processDAO.save( process );
     }
     
@@ -269,11 +293,18 @@ public class AssessmentManagerImpl implements AssessmentManager
     /**************************************************
      * 
      */
-    @Override
-    public float calculateGrade( float percentage, float grade )
+    private float calculateGrade(int evalMethod, float percentage, float grade )
     {
         if(percentage == 0 || grade == 0 )
             return 0;
+        
+        if(evalMethod == EvaluationMethod.TrueAnswers.getId())
+        {
+            if(percentage < 0)
+                return 0;
+            else
+                return grade; 
+        }
         else
         {
             return (percentage*grade)/100;
@@ -285,8 +316,7 @@ public class AssessmentManagerImpl implements AssessmentManager
     /**************************************************
      * 
      */
-    @Override
-    public float calculateGrade( AssessmentTask task , long taskDetailId , String source)
+    private float calculateGrade(int evalMethod, AssessmentTask task , long taskDetailId , String source)
     {
         AssessmentTaskDetail detail = null;
         
@@ -303,12 +333,12 @@ public class AssessmentManagerImpl implements AssessmentManager
             return 0;
         else
         {
-            float grade = calculateGrade( detail.getItemGradeRatio(), task.getItemGrade() );
+            float grade = calculateGrade( evalMethod, detail.getItemGradeRatio(), task.getItemGrade() );
             
             if(task.getModeType() == AssessmentTaskType.ShortAnswer.getId())
             {
                 float identicalRatio = StringUtils.getIdenticRatio( source , detail.getItemDetail() );
-                return calculateGrade( identicalRatio, grade );
+                return calculateGrade( evalMethod, identicalRatio, grade );
             }
             else
             {
@@ -507,6 +537,16 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
+    public AssessmentResult getAssessmentResultDetail( long processId )
+    {
+        return processDAO.getResultDetailsById( processId );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
     public Page<AssessmentProcess> getProcessList( String lastName, Date startDateFrom , Pageable pageable )
     {
         return processDAO.getAll( lastName, startDateFrom, pageable );
@@ -529,17 +569,17 @@ public class AssessmentManagerImpl implements AssessmentManager
     @Override
     public Page<ProcessResponse> getProcessResponses( long processId , Pageable pageable )
     {
-        return processResponseDAO.getByProcessId( processId, pageable );
+        return responseDAO.getByProcessId( processId, pageable );
     }
-
-
+    
+    
     /**************************************************
      * 
      */
     @Override
-    public String getResponseContent( long responseId )
+    public User getProcessUserDetails( long userId )
     {
-        return processResponseDAO.getResponseContent(responseId);
+        return userDAO.getDetails( userId );
     }
     
 
@@ -547,19 +587,29 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public void evaluateResponse( User user, float grade, String comment, long responseDetailId )
+    public String getResponseContent( long responseId )
     {
-        ProcessResponseDetail respDetail = responseDetailDAO.findOne( responseDetailId );
+        return responseDAO.getResponseContent(responseId);
+    }
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public void evaluateResponse( User user, float grade, String comment, long responseId )
+    {
+        ProcessResponse response = responseDAO.findOne( responseId );
             
-        if(respDetail != null)
+        if(response != null)
         {
-            respDetail.setGrade( grade );
-            respDetail = responseDetailDAO.save( respDetail );
+            response.setGrade( grade );
+            response = responseDAO.save( response );
             
             ProcessResponseEvaluation evaluation = new ProcessResponseEvaluation();
             evaluation.setUser( user );
             evaluation.setGrade( grade );
-            evaluation.setResponseDetail( respDetail );
+            evaluation.setResponse( response );
             evaluation.setComment( comment );
             evaluationDAO.save( evaluation );
         }
@@ -638,5 +688,7 @@ public class AssessmentManagerImpl implements AssessmentManager
         return null;
     }
 
+
+    
 
 }

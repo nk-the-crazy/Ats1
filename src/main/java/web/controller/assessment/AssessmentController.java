@@ -29,6 +29,7 @@ import model.assessment.Assessment;
 import model.assessment.process.ProcessResponse;
 import model.assessment.task.AssessmentTask;
 import model.common.session.SessionData;
+import model.identity.User;
 import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
 import service.api.assessment.AssessmentTaskManager;
@@ -312,18 +313,28 @@ public class AssessmentController
      */
     @RequestMapping( value = "/report_result_details.vw")
     public ModelAndView getAssessmentResultDetailsView( @RequestParam( name = "asmt_process_id" ) long processId,
+                                                        @RequestParam( name = "outputType" , defaultValue = "1", required = false ) 
+                                                        int outputType,
                                                         Pageable pageable)
     {         
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
             
         try
         {
-            AssessmentResult result = assessmentManager.getAssessmentResult( processId);
+            AssessmentResult result = assessmentManager.getAssessmentResultDetail( processId);
+            User userDetails = assessmentManager.getProcessUserDetails(result.getUserId());
             Page<ProcessResponse> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
                     
             model.addObject( "assessmentResult", result );
+            model.addObject( "userDetails", userDetails );
             model.addObject( "responsesPage", responsesPage );
-            model.setViewName( ModelView.VIEW_REPORT_RESULT_DETAILS_PAGE);
+            
+            if(outputType == 1)
+                model.setViewName( ModelView.VIEW_REPORT_RESULT_DETAILS_PAGE);
+            else if(outputType == 2)
+                model.setViewName( ModelView.VIEW_REPORT_RESULT_DETAILS_XLS); 
+            else if(outputType == 4)
+                model.setViewName( ModelView.VIEW_REPORT_RESULT_DETAILS_PDF); 
         }
         catch(Exception e)
         {

@@ -58,7 +58,6 @@ public interface UserDAO extends JpaRepository<User, Long>
     User getDetails(@Param("userId") long userId );
     
     
-    
     //********************************************
     @Query(value = "SELECT u.id, u.userName, p.firstName, p.lastName, g.id"
             + " FROM User u "

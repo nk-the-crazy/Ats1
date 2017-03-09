@@ -14,6 +14,7 @@ public class AssessmentResult
     private long rightResponseCount = 0;
     private long wrongResponseCount = 0;
     private long taskCount = 0;
+    private long userId = 0;
     private double score = 0;
 
     public AssessmentResult(AssessmentProcess process, long taskCount, long responseCount, long rightResponseCount,
@@ -45,12 +46,14 @@ public class AssessmentResult
         this.score = score;
         this.taskCount = taskCount;
         this.process = process;
-
+        this.userId = userId;
+        
         if ( process != null && process.getAssessment() != null )
         {
             assessment = process.getAssessment();
             assessment.getId();
         }
+
     }
 
     public AssessmentProcess getProcess()
@@ -122,5 +125,17 @@ public class AssessmentResult
     {
         this.assessment = assessment;
     }
+
+    public long getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId( long userId )
+    {
+        this.userId = userId;
+    }
+    
+    
 
 }

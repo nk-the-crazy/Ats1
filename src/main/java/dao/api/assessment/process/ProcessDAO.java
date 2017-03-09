@@ -38,19 +38,31 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
     // ********************************************
     @Query(value = " SELECT new model.report.assessment.AssessmentResult(" 
                  +  " p, (SELECT COUNT(tsk.id) from a.tasks tsk), COUNT(DISTINCT r.id), "
-                 +  " SUM(CASE WHEN rd.grade>0 THEN 1 ELSE 0 END), SUM(rd.grade)) "
+                 +  " SUM(CASE WHEN r.grade>0 THEN 1 ELSE 0 END), SUM(r.grade)) "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.assessment a "
                  +  " JOIN p.responses r "
-                 +  " JOIN r.details rd "
                  +  " WHERE p.id = :processId "
                  +  " GROUP BY p.id, a.id ")
     AssessmentResult getResultById( @Param("processId") long processId );
     
    
     // ********************************************
+    @Query(value = " SELECT new model.report.assessment.AssessmentResult(" 
+                 +  " p, usr.id, (SELECT COUNT(tsk.id) from a.tasks tsk), COUNT(DISTINCT r.id), "
+                 +  " SUM(CASE WHEN r.grade>0 THEN 1 ELSE 0 END), SUM(r.grade)) "
+                 +  " FROM AssessmentProcess p "  
+                 +  " JOIN p.assessment a "
+                 +  " JOIN p.responses r "
+                 +  " JOIN p.user usr "
+                 +  " WHERE p.id = :processId "
+                 +  " GROUP BY p.id, usr.id, a.id ")
+    AssessmentResult getResultDetailsById( @Param("processId") long processId );
+    
+   
+    // ********************************************
     @Query(value = " SELECT p, a, usr, prn, (SELECT COUNT(tsk.id) from a.tasks tsk), COUNT(DISTINCT r.id), "
-                 +  " SUM(CASE WHEN rd.grade>0 THEN 1 ELSE 0 END), SUM(rd.grade) "
+                 +  " SUM(CASE WHEN r.grade>0 THEN 1 ELSE 0 END), SUM(r.grade) "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.assessment a "
                  +  " JOIN p.responses r "

@@ -23,9 +23,6 @@ public class ProcessResponseDetail
     @Column(name = "id")
     private long id;
 
-    @Column(name = "grade")
-    float grade = 0;
-    
     @Column(name = "response")
     @Lob
     private String itemResponse;    
@@ -65,16 +62,5 @@ public class ProcessResponseDetail
     {
         this.taskDetail = taskDetail;
     }
-
-    public float getGrade()
-    {
-        return grade;
-    }
-
-    public void setGrade( float grade )
-    {
-        this.grade = grade;
-    }
-
-   
+ 
 }

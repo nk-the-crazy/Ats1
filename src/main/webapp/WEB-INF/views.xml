@@ -4,7 +4,9 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
      
-    <bean id="report_result_list_xls" class="web.view.assessment.AssessmentResultsXLSView" />
-    <bean id="report_result_list_pdf" class="web.view.assessment.AssessmentResultsPDFView" />
+    <bean id="report_result_list_xls"    class="web.view.assessment.ResultsXLSView" />
+    <bean id="report_result_list_pdf"    class="web.view.assessment.ResultsPDFView" />
+    <bean id="report_result_details_xls" class="web.view.assessment.ResultDetailsXLSView" />
+    <bean id="report_result_details_pdf" class="web.view.assessment.ResultDetailsPDFView" />
      
 </beans>

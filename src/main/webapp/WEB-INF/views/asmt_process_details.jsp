@@ -41,6 +41,7 @@
 <c:set var="assessmentResult" value="${requestScope.assessmentResult}"/>
 <c:set var="process" value="${assessmentResult.process}"/>
 <c:set var="assessment" value="${process.assessment}"/>
+<c:set var="user" value="${userDetails}"/>
 <c:set var="responsesPage" value="${requestScope.responsesPage}"/>
 <c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
 <!-- ***************************** -->
@@ -101,14 +102,17 @@
                                               </thead>
                                               <tbody>
                                                 <tr>
+                                                  <th scope="row" class="col-md-2"><spring:message code="label.user.full_name" />:</th>
+                                                  <td colspan="3">
+                                                    <a href="user_details.vw?user_id=${user.id}">
+                                                    <c:out value="${user.person.lastName}"/>&nbsp;<c:out value="${user.person.firstName}"/></a>
+                                                  </td>
+                                                </tr>
+                                                <tr>
                                                   <th scope="row" class="col-md-2"><spring:message code="label.assessment.name" />:</th>
                                                   <td colspan="3"><c:out value="${assessment.name}"/></td>
                                                 </tr>
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="4"></th>
-                                                    </tr>
-                                              </thead>
+                                                <thead><tr><th colspan="4"></th></tr></thead>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.date.start" /></th>
                                                   <td><fmt:formatDate pattern="${dateTimeFormatShort }" value="${process.startDate}" /></td>
@@ -126,11 +130,7 @@
                                                     <spring:message code="label.date.time.minutes" />
                                                   </td>
                                                 </tr>
-                                                 <thead>
-                                                    <tr>
-                                                        <th colspan="4"></th>
-                                                    </tr>
-                                                </thead>
+                                                 <thead><tr><th colspan="4"></th></tr></thead>
                                                 <tr>
                                                   <th scope="row" class="col-md-2 success"><spring:message code="label.asmt.task.count"/> :</th>
                                                   <td>${assessmentResult.taskCount }</td>
@@ -173,16 +173,16 @@
                                                     <c:set var="response" value="${taskResponse[0] }" />
                                                     <c:set var="task" value="${taskResponse[1] }" />
                                                     <c:set var="responseDetail" value="${taskResponse[2] }" />
-                                                    <tr  class="${responseDetail.grade <= 0 ? 'warning' : ''}">
+                                                    <tr  class="${response.grade <= 0 ? 'warning' : ''}">
                                                         <td class="col-md-1">${index + loopCounter.count }</td>
                                                         <td><a href="asmt_task_details.vw?asmt_task_id=${task.id}">
                                                             <c:out value="${task.itemContent}"/></a></td>
                                                         <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task.modeType)}</td>
-                                                        <td><c:out value="${responseDetail.grade}"/></td>
+                                                        <td><c:out value="${response.grade}"/></td>
                                                         <td>
                                                         <c:if test="${task.modeType == 4}">
                                                             <button class="btn btn-primary btn-xs btn-td" 
-                                                                onclick ="loadResponseContent(${responseDetail.id });" type="button" aria-expanded="false">
+                                                                onclick ="loadResponseContent(${response.id });" type="button" aria-expanded="false">
                                                                 <i class="fa fa-file-o"></i>&nbsp;
                                                                 <spring:message code="label.asmt.task.response" />
                                                             </button>
@@ -270,12 +270,12 @@
     
     
     //*************************
-    function loadResponseContent(responseDetailsId)
+    function loadResponseContent(responseId)
     {
         $("#dvItemContent").hide();
     	$("#imgProgress").show();
     	$('#assessmentResultDetailsTab a[href="#itemResponseTabContent"]').tab('show')
-    	var sURL = "rest/assessment/response/content?asmt_response_detail_id="+responseDetailsId;
+    	var sURL = "rest/assessment/response/content?asmt_response_id="+responseId;
         
         $.ajax(
         {

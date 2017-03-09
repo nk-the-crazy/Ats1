@@ -53,8 +53,6 @@ public interface AssessmentManager
 
     Assessment createAssessment( Assessment assessment, User author, List<Long> participantIds );
 
-    float calculateGrade( float percentage, float grade );
-
     Page<Assessment> getAssignedAssessments( long userId, Pageable pageable );
 
     AssessmentResult getAssessmentResult( long processId );
@@ -67,7 +65,9 @@ public interface AssessmentManager
 
     Page<AssessmentProcess> getProcessList( String lastName, Date startDateFrom, Pageable pageable );
 
-    void evaluateResponse( User user, float grade, String comment, long responseDetailId );
+    void evaluateResponse( User user, float grade, String comment, long responseId );
 
-    float calculateGrade( AssessmentTask task, long taskDetailId, String source );
+    AssessmentResult getAssessmentResultDetail( long processId );
+
+    User getProcessUserDetails( long userId );
 }

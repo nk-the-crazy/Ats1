@@ -155,6 +155,19 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
+                                                  <th scope="row" ><label class="control-label" for="assessment-type">
+                                                  <spring:message code="label.assessment.eval.method" />:</label></th>
+                                                  <td><div class="col-md-10 col-sm-10 col-xs-10">
+                                                    <select id="assessment-type" class="form-control input-select-sm" name="type">
+                                                        <c:forEach var="systemAttr" varStatus="loopCounter"
+                                                            items="${SystemUtils.getAttributes('system.attrib.assessment.eval.method')}"> 
+                                                            <option ${assessment.evaluationMethod == (loopCounter.count) ? 'selected="selected"' : ''}
+                                                            value="${loopCounter.count}">${systemAttr}</option>
+                                                        </c:forEach>
+                                                    </select></div>
+                                                  </td>
+                                                </tr>
+                                                <tr>
                                                   <th scope="row" class="col-md-3">
                                                     <label class="control-label-required" for="assessment-time">
                                                     <spring:message code="label.date.time" /> (<spring:message code="label.date.time.minutes" />):

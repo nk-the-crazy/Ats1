@@ -26,6 +26,7 @@ import common.utils.StringUtils;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
 import model.common.session.SessionData;
+import model.identity.User;
 import model.report.assessment.AssessmentResult;
 import service.api.assessment.AssessmentManager;
 import web.view.ModelView;
@@ -207,10 +208,12 @@ public class ProcessController
             
         try
         {
-            AssessmentResult result = assessmentManager.getAssessmentResult( processId);
+            AssessmentResult result = assessmentManager.getAssessmentResultDetail( processId);
+            User userDetails = assessmentManager.getProcessUserDetails(result.getUserId());
             Page<ProcessResponse> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
                     
             model.addObject( "assessmentResult", result );
+            model.addObject( "userDetails", userDetails );
             model.addObject( "responsesPage", responsesPage );
             model.setViewName( ModelView.VIEW_ASMT_PROCESS_DETAILS_PAGE);
         }
