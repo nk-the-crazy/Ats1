@@ -131,7 +131,7 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
                                                   <td  class="${user.status == 1 ? 'a' : 'danger'}">
-                                                        ${SystemUtils.getAttribute('system.attrib.data.status',user.status, locale)}
+                                                        ${SystemUtils.getAttribute('system.attrib.data.status',user.status)}
                                                   </td>
                                                 </tr>
                                               </tbody>

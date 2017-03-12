@@ -25,8 +25,6 @@ public interface IdentityManager
 
     User saveUser( User user );
 
-    List<User> getUsers();
-
     Page<User> getUsersByUserNameAndLastName( String userName, String lastName, Pageable pageable );
 
     List<User> getUsersByUserNameAndLastName( String userName, String lastName );

@@ -22,7 +22,7 @@
                 <!-- /modal-header -->
                 <div class="modal-body">
                   <form id="evaluationform" action="rest/assessment/response/evaluate" method="POST" role="form" class="form-horizontal" >
-                      <input type="hidden" name="asmt_response_detail_id" value="${param.asmt_response_detail_id}">
+                      <input type="hidden" name="asmt_response_id" value="${param.asmt_response_id}">
                       <div class="row">
                         <div class="col-md-6">
                             <label class="control-label" for="evaluation-grade">

@@ -118,25 +118,24 @@ public class AssessmentTaskController
      * 
      */
     @RequestMapping( value = "/asmt_category_details.vw")
-    public ModelAndView getCategoryDetailsView(@RequestParam( "asmt_category_id" ) long categoryId, Pageable pageable)
+    public String getCategoryDetailsView(@RequestParam( "asmt_category_id" ) long categoryId, Pageable pageable, Model model)
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
-        
-        try
+       try
         {
             AssessmentTaskCategory categoryDetails = taskManager.getCategoryDetails( categoryId );
             Page< AssessmentTask> categoryTasks = taskManager.getCategoryTasks(categoryId, pageable);
             
-            model.addObject( "categoryDetails", categoryDetails );
-            model.addObject( "categoryTasks", categoryTasks );
-            model.setViewName( ModelView.VIEW_ASMT_CATEGORY_DETAILS_PAGE);
+            model.addAttribute("categoryDetails", categoryDetails );
+            model.addAttribute( "categoryTasks", categoryTasks );
+            
+            return  ModelView.VIEW_ASMT_CATEGORY_DETAILS_PAGE;
         }
         catch(Exception e)
         {
             logger.error( " **** Error getting Assessment Category Details:", e );        
         }
         
-        return model;
+        return ModelView.VIEW_SYSTEM_ERROR_PAGE;
         
     }
     
@@ -302,6 +301,36 @@ public class AssessmentTaskController
         return editCategoryView(category.getId(), model);
 
     }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_category_remove.do")
+    public String removeCategory( @RequestParam( "asmt_category_id" ) long categoryId, Model model , Pageable pageable)
+    {
+
+        try
+        {
+            if(taskManager.removeCategory( categoryId ))
+            {
+                return "redirect:asmt_category_list.vw";
+            }
+            else
+            {
+                model.addAttribute( "errorMessage", "message.error.remove.has_child" );
+            }
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error removing category:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return getCategoryDetailsView( categoryId, pageable, model );
+
+    }
+
     
     
     /*******************************************************

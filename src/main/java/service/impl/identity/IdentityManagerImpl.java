@@ -392,16 +392,6 @@ public class IdentityManagerImpl implements IdentityManager
     /* *************************************************
      */
     @Override
-    public List<User> getUsers()
-    {
-        return userDAO.findAll();
-    }
-    
-    
-    
-    /* *************************************************
-     */
-    @Override
     public Page<User> getUsersByUserNameAndLastName(String userName, String lastName, Pageable pageable)
     {
         return userDAO.findByUserNameAndLastName( userName, lastName, pageable);

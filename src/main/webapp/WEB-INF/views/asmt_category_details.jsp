@@ -71,7 +71,7 @@
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
                                                 <spring:message code="label.action.edit"/>
                                         </a>
-                                        <a href="asmt_category_remove.vw?asmt_category_id=${category.id}"  role="button" class="btn btn-danger btn-xs">
+                                        <a href="asmt_category_remove.do?asmt_category_id=${category.id}"  role="button" class="btn btn-danger btn-xs">
                                             <i class="fa fa-close"></i>&nbsp;
                                                 <spring:message code="label.action.remove"/>
                                         </a>
@@ -83,6 +83,13 @@
                                       <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
+                                <!-- ---------------------- -->
+                                  <c:if test="${requestScope.errorMessage != null}">
+                                      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                           <spring:message code="${requestScope.errorMessage}"/>
+                                      </div>
+                                  </c:if>
+                                  <!-- ---------------------- -->
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                     <ul id="categoryDetailsTab" class="nav nav-tabs bar_tabs" role="tablist">
                                         <li role="presentation" class="active">

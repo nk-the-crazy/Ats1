@@ -60,25 +60,25 @@ public class GroupController
      * 
      */
     @RequestMapping( value = "/group_details.vw")
-    public ModelAndView getGroupDetails(@RequestParam( "group_id" ) long groupId , Pageable pageable ) 
+    public String getGroupDetails( @RequestParam( "group_id" ) long groupId, Pageable pageable, Model model) 
     {
-        ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
-        
         try
         {
             UserGroup group = groupManager.getGroupDetails( groupId);
             Page<User> usersPage = groupManager.getGroupUsers( groupId, pageable );
             
-            model.addObject( "groupDetails", group );
-            model.addObject( "usersPage", usersPage );
-            model.setViewName( ModelView.VIEW_GROUP_DETAILS_PAGE);
+            model.addAttribute( "groupDetails", group );
+            model.addAttribute( "usersPage", usersPage );
+            
+            return ModelView.VIEW_GROUP_DETAILS_PAGE;
         }
         catch(Exception e)
         {
+            model.addAttribute( "errorMessage", "message.error.system" );
             logger.error( " **** Error getting group Details:", e );        
         }
         
-        return model;
+        return ModelView.VIEW_SYSTEM_ERROR_PAGE;
         
     }
     
@@ -127,9 +127,10 @@ public class GroupController
      * 
      */
     @RequestMapping("/group_edit.vw")
-    public String editGroupView(@RequestParam( "group_id" ) long groupId, Model model)
+    public String editGroupView(@RequestParam( "group_id" ) long groupId, Pageable pageable, Model model)
     {
         model.addAttribute( "groupDetails" , groupManager.getGroupDetails( groupId ));
+        
         return ModelView.VIEW_GROUP_EDIT_PAGE;
     }
     
@@ -138,7 +139,7 @@ public class GroupController
      * 
      */
     @RequestMapping( value = "/group_edit.do")
-    public String editGroup( @ModelAttribute( "group" ) UserGroup group, Model model)
+    public String editGroup( @ModelAttribute( "group" ) UserGroup group, Pageable pageable, Model model)
     {
 
         try
@@ -157,7 +158,36 @@ public class GroupController
             model.addAttribute( "errorMessage", "message.error.system" );
         }
         
-        return editGroupView(group.getId(), model);
+        return editGroupView(group.getId(), pageable, model);
+
+    }
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/group_remove.do")
+    public String removeGroup( @RequestParam( "group_id" ) long groupId, Pageable pageable, Model model )
+    {
+
+        try
+        {
+            if(groupManager.removeGroup( groupId ))
+            {
+                return "redirect:group_list.vw";
+            }
+            else
+            {
+                model.addAttribute( "errorMessage", "message.error.remove.has_child" );
+            }
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error removing group data:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return getGroupDetails( groupId, pageable, model);
 
     }
 

@@ -28,12 +28,14 @@
 <!-- NProgress -->
 <link href="resources/lib/nprogress/nprogress.css" rel="stylesheet">
 
+<!-- iCheck -->
+<link href="resources/lib/iCheck/skins/flat/green.css" rel="stylesheet">
+
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <!-- Data Table -->
-<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css"
-    rel="stylesheet">
+<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 
 </head>
 <!-- ***************************** -->
@@ -90,6 +92,10 @@
                                             <a href="#tab_content1" id="groups-tab" role="tab" data-toggle="tab" aria-expanded="true">
                                             <spring:message code="label.page.group_details.title" /></a>
                                         </li>
+                                        <li role="presentation" class="">
+                                            <a href="#tab_content2" id="group-users" role="tab" data-toggle="tab" aria-expanded="false">
+                                            <spring:message code="label.group.members" /></a>
+                                        </li>
                                     </ul>
                                     <div id="groupEditTabContent" class="tab-content">
                                         <div id="tab_content1" role="tabpanel" class="tab-pane col-md-8 fade active in" 
@@ -133,6 +139,27 @@
                                               </tbody>
                                             </table>
                                         </div>
+                                        <div id="tab_content2" role="tabpanel" class="tab-pane col-md-8 fade" 
+                                              aria-labelledby="group-users">
+                                            <a role="button" class="btn btn-success btn-xs" href="user_list.mvw?submitUrl=rest&#47;group&#47;user&#47;add&#63;group_id=${group.id }"
+                                                    id="btnManageGroup" rel="modal">
+                                                    <i class="fa fa-plus"></i>&nbsp;
+                                                    <spring:message code="label.menu.register_user"/>
+                                            </a>
+                                            <div class="modal-container"></div>
+                                            <table id="datatable" class="dataTable table table-bordered">
+                                              <thead>
+                                                <tr>
+                                                    <th class="col-md-1">№</th>
+                                                    <th class="col-md-4"><spring:message code="label.user.name" /></th>
+                                                    <th class="col-md-4"><spring:message code="label.user.full_name" /></th>
+                                                    <th></th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                              </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                   </div>
                                </div>
@@ -147,7 +174,7 @@
 
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
-            <jsp:param name="page" value="group_details.vw" />
+            <jsp:param name="page" value="group_edit.vw" />
         </jsp:include>
         <!-- /footer content -->
     </div>
@@ -162,6 +189,9 @@
 
     <!-- NProgress -->
     <script src="resources/lib/nprogress/nprogress.js"></script>
+    
+    <!-- iCheck -->
+    <script src="resources/lib/iCheck/icheck.min.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="resources/js/custom.min.js"></script>
@@ -170,6 +200,8 @@
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
+    var table;
+    
     $(document).ready(function()
     {
         $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
@@ -180,6 +212,119 @@
             $('#groupEditTab a[href="' + activeTab + '"]').tab('show');
         }
     });
+    
+    
+    $('a[rel=modal]').on('click', function(evt) 
+    {
+        evt.preventDefault();
+        
+        $('.modal-container').load($(this).attr('href'), function (responseText, textStatus) 
+        {
+            if ( textStatus === 'success' || textStatus === 'notmodified') 
+            {
+                $("#modalUserList").on("hidden.bs.modal", function (e) 
+        	    {   
+                	$('#modalUserList').unbind();
+                	table.ajax.reload();    
+        	    });
+                
+                $('#modalUserList').modal().show();
+            }
+        });
+    });
+    
+    
+    $(document).on('click', '.btn-remove', function(e) 
+    {
+    	groupId = ${group.id};
+    	userId  = $(this).val();
+    	removeUserFromGroup(this,groupId,userId);	
+    });
+    
+    
+   //----------------
+    function removeUserFromGroup(element , groupId,userId)
+    {
+    
+	    $(element).text(' ... ');
+        var sURL = 'rest/group/user/remove?group_id='+groupId+'&user_id='+userId;
+        
+        $.ajax(
+        {
+            url:sURL,
+            type: 'GET',
+            success: function (response) 
+            {
+            	$(element).parents('tr:first').remove();
+            },
+            error: function () 
+            {
+            	$(element).text(' Error !');     
+            },
+        });
+ 
+    }
+    </script>
+    <script type="text/javascript">
+
+    $(document).ready(function() 
+    {
+        var indexRow = 1;
+        
+    	table = $('#datatable').DataTable(
+        {
+        	"autoWidth": false,
+        	"language": 
+            {
+                "url": "resources/lib/datatables.net/i18n/russian.json"
+            },
+            "iDisplayLength": 12,
+            "processing": true,
+            "serverSide": true,
+            "searching" : false,
+            "pagingType" : "full_numbers",
+            "paging" : true,
+            "lengthChange": false,
+            "info" : true,
+           
+            "ajax": 
+            {   "url": 'rest/group/user/list?group_id=${group.id}',
+                "type": "GET"
+            },
+            
+            'columnDefs': [{
+                'targets': 0,
+                "width": "5%" ,
+                'searchable': false,
+                'orderable': false,
+                'render': function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+             }],
+           
+            "columns": [
+                { "data": null },
+                { "data": "1" ,'orderable': false },
+                { "data": null,'orderable': false,
+                  "render" : function ( data, type, full ) 
+                  { 
+                    return full['3']+' '+full['2'];
+                  }
+                },
+                { "data": null,'orderable': false,
+                    "render" : function ( data, type, full ) 
+                    { 
+                      return '<button class="btn btn-danger btn-remove btn-xs btn-td" value="'+data[0]+'"' +
+                             'type="button"><i class="fa fa-close"></i></button>';
+                    }
+                },
+              
+            ]
+    
+        });
+      
+    });
+ 
     </script>
     
 

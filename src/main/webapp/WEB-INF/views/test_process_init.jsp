@@ -82,7 +82,7 @@
                                         <tr>
                                           <th scope="row"><spring:message code="label.assessment.type" />:</th>
                                           <td>
-                                                ${SystemUtils.getAttribute('system.attrib.assessment.type',process.assessment.type, locale)}
+                                                ${SystemUtils.getAttribute('system.attrib.assessment.type',process.assessment.type)}
                                           </td>
                                         </tr>
                                         <tr>
@@ -128,7 +128,7 @@
                                           </c:choose>
                                           <th scope="row" ><spring:message code="label.data.status" />:</th>
                                           <td  class="${status_color}">
-                                                ${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status, locale)}
+                                                ${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status)}
                                           </td>
                                         </tr>
                                         <tr>

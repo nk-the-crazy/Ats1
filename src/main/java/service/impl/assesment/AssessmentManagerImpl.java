@@ -36,7 +36,7 @@ import model.assessment.options.TaskFormOptions;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
 import model.assessment.process.ProcessResponseDetail;
-import model.assessment.process.ProcessResponseEvaluation;
+import model.assessment.process.ProcessResponseRate;
 import model.assessment.process.ProcessState;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskDetail;
@@ -606,7 +606,7 @@ public class AssessmentManagerImpl implements AssessmentManager
             response.setGrade( grade );
             response = responseDAO.save( response );
             
-            ProcessResponseEvaluation evaluation = new ProcessResponseEvaluation();
+            ProcessResponseRate evaluation = new ProcessResponseRate();
             evaluation.setUser( user );
             evaluation.setGrade( grade );
             evaluation.setResponse( response );

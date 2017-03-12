@@ -2,6 +2,7 @@ package service.impl.assesment;
 
 
 import java.util.List;
+
 import java.util.Iterator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -280,6 +281,37 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * 
      */
     @Override
+    public boolean removeCategory( long categoryId )
+    {
+        try
+        {
+            AssessmentTaskCategory cat = categoryDAO.getDetailsById( categoryId ) ;
+            
+            if(!CollectionUtils.isEmpty( cat.getChildren()))
+                return false;
+            
+            Page<AssessmentTask> tasks = taskDAO.getByCategoryId( categoryId, null );
+            
+            if( tasks.getTotalElements() > 0)
+                return false;
+            
+            cat.setParent( null );
+            cat = categoryDAO.save( cat );
+            categoryDAO.delete( cat );
+            
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    
+    /**************************************************
+     * 
+     */
+    @Override
     public void importTasks( MultipartFile file )
     {
         try
@@ -460,5 +492,6 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
             throw new IllegalArgumentException( "Category name is reserved by the system." );
         }
     }
+
 
 }

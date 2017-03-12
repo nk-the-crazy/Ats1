@@ -17,6 +17,7 @@
         <!-- intercept url  -->
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/login*" access="permitAll" />
+        <intercept-url pattern="/rest/**" access="permitAll" />
         
         <intercept-url pattern="/asmt_process*"   access="hasAuthority('AssessmentManagement')"/>
         <intercept-url pattern="/asmt_test*"      access="hasAuthority('AssessmentManagement')"/>

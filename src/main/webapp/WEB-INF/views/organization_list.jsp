@@ -113,10 +113,10 @@ common.utils.system.SystemUtils"%>
                                                     <c:out value="${organization.name}"/></a>
                                                 </td>
                                                 <td class="col-md-2">
-                                                   ${SystemUtils.getAttribute('system.attrib.organization.type',organization.type, locale)}
+                                                   ${SystemUtils.getAttribute('system.attrib.organization.type',organization.type)}
                                                 </td>
                                                 <td class="col-md-2">
-                                                   ${SystemUtils.getAttribute('system.attrib.data.status',organization.status, locale)}
+                                                   ${SystemUtils.getAttribute('system.attrib.data.status',organization.status)}
                                                 </td>
                                             </tr>
                                         </c:forEach>

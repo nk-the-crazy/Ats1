@@ -257,10 +257,10 @@
     $(document).ready(function()
     {
         $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-            localStorage.setItem('assessmentResultDetailsTActiveTab', $(e.target).attr('href'));
+            localStorage.setItem('assessmentResultDetailsActiveTab', $(e.target).attr('href'));
         });
         
-        var activeTab = localStorage.getItem('assessmentResultDetailsTActiveTab');
+        var activeTab = localStorage.getItem('assessmentResultDetailsActiveTab');
         
         if(activeTab)
         {

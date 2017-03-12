@@ -485,6 +485,30 @@ public class IdentityController
         
     }
     
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/user_list.mvw")
+    public ModelAndView getResponseEvaluationView(@RequestParam( name = "submitUrl", required = false ) String submitUrl)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+        
+        try
+        {
+            model.setViewName( ModelView.VIEW_USER_LIST_MD_PAGE); 
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting user list modal :", e ); 
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        }
+        
+        return model;
+        
+    }
+
+    
 
     
 

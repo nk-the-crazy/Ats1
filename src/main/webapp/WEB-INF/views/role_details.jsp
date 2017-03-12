@@ -132,7 +132,7 @@
                                                     <tr>
                                                         <td class="col-md-1">${loopCounter.count}</td>
                                                         <td class="col-md-3">
-                                                        ${SystemUtils.getAttribute('system.attrib.permission',permission.item, locale)}
+                                                        ${SystemUtils.getAttribute('system.attrib.permission',permission.item)}
                                                         </td>
                                                         <td class="col-md-1"><i class="${permission.read ? 'fa fa-check' : 'fa fa-close'}"></i></td>
                                                         <td class="col-md-1"><i class="${permission.write ? 'fa fa-check' : 'fa fa-close'}"></i></td>

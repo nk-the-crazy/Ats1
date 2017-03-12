@@ -65,5 +65,5 @@ public interface GroupDAO extends JpaRepository<UserGroup, Long>
             + " WHERE g.id IN :ids ")
     List<UserGroup> getByGroupIdIn(@Param("ids") List<Long> participantIds );
 
-
+   
 }
