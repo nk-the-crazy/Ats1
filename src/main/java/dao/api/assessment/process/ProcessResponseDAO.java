@@ -24,15 +24,16 @@ public interface ProcessResponseDAO extends JpaRepository<ProcessResponse, Long>
     
   
     // ********************************************
-    @Query(value = " SELECT r, tsk, rd "
+    @Query(value = " SELECT r, tsk, rd, rdt "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.responses r "
                  +  " JOIN r.task tsk "
                  +  " JOIN r.details rd "
+                 +  " JOIN rd.taskDetail rdt "
                  
                  +  " WHERE p.id=:processId "
                  +  " ORDER BY r.id ")
-    Page<ProcessResponse> getByProcessId( @Param("processId") long processId , Pageable pageable );
+    Page<Object> getByProcessId( @Param("processId") long processId , Pageable pageable );
 
     
     // ********************************************

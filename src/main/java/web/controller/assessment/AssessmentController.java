@@ -26,7 +26,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import common.utils.StringUtils;
 import model.assessment.Assessment;
-import model.assessment.process.ProcessResponse;
 import model.assessment.task.AssessmentTask;
 import model.common.session.SessionData;
 import model.identity.User;
@@ -323,18 +322,26 @@ public class AssessmentController
         {
             AssessmentResult result = assessmentManager.getAssessmentResultDetail( processId);
             User userDetails = assessmentManager.getProcessUserDetails(result.getUserId());
-            Page<ProcessResponse> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
                     
             model.addObject( "assessmentResult", result );
             model.addObject( "userDetails", userDetails );
-            model.addObject( "responsesPage", responsesPage );
             
             if(outputType == 1)
+            {
                 model.setViewName( ModelView.VIEW_REPORT_RESULT_DETAILS_PAGE);
+            }
             else if(outputType == 2)
+            {
+                Page<Object> responsesPage = assessmentManager.getProcessResponses( processId, null );
+                model.addObject( "responsesPage", responsesPage );
                 model.setViewName( ModelView.VIEW_REPORT_RESULT_DETAILS_XLS); 
+            }
             else if(outputType == 4)
+            {
+                Page<Object> responsesPage = assessmentManager.getProcessResponses( processId, null );
+                model.addObject( "responsesPage", responsesPage );
                 model.setViewName( ModelView.VIEW_REPORT_RESULT_DETAILS_PDF); 
+            }
         }
         catch(Exception e)
         {

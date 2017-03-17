@@ -6,7 +6,7 @@
 
 .tasks-panel
 {
-    font-size: 13px;
+    font-size: 13px; 
 }
 
 .info-task-type{
@@ -2055,7 +2055,12 @@ button,
   padding-top: 0px;
   border: 1px solid #bbbbbb; }
 
-
+.input-cx-sm {
+  margin-top: -5px; 
+  margin-bottom: 0px;
+  padding-top: -10px;
+  padding-bottom: 0px;
+}
 .ln_solid {
   border-top: 1px solid #e5e5e5;
   color: #ffffff;
@@ -3532,7 +3537,7 @@ a.hiddenanchor {
   float: left;
   margin-left: 38px; }
   
- .modal-dialog-center {
+.modal-dialog-center {
   display: inline-block;
   text-align: left;
   vertical-align: middle;
@@ -3549,6 +3554,27 @@ a.hiddenanchor {
 .button a:hover {
   background-position: 0 -135px;
   color: #00aeef; }
+
+.loading-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+}
+.loader
+{
+    display: none;
+    width:200px;
+    height: 200px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    text-align:center;
+    margin-left: -50px;
+    margin-top: -100px;
+    z-index:2;
+    overflow: auto;
+}  
 
 header {
   width: 100%; }

@@ -40,12 +40,13 @@ public class ResultsPDFView extends AbstractITextPdfView  implements MessageSour
     //---------------------------------
     
     private MessageSource messageSource;
-    private Locale locale = LocaleContextHolder.getLocale() ;
-    
+
     @Override
     protected void buildPdfDocument( Map<String, Object> model, Document doc, PdfWriter writer,
                     HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
+        Locale locale = LocaleContextHolder.getLocale() ;
+        
         try
         {
             @SuppressWarnings("unchecked")
@@ -59,12 +60,12 @@ public class ResultsPDFView extends AbstractITextPdfView  implements MessageSour
             bf.getCodePagesSupported();
             
             Font f1 = new Font(bf,13);
-            String title = messageSource.getMessage( "label.page.report_result_list.title", null, null);
+            String title = messageSource.getMessage( "label.page.report_result_list.title", null, locale);
             doc.add(new Paragraph(title, f1) );
 
-            PdfPTable table = new PdfPTable( 9 );
+            PdfPTable table = new PdfPTable( 10 );
             table.setWidthPercentage( 100.0f );
-            table.setWidths( new float[] { 1.0f, 5.0f, 5.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f } );
+            table.setWidths( new float[] { 1.0f, 5.0f, 5.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f} );
             table.setSpacingBefore( 10 );
 
             Font f2 = new Font(bf,11);
@@ -91,7 +92,9 @@ public class ResultsPDFView extends AbstractITextPdfView  implements MessageSour
             table.addCell( cell );
             cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.task.respond", null, locale),f2));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.result.item.count.all", null, locale),f2 ));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.result.item.count.strue", null, locale),f2 ));
+            table.addCell( cell );
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.result.item.count.sfalse", null, locale),f2 ));
             table.addCell( cell );
 
             // Create data cells
@@ -116,8 +119,8 @@ public class ResultsPDFView extends AbstractITextPdfView  implements MessageSour
                 table.addCell(Double.toString( score));
                 table.addCell(Long.toString( taskCount));
                 table.addCell(Long.toString( responseCount));
-                table.addCell(Long.toString( rightResponseCount) + " - " + 
-                              Long.toString((responseCount - rightResponseCount)));
+                table.addCell(Long.toString( rightResponseCount));
+                table.addCell(Long.toString((responseCount - rightResponseCount)));
 
             }
   

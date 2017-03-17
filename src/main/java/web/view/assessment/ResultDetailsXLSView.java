@@ -28,13 +28,14 @@ public class ResultDetailsXLSView extends AbstractXlsxView  implements MessageSo
     //---------------------------------
     
     private MessageSource messageSource;
-    private Locale locale = LocaleContextHolder.getLocale() ;
     
     @Override
     protected void buildExcelDocument( Map<String, Object> model, Workbook workbook, HttpServletRequest request,
                     HttpServletResponse response ) throws Exception
     {
 
+        Locale locale = LocaleContextHolder.getLocale();
+        
         try
         {
             @SuppressWarnings("unchecked")
@@ -44,7 +45,7 @@ public class ResultDetailsXLSView extends AbstractXlsxView  implements MessageSo
             response.setHeader( "Content-Disposition", "attachment; filename=\"my-xls-file.xlsx\"" );
 
             // create excel xls sheet
-            Sheet sheet = workbook.createSheet( messageSource.getMessage( "label.page.report_result_list.title", null, null) );
+            Sheet sheet = workbook.createSheet( messageSource.getMessage( "label.page.report_result_list.title", null, locale) );
 
             // create header row
             Row header = sheet.createRow( 0 );
@@ -55,7 +56,8 @@ public class ResultDetailsXLSView extends AbstractXlsxView  implements MessageSo
             header.createCell( 4 ).setCellValue( messageSource.getMessage( "label.data.status", null, locale) );
             header.createCell( 5 ).setCellValue( messageSource.getMessage( "label.assessment.score", null, locale) );
             header.createCell( 6 ).setCellValue( messageSource.getMessage( "label.asmt.task.respond", null, locale));
-            header.createCell( 7 ).setCellValue( messageSource.getMessage( "label.asmt.result.item.count.all", null, locale) );
+            header.createCell( 7 ).setCellValue( messageSource.getMessage( "label.asmt.result.item.count.true", null, locale) );
+            header.createCell( 7 ).setCellValue( messageSource.getMessage( "label.asmt.result.item.count.false", null, locale) );
 
             // Create data cells
             int rowCount = 1;
@@ -77,7 +79,8 @@ public class ResultDetailsXLSView extends AbstractXlsxView  implements MessageSo
                 courseRow.createCell( 4 ).setCellValue( "" );
                 courseRow.createCell( 5 ).setCellValue( score );
                 courseRow.createCell( 7 ).setCellValue( responseCount );
-                courseRow.createCell( 7 ).setCellValue( rightResponseCount + " - " + (responseCount - rightResponseCount) );
+                courseRow.createCell( 8 ).setCellValue( rightResponseCount );
+                courseRow.createCell( 9 ).setCellValue( responseCount - rightResponseCount );
             }
         }
         catch ( Exception e )

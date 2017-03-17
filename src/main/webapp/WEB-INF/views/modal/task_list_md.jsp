@@ -29,7 +29,6 @@
                         class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>№</th>
                                 <th><input type="checkbox" id="check-all" class="flat"></th>
                                 <th><spring:message code="label.user.login" /></th>
                                 <th><spring:message code="label.user.full_name" /></th>
@@ -106,7 +105,7 @@
         	"searching" : false,
         	"pagingType" : "full_numbers",
             "paging" : true,
-            "lengthChange": true,
+            "lengthChange": false,
             "info" : false,
            
             "ajax": 
@@ -115,7 +114,7 @@
             },
             
             'columnDefs': [{
-                'targets': 1,
+                'targets': 0,
                 "width": "5%" ,
                 'searchable': false,
                 'orderable': false,
@@ -126,13 +125,7 @@
              }],
             
             "columns": [
-            	{ "data": null , "width": "5%" , 'searchable': false,'orderable': false, 
-                    'render': function (data, type, row, meta) 
-                    {
-                    	return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-            	{ "data": null},
+                { "data": null},
                 { "data": "1", 'orderable': false ,"width": "35%"},
                 { "data": null,'orderable': false,
                   "render" : function ( data, type, full ) 

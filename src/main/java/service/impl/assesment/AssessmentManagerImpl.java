@@ -567,7 +567,7 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public Page<ProcessResponse> getProcessResponses( long processId , Pageable pageable )
+    public Page<Object> getProcessResponses( long processId , Pageable pageable )
     {
         return responseDAO.getByProcessId( processId, pageable );
     }
@@ -587,9 +587,9 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public String getResponseContent( long responseId )
+    public String getResponseContent( long responseDetailId )
     {
-        return responseDAO.getResponseContent(responseId);
+        return responseDAO.getResponseContent(responseDetailId);
     }
     
 

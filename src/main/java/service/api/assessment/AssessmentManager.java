@@ -59,9 +59,9 @@ public interface AssessmentManager
 
     Page<Object> getAssessmentResults( String lastName, Date startDateFrom, Pageable pageable );
 
-    Page<ProcessResponse> getProcessResponses( long processId, Pageable pageable );
+    Page<Object> getProcessResponses( long processId, Pageable pageable );
 
-    String getResponseContent( long responseId );
+    String getResponseContent( long responseDetailId );
 
     Page<AssessmentProcess> getProcessList( String lastName, Date startDateFrom, Pageable pageable );
 

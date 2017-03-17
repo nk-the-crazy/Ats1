@@ -430,6 +430,26 @@ public class IdentityManagerImpl implements IdentityManager
 
         return null;
     }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public List<User> getUserFullDetailsList()
+    {
+        // *********************************
+        try
+        {
+            return userDAO.getFullDetailsList();
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in get User Full Details", e );   
+            return Collections.emptyList();
+        }
+    }
+
 
     
     /**************************************************

@@ -210,7 +210,7 @@ public class ProcessController
         {
             AssessmentResult result = assessmentManager.getAssessmentResultDetail( processId);
             User userDetails = assessmentManager.getProcessUserDetails(result.getUserId());
-            Page<ProcessResponse> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
+            Page<Object> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
                     
             model.addObject( "assessmentResult", result );
             model.addObject( "userDetails", userDetails );

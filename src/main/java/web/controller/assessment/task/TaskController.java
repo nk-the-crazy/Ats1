@@ -22,10 +22,10 @@ import web.view.ModelView;
 
 
 @Controller
-public class AssessmentTaskController
+public class TaskController
 {
     //---------------------------------
-    private static final Logger logger = LoggerFactory.getLogger(AssessmentTaskController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     //---------------------------------
 
     @Autowired

@@ -8,5 +8,7 @@
     <bean id="report_result_list_pdf"    class="web.view.assessment.ResultsPDFView" />
     <bean id="report_result_details_xls" class="web.view.assessment.ResultDetailsXLSView" />
     <bean id="report_result_details_pdf" class="web.view.assessment.ResultDetailsPDFView" />
+    
+    <bean id="user_details_xls" class="web.view.identity.UserDetailsXLSView" />
      
 </beans>

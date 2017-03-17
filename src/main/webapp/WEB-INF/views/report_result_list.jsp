@@ -82,9 +82,6 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                           <li><a href="report_result_list.vw?outputType=4"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.pdf"/></a>
                                           </li>
                                           <li class="divider"></li>
-                                          <li><a href="report_result_list.vw?outputType=3"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.doc"/></a>
-                                          </li>
-                                          <li class="divider"></li>
                                          </ul>
                                     </div>
                                   <div class="clearfix"></div>
@@ -128,8 +125,8 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                                 <th><spring:message code="label.data.status" /></th>
                                                 <th><spring:message code="label.assessment.score" /></th>
                                                 <th><spring:message code="label.asmt.task.respond" /></th>
-                                                <th><spring:message code="label.asmt.result.item.count.all"/></th>
-                                                
+                                                <th><spring:message code="label.asmt.result.item.count.strue"/></th>
+                                                <th><spring:message code="label.asmt.result.item.count.sfalse"/></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -173,8 +170,11 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                                 <td>${SystemUtils.getAttribute('system.attrib.assessment.status',overall_status)}</td>
                                                 <td><c:out value="${score}"/></td>
                                                 <td><c:out value="${responseCount}"/></td>
-                                                <td class="col-md-2">
-                                                 <c:out value="${rightResponseCount}"/>&nbsp;-&nbsp;<c:out value="${responseCount - rightResponseCount}"/>
+                                                <td class="col-md-1">
+                                                 <c:out value="${rightResponseCount}"/>
+                                                </td>
+                                                <td class="col-md-1">
+                                                 <c:out value="${responseCount - rightResponseCount}"/>
                                                 </td>
                                                 
                                             </tr>

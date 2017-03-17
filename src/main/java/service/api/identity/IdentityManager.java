@@ -71,4 +71,6 @@ public interface IdentityManager
 
     User updateUser( User user, List<Long> roleIds, List<Long> groupIds );
 
+    List<User> getUserFullDetailsList();
+
 }

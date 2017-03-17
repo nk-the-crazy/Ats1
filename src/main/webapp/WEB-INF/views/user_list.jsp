@@ -57,33 +57,40 @@ common.utils.system.SystemUtils"%>
                 <jsp:param name="page" value="user_list.vw" />
             </jsp:include>
             <!-- /top navigation -->
-
             <!-- page content -->
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
+                        
                         <div class="col-md-10 col-sm-10 col-xs-10">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.users.title" /></h2>
-                                    <div class="btn-group pull-right">
-                                      <a href="user_register.vw" role="button" class="btn btn-success btn-xs">
-                                        <i class="fa fa-plus"></i>&nbsp;
-                                                <spring:message code="label.menu.register_user"/></a>
-                                      <button type="button" class="btn btn-success btn-xs dropdown-toggle" 
-                                        data-toggle="dropdown" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only"></span>
-                                      </button>
-                                      <ul class="dropdown-menu" role="menu">
-                                        
-                                        <li><a href="user_import.vw"><i class="fa fa-upload"></i>&nbsp;
-                                                <spring:message code="label.action.import"/></a>
-                                        </li>
-                                        <li class="divider"></li>
-                                      </ul>
+                                    <div class="pull-right">
+                                      <div class="btn-group">
+                                          <a href="user_register.vw" role="button" class="btn btn-success btn-xs">
+                                            <i class="fa fa-plus"></i>&nbsp;
+                                                    <spring:message code="label.menu.register_user"/></a>
+                                          <button type="button" class="btn btn-success btn-xs dropdown-toggle" 
+                                            data-toggle="dropdown" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only"></span>
+                                          </button>
+                                          <ul class="dropdown-menu" role="menu">
+                                            
+                                            <li><a href="user_import.vw"><i class="fa fa-upload"></i>&nbsp;
+                                                    <spring:message code="label.action.import"/></a>
+                                            </li>
+                                            <li class="divider"></li>
+                                          </ul>
+                                      </div>
+                                      <a class="btn btn-success btn-xs" href="user_details_export.mvw?"
+                                          role="button" aria-expanded="false" rel="modal"><i class="fa fa-files-o"></i>&nbsp;
+                                            <spring:message code="label.action.export"/>
+                                      </a>
                                     </div>
                                     <div class="clearfix"></div>
+                                    <div class="modal-container"></div>
                                 </div>
                                 <div class="x_content">
                                     <form id="user_search" data-parsley-validate action="user_list.vw"
@@ -113,9 +120,7 @@ common.utils.system.SystemUtils"%>
                                             </tr>
                                         </table>
                                     </form>
-
-                                    <table id="datatable"
-                                        class="table table-striped table-bordered">
+                                    <table id="datatable" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>№</th>
@@ -145,7 +150,6 @@ common.utils.system.SystemUtils"%>
                                         <!-- *********User list ************ -->
                                         </tbody>
                                     </table>
-                                    
                                     <!------------- Pagination -------------->
                                     <c:if test="${usersPage.totalPages > 1}">
                                         <jsp:include page="include/pagination.jsp">
@@ -157,7 +161,6 @@ common.utils.system.SystemUtils"%>
                                          </jsp:include>
                                      </c:if>
                                     <!--------------------------------------->
-                                    
                                 </div>
                             </div>
                         </div>
@@ -194,21 +197,39 @@ common.utils.system.SystemUtils"%>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
     <script>
-		$(document).ready(function() 
+	$(document).ready(function() 
+	{
+		$('#datatable').DataTable(
 		{
-			$('#datatable').dataTable(
-			{
-				"searching" : false,
-				"pagingType" : "full_numbers",
-				"paging" : false,
-				"info" : false,
-				"language": 
-                {
-                    "emptyTable": '<spring:message code="message.info.records.notfound" />'
-                },
+			"searching" : false,
+			"pagingType" : "full_numbers",
+			"paging" : false,
+			"info" : false,
+			"language": 
+            {
+                "emptyTable": '<spring:message code="message.info.records.notfound" />'
+            },
 
-			});
 		});
+	});
+		
+		
+	$('a[rel=modal]').on('click', function(evt) 
+    {
+        evt.preventDefault();
+        
+        $('.modal-container').load($(this).attr('href'), function (responseText, textStatus) 
+        {
+            if ( textStatus === 'success' || textStatus === 'notmodified') 
+            {
+                $("#modalUserExport").on("hidden.bs.modal", function (e) 
+                {   
+                });
+                
+                $('#modalUserExport').modal().show();
+            }
+        });
+    });
 	</script>
 </body>
 </html>

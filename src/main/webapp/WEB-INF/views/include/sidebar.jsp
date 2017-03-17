@@ -34,12 +34,16 @@
                             <spring:message code="label.menu.assessment" /><span
                                 class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li><a href="test_list_user.vw"><spring:message code="label.menu.assessment.list.private" /></a></li>
+                                <li><a href="test_list_user.vw"><i class="fa fa-calendar"></i><spring:message code="label.menu.assessment.list.private" /></a></li>
                                     <sec:authorize access="hasAuthority('AssessmentManagement')">
                                       <li><a href="asmt_test_register.vw"><i class="fa fa-plus"></i>
                                       <spring:message code="label.menu.assessment.register" /></a></li>
-                                      <li><a href="asmt_test_list.vw"><spring:message code="label.menu.assessment.management" /></a></li>
-                                      <li><a href="asmt_process_list.vw"><spring:message code="label.menu.process.list" /></a></li>
+                                      <li><a href="asmt_test_list.vw">
+                                      <i class="fa fa-graduation-cap"></i>
+                                      <spring:message code="label.menu.assessment.management" /></a></li>
+                                      <li><a href="asmt_process_list.vw">
+                                      <i class="fa fa-line-chart"></i>
+                                      <spring:message code="label.menu.process.list" /></a></li>
                                     </sec:authorize>
                             </ul>
                         </li>

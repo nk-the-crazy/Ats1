@@ -53,6 +53,17 @@ public interface UserDAO extends JpaRepository<User, Long>
     
     //********************************************
     @Query(value = "SELECT u "
+            + " FROM User u "
+            + " LEFT JOIN FETCH u.person p "
+            + " LEFT JOIN FETCH p.address a "
+            + " LEFT JOIN FETCH p.detail d "
+            + " LEFT JOIN FETCH p.contact c "
+            + " LEFT JOIN FETCH p.organization o ")
+    List<User> getFullDetailsList();
+
+    
+    //********************************************
+    @Query(value = "SELECT u "
             + " FROM User u JOIN FETCH u.person "
             + " WHERE u.id=:userId")
     User getDetails(@Param("userId") long userId );

@@ -139,7 +139,7 @@
                                               </tbody>
                                             </table>
                                         </div>
-                                        <div id="tab_content2" role="tabpanel" class="tab-pane col-md-8 fade" 
+                                        <div id="tab_content2" role="tabpanel" class="tab-pane col-md-9 fade" 
                                               aria-labelledby="group-users">
                                             <a role="button" class="btn btn-success btn-xs" href="user_list.mvw?submitUrl=rest&#47;group&#47;user&#47;add&#63;group_id=${group.id }"
                                                     id="btnManageGroup" rel="modal">
@@ -151,9 +151,9 @@
                                               <thead>
                                                 <tr>
                                                     <th class="col-md-1">№</th>
-                                                    <th class="col-md-4"><spring:message code="label.user.name" /></th>
+                                                    <th class="col-md-3"><spring:message code="label.user.name" /></th>
                                                     <th class="col-md-4"><spring:message code="label.user.full_name" /></th>
-                                                    <th></th>
+                                                    <th class="col-md-1"></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
@@ -276,7 +276,7 @@
         	"autoWidth": false,
         	"language": 
             {
-                "url": "resources/lib/datatables.net/i18n/russian.json"
+                "url": "resources/lib/datatables.net/i18n/ru.json"
             },
             "iDisplayLength": 12,
             "processing": true,
