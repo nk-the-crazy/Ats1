@@ -392,16 +392,6 @@ public class IdentityManagerImpl implements IdentityManager
     /* *************************************************
      */
     @Override
-    public List<User> getUsers()
-    {
-        return userDAO.findAll();
-    }
-    
-    
-    
-    /* *************************************************
-     */
-    @Override
     public Page<User> getUsersByUserNameAndLastName(String userName, String lastName, Pageable pageable)
     {
         return userDAO.findByUserNameAndLastName( userName, lastName, pageable);
@@ -440,6 +430,26 @@ public class IdentityManagerImpl implements IdentityManager
 
         return null;
     }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public List<User> getUserFullDetailsList()
+    {
+        // *********************************
+        try
+        {
+            return userDAO.getFullDetailsList();
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in get User Full Details", e );   
+            return Collections.emptyList();
+        }
+    }
+
 
     
     /**************************************************

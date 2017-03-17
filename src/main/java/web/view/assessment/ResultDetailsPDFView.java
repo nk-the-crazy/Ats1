@@ -65,9 +65,9 @@ public class ResultDetailsPDFView extends AbstractITextPdfView  implements Messa
             PdfPTable table = new PdfPTable( 8 );
             table.setWidthPercentage( 100.0f );
             table.setWidths( new float[] { 1.0f, 5.0f, 5.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f } );
-            table.setSpacingBefore( 10 );
+            table.setSpacingBefore( 5 );
 
-            Font f2 = new Font(bf,11);
+            Font f2 = new Font(bf,12);
             f2.setColor( BaseColor.WHITE );
 
             // define table header cell
@@ -89,7 +89,9 @@ public class ResultDetailsPDFView extends AbstractITextPdfView  implements Messa
             table.addCell( cell );
             cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.task.respond", null, locale),f2));
             table.addCell( cell );
-            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.result.item.count.all", null, locale),f2 ));
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.result.item.count.strue", null, locale),f2 ));
+            table.addCell( cell );
+            cell.setPhrase( new Phrase( messageSource.getMessage( "label.asmt.result.item.count.sfalse", null, locale),f2 ));
             table.addCell( cell );
 
             // Create data cells

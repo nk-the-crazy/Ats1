@@ -64,10 +64,14 @@
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.group_details.title" /></h2>
-                                     <div style="text-align: right;">
+                                     <div class="pull-right">
                                         <a href="group_edit.vw?group_id=${param.group_id}" role="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
                                                 <spring:message code="label.action.edit"/>
+                                        </a>
+                                        <a href="group_remove.do?group_id=${param.group_id}"  role="button" class="btn btn-danger btn-xs">
+                                            <i class="fa fa-close"></i>&nbsp;
+                                                <spring:message code="label.action.remove"/>
                                         </a>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">
                                             <i class="fa fa-chevron-left"></i>&nbsp;
@@ -77,6 +81,13 @@
                                       <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
+                                <!-- ---------------------- -->
+                                  <c:if test="${requestScope.errorMessage != null}">
+                                      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                           <spring:message code="${requestScope.errorMessage}"/>
+                                      </div>
+                                  </c:if>
+                                <!-- ---------------------- -->
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                     <ul id="groupDetailsTab" class="nav nav-tabs bar_tabs" role="tablist">
                                         <li role="presentation" class="active">
@@ -115,17 +126,16 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
                                                     <td class="${group.status == 1 ? 'a' : 'danger'}">
-                                                    ${SystemUtils.getAttribute('system.attrib.data.status', group.status, locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.data.status', group.status)}
                                                     </td>
                                                 </tr>
                                               </tbody>
                                             </table>
                                         </div>
                                         
-                                        <div role="tabpanel" class="tab-pane col-md-10 fade" 
-                                             id="tab_content2" aria-labelledby="users-tab">
-                                            
-                                            <table id="" class="dataTable table table-bordered">
+                                        <div id="tab_content2" role="tabpanel" class="tab-pane col-md-10 fade" 
+                                              aria-labelledby="users-tab">
+                                           <table id="" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>

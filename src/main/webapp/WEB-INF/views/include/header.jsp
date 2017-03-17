@@ -9,21 +9,23 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <!-- ************************************* -->
+<c:set var="systemLocale" value="${pageContext.response.locale }"/>
 
 <c:choose>
-  <c:when test="${locale  == 'en'}">
+  <c:when test="${systemLocale  == 'en'}">
     <c:set var="localeStr" value="English"/>
   </c:when>
-  <c:when test="${locale  == 'ru'}">
+  <c:when test="${systemLocale  == 'ru'}">
     <c:set var="localeStr" value="Русский"/>
   </c:when>
-  <c:when test="${locale  == 'ky'}">
+  <c:when test="${systemLocale  == 'ky'}">
     <c:set var="localeStr" value="Кыргызча"/>
   </c:when>
   <c:otherwise>
     <c:set var="localeStr" value="Русский"/>
   </c:otherwise>
 </c:choose>
+
 <!-- ************************************* -->
 
 <!-- top navigation -->

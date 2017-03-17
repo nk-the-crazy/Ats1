@@ -28,4 +28,10 @@ public interface GroupManager
 
     List<UserGroup> getGroupShortListByName( String groupName );
 
+    boolean removeGroup( long groupId );
+
+    void removeUser( long groupId, long userId );
+
+    void addUsers( long groupId, List<Long> userIds );
+
 }

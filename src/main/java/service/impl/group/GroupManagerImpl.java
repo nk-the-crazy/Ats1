@@ -81,6 +81,33 @@ public class GroupManagerImpl implements GroupManager
         return null;
     }
     
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public boolean removeGroup( long groupId)
+    {
+        try
+        {
+            Page<User> userDetails = userDAO.getByGroupId( groupId, null );
+            
+            if( userDetails.getTotalElements() > 0 )
+            {
+                return false; 
+            }
+                
+            groupDAO.delete( groupId );
+            
+            return true;
+        }
+        catch ( Exception e )
+        {
+            logger.error( " **** Error in remove Group", e );    
+            return false;
+        }
+
+    }
 
     /**************************************************
      * 
@@ -153,15 +180,49 @@ public class GroupManagerImpl implements GroupManager
         return groupDAO.getFullDetails( groupId );
     }
     
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public void addUsers( long groupId, List<Long> userIds )
+    {
+       UserGroup group = groupDAO.findOne( groupId );
+       
+       if(group != null)
+       {
+           for(long userId : userIds)
+           {
+               User user = userDAO.findById( userId );
+               
+               if(!group.getUsers().contains( user ))
+               {
+                   group.addUser( user );
+               }
+           }
+       } 
+    }
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public void removeUser( long groupId, long userId )
+    {
+        UserGroup group = groupDAO.findOne( groupId );
+        group.removeUser( userDAO.findOne( userId )  );
+        group = groupDAO.saveAndFlush( group );
+    }
 
+  
     /**************************************************
      * 
      */
     private void isValidGroupName( String groupName )
     {
-        if ( Strings.isNullOrEmpty( groupName ) || groupName.length() < 4 )
+        if ( Strings.isNullOrEmpty( groupName ) || groupName.length() < 3 )
         {
-            throw new IllegalArgumentException( "Group name cannot be shorter than 4 characters." );
+            throw new IllegalArgumentException( "Group name cannot be shorter than 3 characters." );
         }
 
         if ( groupName.equalsIgnoreCase( "group" ) || groupName.equalsIgnoreCase( "all" )
@@ -171,7 +232,5 @@ public class GroupManagerImpl implements GroupManager
         }
     }
 
-  
-    
 
 }

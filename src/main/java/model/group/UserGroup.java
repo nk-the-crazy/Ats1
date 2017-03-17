@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,7 +49,7 @@ public class UserGroup implements Serializable
     @Column(name = "details")
     private String details;
     
-    @ManyToMany(mappedBy="groups", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy="groups", fetch = FetchType.LAZY)
     private List<User> users = new ArrayList<>();
 
     public short getType()
@@ -133,7 +132,16 @@ public class UserGroup implements Serializable
             user.getGroups().add(this);
         }
     }
+
     
-    
+    public void removeUser(User user) 
+    {
+        if (user.getGroups().contains(this)) 
+        { 
+            user.getGroups().remove( this);
+        }
+        
+        this.users.remove(user);
+    }
     
 }

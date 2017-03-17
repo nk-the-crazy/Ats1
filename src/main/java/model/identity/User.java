@@ -215,6 +215,16 @@ public class User implements Serializable
         }
     }
     
+    public void removeGroup(UserGroup group) 
+    {
+        this.groups.remove( group);
+        
+        if (group.getUsers().contains(this)) 
+        { 
+            group.getUsers().remove( this);
+        }
+    }
+    
     
     public List<GrantedAuthority> getAuthorities()
     {

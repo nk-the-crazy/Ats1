@@ -3,7 +3,6 @@ package model.assessment.task;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,12 +33,12 @@ public class AssessmentTaskCategory
     private short type = 2; //Regular
     
     // *********************************************
-    @OneToMany(mappedBy="category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="category", fetch = FetchType.LAZY)
     private Set<AssessmentTask> tasks = new HashSet<AssessmentTask>();
     // *********************************************
     
     // *********************************************
-    @OneToMany(mappedBy="parent" , fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="parent" , fetch = FetchType.EAGER)
     private Set<AssessmentTaskCategory> children = new HashSet<AssessmentTaskCategory>();
     // *********************************************
 

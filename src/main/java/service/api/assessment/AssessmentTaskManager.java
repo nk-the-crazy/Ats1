@@ -48,4 +48,6 @@ public interface AssessmentTaskManager
     AssessmentTask saveTask( AssessmentTask task, long categoryId );
 
     void importTasks( MultipartFile file );
+
+    boolean removeCategory( long categoryId );
 }

@@ -15,9 +15,13 @@ public class ModelView
     public static String VIEW_USER_REGISTER_PAGE  = "user_register";
     public static String VIEW_USER_EDIT_PAGE  = "user_edit";
     public static String VIEW_USER_LIST_PAGE  = "user_list";
+    public static String VIEW_USER_LIST_MD_PAGE  = "modal/user_list_md";
     public static String VIEW_USER_DETAILS_PAGE  = "user_details";
     public static String VIEW_USER_IMPORT_PAGE  = "user_import";
-    
+    public static String VIEW_USER_EXPORT_MD_PAGE  = "modal/user_export_md";
+    public static String VIEW_USER_DETAILS_XLS  = "user_details_xls";
+    public static String VIEW_USER_DETAILS_PDF  = "user_details_pdf";
+
     //Role
     public static String VIEW_ROLE_REGISTER_PAGE  = "role_register";
     public static String VIEW_ROLE_EDIT_PAGE  = "role_edit";
@@ -78,7 +82,7 @@ public class ModelView
     public static String VIEW_ASMT_PROCESS_END_PAGE  = "test_process_end";
     
     //Evaluation
-    public static String VIEW_ASMT_RESPONSE_EVALUATION_PAGE  = "asmt_response_evaluation";
+    public static String VIEW_ASMT_RESPONSE_RATE_MD_PAGE  = "modal/asmt_response_rate_md";
     
     //Task
     public static String VIEW_ASMT_CATEGORY_REGISTER_PAGE  = "asmt_category_register";

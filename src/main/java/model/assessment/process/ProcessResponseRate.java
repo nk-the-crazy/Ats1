@@ -16,8 +16,8 @@ import model.identity.User;
 
 
 @Entity
-@Table( name = "asmt_process_response_evaluation" )
-public class ProcessResponseEvaluation
+@Table( name = "asmt_process_response_rate" )
+public class ProcessResponseRate
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

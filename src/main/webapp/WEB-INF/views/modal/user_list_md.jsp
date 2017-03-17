@@ -9,34 +9,35 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title><spring:message code="label.page.asmt_evaluation.title" /></title>
+<title><spring:message code="label.user.list" /></title>
+<!-- Data Table -->
+<link href="resources/lib/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div id="modalEvaluation" style="vertical-align: middle;" class="modal fade"  >
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
+    <div id="modalUserList" style="vertical-align: middle;" class="modal fade"  >
+        <div class="modal-dialog">
+            <div class="modal-content col-md-8">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><spring:message code="label.page.asmt_evaluation.title" /></h4>
+                    <h4 class="modal-title"><spring:message code="label.user.list" /></h4>
                 </div>
                 <!-- /modal-header -->
                 <div class="modal-body">
-                  <form id="evaluationform" action="rest/assessment/response/evaluate" method="POST" role="form" class="form-horizontal" >
-                      <input type="hidden" name="asmt_response_detail_id" value="${param.asmt_response_detail_id}">
-                      <div class="row">
-                        <div class="col-md-6">
-                            <label class="control-label" for="evaluation-grade">
-                               <spring:message code="label.asmt.task.grade" />:</label>
-                            <input  type="text" id="evaluation-grade" name="grade" class="form-control input-sm">                
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                            <label class="control-label" for="evaluation-desc">
-                                <spring:message code="label.data.comment" />:</label>
-                            <input type="text" id="evaluation-desc" name="comment" class="form-control input-sm">   
-                         </div>
-                      </div>
+                  <form id="userDataForm" action="${param.submitUrl}" method="POST" role="form" class="form-horizontal" >
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <table id="datatable"
+                        class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th><input type="checkbox" id="check-all" class="flat"></th>
+                                <th><spring:message code="label.user.login" /></th>
+                                <th><spring:message code="label.user.full_name" /></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>                      
                   </form>   
                 </div>
                 <!-- /modal-body -->
@@ -44,8 +45,8 @@
                     <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">
                         <spring:message code="label.action.cancel" />
                     </button>
-                    <button type="button" class="btn btn-primary btn-xs" onclick="submitForm();" data-dismiss="modal">
-                        <i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;<spring:message code="label.action.save" />
+                    <button type="button" class="btn btn-success btn-xs" onclick="submitForm();">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;<spring:message code="label.action.add" />
                     </button>
                 </div>
                 <!-- /modal-footer -->
@@ -55,9 +56,10 @@
         <!-- /modal-dialog -->
     </div>
 </body>
+<script src="resources/lib/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
 <script type="text/javascript">
 
-    $("#evaluationform").submit(function(e)
+    $("#userDataForm").submit(function(e)
     {
         var postData = $(this).serializeArray();
         var formURL = $(this).attr("action");
@@ -69,20 +71,81 @@
             data : postData,
             success:function(data, textStatus, jqXHR) 
             {
-                //data: return data from server
+            	$('#modalUserList').modal('toggle');
             },
             error: function(jqXHR, textStatus, errorThrown) 
             {
                 //if fails      
             }
         });
+        
         e.preventDefault(); //STOP default action
-        e.unbind(); //unbind. to stop multiple form submit.
     });
+    // ----------------------------
     
     function submitForm()
     {
-        $("#evaluationform").submit(); 
+        $("#userDataForm").submit(); 
     }
+    // ----------------------------
+    
+    $(document).ready(function() 
+    {
+        $('#datatable').dataTable(
+        {
+        	"language": 
+        	{
+                "url": "resources/lib/datatables.net/i18n/ru.json"
+            },
+            "fixedHeader": true,
+            "order": [],
+            "iDisplayLength": 20,
+            "scrollY": "260px",
+        	"processing": true,
+        	"serverSide": true,
+        	"searching" : false,
+        	"pagingType" : "full_numbers",
+            "paging" : true,
+            "lengthChange": true,
+            "info" : false,
+           
+            "ajax": 
+            {   "url": "rest/identity/user/list",
+            	"type": "GET"
+            },
+            
+            'columnDefs': [{
+                'targets': 1,
+                "width": "5%" ,
+                'searchable': false,
+                'orderable': false,
+                'render': function (data, type, full, meta)
+                {
+                    return '<input type="checkbox" name="userIds" value="'+data[0]+'" class="flat">';
+                }
+             }],
+            
+            "columns": [
+            	{ "data": null , "width": "5%" , 'searchable': false,'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                    	return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+            	{ "data": null},
+                { "data": "1", 'orderable': false ,"width": "35%"},
+                { "data": null,'orderable': false,
+                  "render" : function ( data, type, full ) 
+                  { 
+                    return full['4']+' '+full['5'];
+                  }
+                },
+              
+            ]
+    
+        });
+    });
+ 
     </script>
+
 </html>

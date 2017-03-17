@@ -14,6 +14,7 @@ import model.identity.User;
 import service.api.group.GroupManager;
 import service.api.identity.IdentityManager;
 import service.api.organization.OrganizationManager;
+import web.model.identity.UserExportParams;
 import web.view.ModelView;
 
 import org.slf4j.Logger;
@@ -485,7 +486,83 @@ public class IdentityController
         
     }
     
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/user_list.mvw")
+    public ModelAndView getUserListView(@RequestParam( name = "submitUrl", required = false ) String submitUrl)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+        
+        try
+        {
+            model.setViewName( ModelView.VIEW_USER_LIST_MD_PAGE); 
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting user list modal :", e ); 
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        }
+        
+        return model;
+        
+    }
 
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/user_details_export.mvw")
+    public ModelAndView getUserlistExportView()
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+        
+        try
+        {
+            model.setViewName( ModelView.VIEW_USER_EXPORT_MD_PAGE); 
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting user list export modal :", e ); 
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        }
+        
+        return model;
+        
+    }
+    
+    
+    
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/user_details_export.do")
+    public String exportUserDetails( @ModelAttribute( "userExportParams" ) UserExportParams exportParams, Model model)
+    {
+        try
+        {
+            model.addAttribute( "userDetailsList" , identityManager.getUserFullDetailsList() );
+            
+            if(exportParams.getOutputType() == 2)
+                return ModelView.VIEW_USER_DETAILS_XLS;
+            else if(exportParams.getOutputType() == 4)
+                return ModelView.VIEW_USER_DETAILS_PDF;
+        }
+        catch(IllegalArgumentException e)
+        {
+            model.addAttribute( "errorMessage", "message.error.attribute.invalid");
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error editing user:", e ); 
+            model.addAttribute( "errorMessage", "message.error.system" );
+        }
+        
+        return ModelView.VIEW_SYSTEM_ERROR_PAGE;
+    }
+    
+    
     
 
 }

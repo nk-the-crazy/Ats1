@@ -110,13 +110,13 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.asmt.task.complexity" />:</th>
                                                     <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.task.complexity', task.complexity, locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.task.complexity', task.complexity)}
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.asmt.task.mode" />:</th>
                                                     <td>
-                                                    ${SystemUtils.getAttribute('system.attrib.task.mode', task.mode, locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.task.mode', task.mode)}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -127,7 +127,7 @@
                                                         <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
                                                     </c:choose>
                                                     <td class="${status_color}">
-                                                        ${SystemUtils.getAttribute('system.attrib.task.mode.type', task.modeType, locale)}
+                                                        ${SystemUtils.getAttribute('system.attrib.task.mode.type', task.modeType)}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -139,7 +139,7 @@
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
                                                     <td class="${task.status == 1 ? 'a' : 'danger'}">
-                                                    ${SystemUtils.getAttribute('system.attrib.data.status', task.status, locale)}
+                                                    ${SystemUtils.getAttribute('system.attrib.data.status', task.status)}
                                                     </td>
                                                 </tr>
                                               </tbody>

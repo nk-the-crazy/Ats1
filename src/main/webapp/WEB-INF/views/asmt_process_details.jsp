@@ -85,7 +85,7 @@
                                             <a href="#tab_content2" id="result-details-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <spring:message code="label.data.details" /></a>
                                         </li>
-                                        <li role="presentation" class="" style="display:none">
+                                        <li role="presentation" class="" style="display:none" id="tabHeader">
                                             <a href="#itemResponseTabContent" id="item-response-tab" role="tab" data-toggle="tab" aria-expanded="false">
                                             <spring:message code="label.asmt.task.response.content" /></a>
                                         </li>
@@ -119,7 +119,6 @@
                                                   <th scope="row" ><spring:message code="label.date.end" /></th>
                                                   <td><fmt:formatDate pattern="${dateTimeFormatShort }" value="${process.endDate}" /></td>
                                                 </tr>
-                                                
                                                 <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.date.time" />:</th>
                                                   <td class="col-md-4"><c:out value="${assessment.time}"/>&nbsp;&nbsp;
@@ -160,10 +159,10 @@
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
-                                                    <th><spring:message code="label.asmt.task.item.content" /></th>
+                                                    <th class="col-md-4"><spring:message code="label.asmt.task.item.content" /></th>
                                                     <th><spring:message code="label.asmt.task.mode.type" /></th>
                                                     <th><spring:message code="label.asmt.task.grade" /></th>
-                                                    <th></th>
+                                                    <th class="col-md-5"><spring:message code="label.asmt.task.response" /></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
@@ -182,7 +181,7 @@
                                                         <td>
                                                         <c:if test="${task.modeType == 4}">
                                                             <button class="btn btn-primary btn-xs btn-td" 
-                                                                onclick ="loadResponseContent(${response.id });" type="button" aria-expanded="false">
+                                                                onclick ="loadResponseContent(${response.id },${responseDetail.id });" type="button" aria-expanded="false">
                                                                 <i class="fa fa-file-o"></i>&nbsp;
                                                                 <spring:message code="label.asmt.task.response" />
                                                             </button>
@@ -206,7 +205,7 @@
                                              </c:if>
                                             <!--------------------------------------->        
                                         </div>
-                                        <div id="itemResponseTabContent" role="tabpanel" style="display:none" class="tab-pane col-md-12 fade in" 
+                                        <div id="itemResponseTabContent" role="tabpanel" class="tab-pane col-md-12 fade in" 
                                               aria-labelledby="item-response-tab">
                                                   <a role="button" class="btn btn-primary btn-xs" href="" style="display:none"
                                                     id="btnEvaluate" rel="modal">
@@ -257,10 +256,10 @@
     $(document).ready(function()
     {
         $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-            localStorage.setItem('assessmentResultDetailsTActiveTab', $(e.target).attr('href'));
+            localStorage.setItem('assessmentResultDetailsActiveTab', $(e.target).attr('href'));
         });
         
-        var activeTab = localStorage.getItem('assessmentResultDetailsTActiveTab');
+        var activeTab = localStorage.getItem('assessmentResultDetailsActiveTab');
         
         if(activeTab)
         {
@@ -270,20 +269,21 @@
     
     
     //*************************
-    function loadResponseContent(responseId)
+    function loadResponseContent(responseId, responseDetailsId)
     {
         $("#dvItemContent").hide();
     	$("#imgProgress").show();
-    	$('#assessmentResultDetailsTab a[href="#itemResponseTabContent"]').tab('show')
-    	var sURL = "rest/assessment/response/content?asmt_response_id="+responseId;
+    	$('#tabHeader').show();
+        $('#assessmentResultDetailsTab a[href="#itemResponseTabContent"]').tab('show')
+    	var sURL = "rest/assessment/response/content?asmt_response_detail_id="+responseDetailsId;
         
-        $.ajax(
+    	$.ajax(
         {
             url:sURL,
             success: function (response) 
             {
-                $("#imgProgress").hide();
-                $("#btnEvaluate").attr('href' , 'asmt_response_evaluation.mvw?asmt_response_detail_id='+responseDetailsId);
+            	$("#imgProgress").hide();
+                $("#btnEvaluate").attr('href' , 'asmt_response_evaluation.mvw?asmt_response_id='+responseId);
                 $("#btnEvaluate").show();
                 $('#dvItemContent').html(response);
                 $("#dvItemContent").show();

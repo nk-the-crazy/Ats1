@@ -36,7 +36,7 @@ import model.assessment.options.TaskFormOptions;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
 import model.assessment.process.ProcessResponseDetail;
-import model.assessment.process.ProcessResponseEvaluation;
+import model.assessment.process.ProcessResponseRate;
 import model.assessment.process.ProcessState;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskDetail;
@@ -567,7 +567,7 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public Page<ProcessResponse> getProcessResponses( long processId , Pageable pageable )
+    public Page<Object> getProcessResponses( long processId , Pageable pageable )
     {
         return responseDAO.getByProcessId( processId, pageable );
     }
@@ -587,9 +587,9 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public String getResponseContent( long responseId )
+    public String getResponseContent( long responseDetailId )
     {
-        return responseDAO.getResponseContent(responseId);
+        return responseDAO.getResponseContent(responseDetailId);
     }
     
 
@@ -606,7 +606,7 @@ public class AssessmentManagerImpl implements AssessmentManager
             response.setGrade( grade );
             response = responseDAO.save( response );
             
-            ProcessResponseEvaluation evaluation = new ProcessResponseEvaluation();
+            ProcessResponseRate evaluation = new ProcessResponseRate();
             evaluation.setUser( user );
             evaluation.setGrade( grade );
             evaluation.setResponse( response );
