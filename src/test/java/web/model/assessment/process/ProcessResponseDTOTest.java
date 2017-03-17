@@ -24,7 +24,7 @@ public class ProcessResponseDTOTest
         tsk.setId( 100 );
         tsk.setModeType( 1 );
         
-        ProcessResponseDTO dto = new ProcessResponseDTO(tsk, null, null);
+        ProcessResponseDTO dto = new ProcessResponseDTO(tsk, null, null, null);
         
         try
         {
