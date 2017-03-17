@@ -68,9 +68,22 @@ model.assessment.*" %>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-                                     <div class="container-fluid">
-                                        <div id="tree"></div>
-                                    </div>
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>№</th>
+                                                <th><spring:message code="label.group.name" /></th>
+                                                <th><spring:message code="label.group.date" /></th>
+                                                <th><spring:message code="label.group.member_count" /></th>
+                                                <th><spring:message code="label.group.desc" /></th>
+                                                <th><spring:message code="label.data.status" /></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td><div id="tree"></div></td></tr>
+                                        </tbody>
+                                     </table>
+                                  </div>
                                 </div>
 							</div>
 						</div>
@@ -109,12 +122,9 @@ model.assessment.*" %>
         $('#tree').tree(
         {
             uiLibrary: 'bootstrap',
-            dataSource: 'rest/assessment/task/category/list',
+            data: 'rest/assessment/task/category/list',
             textField: 'name',
-            primaryKey: 'id',
-            dataBinding: function (e) {
-                alert('dataBinding is fired.');
-            }
+            primaryKey: 'id'        
         });
     });
     
