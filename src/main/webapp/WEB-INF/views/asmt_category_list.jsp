@@ -114,15 +114,20 @@ model.assessment.*" %>
 	<script src="resources/js/custom.min.js"></script>
     
     <!-- Tree Grid -->
-    <script type="text/javascript" src="resources/lib/treeview/js/gijgo.js"></script>
+    <script type="text/javascript" src="resources/lib/treeview/bootstrap-treeview.min.js"></script>
     <script type="text/javascript">
-
+    
+    function loadTree()
+    {
+    	
+    }
+    
     $(document).ready(function () 
     {
-        $('#tree').tree(
+        $('#tree').treeview(
         {
             uiLibrary: 'bootstrap',
-            data: 'rest/assessment/task/category/list',
+            data: loadTree(),
             textField: 'name',
             primaryKey: 'id'        
         });
