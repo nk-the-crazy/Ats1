@@ -28,6 +28,7 @@ import dao.api.assessment.task.AssessmentTaskDAO;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
 import model.assessment.task.AssessmentTaskDetail;
+import model.assessment.task.AssessmentTaskInfo;
 import service.api.assessment.AssessmentTaskManager;
 
 
@@ -45,6 +46,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
     @Autowired
     AssessmentTaskCategoryDAO categoryDAO;
 
+    
     /**************************************************
      * 
      */
@@ -74,6 +76,29 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
         return task;
 
     }
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public AssessmentTaskInfo createTaskInfo( String description )
+    {
+        AssessmentTaskInfo info = null;
+
+        try
+        {
+            info = new AssessmentTaskInfo();
+            info.setDescription( description );
+        }
+        catch ( Exception e )
+        {
+            logger.error( "Unable to create task info object:", e );
+        }
+
+        return info;
+
+    }
+
 
     /**************************************************
      * 
@@ -221,10 +246,10 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
      * *************************************************
      */
     @Override
-    public Page<AssessmentTask> getTasksByDetails( String itemName, String categoryName, short modeType,
+    public Page<Object> getTasksByDetails( String itemContent, String categoryName, short modeType,
                     Pageable pageable )
     {
-        return taskDAO.findByDetails( itemName, categoryName, modeType, pageable );
+        return taskDAO.findByDetails( itemContent, categoryName, modeType, pageable );
     }
 
     /*
@@ -316,6 +341,14 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
     {
         try
         {
+            int contentIndex = 0;
+            int recordTypeIndex = 6;
+            int answerIndex = 1;
+            int complexityIndex = 7;
+            int modeTypeIndex = 8;
+            int descIndex = 4;
+            int statusIndex = 5;
+                      
             String lowerCaseFileName = file.getOriginalFilename().toLowerCase();
 
             if ( lowerCaseFileName.contains( ".xls" ) )
@@ -348,7 +381,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
                     {
                         index++;
                         Row currentRow = iterator.next();
-                        Cell currentCell = currentRow.getCell( 4 );
+                        Cell currentCell = currentRow.getCell( recordTypeIndex );
 
                         if ( currentCell != null && currentCell.getCellType() != Cell.CELL_TYPE_BLANK )
                         {
@@ -359,11 +392,11 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
                             else if ( currentCell.getCellType() == Cell.CELL_TYPE_STRING )
                                 recordType = Integer.parseInt( currentCell.getStringCellValue() );
 
-                            logger.info( "Excel row:" + index + " column[4]:" + recordType );
+                            logger.info( "Excel row:" + index + " column[6]:" + recordType );
 
                             if ( recordType == 1 ) // Parent Category
                             {
-                                currentCell = currentRow.getCell( 0 );
+                                currentCell = currentRow.getCell( contentIndex );
                                 parentCategory = createTaskCategory( currentCell.getStringCellValue().trim(), "", 2 );
                                 categoryDAO.save( parentCategory );
                                 category = null;
@@ -372,7 +405,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
                             }
                             else if ( recordType == 2 ) // Category
                             {
-                                currentCell = currentRow.getCell( 0 );
+                                currentCell = currentRow.getCell( contentIndex );
                                 category = createTaskCategory( currentCell.getStringCellValue().trim(), "", 2 );
                                 category.setParent( parentCategory );
                                 categoryDAO.save( category );
@@ -384,12 +417,14 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
                             {
                                 int modeType = 0;
                                 int complexity = 0;
+                                String description ="";
+                                int status = 1;
 
-                                currentCell = currentRow.getCell( 0 );
+                                currentCell = currentRow.getCell( contentIndex );
                                 String itemContent = currentCell.getStringCellValue();
                                 itemContent = StringUtils.formatSpecial( itemContent );
 
-                                currentCell = currentRow.getCell( 5 );
+                                currentCell = currentRow.getCell( complexityIndex );
 
                                 if ( currentCell.getCellType() == Cell.CELL_TYPE_FORMULA )
                                 {
@@ -399,7 +434,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
                                         complexity = Integer.parseInt( currentCell.getStringCellValue() );
                                 }
 
-                                currentCell = currentRow.getCell( 6 );
+                                currentCell = currentRow.getCell( modeTypeIndex );
 
                                 if ( currentCell.getCellType() == Cell.CELL_TYPE_FORMULA )
                                 {
@@ -408,11 +443,35 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
                                     else if ( currentCell.getCachedFormulaResultType() == Cell.CELL_TYPE_STRING )
                                         modeType = Integer.parseInt( currentCell.getStringCellValue() );
                                 }
+                                
+                                currentCell = currentRow.getCell( descIndex );
 
+                                if ( currentCell.getCellType() == Cell.CELL_TYPE_STRING )
+                                    description = currentCell.getStringCellValue();
+                                
+                                currentCell = currentRow.getCell( statusIndex );
+
+                                if ( currentCell.getCellType() == Cell.CELL_TYPE_NUMERIC )
+                                {
+                                    int tempStat = (int) currentCell.getNumericCellValue();
+                                    
+                                    if(tempStat != 0)
+                                    {
+                                        status = tempStat;
+                                    }
+                                }
+                                
                                 taskCount++;
                                 task = createTask( String.format( "Вопрос-%04d", taskCount ), itemContent, 1, 1,
                                                 modeType, complexity );
                                 task.setCategory( category );
+                                task.setStatus( status );
+                                
+                                if(!Strings.isNullOrEmpty( description ))
+                                {
+                                    task.setDetailInfo( createTaskInfo( description ) );
+                                }
+                                
                                 detail = null;
 
                                 logger.info( "Excel Task inserted:" + task.getItemContent() );
@@ -423,7 +482,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
                                 {
                                     float itemGradeRatio = 0;
 
-                                    currentCell = currentRow.getCell( 1 );
+                                    currentCell = currentRow.getCell( answerIndex );
 
                                     if ( currentCell != null && currentCell.getCellType() != Cell.CELL_TYPE_BLANK )
                                     {
@@ -444,7 +503,7 @@ public class AssessmentTaskManagerImpl implements AssessmentTaskManager
                                         itemGradeRatio = 0;
                                     }
 
-                                    currentCell = currentRow.getCell( 0 );
+                                    currentCell = currentRow.getCell( contentIndex );
                                     String itemDetail = currentCell.getStringCellValue();
                                     itemDetail = StringUtils.formatSpecial( itemDetail );
 

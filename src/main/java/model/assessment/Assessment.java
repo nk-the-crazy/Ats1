@@ -38,6 +38,9 @@ public class Assessment
     @Column(name = "name")
     private String name;
     
+    @Column(name = "entry_code")
+    private String entryCode;
+    
     @Column(name = "start_date")
     private Date startDate;
 
@@ -155,8 +158,18 @@ public class Assessment
     {
         this.type = (short)type;
     }
+    
+    public String getEntryCode()
+    {
+        return entryCode;
+    }
 
-  
+    public void setEntryCode( String entryCode )
+    {
+        this.entryCode = entryCode;
+    }
+
+
     public List<UserGroup> getParticipants()
     {
         return participants;
@@ -241,7 +254,12 @@ public class Assessment
     {
         tasks.add(task );
     }
-
+    
+    public void removeTask(AssessmentTask task) 
+    {
+        tasks.remove( task );
+    }
+    
     public void addParticipant(UserGroup group) 
     {
         participants.add(group );

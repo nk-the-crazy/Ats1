@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import common.exceptions.assessment.TimeExpiredException;
+import common.exceptions.security.AccessDeniedException;
 import common.utils.StringUtils;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
@@ -90,13 +91,18 @@ public class ProcessController
      * Roll and Save Assessment Questions
      */
     @RequestMapping( value = "/test_process_start.do")
-    public String startAssessementProcess( @RequestParam( name = "taskIndex" , defaultValue = "0", required = false ) int nextTaskIndex, 
+    public String startAssessementProcess( @RequestParam( name = "entryCode" , defaultValue = "", required = false ) String entryCode,
+                                           @RequestParam( name = "taskIndex" , defaultValue = "0", required = false ) int nextTaskIndex, 
                                            @ModelAttribute( "processResponse" ) ProcessResponse processResponse,
                                            HttpSession session, Model model )
     {
+        long assessmentId = 0;
+        
         try
         {
             AssessmentProcess activeProcess = (AssessmentProcess)session.getAttribute( "activeProcess" );
+            assessmentId = activeProcess.getAssessment().getId();
+            activeProcess.setEntryCode( entryCode );
             processResponse = assessmentManager.startProcess(activeProcess, processResponse, nextTaskIndex);
             
             model.addAttribute( ACTIVE_RESPONSE , processResponse );
@@ -107,7 +113,12 @@ public class ProcessController
         {
             model.addAttribute( "errorMessage", "message.error.assessment.time.expired");
             return ModelView.VIEW_ASMT_PROCESS_START_PAGE;
-        }        
+        }   
+        catch ( AccessDeniedException e )
+        {
+            model.addAttribute( "errorMessage", "message.error.assessment.invalid.code");
+            return "forward:/test_process_init.do?assessment_id="+assessmentId;
+        }
         catch(Exception e)
         {
             logger.error( " **** Error starting assessment Details:", e ); 
@@ -210,11 +221,9 @@ public class ProcessController
         {
             AssessmentResult result = assessmentManager.getAssessmentResultDetail( processId);
             User userDetails = assessmentManager.getProcessUserDetails(result.getUserId());
-            Page<Object> responsesPage = assessmentManager.getProcessResponses( processId, pageable );
                     
             model.addObject( "assessmentResult", result );
             model.addObject( "userDetails", userDetails );
-            model.addObject( "responsesPage", responsesPage );
             model.setViewName( ModelView.VIEW_ASMT_PROCESS_DETAILS_PAGE);
         }
         catch(Exception e)

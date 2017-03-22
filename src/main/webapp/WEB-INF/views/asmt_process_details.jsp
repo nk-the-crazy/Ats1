@@ -33,7 +33,7 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <!-- Data Table -->
-<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css"
+<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.css"
     rel="stylesheet">
 
 </head>
@@ -42,7 +42,6 @@
 <c:set var="process" value="${assessmentResult.process}"/>
 <c:set var="assessment" value="${process.assessment}"/>
 <c:set var="user" value="${userDetails}"/>
-<c:set var="responsesPage" value="${requestScope.responsesPage}"/>
 <c:set var="dateTimeFormatShort" value="${SystemUtils.getSettings('system.app.date.time.format.short')}"/>
 <!-- ***************************** -->
 <body class="nav-md">
@@ -155,7 +154,7 @@
                                         <div role="tabpanel" class="tab-pane col-md-12 fade" 
                                              id="tab_content2" aria-labelledby="result-details-tab">
                                             
-                                            <table id="" class="dataTable table table-bordered">
+                                            <table id="datatable" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
@@ -166,44 +165,9 @@
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <!-- *********Task Response list************ -->
-                                                <c:set var="index" value="${responsesPage.number * responsesPage.size}" />
-                                                <c:forEach var="taskResponse" items="${responsesPage.content}" varStatus="loopCounter">
-                                                    <c:set var="response" value="${taskResponse[0] }" />
-                                                    <c:set var="task" value="${taskResponse[1] }" />
-                                                    <c:set var="responseDetail" value="${taskResponse[2] }" />
-                                                    <tr  class="${response.grade <= 0 ? 'warning' : ''}">
-                                                        <td class="col-md-1">${index + loopCounter.count }</td>
-                                                        <td><a href="asmt_task_details.vw?asmt_task_id=${task.id}">
-                                                            <c:out value="${task.itemContent}"/></a></td>
-                                                        <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task.modeType)}</td>
-                                                        <td><c:out value="${response.grade}"/></td>
-                                                        <td>
-                                                        <c:if test="${task.modeType == 4}">
-                                                            <button class="btn btn-primary btn-xs btn-td" 
-                                                                onclick ="loadResponseContent(${response.id },${responseDetail.id });" type="button" aria-expanded="false">
-                                                                <i class="fa fa-file-o"></i>&nbsp;
-                                                                <spring:message code="label.asmt.task.response" />
-                                                            </button>
-                                                        </c:if>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                                <!-- *********/Task Response list ************ -->
+                                               
                                               </tbody>
                                             </table>
-                                            <!------------- Pagination -------------->
-                                            <c:if test="${tasksPage.totalPages > 1}">
-                                                <jsp:include page="include/pagination.jsp">
-                                                     <jsp:param name="page" value="asmt_result_details.vw" />
-                                                     <jsp:param name="addParam" value="asmt_process_id=${param.asmt_process_id}" />
-                                                     <jsp:param name="totalPages" value="${responsesPage.totalPages}" />
-                                                     <jsp:param name="totalElements" value="${responsesPage.totalElements}" />
-                                                     <jsp:param name="currentIndex" value="${responsesPage.number}" />
-                                                     <jsp:param name="pageableSize" value="${responsesPage.size}" />
-                                                 </jsp:include>
-                                             </c:if>
-                                            <!--------------------------------------->        
                                         </div>
                                         <div id="itemResponseTabContent" role="tabpanel" class="tab-pane col-md-12 fade in" 
                                               aria-labelledby="item-response-tab">
@@ -312,6 +276,108 @@
                 }
         });
     });
+    </script>
+    
+    <script type="text/javascript">
+    
+    var table = null;
+    
+    
+    $(document).ready(function() 
+    {
+        var taskId = 0;
+        var indexRow = 0;
+        
+        table = $('#datatable').DataTable(
+        {
+            "autoWidth": false,
+            "language": 
+            {
+                "url": "resources/lib/datatables.net/i18n/ru.json"
+            },
+            "iDisplayLength": 12,
+            "processing": true,
+            "serverSide": true,
+            "searching" : false,
+            "pagingType" : "full_numbers",
+            "paging" : true,
+            "lengthChange": true,
+            "info" : true,
+           
+            "ajax": 
+            {   "url": 'rest/assessment/response/list?asmt_process_id=${process.id}',
+                "type": "GET"
+            },
+            "columns": [
+                { "data": null , "width": "5%" , 'searchable': false,'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                { "data": null ,'searchable': false, 'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        if(data['taskId'] != taskId)
+                            return '<a href="asmt_task_details.vw?asmt_task_id='+data['taskId']+'">'+data['taskItemContent']+'</a>';
+                        else
+                            return '';
+                    }
+                },
+                { "data": null ,'searchable': false, 'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        if(data['taskId'] != taskId)
+                            return data['taskModeTypeName'];
+                        else
+                            return '';
+                    }
+                },
+                { "data": null ,'searchable': false, 'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        if(data['taskId'] != taskId)
+                            return data['grade'];
+                        else
+                            return '';
+                    }
+                },
+               
+                { "data": null,'orderable': false,
+                    "render" : function ( data, type, full, meta ) 
+                    { 
+                        taskId = data['taskId'];
+
+                        if(data['taskModeType'] == 4)
+                        {
+                            return ' <button class="btn btn-primary btn-xs btn-td"'+ 
+                                   ' onclick ="loadResponseContent('+data['responseDetailId']+');"' +
+                                   ' type="button" aria-expanded="false"><i class="fa fa-file-o"></i>&nbsp;' +
+                                   ' <spring:message code="label.asmt.task.response" /></button>';
+                        }
+                        else if(data['taskModeType'] == 3)
+                        {
+                           return data['itemResponse'];
+                        }
+                        else
+                        {
+                           return data['itemDetail'];
+                        }
+                   }
+                }
+            ],
+            "createdRow": function( row, data, dataIndex ) 
+            {
+                if ( data['grade'] <= 0 ) 
+                {
+                  $(row).addClass( 'warning' );
+                }
+            },
+    
+        });
+      
+    });
+ 
     </script>
     
 

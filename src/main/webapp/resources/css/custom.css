@@ -27,6 +27,15 @@
     border: 1px solid #c0c0c0;
     margin-top: 5px;
 }
+
+.item-deatail-info
+{
+    word-wrap: break-word;
+    height: 100px;
+    overflow: scroll;
+    border: 1px solid #c0c0c0;
+    margin-top: 1px;
+}
 /* **************************************** */
 
 .daterangepicker .ranges li {

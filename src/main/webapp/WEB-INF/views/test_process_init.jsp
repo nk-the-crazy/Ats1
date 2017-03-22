@@ -66,42 +66,52 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-                                    <div class="col-md-12">
+                                   <!-- ---------------------- -->
+                                  <c:if test="${requestScope.errorMessage != null}">
+                                      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                           <spring:message code="${requestScope.errorMessage}"/>
+                                      </div>
+                                  </c:if>
+                                  <!-- ---------------------- -->
+                                   <div class="col-md-12">
+                                   <form action="test_process_start.do" method="POST">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    <input type="hidden" name="taskIndex" value="0"/>
                                     <table class="table table-bordered dataTable">
                                       <thead>
                                         <tr>
-                                            <th colspan="2"><i class="fa fa-graduation-cap"></i>&nbsp;&nbsp;
+                                            <th colspan="3"><i class="fa fa-graduation-cap"></i>&nbsp;&nbsp;
                                             <spring:message code="label.assessment" /></th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         <tr>
                                           <th scope="row" class="col-md-3"><spring:message code="label.assessment.name" />:</th>
-                                          <td class="col-md-5"><c:out value="${process.assessment.name}"/></td>
+                                          <td class="col-md-5" colspan="2"><c:out value="${process.assessment.name}"/></td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.assessment.type" />:</th>
-                                          <td>
+                                          <td colspan="2">
                                                 ${SystemUtils.getAttribute('system.attrib.assessment.type',process.assessment.type)}
                                           </td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.date.time" />:</th>
-                                          <td class="col-md-5"><c:out value="${process.assessment.time}"/>&nbsp;&nbsp;
+                                          <td class="col-md-5" colspan="2"><c:out value="${process.assessment.time}"/>&nbsp;&nbsp;
                                             <spring:message code="label.date.time.minutes" />
                                           </td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.asmt.task.count" />:</th>
-                                          <td><c:out value="${taskCount}"/></td>
+                                          <td colspan="2"><c:out value="${taskCount}"/></td>
                                         </tr>
                                         <tr>
                                           <th scope="row"><spring:message code="label.assessment.maxgrade" />:</th>
-                                          <td><c:out value="${process.assessment.maxGrade}"/></td>
+                                          <td colspan="2"><c:out value="${process.assessment.maxGrade}"/></td>
                                         </tr>
                                         <tr>
                                           <th scope="row" ><spring:message code="label.date.start" />-<spring:message code="label.date.end" /></th>
-                                          <td><fmt:formatDate pattern="${dateFormatShort }" value="${process.assessment.startDate}" />-
+                                          <td colspan="2"><fmt:formatDate pattern="${dateFormatShort }" value="${process.assessment.startDate}" />-
                                           <fmt:formatDate pattern="${dateFormatShort }" value="${process.assessment.endDate}" />
                                           </td>
                                         </tr>
@@ -127,30 +137,34 @@
                                             </c:otherwise>
                                           </c:choose>
                                           <th scope="row" ><spring:message code="label.data.status" />:</th>
-                                          <td  class="${status_color}">
+                                          <td class="${status_color}" colspan="2">
                                                 ${SystemUtils.getAttribute('system.attrib.assessment.status',asmt_status)}
                                           </td>
                                         </tr>
                                         <tr>
-                                          <th scope="row" ></th>
+                                          <th scope="row" ><spring:message code="label.assessment.entry.code" />:</th>
+                                           <td  class="col-md-2">
+                                                <input type="text" id="inpEntryCode" name="entryCode" class="form-control input-sm" required="required">
+                                           </td>
                                           <td>
                                             <c:if test="${asmt_status == 1 }">
-                                              <a href="test_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
+                                              <button type="submit" class="btn btn-danger btn-xs">
                                                 <i class="fa fa-clock-o"></i>&nbsp;
                                                 <spring:message code="label.assessment.start"/>
-                                               </a> 
+                                               </button> 
                                              </c:if>
                                             <c:if test="${asmt_status == 5 }">
-                                              <a href="test_process_start.do?taskIndex=0" role="button" class="btn btn-danger btn-xs">
+                                              <button type="submit" class="btn btn-danger btn-xs">
                                                 <i class="fa fa-clock-o"></i>&nbsp;
                                                 <spring:message code="label.action.resume"/>
-                                               </a> 
+                                               </button> 
                                              </c:if>
                                            </td>
                                         </tr>
                                       </tbody>
                                     </table>
-                                    </div>
+                                   </form>
+                                   </div>
                                 </div>
 							</div>
 						</div>

@@ -54,6 +54,7 @@ public class ModelView
     public static String VIEW_ASMT_TASK_LIST_PAGE  = "asmt_task_list";
     public static String VIEW_ASMT_TASK_DETAILS_PAGE  = "asmt_task_details";
     public static String VIEW_ASMT_TASK_IMPORT_PAGE  = "asmt_task_import";
+    public static String VIEW_ASMT_TASK_LIST_MD_PAGE  = "modal/asmt_task_list_md";
     
     //Assessment
     public static String VIEW_ASMT_REGISTER_PAGE  = "asmt_test_register";

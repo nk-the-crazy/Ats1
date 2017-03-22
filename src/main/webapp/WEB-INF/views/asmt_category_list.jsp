@@ -37,8 +37,9 @@ model.assessment.*" %>
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
 
-<!-- Tree View -->
-<link rel="stylesheet" href="resources/lib/treeview/css/gijgo.css">
+
+<!-- Tree Grid -->
+<link rel="stylesheet" href="resources/lib/jquery-treegrid/css/jquery.treegrid.css">
 
 </head>
 <!-- ***************************** -->
@@ -68,10 +69,30 @@ model.assessment.*" %>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-                                     <div class="container-fluid">
-                                        <div id="tree"></div>
-                                    </div>
-                                </div>
+                                    <table id="datatable" class="table table-striped table-bordered tree dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:4%;">№</th>
+                                            <th class="col-md-5"><spring:message code="label.asmt.task.category.name" /></th>
+                                            <th class="col-md-1"><spring:message code="label.asmt.task.count" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="category" items="${categoryList}" varStatus="loopCounter">
+                                            <tr class="treegrid-${category.id}">
+                                                <td>${loopCounter.count}</td>
+                                                <td><a href="asmt_category_details.vw?asmt_category_id=${category.id}">
+                                                ${category.name}</a></td>
+                                                <td>No Data</td>
+                                            </tr>
+                                            <c:set var="node" value="${category}" scope="request"/>
+                                            <jsp:include page="include/node.jsp"/>
+                                         
+                                        </c:forEach>
+                                       
+                                    </tbody>
+                                    </table>
+                                  </div>
 							</div>
 						</div>
 					</div>
@@ -84,6 +105,7 @@ model.assessment.*" %>
 					value="main" /></jsp:include>
 			<!-- /footer content -->
 		</div>
+       
 	</div>
 
 	<!-- jQuery -->
@@ -101,23 +123,21 @@ model.assessment.*" %>
 	<script src="resources/js/custom.min.js"></script>
     
     <!-- Tree Grid -->
-    <script type="text/javascript" src="resources/lib/treeview/js/gijgo.js"></script>
+    <script type="text/javascript" src="resources/lib/jquery-treegrid/js/jquery.treegrid.min.js"></script>
     <script type="text/javascript">
 
-    $(document).ready(function () 
+
+    $(document).ready(function() 
     {
-        $('#tree').tree(
-        {
-            uiLibrary: 'bootstrap',
-            dataSource: 'rest/assessment/task/category/list',
-            textField: 'name',
-            primaryKey: 'id',
-            dataBinding: function (e) {
-                alert('dataBinding is fired.');
-            }
+        $('.tree').treegrid(
+		{
+            expanderExpandedClass: 'glyphicon glyphicon-minus',
+            expanderCollapsedClass: 'glyphicon glyphicon-plus',
+            initialState: 'collapsed',
+            treeColumn: 1
         });
     });
-    
+    	    
     </script>
 </body>
 </html>

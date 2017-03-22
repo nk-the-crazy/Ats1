@@ -186,7 +186,7 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                     <!------------- Pagination -------------->
                                     <c:if test="${resultsPage.totalPages > 1}">
                                         <jsp:include page="include/pagination.jsp">
-                                             <jsp:param name="page" value="asmt_result_list.vw" />
+                                             <jsp:param name="page" value="resport_result_list.vw" />
                                              <jsp:param name="totalPages" value="${resultsPage.totalPages}" />
                                              <jsp:param name="totalElements" value="${resultsPage.totalElements}" />
                                              <jsp:param name="currentIndex" value="${resultsPage.number}" />

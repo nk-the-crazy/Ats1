@@ -3,10 +3,6 @@ package web.controller.assessment;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +22,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import common.utils.StringUtils;
 import model.assessment.Assessment;
-import model.assessment.task.AssessmentTask;
 import model.common.session.SessionData;
 import model.identity.User;
 import model.report.assessment.AssessmentResult;
@@ -136,17 +131,15 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/asmt_test_details.vw")
-    public ModelAndView getAssessmentDetails(@RequestParam( "assessment_id" ) long assessmentId, Pageable pageable )
+    public ModelAndView getAssessmentDetails( @RequestParam( "assessment_id" ) long assessmentId)
     {
         ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
         
         try
         {
             Assessment asmtDetails = assessmentManager.getAssessmentFullDetails( assessmentId );
-            Page<AssessmentTask> assessmentTasks = assessmentManager.getAssessmentTasks( assessmentId, pageable );
-
+            
             model.addObject( "assessmentDetails", asmtDetails );
-            model.addObject( "assessmentTasks", assessmentTasks );
             model.setViewName( ModelView.VIEW_ASMT_DETAILS_PAGE);
         }
         catch(Exception e)
@@ -207,16 +200,11 @@ public class AssessmentController
      */
     @RequestMapping("/asmt_test_edit.vw")
     public String editAssessmentView( @RequestParam( name = "assessment_id" ) long assessmentId, 
-                                      Model model, 
-                                      Pageable pageable,
-                                      HttpSession session )
+                                      Model model)
     {
         Assessment assessment = assessmentManager.getAssessmentFullDetails( assessmentId );
         model.addAttribute( "assessmentDetails", assessment );
         model.addAttribute( "groupShortList", groupManager.getGroupShortListByName( "" ));
-        model.addAttribute( "assessmentTasks", assessmentManager.getAssessmentTasks( assessmentId, pageable ));
-        
-        session.setAttribute( "tsk", assessment.getTasks());
         
         return ModelView.VIEW_ASMT_EDIT_PAGE;
     }
@@ -226,16 +214,15 @@ public class AssessmentController
      * 
      */
     @RequestMapping( value = "/asmt_test_edit.do")
-    public String editAssessment( @ModelAttribute( "task" ) Assessment assessment, Model model , HttpSession session )
+    public String editAssessment( @ModelAttribute( "assessment" ) Assessment assessment, Model model )
     {
         try
         {
-            @SuppressWarnings("unchecked")
-            Set<AssessmentTask> tasks = (Set<AssessmentTask>)session.getAttribute( "tsk" );
+            Assessment tempAssessment = assessmentManager.getAssessment( assessment.getId() );
             
-            assessment.setTasks( tasks );
+            assessment.setAuthor( tempAssessment.getAuthor());
+            assessment.setTasks( tempAssessment.getTasks() );
             assessment = assessmentManager.saveAssessment( assessment );
-            session.removeAttribute( "tsk" );
             
             return "redirect:asmt_test_details.vw?assessment_id=" + assessment.getId();
         }
@@ -249,7 +236,7 @@ public class AssessmentController
             model.addAttribute( "errorMessage", "message.error.system" );
         }
         
-        return editAssessmentView(assessment.getId(), model , null ,session);
+        return editAssessmentView(assessment.getId(), model);
         
     }
 

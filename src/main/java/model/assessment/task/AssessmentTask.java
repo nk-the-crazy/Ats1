@@ -1,5 +1,6 @@
 package model.assessment.task;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,15 +14,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table( name = "asmt_task" )
-public class AssessmentTask
+public class AssessmentTask implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7805653327391514635L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,8 +37,7 @@ public class AssessmentTask
     @Column(name = "item_name")
     private String itemName;
     
-    @Column(name = "item_content")
-    @Lob
+    @Column(name = "item_content", columnDefinition = "text")
     private String itemContent;
     
     @Column(name = "item_grade")
@@ -48,6 +54,11 @@ public class AssessmentTask
     
     @Column(name = "complexity")
     private short complexity = 2;
+    
+   // *********************************************
+    @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY )
+    @JoinColumn(name="info_id")
+    private AssessmentTaskInfo detailInfo;
     
     
     // *********************************************
@@ -174,5 +185,16 @@ public class AssessmentTask
     {
         this.itemGrade = itemGrade;
     }
+
+    public AssessmentTaskInfo getDetailInfo()
+    {
+        return detailInfo;
+    }
+
+    public void setDetailInfo( AssessmentTaskInfo detailInfo )
+    {
+        this.detailInfo = detailInfo;
+    }
+
     
 }

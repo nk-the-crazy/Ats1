@@ -88,15 +88,14 @@ common.utils.system.SystemUtils"%>
                                         class="form-horizontal form-label-left">
                                         <table>
                                             <tr>
-                                                <td><label
-                                                    class="control-label"
-                                                    for="task-name"><spring:message code="label.asmt.task.name" />:&nbsp;</label>
+                                                <td><label class="control-label"
+                                                    for="task-content"><spring:message code="label.asmt.task.item.content" />:&nbsp;</label>
                                                 </td>
-                                                <td><input type="text" id="task-name" name="taskItemName" value="${param.taskItemName}"
+                                                <td><input type="text" id="task-content" name="taskItemContent" value="${param.taskItemContent}"
                                                     class="form-control input-sm">
                                                 </td>
-                                                <td>&nbsp;&nbsp; <label class="control-label"
-                                                    for="category-name"><spring:message code="label.asmt.task.category" />:&nbsp;</label>
+                                                <td><label class="control-label" for="category-name">
+                                                    <spring:message code="label.asmt.task.category" />:</label>
                                                 </td>
                                                 <td><input type="text" value="${param.categoryName}"
                                                     id="category-name" name="categoryName" class="form-control input-sm">
@@ -140,22 +139,23 @@ common.utils.system.SystemUtils"%>
                                         <tbody>
                                         <!-- *********Task list ************ -->
                                         <c:set var="index" value="${tasksPage.number * tasksPage.size}" />
-                                        <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
+                                        <c:forEach var="taskObject" items="${tasksPage.content}" varStatus="loopCounter">
+                                            <c:set var="task" value="${taskObject[0]}" />
                                             <c:choose>
-                                                <c:when test="${task[4] == 2}"><c:set var = "status_color" value="info"/></c:when>
-                                                <c:when test="${task[4] == 4}"><c:set var = "status_color" value="warning"/></c:when>
+                                                <c:when test="${task.modeType == 2}"><c:set var = "status_color" value="info"/></c:when>
+                                                <c:when test="${task.modeType == 4}"><c:set var = "status_color" value="warning"/></c:when>
                                                 <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
                                             </c:choose>
                                             <tr class="${status_color}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
-                                                <td><a href="asmt_task_details.vw?asmt_task_id=${task[0]}">
-                                                    <c:out value="${task[1]}"/></a></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.task.complexity',task[2])}</td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode',task[3])}</td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[4])}</td>
-                                                <td><a href="asmt_category_details.vw?asmt_category_id=${task[6] }">
-                                                    <c:out value="${task[7]}"/></a></td>
-                                                <td>${SystemUtils.getAttribute('system.attrib.data.status',task[5])}</td>
+                                                <td><a href="asmt_task_details.vw?asmt_task_id=${task.id}">
+                                                    <c:out value="${task.itemName}"/></a></td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.complexity',task.complexity)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode',task.mode)}</td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task.modeType)}</td>
+                                                <td><a href="asmt_category_details.vw?asmt_category_id=${taskObject[1] }">
+                                                    <c:out value="${taskObject[2]}"/></a></td>
+                                                <td>${SystemUtils.getAttribute('system.attrib.data.status',task.status)}</td>
                                             </tr>
                                         </c:forEach>
                                         <!-- *********/Task list ************ -->

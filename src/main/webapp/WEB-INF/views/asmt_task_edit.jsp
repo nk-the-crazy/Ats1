@@ -196,6 +196,15 @@
                                                     </select>
                                                   </td>
                                                 </tr>
+                                                <tr>
+                                                  <th scope="row" ><label class="control-label" for="detail-info">
+                                                  <spring:message code="label.asmt.task.category.desc" />:</label></th>
+                                                  <td>
+                                                    <div class="col-md-12">
+                                                        <textarea rows="4" name="detailInfo.description" class="resizable_textarea form-control">${task.detailInfo.description}</textarea>
+                                                    </div>
+                                                  </td>
+                                                </tr> 
                                               </tbody>
                                             </table>
                                         </div>

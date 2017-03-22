@@ -45,9 +45,9 @@
                     <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">
                         <spring:message code="label.action.cancel" />
                     </button>
-                    <button type="button" class="btn btn-success btn-xs" onclick="submitForm();">
+                    <a role="button" class="btn btn-success btn-xs" onclick="submitForm();">
                         <i class="fa fa-plus"></i>&nbsp;&nbsp;<spring:message code="label.action.add" />
-                    </button>
+                    </a>
                 </div>
                 <!-- /modal-footer -->
             </div>
@@ -59,10 +59,10 @@
 <script src="resources/lib/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
 <script type="text/javascript">
 
-    $("#userDataForm").submit(function(e)
+    $("#userDataForm").on('submit', function(e)
     {
-        var postData = $(this).serializeArray();
-        var formURL = $(this).attr("action");
+    	var postData = $(this).serializeArray();
+    	var formURL = $(this).attr("action");
         
         $.ajax(
         {
@@ -79,7 +79,9 @@
             }
         });
         
-        e.preventDefault(); //STOP default action
+        e.preventDefault(); 
+        
+        return false;
     });
     // ----------------------------
     
@@ -87,15 +89,25 @@
     {
         $("#userDataForm").submit(); 
     }
+    
+    // ----------------------------
+    function getLang()
+    {
+        var lang = '${pageContext.response.locale }';
+        if( lang == "" || lang == "en")
+            return "";
+        else
+            return 'resources/lib/datatables.net/i18n/'+lang+'.json';
+    }
     // ----------------------------
     
     $(document).ready(function() 
     {
-        $('#datatable').dataTable(
+        $('#datatable').DataTable(
         {
         	"language": 
         	{
-                "url": "resources/lib/datatables.net/i18n/ru.json"
+                "url": getLang()
             },
             "fixedHeader": true,
             "order": [],

@@ -61,6 +61,9 @@ public class AssessmentProcess
 
     @Transient
     List<Long> taskIds;
+    
+    @Transient
+    String entryCode;
  
     @Transient
     AssessmentTask currentTask = null;
@@ -167,7 +170,16 @@ public class AssessmentProcess
     {
         this.currentTask = currentTask;
     }
-    
-    
+
+    public String getEntryCode()
+    {
+        return entryCode;
+    }
+
+    public void setEntryCode( String entryCode )
+    {
+        this.entryCode = entryCode;
+    }
+
 
 }

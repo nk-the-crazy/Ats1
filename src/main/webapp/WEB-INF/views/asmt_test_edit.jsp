@@ -38,16 +38,14 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <!-- Data Table -->
-<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css"
+<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.css"
     rel="stylesheet">
 
 </head>
 <!-- ***************************** -->
 <c:set var="assessment" value="${requestScope.assessmentDetails}"/>
 <c:set var="groups" value="${requestScope.groupShortList}"/>
-<c:set var="tasksPage" value="${requestScope.assessmentTasks}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
-<c:set var="assessment.tasks" value="${tasksPage.content}"/>
 <!-- ***************************** -->
 
 <body class="nav-md">
@@ -88,7 +86,7 @@
                                       <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                <!-- ---------------------- -->
+                                 <!-- ---------------------- -->
                                   <c:if test="${requestScope.errorMessage != null}">
                                       <div class="alert alert-danger alert-dismissible fade in" role="alert">
                                            <spring:message code="${requestScope.errorMessage}"/>
@@ -224,52 +222,25 @@
                                                </div>                                         
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade col-md-10" id="tab_content3"  aria-labelledby="tasks-tab">
-                                            <table id="" class="dataTable table table-bordered">
+                                            <a role="button" class="btn btn-success btn-xs" href="asmt_task_list.mvw?submitUrl=rest&#47;assessment&#47;test&#47;task&#47;add&#63;assessment_id=${assessment.id }"
+                                                    id="btnAddTasks" rel="modal">
+                                                    <i class="fa fa-plus"></i>&nbsp;
+                                                    <spring:message code="label.menu.task.register"/>
+                                            </a>
+                                            <div class="modal-container"></div><br>
+                                            <table id="datatable" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
-                                                    <th><spring:message code="label.asmt.task.item.name" /></th>
+                                                    <th><spring:message code="label.asmt.task.item.content" /></th>
                                                     <th><spring:message code="label.asmt.task.mode.type" /></th>
                                                     <th></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <!-- *********Task list ************ -->
-                                                <c:set var="index" value="${tasksPage.number * tasksPage.size}" />
-                                                <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
-                                                    <c:choose>
-                                                        <c:when test="${task[3] == 2}"><c:set var = "status_color" value="info"/></c:when>
-                                                        <c:when test="${task[3] == 4}"><c:set var = "status_color" value="warning"/></c:when>
-                                                    <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
-                                                    </c:choose>
-                                                    <tr class="${status_color}">
-                                                        <td class="col-md-1">${index + loopCounter.count }</td>
-                                                        <td><a href="asmt_task_details.vw?asmt_task_id=${task[1]}">
-                                                            <c:out value="${task[2]}"/></a></td>
-                                                        <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[3])}</td>
-                                                        <td><button class="btn btn-danger btn-remove btn-xs btn-td" type="button">
-                                                                <i class="fa fa-close"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                                <!-- *********/Task list ************ -->
                                               </tbody>
                                             </table>
-                                             <!------------- Pagination -------------->
-                                            <c:if test="${tasksPage.totalPages > 1}">
-                                                <jsp:include page="include/pagination.jsp">
-                                                     <jsp:param name="page" value="asmt_test_edit.vw" />
-                                                     <jsp:param name="addParam" value="assessment_id=${param.assessment_id}" />
-                                                     <jsp:param name="totalPages" value="${tasksPage.totalPages}" />
-                                                     <jsp:param name="totalElements" value="${tasksPage.totalElements}" />
-                                                     <jsp:param name="currentIndex" value="${tasksPage.number}" />
-                                                     <jsp:param name="pageableSize" value="${tasksPage.size}" />
-                                                 </jsp:include>
-                                             </c:if>
-                                            <!--------------------------------------->                                              
                                         </div>
-                                        
                                     </div>
                                   </div>
                                </div>
@@ -288,8 +259,6 @@
         </jsp:include>
         <!-- /footer content -->
     </div>
-   
-
 
     <!-- jQuery -->
     <script src="resources/lib/jquery/js/jquery.min.js"></script>
@@ -302,6 +271,9 @@
     <!-- NProgress -->
     <script src="resources/lib/nprogress/nprogress.js"></script>
 
+    <!-- Bootbox-->
+    <script src="resources/lib/bootbox/js/bootbox.min.js"></script>
+    
     <!-- Custom Theme Scripts -->
     <script src="resources/js/custom.min.js"></script>
 
@@ -316,7 +288,7 @@
     {
         $('#formAssessment').on('submit', function(e)
         {
-            e.preventDefault();
+        	e.preventDefault();
             createHiddenElements(this);
             this.submit();
         });
@@ -386,8 +358,158 @@
       });
     </script>
     <!-- /bootstrap-daterangepicker --> 
-
+    <script type="text/javascript">
     
-
+    $('a[rel=modal]').on('click', function(evt) 
+    {
+        evt.preventDefault();
+        
+        $('.modal-container').load($(this).attr('href'), function (responseText, textStatus) 
+        {
+            if ( textStatus === 'success' || textStatus === 'notmodified') 
+            {
+                $("#modalTaskList").on("hidden.bs.modal", function (e) 
+                {   
+                    $('#modalTaskList').unbind();
+                    table.ajax.reload();    
+                });
+                
+                $('#modalTaskList').modal().show();
+            }
+        });
+    });
+    
+   
+    
+    //---------------------------------------
+    $(document).on('click', '.btn-remove', function(e) 
+    {
+    	btn = this;
+    	
+    	bootbox.confirm(
+        {
+            title: '<i class="fa fa-exclamation"></i>&nbsp;&nbsp;<spring:message code="label.attention"/>',
+            message: "<spring:message code="label.action.remove"/>?",
+            size:"small",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i>&nbsp;<spring:message code="label.action.cancel"/>',
+                    className: 'btn-default btn-xs'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i>&nbsp;<spring:message code="label.action.submit"/>',
+                    className: 'btn-primary btn-xs'
+                }
+            },
+            callback: function (result) 
+            {
+            	if(result)
+            	{
+            	  assessmentId = ${assessment.id};
+                  taskId = $(btn).val();
+                  removeTaskFromAssessment(btn,assessmentId,taskId);   
+                }
+            }
+        });
+    });
+    	    
+   //----------------
+    function removeTaskFromAssessment(element, assessmentId, taskId)
+    {
+    
+        $(element).text(' ... ');
+        var sURL = 'rest/assessment/test/task/remove?asmt_task_id='+taskId+'&assessment_id='+assessmentId;
+        
+        $.ajax(
+        {
+            url:sURL,
+            type: 'GET',
+            success: function (response) 
+            {
+                $(element).parents('tr:first').remove();
+            },
+            error: function () 
+            {
+                $(element).text(' Error !');     
+            },
+        });
+    }
+    </script>
+    
+    <script type="text/javascript">
+    //---------------------
+    function getLang()
+    {
+    	var lang = '${pageContext.response.locale }';
+    	if(lang == "" || lang == "en")
+    		return "";
+    	else
+    		return 'resources/lib/datatables.net/i18n/'+lang+'.json';
+    }
+    //---------------------
+    
+    var table = null;
+    
+    $(document).ready(function() 
+    {
+        var taskId = 0;
+        var indexRow = 0;
+        
+        table = $('#datatable').DataTable(
+        {
+            "autoWidth": false,
+            "language": 
+            {
+                "url": getLang()
+            },
+            "iDisplayLength": 12,
+            "processing": true,
+            "serverSide": true,
+            "searching" : false,
+            "pagingType" : "full_numbers",
+            "paging" : true,
+            "lengthChange": true,
+            "info" : true,
+            
+            "ajax": 
+            {   "url": 'rest/assessment/test/task/list?assessment_id=${assessment.id}',
+                "type": "GET"
+            },
+            "columns": [
+                { "data": null , "width": "5%" , 'searchable': false,'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                { "data": null ,'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        return '<a href="asmt_task_details.vw?asmt_task_id='+data['id']+'">'+data['itemContent']+'</a>';
+                    }
+                },
+                { "data": "modeTypeName" ,'orderable': false },
+                { "data": null,'orderable': false,
+                    "render" : function ( data, type, full ) 
+                    { 
+                      return '<button class="btn btn-danger btn-remove btn-xs btn-td" value="'+data['id']+'"' +
+                             'type="button"><i class="fa fa-close"></i></button>';
+                    }
+                }
+            ],
+            "createdRow": function( row, data, dataIndex ) 
+            {
+                if ( data["modeType"] == 2 ) 
+                {
+                  $(row).addClass( 'info' );
+                }
+                else if ( data["modeType"] == 4 ) 
+                {
+                  $(row).addClass( 'warning' );
+                }
+            },
+        });
+    });
+    </script>
 </body>
 </html>

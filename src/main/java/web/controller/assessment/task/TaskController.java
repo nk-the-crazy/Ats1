@@ -36,8 +36,8 @@ public class TaskController
      * 
      */
     @RequestMapping( value = "/asmt_task_list.vw")
-    public ModelAndView getAssessmentTasks( @RequestParam( name = "taskItemName" , defaultValue = "", required = false ) 
-                                            String taskItemName, 
+    public ModelAndView getAssessmentTasks( @RequestParam( name = "taskItemContent" , defaultValue = "", required = false ) 
+                                            String taskItemContent, 
                                             @RequestParam( name = "categoryName" , defaultValue = "", required = false ) 
                                             String categoryName, 
                                             @RequestParam( name = "taskModeType" , defaultValue = "0", required = false ) 
@@ -48,7 +48,7 @@ public class TaskController
             
         try
         {
-            Page<AssessmentTask> tasksPage = taskManager.getTasksByDetails( taskItemName, categoryName, taskModeType, pageable );
+            Page<Object> tasksPage = taskManager.getTasksByDetails( taskItemContent, categoryName, taskModeType, pageable );
                     
             model.addObject( "tasksPage", tasksPage );
             model.setViewName( ModelView.VIEW_ASMT_TASK_LIST_PAGE);
@@ -178,6 +178,31 @@ public class TaskController
         return registerTaskView(model);
         
     }
+    
+    
+    /*******************************************************
+     * 
+     */                        
+    @RequestMapping( value = "/asmt_task_list.mvw")
+    public ModelAndView getTaskListModalView(@RequestParam( name = "submitUrl", required = false ) String submitUrl)
+    {
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+        
+        try
+        {
+            model.setViewName( ModelView.VIEW_ASMT_TASK_LIST_MD_PAGE); 
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting task list modal :", e ); 
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        
+        }
+        
+        return model;
+        
+    }
+
     
    
     /*******************************************************

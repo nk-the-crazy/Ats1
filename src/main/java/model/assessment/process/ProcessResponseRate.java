@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import model.identity.User;
@@ -30,8 +29,7 @@ public class ProcessResponseRate
     @Column(name = "grade")
     private float grade = 0;
     
-    @Column(name = "comment")
-    @Lob
+    @Column(name = "comment", columnDefinition = "text")
     private String comment;    
     
     // *********************************************

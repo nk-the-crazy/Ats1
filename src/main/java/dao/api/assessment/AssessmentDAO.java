@@ -77,17 +77,7 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
     Assessment getFullDetails( @Param("assessmentId") long assessmentId );
 
     
-    //********************************************
-    @Query(value = "SELECT a, count (t.id) as taskCount "
-            + " FROM Assessment a "
-            + " LEFT JOIN a.tasks t "
-            + " GROUP BY a.id "
-
-            + " HAVING a.id=:assessmentId " )
-    Object getDetails( @Param("assessmentId") long assessmentId );
-    
-    
-   //********************************************
+     //********************************************
     @Query(value = "SELECT DISTINCT a "
             + " FROM Assessment a "
             + " JOIN a.participants p "

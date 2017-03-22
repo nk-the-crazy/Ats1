@@ -11,7 +11,6 @@ import common.exceptions.assessment.TimeExpiredException;
 import model.assessment.Assessment;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
-import model.assessment.task.AssessmentTask;
 import model.identity.User;
 import model.report.assessment.AssessmentResult;
 
@@ -33,8 +32,6 @@ public interface AssessmentManager
  
     Page<Assessment> getAssessmentsByUserId( long userId, Pageable pageable );
 
-    Object getAssessmentDetails( long assessmentId );
-
     AssessmentProcess initProcess( long assessmentId, User user );
     
     ProcessResponse startProcess( AssessmentProcess assessmentProcess, ProcessResponse processResponse, int nextTaskIndex ) throws TimeExpiredException;
@@ -49,7 +46,7 @@ public interface AssessmentManager
 
     AssessmentProcess createAssessmentProcess();
 
-    Page<AssessmentTask> getAssessmentTasks( long assessmentId, Pageable pageable );
+    Page<Object> getAssessmentTasks( long assessmentId, Pageable pageable );
 
     Assessment createAssessment( Assessment assessment, User author, List<Long> participantIds );
 
@@ -70,4 +67,10 @@ public interface AssessmentManager
     AssessmentResult getAssessmentResultDetail( long processId );
 
     User getProcessUserDetails( long userId );
+
+    void removeTask( long assessmentId, long taskId );
+
+    void addTasks( long assessmentId, List<Long> taskIds );
+
+    Assessment getAssessment( long assessmentId );
 }

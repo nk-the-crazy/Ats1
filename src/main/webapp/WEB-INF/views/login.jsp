@@ -60,14 +60,14 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="login-name"><spring:message code="label.user.login"/>:<span class="required"></span>
                         </label>
                         <div class="col-md-8 col-sm-8 col-xs-12">
-                          <input value="admin1" type="text" id="login-name" name="userName" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="login-name" name="userName" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password"><spring:message code="label.password"/>:<span class="required"></span>
                         </label>
                         <div class="col-md-8 col-sm-8 col-xs-12">
-                          <input value="secret" type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                          <input  type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                         <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-3">
