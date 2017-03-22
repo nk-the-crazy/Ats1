@@ -35,7 +35,7 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <!-- Data Table -->
-<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet">
 
 </head>
 <!-- ***************************** -->
@@ -60,7 +60,7 @@
                     <div class="row">
                         <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="x_panel">
-                            <form id="group" data-parsley-validate action="group_edit.do" 
+                            <form id="groupFrom" data-parsley-validate action="group_edit.do" 
                                   class="form-horizontal form-label-left" method="POST">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="id" value="${group.id}"/>
@@ -171,7 +171,7 @@
             </div>
         </div>
         <!-- /page content -->
-
+       
         <!-- footer content -->
         <jsp:include page="include/footer.jsp">
             <jsp:param name="page" value="group_edit.vw" />
@@ -200,6 +200,19 @@
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
+    
+   //-----------------------------
+
+    function getLang()
+    {
+        var lang = '${pageContext.response.locale }';
+        if( lang == "" || lang == "en")
+            return "";
+        else
+            return 'resources/lib/datatables.net/i18n/'+lang+'.json';
+    }   
+    //----------------------------
+    
     var table;
     
     $(document).ready(function()
@@ -276,7 +289,7 @@
         	"autoWidth": false,
         	"language": 
             {
-                "url": "resources/lib/datatables.net/i18n/ru.json"
+                "url": getLang()
             },
             "iDisplayLength": 12,
             "processing": true,
@@ -318,11 +331,8 @@
                              'type="button"><i class="fa fa-close"></i></button>';
                     }
                 },
-              
             ]
-    
         });
-      
     });
  
     </script>

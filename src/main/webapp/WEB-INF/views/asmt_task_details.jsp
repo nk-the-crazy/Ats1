@@ -135,11 +135,16 @@
                                                   <td class="col-lg-3"><a href="asmt_category_details.vw?asmt_category_id=${task.category.id }">
                                                   <c:out value="${task.category.name}"/></a></td>
                                                 </tr>
-                                                
                                                 <tr>
                                                   <th scope="row" ><spring:message code="label.data.status" />:</th>
                                                     <td class="${task.status == 1 ? 'a' : 'danger'}">
                                                     ${SystemUtils.getAttribute('system.attrib.data.status', task.status)}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" ><spring:message code="label.asmt.task.category.desc" />:</th>
+                                                    <td>
+                                                    <div class="item-detail-info">${task.detailInfo.description }</div>
                                                     </td>
                                                 </tr>
                                               </tbody>

@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 import common.exceptions.assessment.TimeExpiredException;
 import common.exceptions.security.AccessDeniedException;
 import common.utils.StringUtils;
+import common.utils.security.SecurityUtils;
 import dao.api.assessment.AssessmentDAO;
 import dao.api.assessment.process.ProcessDAO;
 import dao.api.assessment.process.ProcessResponseDAO;
@@ -154,6 +155,9 @@ public class AssessmentManagerImpl implements AssessmentManager
             
             if(process.getState() == ProcessState.Ready.getId() )
             {
+                if(!process.getEntryCode().equals( process.getAssessment().getEntryCode() ))
+                    throw new AccessDeniedException("Invalid Entry Code");
+                
                 process.setStartDate( new Date(System.currentTimeMillis()) );
                 process.setEndDate( process.getStartDate() );
                 process.setState( ProcessState.Started.getId() );
@@ -161,6 +165,9 @@ public class AssessmentManagerImpl implements AssessmentManager
             }
             else if(process.getState() == ProcessState.Resumed.getId() )
             {
+                if(!process.getEntryCode().equals( process.getAssessment().getEntryCode() ))
+                    throw new AccessDeniedException("Invalid Entry Code");
+                
                 process.setEndDate( new Date(System.currentTimeMillis()) );
                 process.setState( ProcessState.Started.getId() );
                 processDAO.save( process );
@@ -184,27 +191,36 @@ public class AssessmentManagerImpl implements AssessmentManager
                             itr.remove();
                         else
                         {
-                            float grade = calculateGrade( process.getAssessment().getEvaluationMethod(),
-                                                          process.getCurrentTask(), 
-                                                          responseDetail.getTaskDetail().getId(),
-                                                          responseDetail.getItemResponse() );  
-                            
-                            if(process.getAssessment().getEvaluationMethod() == EvaluationMethod.TrueAnswers.getId())
+                            if(processResponse.getTask().getModeType() != AssessmentTaskType.MultipleChoice.getId())
                             {
-                                if(grade == 0)
-                                {
-                                    score = 0;
-                                    totalGrade = 0;
-                                }
+                                float grade = calculateGrade( process.getAssessment().getEvaluationMethod(),
+                                                              process.getCurrentTask(), 
+                                                              responseDetail.getTaskDetail().getId(),
+                                                              responseDetail.getItemResponse() );  
                                 
-                                if(score != 0)
-                                    totalGrade = grade;
-                            }
-                            else
-                            {
-                                totalGrade += grade;
+                                if(process.getAssessment().getEvaluationMethod() == EvaluationMethod.TrueAnswers.getId())
+                                {
+                                    if(grade == 0)
+                                    {
+                                        score = 0;
+                                        totalGrade = 0;
+                                    }
+                                    
+                                    if(score != 0)
+                                        totalGrade = grade;
+                                }
+                                else
+                                {
+                                    totalGrade += grade;
+                                }
                             }
                         } 
+                    }
+                    
+                    
+                    if(processResponse.getTask().getModeType() == AssessmentTaskType.MultipleChoice.getId())
+                    {
+                        totalGrade = calculateMultiChoiceGrade(process.getCurrentTask(),processResponse.getDetails());
                     }
                    
                     processResponse.setGrade( totalGrade );
@@ -226,6 +242,12 @@ public class AssessmentManagerImpl implements AssessmentManager
              
         }
         catch ( TimeExpiredException e )
+        {
+            logger.error( e.toString(), e );
+            
+            throw e;
+        }
+        catch ( AccessDeniedException e )
         {
             logger.error( e.toString(), e );
             
@@ -289,6 +311,43 @@ public class AssessmentManagerImpl implements AssessmentManager
         return taskDAO.getByTaskId( getTaskIdByIndex(taskIndexm, process) );
     }
     
+    
+    /**************************************************
+     * 
+     */
+    private float calculateMultiChoiceGrade(AssessmentTask task, List<ProcessResponseDetail> responseDetail)
+    {
+        int trueAnswers = 0;
+        int grade = 0;
+        
+        for(AssessmentTaskDetail sdetail: task.getDetails())
+        {
+            for(ProcessResponseDetail resDet: responseDetail)
+            {
+                if(sdetail.getItemGradeRatio() >0 )
+                {
+                    trueAnswers ++;
+                }
+                
+                if(sdetail.getId() == resDet.getTaskDetail().getId())
+                {
+                    if(sdetail.getItemGradeRatio() > 0)
+                    {
+                        grade ++;
+                    }
+                }
+            }
+        }
+        
+        if(trueAnswers == grade)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     
     /**************************************************
      * 
@@ -442,6 +501,9 @@ public class AssessmentManagerImpl implements AssessmentManager
     {
         try
         {
+            //-------- Generate Entry Code ---------
+            assessment.setEntryCode( Integer.toString( SecurityUtils.generateShortRandom()));
+            
             return assessmentDAO.save( assessment );
         }
         catch ( Exception e )
@@ -466,9 +528,9 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public Object getAssessmentDetails( long assessmentId )
+    public Assessment getAssessment( long assessmentId )
     {
-        return assessmentDAO.getDetails( assessmentId );
+        return assessmentDAO.findOne( assessmentId ) ;  
     }
     
     
@@ -620,9 +682,49 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
-    public Page<AssessmentTask> getAssessmentTasks( long assessmentId, Pageable pageable )
+    public Page<Object> getAssessmentTasks( long assessmentId, Pageable pageable )
     {
         return taskDAO.getByAssessmentId( assessmentId, pageable );
+    }
+    
+    
+
+    /**************************************************
+     * 
+     */
+    @Override
+    public void removeTask( long assessmentId, long taskId )
+    {
+        Assessment asmt = assessmentDAO.findOne( assessmentId );
+        
+        if(asmt != null)
+        {
+            asmt.removeTask( taskDAO.findOne( taskId )  );
+            asmt = assessmentDAO.saveAndFlush( asmt );          
+        }
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public void addTasks( long assessmentId, List<Long> taskIds )
+    {
+        Assessment asmt = assessmentDAO.findOne( assessmentId );
+        
+        if(asmt != null)
+        {
+            for(long taskId : taskIds)
+            {
+                AssessmentTask task = taskDAO.findOne( taskId );
+                
+                if(!asmt.getTasks().contains( task ))
+                {
+                    asmt.addTask( task );
+                }
+            }
+        } 
     }
 
 
@@ -678,6 +780,9 @@ public class AssessmentManagerImpl implements AssessmentManager
             if( author != null )
                 assessment.setAuthor( author );
             
+            //-------- Generate Entry Code ---------
+            assessment.setEntryCode( Integer.toString( SecurityUtils.generateShortRandom()));
+            
             return assessmentDAO.save( assessment );
         }
         catch(Exception e)
@@ -688,7 +793,5 @@ public class AssessmentManagerImpl implements AssessmentManager
         return null;
     }
 
-
-    
 
 }

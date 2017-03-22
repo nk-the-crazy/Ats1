@@ -33,7 +33,7 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <!-- Data Table -->
-<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css"
+<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.css"
     rel="stylesheet">
 
 </head>
@@ -49,12 +49,12 @@
         <div class="main_container">
             <!-- sidebar -->
             <jsp:include page="include/sidebar.jsp"><jsp:param name="page"
-                    value="asmt_result_details.vw" /></jsp:include>
+                    value="report_result_details.vw" /></jsp:include>
             <!-- /sidebar -->
 
             <!-- top navigation -->
             <jsp:include page="include/header.jsp"><jsp:param name="page"
-                    value="asmt_result_details.vw" /></jsp:include>
+                    value="report_result_details.vw" /></jsp:include>
             <!-- /top navigation -->
 
             <!-- page content -->
@@ -73,7 +73,7 @@
                                             <spring:message code="label.action.export"/>&nbsp;&nbsp;<span class="caret"></span>
                                         </button>
                                         <ul role="menu" class="dropdown-menu">
-                                          <li><a href="#"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
+                                          <li><a href="report_result_details.vw?outputType=2&asmt_process_id=${param.asmt_process_id}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.xls"/></a>
                                           </li>
                                           <li class="divider"></li>
                                           <li><a href="#"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;<spring:message code="label.action.export.pdf"/></a>
@@ -173,7 +173,6 @@
                                               </tbody>
                                             </table>
                                         </div>
-                                        
                                         <div role="tabpanel" class="tab-pane col-md-12 fade" 
                                              id="tab_content2" aria-labelledby="result-details-tab">
                                             <table id="datatable" class="dataTable table table-bordered">
@@ -263,7 +262,7 @@
             {
                 "url": "resources/lib/datatables.net/i18n/ru.json"
             },
-            "iDisplayLength": 6,
+            "iDisplayLength": 12,
             "processing": true,
             "serverSide": true,
             "searching" : false,
@@ -287,14 +286,29 @@
                     'render': function (data, type, row, meta) 
                     {
                         if(data['taskId'] != taskId)
-                            return data['taskItemContent'];
+                            return '<a href="asmt_task_details.vw?asmt_task_id='+data['taskId']+'">'+data['taskItemContent']+'</a>';
                         else
                             return '';
                     }
                 },
-                
-                { "data": "taskModeTypeName" ,'orderable': false },
-                { "data": "grade" ,'orderable': false },
+                { "data": null ,'searchable': false, 'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        if(data['taskId'] != taskId)
+                            return data['taskModeTypeName'];
+                        else
+                            return '';
+                    }
+                },
+                { "data": null ,'searchable': false, 'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        if(data['taskId'] != taskId)
+                            return data['grade'];
+                        else
+                            return '';
+                    }
+                },
                 { "data": null,'orderable': false,
                     "render" : function ( data, type, full, meta ) 
                     { 

@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -23,8 +22,7 @@ public class ProcessResponseDetail
     @Column(name = "id")
     private long id;
 
-    @Column(name = "response")
-    @Lob
+    @Column(name = "response", columnDefinition = "text")
     private String itemResponse;    
     
     // *********************************************

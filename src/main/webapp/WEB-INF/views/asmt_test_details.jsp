@@ -33,13 +33,12 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <!-- Data Table -->
-<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.min.css"
+<link href="resources/lib/datatables.net-bs/css/dataTables.bootstrap.css"
     rel="stylesheet">
 
 </head>
 <!-- ***************************** -->
 <c:set var="assessment" value="${requestScope.assessmentDetails}"/>
-<c:set var="tasksPage" value="${requestScope.assessmentTasks}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 <jsp:useBean id="now" class="java.util.Date" />
 <!-- ***************************** -->
@@ -110,6 +109,10 @@
                                                 <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.assessment.name" />:</th>
                                                   <td class="col-md-5"><c:out value="${assessment.name}"/></td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" class="col-md-3"><spring:message code="label.assessment.entry.code" />:</th>
+                                                  <td class="col-md-5 warning"><c:out value="${assessment.entryCode}"/></td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.assessment.author" />:</th>
@@ -187,47 +190,18 @@
                                             </table>                                              
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade col-md-10" id="tab_content3"  aria-labelledby="tasks-tab">
-                                            <table id="" class="dataTable table table-bordered">
+                                            <table id="datatable" class="dataTable table table-bordered">
                                               <thead>
                                                 <tr>
                                                     <th>№</th>
-                                                    <th><spring:message code="label.asmt.task.item.name" /></th>
-                                                    <th><spring:message code="label.asmt.task.mode.type" /></th>
+                                                    <th class="col-md-7"><spring:message code="label.asmt.task.item.content" /></th>
+                                                    <th class="col-md-2"><spring:message code="label.asmt.task.mode.type" /></th>
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <!-- *********Task list ************ -->
-                                                <c:set var="index" value="${tasksPage.number * tasksPage.size}" />
-                                                <c:forEach var="task" items="${tasksPage.content}" varStatus="loopCounter">
-                                                    <c:choose>
-                                                        <c:when test="${task[3] == 2}"><c:set var = "status_color" value="info"/></c:when>
-                                                        <c:when test="${task[3] == 4}"><c:set var = "status_color" value="warning"/></c:when>
-                                                    <c:otherwise><c:set var = "status_color" value=""/></c:otherwise>
-                                                    </c:choose>
-                                                    <tr class="${status_color}">
-                                                        <td class="col-md-1">${index + loopCounter.count }</td>
-                                                        <td><a href="asmt_task_details.vw?asmt_task_id=${task[1]}">
-                                                            <c:out value="${task[2]}"/></a></td>
-                                                        <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task[3])}</td>
-                                                    </tr>
-                                                </c:forEach>
-                                                <!-- *********/Task list ************ -->
                                               </tbody>
                                             </table>
-                                             <!------------- Pagination -------------->
-                                            <c:if test="${tasksPage.totalPages > 1}">
-                                                <jsp:include page="include/pagination.jsp">
-                                                     <jsp:param name="page" value="asmt_details.vw" />
-                                                     <jsp:param name="addParam" value="assessment_id=${param.assessment_id}" />
-                                                     <jsp:param name="totalPages" value="${tasksPage.totalPages}" />
-                                                     <jsp:param name="totalElements" value="${tasksPage.totalElements}" />
-                                                     <jsp:param name="currentIndex" value="${tasksPage.number}" />
-                                                     <jsp:param name="pageableSize" value="${tasksPage.size}" />
-                                                 </jsp:include>
-                                             </c:if>
-                                            <!--------------------------------------->                                              
                                         </div>
-                                        
                                     </div>
                                   </div>
                                </div>
@@ -265,7 +239,6 @@
     <!-- Dat Tables -->
     <script src="resources/lib/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="resources/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    
     <script type="text/javascript">
     $(document).ready(function()
     {
@@ -276,6 +249,76 @@
         if(activeTab){
             $('#assessmentDetailsTab a[href="' + activeTab + '"]').tab('show');
         }
+    });
+    </script>
+    
+    <script type="text/javascript">
+   
+    var table = null;
+    //---------------------
+    function getLang()
+    {
+        var lang = '${pageContext.response.locale }';
+        if(lang == "" || lang == "en")
+            return "";
+        else
+            return 'resources/lib/datatables.net/i18n/'+lang+'.json';
+    }
+    //---------------------
+    
+    
+    $(document).ready(function() 
+    {
+        var taskId = 0;
+        var indexRow = 0;
+        
+        table = $('#datatable').DataTable(
+        {
+            "autoWidth": false,
+            "language": 
+            {
+                "url": getLang()
+            },
+            "iDisplayLength": 12,
+            "processing": true,
+            "serverSide": true,
+            "searching" : false,
+            "pagingType" : "full_numbers",
+            "paging" : true,
+            "lengthChange": true,
+            "info" : true,
+            
+            "ajax": 
+            {   "url": 'rest/assessment/test/task/list?assessment_id=${assessment.id}',
+                "type": "GET"
+            },
+            "columns": [
+                { "data": null , "width": "5%" , 'searchable': false,'orderable': false, 
+                    'render': function (data, type, row, meta) 
+                    {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                { "data": null ,'orderable': false, 
+                	'render': function (data, type, row, meta) 
+                    {
+                	    return '<a href="asmt_task_details.vw?asmt_task_id='+data['id']+'">'+data['itemContent']+'</a>';
+                	}
+                },
+                { "data": "modeTypeName" ,'orderable': false }
+            ],
+            "createdRow": function( row, data, dataIndex ) 
+            {
+                if ( data["modeType"] == 2 ) 
+                {
+                  $(row).addClass( 'info' );
+                }
+                else if ( data["modeType"] == 4 ) 
+                {
+                  $(row).addClass( 'warning' );
+                }
+            },
+        });
     });
     </script>
 

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import model.assessment.task.AssessmentTask;
 import model.assessment.task.AssessmentTaskCategory;
 import model.assessment.task.AssessmentTaskDetail;
+import model.assessment.task.AssessmentTaskInfo;
 
 
 public interface AssessmentTaskManager
@@ -27,7 +28,7 @@ public interface AssessmentTaskManager
 
     List<AssessmentTaskCategory> getCategoryTree();
 
-    Page<AssessmentTask> getTasksByDetails( String itemName, String categoryName, short modeType, Pageable pageable );
+    Page<Object> getTasksByDetails( String itemContent, String categoryName, short modeType, Pageable pageable );
 
     AssessmentTaskCategory getCategoryDetails( long categoryId );
 
@@ -50,4 +51,6 @@ public interface AssessmentTaskManager
     void importTasks( MultipartFile file );
 
     boolean removeCategory( long categoryId );
+
+    AssessmentTaskInfo createTaskInfo( String description );
 }

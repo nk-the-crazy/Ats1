@@ -127,7 +127,7 @@ public class GroupController
      * 
      */
     @RequestMapping("/group_edit.vw")
-    public String editGroupView(@RequestParam( "group_id" ) long groupId, Pageable pageable, Model model)
+    public String editGroupView(@RequestParam( "group_id" ) long groupId, Model model)
     {
         model.addAttribute( "groupDetails" , groupManager.getGroupDetails( groupId ));
         
@@ -139,7 +139,7 @@ public class GroupController
      * 
      */
     @RequestMapping( value = "/group_edit.do")
-    public String editGroup( @ModelAttribute( "group" ) UserGroup group, Pageable pageable, Model model)
+    public String editGroup( @ModelAttribute( "group" ) UserGroup group, Model model)
     {
 
         try
@@ -158,7 +158,7 @@ public class GroupController
             model.addAttribute( "errorMessage", "message.error.system" );
         }
         
-        return editGroupView(group.getId(), pageable, model);
+        return editGroupView(group.getId(), model);
 
     }
     

@@ -78,7 +78,7 @@ common.utils.system.SystemUtils"%>
                                   <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form id="user_search" data-parsley-validate action="asmt_list.vw"
+                                    <form id="user_search" data-parsley-validate action="asmt_test_list.vw"
                                         class="form-horizontal form-label-left">
                                        <div class="form-group">
                                             <div class="col-md-2 col-sm-2 col-xs-2">
