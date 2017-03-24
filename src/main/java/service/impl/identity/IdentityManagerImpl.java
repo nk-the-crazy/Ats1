@@ -621,7 +621,7 @@ public class IdentityManagerImpl implements IdentityManager
             newPassword = SecurityUtils.generateSecurePassword( newPassword, salt );
             user.setSalt( salt );
             user.setPassword( newPassword );
-            //identityDAO.merge( user );
+            userDAO.save( user );
         }
         catch ( NoSuchAlgorithmException | NoSuchProviderException e )
         {

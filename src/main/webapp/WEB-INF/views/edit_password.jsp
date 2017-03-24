@@ -59,7 +59,7 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-                                <form action="edit_password" method="POST">
+                                <form action="edit_password.do" method="POST">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <table class="table table-bordered dataTable">
                                       <tbody>
