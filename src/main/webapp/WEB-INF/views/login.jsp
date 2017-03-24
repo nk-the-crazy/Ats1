@@ -76,7 +76,7 @@
                                 <spring:message code="label.action.login"/>
                           </button>
                           <span class="col-md-offset-3">
-                          <a href="resources/manual/index.html">
+                          <a href="resources/manual/manual.html">
                             <i class="fa fa-question-circle"></i>&nbsp;&nbsp;<spring:message code="label.menu.help"/>
                            </a></span>
                         </div>
