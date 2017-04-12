@@ -104,12 +104,12 @@ public interface AssessmentTaskDAO extends JpaRepository<AssessmentTask, Long>
 
     
     //********************************************
-    @Query(value = "SELECT t.id  "
+    @Query(value = "SELECT t  "
             + " FROM Assessment a "
             + " JOIN a.tasks t "
             + " WHERE a.id=:assessmentId "
             + " ORDER BY RAND()" )
-    List<Long> getRandomIdByAssessmentId(@Param("assessmentId") long assessmentId);
+    Page<AssessmentTask> getRandomIdByAssessmentId(@Param("assessmentId") long assessmentId, Pageable pageable);
 
     
    //********************************************

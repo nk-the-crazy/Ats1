@@ -52,6 +52,9 @@ public class Assessment
 
     @Column(name = "max_grade")
     private short maxGrade = 100;
+    
+    @Column(name = "task_count")
+    private short taskCount = 0;
 
     @Column(name = "time")
     private int time = 1;
@@ -62,9 +65,7 @@ public class Assessment
     @Column(name = "status")
     private short status = 1;
 
-    @Transient
-    private long taskCount = 0;
-
+   
     @Transient
     private AssessmentFormOptions formOptions;
     
@@ -283,13 +284,13 @@ public class Assessment
     }
 
 
-    public long getTaskCount()
+    public int getTaskCount()
     {
         return taskCount;
     }
 
 
-    public void setTaskCount( long taskCount )
+    public void setTaskCount( int taskCount )
     {
         this.taskCount = (short) taskCount;
     }

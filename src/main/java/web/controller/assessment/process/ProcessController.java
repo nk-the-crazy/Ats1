@@ -26,6 +26,7 @@ import common.exceptions.security.AccessDeniedException;
 import common.utils.StringUtils;
 import model.assessment.process.AssessmentProcess;
 import model.assessment.process.ProcessResponse;
+import model.assessment.process.ProcessSession;
 import model.common.session.SessionData;
 import model.identity.User;
 import model.report.assessment.AssessmentResult;
@@ -39,7 +40,7 @@ public class ProcessController
     //---------------------------------
     private static final Logger logger = LoggerFactory.getLogger(ProcessController.class);
     private static final String ACTIVE_PROCESS  = "activeProcess";
-    private static final String ACTIVE_RESPONSE = "processResponse";
+    private static final String PROCESS_SESSION = "processSession";
     //---------------------------------
     
     @Autowired
@@ -88,31 +89,32 @@ public class ProcessController
 
 
     /*******************************************************
-     * Roll and Save Assessment Questions
+     * Start Assessment process
      */
     @RequestMapping( value = "/test_process_start.do")
-    public String startAssessementProcess( @RequestParam( name = "entryCode" , defaultValue = "", required = false ) String entryCode,
-                                           @RequestParam( name = "taskIndex" , defaultValue = "0", required = false ) int nextTaskIndex, 
-                                           @ModelAttribute( "processResponse" ) ProcessResponse processResponse,
-                                           HttpSession session, Model model )
+    public String startAssessementProcess( @RequestParam( name = "entryCode", defaultValue = "", required = false ) String entryCode,
+                                           @RequestParam( name = "taskIndex", defaultValue = "0", required = false ) int taskIndex, 
+                                           @RequestParam( name = "assessment_id", defaultValue = "0", required = false ) long assessmentId, 
+                                           HttpSession session, Model model,
+                                           @AuthenticationPrincipal SessionData userSession)
     {
-        long assessmentId = 0;
-        
         try
         {
             AssessmentProcess activeProcess = (AssessmentProcess)session.getAttribute( "activeProcess" );
-            assessmentId = activeProcess.getAssessment().getId();
-            activeProcess.setEntryCode( entryCode );
-            processResponse = assessmentManager.startProcess(activeProcess, processResponse, nextTaskIndex);
             
-            model.addAttribute( ACTIVE_RESPONSE , processResponse );
+            if(activeProcess == null)
+                activeProcess = assessmentManager.initProcess( assessmentId, userSession.getUser() );
+            
+            ProcessSession pSession = assessmentManager.startProcess(activeProcess, taskIndex , entryCode);
+            session.removeAttribute( ACTIVE_PROCESS );
+            session.setAttribute(PROCESS_SESSION, pSession );
             
             return ModelView.VIEW_ASMT_PROCESS_START_PAGE; 
         }
         catch ( TimeExpiredException e )
         {
-            model.addAttribute( "errorMessage", "message.error.assessment.time.expired");
-            return ModelView.VIEW_ASMT_PROCESS_START_PAGE;
+            model.addAttribute( "errorData", "message.error.assessment.time.expired");
+            return ModelView.VIEW_SYSTEM_ERROR_PAGE;
         }   
         catch ( AccessDeniedException e )
         {
@@ -140,12 +142,13 @@ public class ProcessController
     {
         try
         {
-            AssessmentProcess activeProcess = (AssessmentProcess)session.getAttribute( ACTIVE_PROCESS );
-            assessmentManager.endProcess( activeProcess , processResponse);
+            ProcessSession processSession = (ProcessSession)session.getAttribute( PROCESS_SESSION );
+            long processId = processSession.getProcessId();
+            assessmentManager.endProcess( processId , processResponse);
             
             //------- Remove from session --------
-            long processId = activeProcess.getId();
             session.removeAttribute( ACTIVE_PROCESS );
+            session.removeAttribute( PROCESS_SESSION );
             //------------------------------------
             return "redirect:test_process_end.vw?asmt_process_id=" + processId;
             

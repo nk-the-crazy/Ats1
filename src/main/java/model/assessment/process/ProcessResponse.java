@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import model.assessment.task.AssessmentTask;
 
@@ -31,6 +32,10 @@ public class ProcessResponse
     
     @Column(name = "grade")
     float grade = 0;
+    
+    @Column(name = "status")
+    short status = (short)ProcessResponseStatus.NoResponse.getId();
+    
  
     // *********************************************
     @OneToOne(  fetch = FetchType.LAZY )
@@ -51,6 +56,10 @@ public class ProcessResponse
                 inverseJoinColumns=@JoinColumn(name="details_id"))
     private List<ProcessResponseDetail> details = new ArrayList<ProcessResponseDetail>();
     // *********************************************    
+    
+    @Transient
+    private int prevResonseStatus = (short)ProcessResponseStatus.NoResponse.getId();
+    
 
     public long getId()
     {
@@ -105,6 +114,17 @@ public class ProcessResponse
     {
         return process;
     }
+    
+    
+    public int getPrevResonseStatus()
+    {
+        return prevResonseStatus;
+    }
+
+    public void setPrevResonseStatus( int prevResonseStatus )
+    {
+        this.prevResonseStatus = prevResonseStatus;
+    }
 
     public void setProcess( AssessmentProcess process )
     {
@@ -121,5 +141,17 @@ public class ProcessResponse
     {
         this.process = process;
     }
+
+    public int getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus( int status )
+    {
+        this.status = (short)status;
+    }
+    
+    
 
 }

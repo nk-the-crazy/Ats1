@@ -1,0 +1,31 @@
+.btn-task-index
+{
+    width: 24px;
+    height:24px;
+    margin-right: 1px;
+    margin-left: 0px;
+    font-size: 9px;
+    padding-left: 1px;
+    padding-right: 0px;
+    margin-top: 2px;
+}
+
+.btn-task-index-current
+{
+    color: #204a87;
+    font-size: 11px;
+    border-color: #334455;
+}
+
+.progress-asmt
+{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  display: none;
+}
+
+
+.img-progress-asmt
+{
+    width:100px;
+}

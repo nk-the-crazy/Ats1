@@ -7,6 +7,7 @@ common.utils.system.SystemUtils"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- ************************************* -->
 
 <!DOCTYPE html>
@@ -128,7 +129,7 @@ common.utils.system.SystemUtils"%>
                                         <thead>
                                             <tr>
                                                 <th>№</th>
-                                                <th><spring:message code="label.asmt.task.item.name" /></th>
+                                                <th><spring:message code="label.asmt.task.item.content" /></th>
                                                 <th><spring:message code="label.asmt.task.complexity" /></th>
                                                 <th><spring:message code="label.asmt.task.mode" /></th>
                                                 <th><spring:message code="label.asmt.task.mode.type" /></th>
@@ -149,7 +150,7 @@ common.utils.system.SystemUtils"%>
                                             <tr class="${status_color}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="asmt_task_details.vw?asmt_task_id=${task.id}">
-                                                    <c:out value="${task.itemName}"/></a></td>
+                                                    <c:out value="${fn:substring(task.itemContent, 0, 12)}" /> ..</a></td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.task.complexity',task.complexity)}</td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.task.mode',task.mode)}</td>
                                                 <td>${SystemUtils.getAttribute('system.attrib.task.mode.type',task.modeType)}</td>

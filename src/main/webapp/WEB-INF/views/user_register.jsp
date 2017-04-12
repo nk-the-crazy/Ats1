@@ -156,7 +156,7 @@
                                                     <label class="control-label-required" for="user-password">
                                                     <spring:message code="label.password" />:</label></th>
                                                   <td class="col-md-5"><input type="password" id="user-password" name="password"
-                                                        class="form-control input-sm" required="required">
+                                                        class="form-control input-sm" required="required" autocomplete="off">
                                                   </td>
                                                 </tr>
                                               </tbody>

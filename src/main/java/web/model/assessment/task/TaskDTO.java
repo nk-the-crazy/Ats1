@@ -1,5 +1,9 @@
 package web.model.assessment.task;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import common.utils.system.SystemUtils;
 
@@ -9,6 +13,8 @@ public class TaskDTO
     private String itemName = "";
     private String itemContent = "";
     private int modeType = 1;
+    
+    private List<TaskDetailDTO> details = new ArrayList<TaskDetailDTO>();
     
     public long getId()
     {
@@ -55,6 +61,22 @@ public class TaskDTO
     public String getModeTypeName()
     {
         return SystemUtils.getAttribute( "system.attrib.task.mode.type", getModeType() );
+    }
+
+    public List<TaskDetailDTO> getDetails()
+    {
+        return details;
+    }
+
+    public void setDetails( List<TaskDetailDTO> details )
+    {
+        this.details = details;
+    }
+
+    @JsonIgnore
+    public void addTaskDetail(TaskDetailDTO taskDetail)
+    {
+        this.details.add( taskDetail );
     }
         
 }

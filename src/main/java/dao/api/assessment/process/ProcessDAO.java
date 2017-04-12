@@ -27,7 +27,8 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
     // ********************************************
     @Query(value = " SELECT p " + 
                    " FROM AssessmentProcess p " + 
-                   " JOIN FETCH p.assessment a "
+                   " JOIN FETCH p.assessment a " +
+                   " LEFT JOIN FETCH p.responses "
 
                  + " WHERE a.id = :assessmentId "
                  + " AND p.user.id = :userId ")
@@ -37,7 +38,7 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
    
     // ********************************************
     @Query(value = " SELECT new model.report.assessment.AssessmentResult(" 
-                 +  " p, (SELECT COUNT(tsk.id) from a.tasks tsk), COUNT(DISTINCT r.id), "
+                 +  " p, a.taskCount, COUNT(DISTINCT r.id), "
                  +  " SUM(CASE WHEN r.grade>0 THEN 1 ELSE 0 END), SUM(r.grade)) "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.assessment a "
@@ -49,7 +50,7 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
    
     // ********************************************
     @Query(value = " SELECT new model.report.assessment.AssessmentResult(" 
-                 +  " p, usr.id, (SELECT COUNT(tsk.id) from a.tasks tsk), COUNT(DISTINCT r.id), "
+                 +  " p, usr.id, a.taskCount, COUNT(DISTINCT r.id), "
                  +  " SUM(CASE WHEN r.grade>0 THEN 1 ELSE 0 END), SUM(r.grade)) "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.assessment a "
@@ -61,7 +62,7 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
     
    
     // ********************************************
-    @Query(value = " SELECT p, a, usr, prn, (SELECT COUNT(tsk.id) from a.tasks tsk), COUNT(DISTINCT r.id), "
+    @Query(value = " SELECT p, a, usr, prn, a.taskCount, COUNT(DISTINCT r.id), "
                  +  " SUM(CASE WHEN r.grade>0 THEN 1 ELSE 0 END), SUM(r.grade) "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.assessment a "
@@ -72,17 +73,8 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
                  +  " WHERE LOWER(prn.lastName) LIKE LOWER(CONCAT('%',:lastName, '%')) AND "
                  +  " p.startDate>=:startDateFrom "
                  +  " GROUP BY usr.id, prn.id, p.id, a.id "
-                 +  " ORDER BY p.startDate DESC " , 
-         countQuery = " SELECT count(p.id) "
-                         +  " FROM AssessmentProcess p "  
-                         +  " JOIN p.assessment a "
-                         +  " JOIN p.responses r "
-                         +  " JOIN r.details rd "
-                         +  " JOIN p.user usr "
-                         +  " JOIN usr.person prn "
-                         +  " WHERE LOWER(prn.lastName) LIKE LOWER(CONCAT('%',:lastName, '%')) AND "
-                         +  " p.startDate>=:startDateFrom "
-                         +  " GROUP BY usr.id, prn.id, p.id, a.id ")
+                 +  " ORDER BY p.startDate DESC " )
+        
     Page<Object> getResults( @Param("lastName") String lastName ,
                              @Param("startDateFrom") Date startDateFrom, 
                              Pageable pageable );

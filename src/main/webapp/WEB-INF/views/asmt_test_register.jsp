@@ -149,6 +149,15 @@
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" class="col-md-3">
+                                                    <label class="control-label" for="assessment-taskCount">
+                                                    <spring:message code="label.asmt.task.count" />:</label></th>
+                                                  <td class="col-md-5"><input type="text" id="assessment-taskCount" name="taskCount" 
+                                                      value="${empty assessment.taskCount ? '100' : assessment.taskCount}"
+                                                      class="form-control input-sm" required="required">
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <th scope="row" class="col-md-3">
                                                     <label class="control-label" for="assessment-maxgrade">
                                                     <spring:message code="label.assessment.maxgrade" />:</label></th>
                                                   <td class="col-md-5"><input type="text" id="assessment-maxgrade" name="maxgrade" 

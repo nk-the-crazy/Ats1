@@ -37,7 +37,7 @@
 </head>
 <!-- ***************************** -->
 <c:set var="process" value="${sessionScope.activeProcess}"/>
-<c:set var="taskCount" value="${process.taskIds.size()}"/>
+<c:set var="taskCount" value="${process.assessment.taskCount}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 <!-- ***************************** -->
 
@@ -77,6 +77,7 @@
                                    <form action="test_process_start.do" method="POST">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" name="taskIndex" value="0"/>
+                                    <input type="hidden" name="assessment_id" value="${process.assessment.id }"/>
                                     <table class="table table-bordered dataTable">
                                       <thead>
                                         <tr>

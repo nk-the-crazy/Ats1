@@ -1,125 +1,77 @@
 package web.model.assessment.process;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import web.model.assessment.task.TaskDTO;
 
-import common.utils.system.SystemUtils;
-import model.assessment.process.ProcessResponse;
-import model.assessment.process.ProcessResponseDetail;
-import model.assessment.task.AssessmentTask;
-import model.assessment.task.AssessmentTaskDetail;
 
 public class ProcessResponseDTO
 {
-    private static int index = 0;
+    private long id = 0;
     
-    @JsonIgnore
-    private AssessmentTask task;
+    private TaskDTO task;
     
-    @JsonIgnore
-    private ProcessResponse response;
+    private int status = 0;
     
-    @JsonIgnore
-    private ProcessResponseDetail responseDetail;
+    private int prevResponseStatus = 0;
     
-    @JsonIgnore
-    private AssessmentTaskDetail taskDetail;
-    
-    public ProcessResponseDTO(AssessmentTask task, 
-                              ProcessResponse response, 
-                              ProcessResponseDetail responseDetail,
-                              AssessmentTaskDetail obj)
-    {
-        this.task = task;
-        this.response = response;
-        this.responseDetail = responseDetail;
-        this.taskDetail = obj;
-        
-        index ++;
-    }
-    
-   
-    @JsonProperty("id")
+    private List<ProcessResponseDetailDTO> details = new ArrayList<ProcessResponseDetailDTO>();
+
     public long getId()
     {
-        if(response != null)
-            return response.getId();
-        else
-            return 0;
-    }
-    
-    @JsonProperty("grade")
-    public float getGrade()
-    {
-        if(response != null)
-            return response.getGrade();
-        else
-            return 0;
-    }
-    
-    @JsonProperty("responseDetailId")
-    public long getResponseDetailId()
-    {
-        if(responseDetail != null)
-            return responseDetail.getId();
-        else
-            return 0;
-    }
-    
-    @JsonProperty("itemResponse")
-    public String getItemResponse()
-    {
-        if(responseDetail != null)
-            return responseDetail.getItemResponse();
-        else
-            return "";
-    }
-    
-    @JsonProperty("itemDetail")
-    public String getItemDetail()
-    {
-        if(taskDetail != null)
-            return taskDetail.getItemDetail();
-        else
-            return "";
-    }
-    
-    @JsonProperty("taskId")
-    public long getTaskId()
-    {
-        if(task != null)
-            return task.getId();
-        else
-            return 0;
-    }
-    
-    @JsonProperty("taskItemContent")
-    public String getTaskItemContent()
-    {
-        if(task != null)
-            return task.getItemContent();
-        else
-            return "";
-    }
-    
-    @JsonProperty("taskModeType")
-    public int getTaskModeType()
-    {
-        if(task != null)
-            return task.getModeType();
-        else
-            return 1;
-    }
-    
-    @JsonProperty("taskModeTypeName")
-    public String getTaskModeTypeName()
-    {
-        return SystemUtils.getAttribute( "system.attrib.task.mode.type", getTaskModeType() );
+        return id;
     }
 
-    public int getIndex()
+    public void setId( long id )
     {
-        return index;
+        this.id = id;
+    }
+
+    public TaskDTO getTask()
+    {
+        return task;
+    }
+
+    public void setTask( TaskDTO task )
+    {
+        this.task = task;
+    }
+
+    public int getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus( int status )
+    {
+        this.status = status;
+    }
+
+    public List<ProcessResponseDetailDTO> getDetails()
+    {
+        return details;
+    }
+
+    public void setDetails( List<ProcessResponseDetailDTO> details )
+    {
+        this.details = details;
+    }
+
+    public int getPrevResponseStatus()
+    {
+        return prevResponseStatus;
+    }
+
+    public void setPrevResponseStatus( int prevResponseStatus )
+    {
+        this.prevResponseStatus = prevResponseStatus;
+    }
+    
+    @JsonIgnore
+    public void addDetail(ProcessResponseDetailDTO responseDTO)
+    {
+        this.details.add( responseDTO );
     }
     
 }

@@ -62,7 +62,7 @@ public class ResultDetailsXLSView extends AbstractXlsxView  implements MessageSo
             Sheet sheet = workbook.createSheet( messageSource.getMessage( "label.page.report_result_list.title", null, locale) );
             
             CellStyle styleAnswer = workbook.createCellStyle();
-            styleAnswer.setFillForegroundColor( IndexedColors.LIGHT_ORANGE.index);
+            styleAnswer.setFillForegroundColor( IndexedColors.ROSE.index);
             styleAnswer.setFillPattern(CellStyle.SOLID_FOREGROUND);
             styleAnswer.setBorderBottom( CellStyle.BORDER_THIN );
             styleAnswer.setBorderTop( CellStyle.BORDER_THIN);
@@ -170,15 +170,20 @@ public class ResultDetailsXLSView extends AbstractXlsxView  implements MessageSo
                         cell = courseRow.createCell( 1 );
                         cell.setCellStyle( styleAnswer );
                         cell.setCellValue( task.getItemContent());
-                        
+                        cell = courseRow.createCell( 2 );
+                        cell.setCellStyle( styleAnswer );
+                        cell.setCellValue( SystemUtils.getAttribute( "system.attrib.task.mode.type", task.getModeType() ));
+                        cell = courseRow.createCell( 3 );
+                        cell.setCellStyle( styleAnswer );
+                        cell.setCellValue( taskResponse.getGrade());
                     }
                     else
                     {
                         courseRow.createCell( 1 ).setCellValue( task.getItemContent());
+                        courseRow.createCell( 2 ).setCellValue( SystemUtils.getAttribute( "system.attrib.task.mode.type", task.getModeType() ));
+                        courseRow.createCell( 3 ).setCellValue( taskResponse.getGrade());
                     }
                     
-                    courseRow.createCell( 2 ).setCellValue( SystemUtils.getAttribute( "system.attrib.task.mode.type", task.getModeType() ));
-                    courseRow.createCell( 3 ).setCellValue( taskResponse.getGrade());
                 }
                 else
                 {

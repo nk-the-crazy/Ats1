@@ -55,6 +55,9 @@ public class AssessmentTask implements Serializable
     @Column(name = "complexity")
     private short complexity = 2;
     
+    @Column(name = "detail_ordering")
+    private short detailOrdering = 2; // Orderable
+    
    // *********************************************
     @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY )
     @JoinColumn(name="info_id")
@@ -139,6 +142,16 @@ public class AssessmentTask implements Serializable
     {
         this.complexity = (short) complexity;
     }
+    
+    public int getDetailOrdering()
+    {
+        return detailOrdering;
+    }
+
+    public void setDetailOrdering( int detailOrdering )
+    {
+        this.detailOrdering = (short) detailOrdering;
+    }
 
     public AssessmentTaskCategory getCategory()
     {
@@ -152,8 +165,15 @@ public class AssessmentTask implements Serializable
 
     public List<AssessmentTaskDetail> getDetailsRandom()
     {
-        Collections.shuffle( details );
-        return details; 
+        if(modeType == 3 || modeType == 4 )
+            return details;
+        
+        if(detailOrdering != AssessmentTaskOrdering.Static.getId())
+        {
+            Collections.shuffle( details );
+        }
+        
+        return details;
     }
     
     public List<AssessmentTaskDetail> getDetails()

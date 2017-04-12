@@ -39,16 +39,18 @@ model.assessment.process.*" %>
 
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
+<link href="resources/css/assessment.css" rel="stylesheet">
 
 </head>
 
 <!-- ***************************** -->
-<c:set var="process" value="${sessionScope.activeProcess}"/>
-<c:set var="taskCount" value="${process.taskIds.size()}"/>
+<c:set var="processSession" value="${sessionScope.processSession}"/>
+<c:set var="processResponse" value="${processSession.processResponse}"/>
+<c:set var="taskCount" value="${processSession.taskIds.size()}"/>
 <c:set var="taskIndex" value="${(param.taskIndex + 1) >= taskCount ? taskCount - 1 : param.taskIndex}"/>
-<c:set var="task" value="${requestScope.processResponse.task}"/>
+<c:set var="task" value="${processSession.processResponse.task }"/>
 <c:set var="taskDetails" value="${task.detailsRandom}"/>
-<c:set var="processTime" value="${process.assessment.time}"/>
+<c:set var="processTime" value="${processSession.assessmentTime}"/>
 <c:set var="dateFormatShort" value="${SystemUtils.getSettings('system.app.date.format.short')}"/>
 
 <!-- ***************************** -->
@@ -74,7 +76,7 @@ model.assessment.process.*" %>
 							<div class="x_panel">
 								<div class="x_title">
 									<h2><spring:message code="label.page.asmt_process_start.title"/>
-                                     &nbsp;&nbsp;-&nbsp;&nbsp;${process.assessment.name}</h2>
+                                     &nbsp;&nbsp;-&nbsp;&nbsp;${processSession.assessmentName}</h2>
                                      <div class="btn-group pull-right">
                                       <button type="button" class="btn btn-primary btn-xs" onclick="endAssessmentProcess()">
                                         <i class="fa fa-check-square-o"></i>&nbsp;                  
@@ -91,50 +93,68 @@ model.assessment.process.*" %>
                                   </c:if>
                                   <!-- ---------------------- -->
                                    <div class="col-md-12">
-                                   <form method="POST" id="formProcessResponse" name="processResponse" action="test_process_start.do">
+                                   <form method="POST" id="processForm" name="processResponse" action="rest/assessment/process/task">
+                                    
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                    <input type="hidden" name="taskIndex" value="${taskIndex+1}" id="inpTaskIndex">
-                                    <input type="hidden" name="taskState" value="2" id="inpTaskState">
-                                    <input type="hidden" name="id"      value="${processResponse.id}">
-                                    <input type="hidden" name="task.id" value="${processResponse.task.id}">
+                                    <input type="hidden" id="inpTaskId" name="task.id" value="${task.id}">
+                                    <input type="hidden" id="inpResponseId" name="id" value="${processSession.processResponse.id}">
+                                    
                                     <table class="table table-bordered dataTable">
                                       <thead>
                                         <tr>
-                                            <th colspan="6"><i class="fa fa-cube"></i>&nbsp;&nbsp;
-                                            <spring:message code="label.asmt.task" /></th>
+                                            <th colspan="8"></th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         <tr>
-                                          <th class="success col-md-2" scope="row"><spring:message code="label.asmt.task.number" />:</th>
-                                          <td class="col-md-2">
-                                              <div class="timing-panel">
-                                                    <spring:message code="label.asmt.task.number.overall" arguments="${taskIndex + 1},${taskCount}" />
-                                              </div>
-                                              </td>
+                                          <th class="col-md-1 success" scope="row"><spring:message code="label.asmt.task.number" />:</th>
+                                          <td class="col-md-1 info">
+                                              <div id="dvTaskIndexPane" class="timing-panel">${taskIndex + 1}</div>
+                                          </td>
+                                          <th class="col-md-1 success" scope="row"><spring:message code="label.asmt.task.count" />:</th>
+                                          <td class="col-md-1">
+                                              <div id="dvTaskCount" class="timing-panel">${taskCount }</div>
+                                          </td>
                                           <th class="success col-md-2" scope="row"><spring:message code="label.date.time" />:</th>
                                           <td class="col-md-2"><div class="timing-panel"><c:out value="${StringUtils.minutesToDetails(processTime)}"/></div>
                                           </td>
                                           <th class="success col-md-2" scope="row">
                                             <spring:message code="label.date.time.remaining" />:</th>
-                                          <td class="col-md-4" id="timerCountDownTd"><div class="timing-panel" id="timerCountDown">
+                                          <td class="col-md-2" id="timerCountDownTd"><div class="timing-panel" id="timerCountDown">
                                           </div></td>
                                         </tr>
                                         <thead>
                                         <tr>
-                                            <th colspan="6"></th>
+                                            <th colspan="8">
+                                            <div>
+                                                <c:forEach begin="0" end="${taskCount == 0? 0: taskCount - 1}" var="item">
+                                                    <c:set var = "btnClass" value="btn-default"/>
+                                                    <c:set var = "activeClass" value=""/>
+                                                    <c:if test="${item == taskIndex}">
+                                                        <c:set var = "activeClass" value="btn-task-index-current"/>
+                                                    </c:if>
+                                                    <c:choose>
+                                                        <c:when test="${processSession.taskStatus[item] == 2}">
+                                                            <c:set var = "activeClass" value="btn-success"/></c:when>
+                                                        <c:when test="${processSession.taskStatus[item] == 3}">
+                                                            <c:set var = "activeClass" value="btn-primary"/></c:when>                                                        
+                                                    </c:choose>
+                                                    <button type="button" id="btnTaskIndex${item}" class="btn ${btnClass} ${activeClass} btn-sm btn-task-index" data-index="${item}">${item + 1}</button>
+                                                </c:forEach>
+                                                </div>
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tr>
-                                          <th><spring:message code="label.asmt.task.item.content" /></th>
-                                          <td class="col-md-10 tasks-panel" colspan="5">
-                                            <c:out value="${task.itemContent}"/>
+                                          <th class="col-md-3 success" colspan="2"><spring:message code="label.asmt.task.item.content" /></th>
+                                          <td class="col-md-9 tasks-panel" colspan="6">
+                                            <div id="dvItemContentPane"><c:out value="${task.itemContent}"/></div>
                                           </td>
                                         </tr>
                                         <tr>
-                                          <th class="col-md-2" colspan="1"><spring:message code="label.asmt.task.item.options" /></th>
-                                          <td class="col-md-10 tasks-panel" colspan="5">
-                                           <div class="form-group">
+                                          <th class="success" colspan="2"><spring:message code="label.asmt.task.item.options" /></th>
+                                          <td class="col-md-9 tasks-panel" colspan="6">
+                                           <div id="dvItemDetailsPane" class="form-group">
                                              <c:forEach var="taskDetail" items="${taskDetails}" varStatus="loopCounter">
                                                <c:choose>
                                                   <%-- Single Choice --%>
@@ -149,7 +169,7 @@ model.assessment.process.*" %>
                                                           &#${loopCounter.index + 65}; ) ${taskDetail.itemDetail }</label>
                                                       </div>
                                                       </div>
-                                                  </c:when>
+                                                  </c:when>                                                  
                                                   <%-- Multiple Choice --%>
                                                   <c:when test="${task.modeType == 2}">
                                                      <div class="input-item-detail">
@@ -167,7 +187,7 @@ model.assessment.process.*" %>
                                                               &#${loopCounter.index + 65}; ) ${taskDetail.itemDetail }</label>
                                                          </div>
                                                      </div>
-                                                  </c:when>
+                                                  </c:when>                                                  
                                                   <%-- Short Text Choice --%>
                                                   <c:when test="${task.modeType == 3}">
                                                      <div class="input-item-detail">
@@ -201,27 +221,24 @@ model.assessment.process.*" %>
                                            </td>
                                         </tr>
                                         <tr id="btnGroupRow">
-                                          <th scope="row" ></th>
-                                          <td><button type="submit" id="btnSaveNext" class="btn btn-success btn-xs">
-                                                <i class="fa fa-share"></i>&nbsp;
+                                          <th class="success" scope="row" colspan="2"></th>
+                                          <td class="success" colspan="2">
+                                               <button type="button" id="btnSaveResponse" class="btn btn-success btn-xs">
+                                                <i class="fa fa-hourglass-end"></i>&nbsp;
                                                 <spring:message code="label.asmt.task.response.save.next"/>
                                                </button> 
                                           </td>
-                                          <td >
+                                          <td class="success" colspan="1">
+                                            <button type="button" id="btnSkipResponse" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-share"></i>&nbsp;<spring:message code="label.asmt.task.response.skip"/>
+                                            </button>
                                           </td>
-                                          <td colspan="3">
-                                            <div class="pull-right" style="display:inline;">
-                                                 <a role="button" id="btnNextStep" class="btn btn-primary btn-xs">
-                                                    <spring:message code="label.action.jump"/>
-                                                </a>
-                                                 <select id="selTaskIndex" class="input-select-sm" style="border: 1px solid grey;">
-                                                    <c:forEach begin="0" end="${taskCount - 1}"  var="item"> 
-                                                        <option ${item == taskIndex ? 'selected="selected"' : ''}
-                                                        value="${item}">${item + 1}</option>
-                                                    </c:forEach>
-                                                 </select>
-                                             </div>
-                                           </td>
+                                          <td class="success" colspan="3">
+                                            <div id="dvProgressPane" class="progress-asmt">
+                                                <img class="img-progress-asmt" alt="Loading ..." src="resources/images/ajax-loader-pg.gif">
+                                            </div>
+                                            <div id="dvErrorPane">...</div>
+                                          </td>
                                         </tr>
                                       </tbody>
                                     </table>
@@ -255,52 +272,12 @@ model.assessment.process.*" %>
 	
     <!-- Custom Theme Scripts -->
     <script src="resources/js/custom.min.js"></script>
-    <script>
-    //-----------------------------
-    /*
-    $(document).ready(function()
-    {
-        $('#formProcessResponse').on('submit', function(e)
-        {
-            e.preventDefault();
-            createHiddenElements(this);
-            this.submit();
-        });
-    });
-    
-    function createHiddenElements(form)
-    {
-         $("#mselRoles option:selected").each(function (rowIndex) 
-         {
-               var $this = $(this);
-               $(form).append("<input type='hidden' name='roles["+rowIndex+"].id' value='"+$this.val()+"' /> ");
-         });
-    }
-    */
-    //-----------------------------
-    
-    
-    $('#btnNextStep').on('click', function(e) 
-    {
-        e.preventDefault();
-        location.href='test_process_start.do?taskIndex='+$('#selTaskIndex').val();
-    });
-    
-    
-    function endAssessmentProcess()
-    {
-        $('#inpTaskState').val(3);
-        $('#formProcessResponse').attr("action", "test_process_end.do");
-        $("#formProcessResponse").submit();
-    }
-    
-    </script>
     
     <!-- Timer -->
     <script type="text/javascript" src="resources/lib/jquery.countdown-2.2.0/jquery.countdown.js"></script>
     <script type="text/javascript">
     var processTime =  ${processTime};
-    var elapsedTime =  ${process.timeElapsed};
+    var elapsedTime =  ${processSession.timeElapsed};
     
     processTime = (processTime * 60 * 1000) - elapsedTime;
 
@@ -323,9 +300,18 @@ model.assessment.process.*" %>
         $("#btnGroupRow").hide();
         $('#timerCountDown').html('<spring:message code="label.date.time.timeup"/>');
     });
-
+    
     </script>
     <!-- /Timer -->
+    
+    <!-- Custom Theme Scripts -->
+    <script src="resources/js/assessment.js"></script>
+    <script type="text/javascript">
+    
+    taskCount = ${taskCount};
+    taskIndex = ${taskIndex};
+    
+    </script>
     
 </body>
 </html>
