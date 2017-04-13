@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +24,6 @@ import common.exceptions.assessment.TimeExpiredException;
 import common.exceptions.security.AccessDeniedException;
 import common.utils.StringUtils;
 import model.assessment.process.AssessmentProcess;
-import model.assessment.process.ProcessResponse;
 import model.assessment.process.ProcessSession;
 import model.common.session.SessionData;
 import model.identity.User;
@@ -137,20 +135,18 @@ public class ProcessController
      * 
      */
     @RequestMapping( value = "/test_process_end.do")
-    public String endAssessementProcess( @ModelAttribute( "processResponse" ) ProcessResponse processResponse,
-                                         HttpSession session, Model model )
+    public String endAssessementProcess( HttpSession session, Model model )
     {
         try
         {
             ProcessSession processSession = (ProcessSession)session.getAttribute( PROCESS_SESSION );
-            long processId = processSession.getProcessId();
-            assessmentManager.endProcess( processId , processResponse);
+            assessmentManager.endProcess( processSession);
             
             //------- Remove from session --------
             session.removeAttribute( ACTIVE_PROCESS );
             session.removeAttribute( PROCESS_SESSION );
             //------------------------------------
-            return "redirect:test_process_end.vw?asmt_process_id=" + processId;
+            return "redirect:test_process_end.vw?asmt_process_id=" + processSession.getProcessId();
             
         }
         catch(Exception e)

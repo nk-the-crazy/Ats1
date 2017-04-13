@@ -78,7 +78,7 @@ model.assessment.process.*" %>
 									<h2><spring:message code="label.page.asmt_process_start.title"/>
                                      &nbsp;&nbsp;-&nbsp;&nbsp;${processSession.assessmentName}</h2>
                                      <div class="btn-group pull-right">
-                                      <button type="button" class="btn btn-primary btn-xs" onclick="endAssessmentProcess()">
+                                      <button type="button" class="btn btn-primary btn-xs btn-asmt-end">
                                         <i class="fa fa-check-square-o"></i>&nbsp;                  
                                         <spring:message code="label.assessment.end"/></button>
                                     </div>
@@ -272,6 +272,39 @@ model.assessment.process.*" %>
 	
     <!-- Custom Theme Scripts -->
     <script src="resources/js/custom.min.js"></script>
+    
+    <!-- Bootbox-->
+    <script src="resources/lib/bootbox/js/bootbox.min.js"></script>
+    <script type="text/javascript">
+    
+    //---------------------------------------
+    $(document).on('click', '.btn-asmt-end', function(e) 
+    {
+        bootbox.confirm(
+        {
+            title: '<i class="fa fa-exclamation"></i>&nbsp;&nbsp;<spring:message code="label.attention"/>',
+            message: "<spring:message code="message.confirm.assessment.end"/>",
+            size:"small",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i>&nbsp;<spring:message code="label.action.cancel"/>',
+                    className: 'btn-default btn-xs'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i>&nbsp;<spring:message code="label.action.submit"/>',
+                    className: 'btn-primary btn-xs'
+                }
+            },
+            callback: function (result) 
+            {
+                if(result)
+                {
+                    endAssessmentTest();
+                }
+            }
+        });
+    });
+    </script>
     
     <!-- Timer -->
     <script type="text/javascript" src="resources/lib/jquery.countdown-2.2.0/jquery.countdown.js"></script>

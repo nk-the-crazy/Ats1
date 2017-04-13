@@ -78,7 +78,7 @@ public class ProcessRestController
         try 
         {
             ProcessSession pSession = (ProcessSession)session.getAttribute( PROCESS_SESSION );
-            assessmentManager.endProcess( pSession.getProcessId() , null );
+            assessmentManager.endProcess( pSession );
             return "";
         }
         catch(Exception e) 
@@ -269,7 +269,7 @@ public class ProcessRestController
         responseDTO.setTask( taskDTO );
         responseDTO.setId( processResponse.getId() );
         responseDTO.setStatus( processResponse.getStatus() );
-        responseDTO.setPrevResponseStatus( processResponse.getPrevResonseStatus() );
+        responseDTO.setPrevResponseStatus( processResponse.getPrevResponseStatus() );
         
         return responseDTO; 
     }

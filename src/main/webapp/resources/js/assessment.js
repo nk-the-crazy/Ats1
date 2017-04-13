@@ -234,12 +234,11 @@ function setProcessResponseParams(processResponse)
     $inpResponseId.val(processResponse.id);
 }
 
-
 //* *********************************************
-function setResponseDetailParams(responseDetail)
+function endAssessmentTest()
 {
-    if(responseDetail != null)
-    {
-        $('<input>').addClass(classInputResponse).attr('type','hidden').attr('name','foo[]').attr('value','bar').appendTo('form');
-    }
+    window.location.href= 'test_process_end.do?';
 }
+
+
+

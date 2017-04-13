@@ -58,7 +58,7 @@ public class ProcessResponse
     // *********************************************    
     
     @Transient
-    private int prevResonseStatus = (short)ProcessResponseStatus.NoResponse.getId();
+    private int prevResponseStatus = (short)ProcessResponseStatus.NoResponse.getId();
     
 
     public long getId()
@@ -116,14 +116,14 @@ public class ProcessResponse
     }
     
     
-    public int getPrevResonseStatus()
+    public int getPrevResponseStatus()
     {
-        return prevResonseStatus;
+        return prevResponseStatus;
     }
 
-    public void setPrevResonseStatus( int prevResonseStatus )
+    public void setPrevResponseStatus( int prevResponseStatus )
     {
-        this.prevResonseStatus = prevResonseStatus;
+        this.prevResponseStatus = prevResponseStatus;
     }
 
     public void setProcess( AssessmentProcess process )

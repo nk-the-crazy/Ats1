@@ -41,7 +41,7 @@ public interface AssessmentManager
     ProcessSession startProcess( AssessmentProcess process, int taskIndex, String entryCode )
                     throws TimeExpiredException;
 
-    void endProcess( long processId, ProcessResponse processResponse );
+    void endProcess( ProcessSession processSession );
     
     Integer submitProcessResponse( ProcessSession processSession, ProcessResponse processResponse )
                     throws TimeExpiredException;
@@ -85,4 +85,8 @@ public interface AssessmentManager
     AssessmentProcess createAssessmentProcess( Assessment assessment, User user );
 
     ProcessResponse getProcessResponseDetails( long processId, long taskId );
+
+    void endProcess( long processId );
+
+
 }

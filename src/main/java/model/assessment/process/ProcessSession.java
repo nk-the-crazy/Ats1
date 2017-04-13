@@ -11,6 +11,7 @@ public class ProcessSession
     private String assessmentName = "";
     private int  taskIndex = 0;
     private int  assessmentTime = 0;
+    private int  evaluationMethod = 1;
     private ProcessResponse processResponse = null;
     
     private Date startDate;
@@ -137,6 +138,16 @@ public class ProcessSession
             return 0;
         else
             return taskIds.get( index );
+    }
+
+    public int getEvaluationMethod()
+    {
+        return evaluationMethod;
+    }
+
+    public void setEvaluationMethod( int evaluationMethod )
+    {
+        this.evaluationMethod = evaluationMethod;
     }
     
 }
