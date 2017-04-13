@@ -62,12 +62,11 @@ public interface ProcessDAO extends JpaRepository<AssessmentProcess, Long>
     
    
     // ********************************************
-    @Query(value = " SELECT p, a, usr, prn, a.taskCount, COUNT(DISTINCT r.id), "
+    @Query(value = " SELECT p, a, usr, prn, COUNT(DISTINCT r.id), "
                  +  " SUM(CASE WHEN r.grade>0 THEN 1 ELSE 0 END), SUM(r.grade) "
                  +  " FROM AssessmentProcess p "  
                  +  " JOIN p.assessment a "
                  +  " JOIN p.responses r "
-                 +  " JOIN r.details rd "
                  +  " JOIN p.user usr "
                  +  " JOIN usr.person prn "
                  +  " WHERE LOWER(prn.lastName) LIKE LOWER(CONCAT('%',:lastName, '%')) AND "
