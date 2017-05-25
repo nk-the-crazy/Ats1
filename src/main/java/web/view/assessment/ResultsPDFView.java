@@ -105,10 +105,10 @@ public class ResultsPDFView extends AbstractITextPdfView  implements MessageSour
             {
                 AssessmentProcess process = (AssessmentProcess) obj[0];
                 
-                long taskCount = (long) obj[4];
-                long responseCount = (long) obj[5];
-                long rightResponseCount = (long) obj[6];
-                double score = (double) obj[7];
+                long taskCount = process.getAssessment().getTaskCount();
+                long responseCount = (long) obj[4];
+                long rightResponseCount = (long) obj[5];
+                double score = (double) obj[6];
 
                 table.addCell(Integer.toString(rowCount ++ ));
                 table.addCell(new Phrase(process.getUser().getPerson().getLastName() +" "+

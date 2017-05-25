@@ -88,5 +88,7 @@ public interface AssessmentManager
 
     void endProcess( long processId );
 
+    Page<Object> getProcessWrongResponses( long processId, Pageable pageable );
+
 
 }

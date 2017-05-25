@@ -699,6 +699,16 @@ public class AssessmentManagerImpl implements AssessmentManager
      * 
      */
     @Override
+    public Page<Object> getProcessWrongResponses( long processId , Pageable pageable )
+    {
+        return responseDAO.getWrongByProcessId( processId, pageable );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
     public ProcessResponse getProcessResponseDetails( long processId , long taskId)
     {
         ProcessResponse pres = responseDAO.getDetailsByProcessAndTaskId( processId, taskId );

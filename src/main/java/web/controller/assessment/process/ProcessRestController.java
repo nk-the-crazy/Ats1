@@ -170,6 +170,42 @@ public class ProcessRestController
     /*******************************************************
      * 
      */
+    @RequestMapping( value = "/response/wlist", 
+                     method = {RequestMethod.POST, RequestMethod.GET}, 
+                     produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Map<String,Object>> getResponseWList( 
+                       @RequestParam(value = "asmt_process_id", defaultValue = "0")  long processId,
+                       @RequestParam(value = "start", required = false, defaultValue = "0") int start, 
+                       @RequestParam(value = "length",required = false, defaultValue = "1") int length, 
+                       @RequestParam(value = "draw", required = false, defaultValue = "1")  int draw , 
+                       @RequestParam(value = "search", required = false, defaultValue = "") String search) 
+    {
+        try 
+        {
+            PageRequest pageable = new PageRequest(start/length, length);
+            Page<Object> responsePage = assessmentManager.getProcessWrongResponses( processId, pageable );
+            
+            Map<String,Object> data = new HashMap<>();
+            
+            data.put("data", createProcessResponseListDTO(responsePage.getContent()));
+            data.put("draw", draw);
+            data.put("recordsTotal",responsePage.getTotalElements());
+            data.put("recordsFiltered",responsePage.getTotalElements());
+            
+            return new ResponseEntity<Map<String,Object>>(data, HttpStatus.OK);
+        }
+        catch(Exception e) 
+        {
+            logger.error( " Error getting response list:", e );
+            return new ResponseEntity<Map<String, Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    } 
+    
+    
+    
+    /*******************************************************
+     * 
+     */
     private List<ProcessResponseDataDTO> createProcessResponseListDTO(List<Object> responses)
     {
         List<ProcessResponseDataDTO> dtoList =  new ArrayList<ProcessResponseDataDTO>();
@@ -177,9 +213,7 @@ public class ProcessRestController
         {
             Object obj[] = (Object[])object;
             ProcessResponseDataDTO  dto = new ProcessResponseDataDTO((AssessmentTask)obj[1],
-                                                             (ProcessResponse)obj[0],
-                                                             (ProcessResponseDetail)obj[2],
-                                                             (AssessmentTaskDetail)obj[3]);
+                                                             (ProcessResponse)obj[0], null, null);
             dtoList.add( dto );
         }
         
