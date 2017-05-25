@@ -213,8 +213,10 @@ public class ProcessRestController
         {
             Object obj[] = (Object[])object;
             ProcessResponseDataDTO  dto = new ProcessResponseDataDTO((AssessmentTask)obj[1],
-                                                             (ProcessResponse)obj[0], null, null);
-            dtoList.add( dto );
+                                                             (ProcessResponse)obj[0],
+                                                              obj.length < 3 ? null : (ProcessResponseDetail)obj[2],
+                                                              obj.length < 4 ? null : (AssessmentTaskDetail)obj[3]);
+            dtoList.add( dto );        
         }
         
         return dtoList; 
