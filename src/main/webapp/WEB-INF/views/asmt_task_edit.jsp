@@ -118,9 +118,9 @@
                                                         class="form-control input-sm" required="required"></td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" ><label class="control-label-required" for="grade">
+                                                  <th scope="row" ><label class="control-label-required" for="task-grade">
                                                     <spring:message code="label.asmt.task.item.grade" />:</label></th>
-                                                  <td><input type="text" id="item-name" name="itemGrade" 
+                                                  <td><input type="text" id="task-grade" name="itemGrade" 
                                                         value="${empty task.itemGrade ? '10' : task.itemGrade}"
                                                         class="form-control input-sm"></td>
                                                 </tr>

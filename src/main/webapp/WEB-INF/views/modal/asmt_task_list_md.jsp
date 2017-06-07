@@ -38,7 +38,7 @@
                          <thead>
                             <tr>
                                 <th>№</th>
-                                <th><input type="checkbox" id="check-all" class="flat"></th>
+                                <th><input type="checkbox" id="cxSelectAll" class=""></th>
                                 <th><spring:message code="label.asmt.task.item.content" /></th>
                                 <th><spring:message code="label.asmt.task.mode.type" /></th>
                             </tr>
@@ -154,7 +154,7 @@
                 { "data": null, "width": "5%" , 'searchable': false,'orderable': false, 
                 	'render': function (data, type, full, meta)
                     {
-                        return '<input type="checkbox" name="taskIds" value="'+data['id']+'" class="flat">';
+                        return '<input type="checkbox" name="taskIds" value="'+data['id']+'" class="cxinput">';
                     }
                 },
                 { "data": null ,"width": "70%", 'orderable': false, 'searchable': false,
@@ -186,7 +186,8 @@
 
        
     });
- 
+    
     </script>
+    <script src="resources/js/checkbox.js"></script>
 
 </html>

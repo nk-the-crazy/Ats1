@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -271,13 +270,13 @@ public class AssessmentController
             }
             else if(outputType == 2)
             {
-                Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,new PageRequest(0, 100000) );
+                Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom, null );
                 
                 return new ModelAndView( ModelView.VIEW_REPORT_RESULT_LIST_XLS, "resultsPage", resultsPage);
             }
             else if(outputType == 4)
             {
-                Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom,new PageRequest(0, 100000) );
+                Page<Object> resultsPage = assessmentManager.getAssessmentResults( lastName, startDateFrom, null );
                 
                 return new ModelAndView( ModelView.VIEW_REPORT_RESULT_LIST_PDF, "resultsPage", resultsPage);
             }

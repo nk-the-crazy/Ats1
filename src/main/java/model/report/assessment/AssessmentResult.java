@@ -17,7 +17,7 @@ public class AssessmentResult
     private long userId = 0;
     private double score = 0;
 
-    public AssessmentResult(AssessmentProcess process, long taskCount, long responseCount, long rightResponseCount,
+    public AssessmentResult(AssessmentProcess process, short taskCount, long responseCount, long rightResponseCount,
                     double score)
     {
         this.responseCount = responseCount;
@@ -36,7 +36,7 @@ public class AssessmentResult
 
     public AssessmentResult(AssessmentProcess process,
                             long userId,
-                            long taskCount, 
+                            short taskCount, 
                             long responseCount, 
                             long rightResponseCount,
                             double score)

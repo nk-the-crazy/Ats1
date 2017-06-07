@@ -27,12 +27,9 @@
 
 <!-- Custom Theme Style -->
 <link href="resources/css/custom.css" rel="stylesheet">
+
 </head>
-<!-- PNotify 
-<link href="resources/lib/pnotify/dist/pnotify.css" rel="stylesheet">
-<link href="resources/lib/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-<link href="resources/lib/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
--->
+
 <body class="login">
     <div class="login_wrapper">
              <div class="login_wrapper_title">
@@ -46,9 +43,9 @@
         	 <div class="animate form login_form">
                 <section class="login_content">
                     <div class="login_content_title"><spring:message code="label.page.login.title"/></div>
-                    <form id="login-form" action="login.do" method="POST" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="login-form" action="login.do" method="POST" autocomplete="off" data-parsley-validate class="form-horizontal form-label-left">
                       <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-                      <!-- ---------------------- -->
+                                         <!-- ---------------------- -->
                       <c:if test="${param.errorMessage != null}">
                           <div class="alert alert-danger alert-dismissible fade in" role="alert">
                                <spring:message code="${param.errorMessage}"/>
@@ -60,14 +57,16 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="login-name"><spring:message code="label.user.login"/>:<span class="required"></span>
                         </label>
                         <div class="col-md-8 col-sm-8 col-xs-12">
-                          <input type="text" id="login-name" name="userName" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="login-name" name="userName" required="required" class="form-control col-md-7 col-xs-12" autocomplete="off">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password"><spring:message code="label.password"/>:<span class="required"></span>
                         </label>
                         <div class="col-md-8 col-sm-8 col-xs-12">
-                          <input  type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                            <input type="text" style="display:none">
+                            <input type="password" style="display:none">
+                            <input type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12" autocomplete="off">
                         </div>
                       </div>
                         <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-3">

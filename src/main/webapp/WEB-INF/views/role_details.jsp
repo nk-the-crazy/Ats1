@@ -162,9 +162,9 @@
                                                 <c:forEach var="user" items="${usersPage.content}" varStatus="loopCounter">
                                                     <tr>
                                                         <td class="col-md-1">${index + loopCounter.count }</td>
-                                                        <td><a href="user_details.vw?user_id=${user[0]}">
-                                                            <c:out value="${user[1]}"/></a></td>
-                                                        <td><c:out value="${user[3]}"/>&nbsp;<c:out value="${user[2]}"/></td>
+                                                        <td><a href="user_details.vw?user_id=${user[1]}">
+                                                            <c:out value="${user[2]}"/></a></td>
+                                                        <td><c:out value="${user[3]}"/>&nbsp;<c:out value="${user[4]}"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <!-- *********User list ************ -->

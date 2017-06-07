@@ -2,7 +2,6 @@ package model.assessment.process;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,10 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import model.assessment.Assessment;
-import model.assessment.task.AssessmentTask;
 import model.identity.User;
 
 @Entity
@@ -58,16 +54,6 @@ public class AssessmentProcess
     @OneToMany(mappedBy="process" , cascade = CascadeType.ALL, fetch = FetchType.LAZY )
     private Set<ProcessResponse> responses = new HashSet<ProcessResponse>();
     // *********************************************    
-
-    @Transient
-    List<Long> taskIds;
-    
-    @Transient
-    String entryCode;
- 
-    @Transient
-    AssessmentTask currentTask = null;
- 
 
     public long getId()
     {
@@ -150,36 +136,6 @@ public class AssessmentProcess
             response.setProcess( this);
         }
     }
-
-    public List<Long> getTaskIds()
-    {
-        return taskIds;
-    }
-
-    public void setTaskIds( List<Long> taskIds )
-    {
-        this.taskIds = taskIds;
-    }
-
-    public AssessmentTask getCurrentTask()
-    {
-        return currentTask;
-    }
-
-    public void setCurrentTask( AssessmentTask currentTask )
-    {
-        this.currentTask = currentTask;
-    }
-
-    public String getEntryCode()
-    {
-        return entryCode;
-    }
-
-    public void setEntryCode( String entryCode )
-    {
-        this.entryCode = entryCode;
-    }
-
+   
 
 }

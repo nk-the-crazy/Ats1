@@ -136,10 +136,10 @@ common.utils.system.SystemUtils,common.utils.StringUtils"%>
                                             <c:set var="process" value="${results[0]}"/>
                                             <c:set var="assessment" value="${process.assessment}"/>
                                             <c:set var="user" value="${process.user}"/>
-                                            <c:set var="taskCount" value="${results[4]}"/>
-                                            <c:set var="responseCount" value="${results[5]}"/>
-                                            <c:set var="rightResponseCount" value="${results[6]}"/>
-                                            <c:set var="score" value="${results[7]}"/>
+                                            <c:set var="taskCount" value="${assessment.taskCount}"/>
+                                            <c:set var="responseCount" value="${results[4]}"/>
+                                            <c:set var="rightResponseCount" value="${results[5]}"/>
+                                            <c:set var="score" value="${results[6]}"/>
                                             <c:set var="process_state" value="${process.state}"/>
                                             <c:choose>
                                                 <c:when test="${process_state == 2}">

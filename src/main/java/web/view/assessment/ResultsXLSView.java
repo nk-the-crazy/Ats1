@@ -103,10 +103,10 @@ public class ResultsXLSView extends AbstractXlsxView  implements MessageSourceAw
             {
                 AssessmentProcess process = (AssessmentProcess) obj[0];
 
-                long taskCount = (long) obj[4];
-                long responseCount = (long) obj[5];
-                long rightResponseCount = (long) obj[6];
-                double score = (double) obj[7];
+                long taskCount = process.getAssessment().getTaskCount();
+                long responseCount = (long) obj[4];
+                long rightResponseCount = (long) obj[5];
+                double score = (double) obj[6];
 
                 Row courseRow = sheet.createRow( rowCount++ );
                 courseRow.createCell( 0 ).setCellValue( rowCount - 1 );

@@ -127,6 +127,10 @@
                                                   </td>
                                                 </tr>
                                                 <tr>
+                                                  <th scope="row" class="col-md-3"><spring:message code="label.asmt.task.count" />:</th>
+                                                  <td class="col-md-5"><c:out value="${assessment.taskCount}"/></td>
+                                                </tr>
+                                                <tr>
                                                   <th scope="row" class="col-md-3"><spring:message code="label.assessment.maxgrade" />:</th>
                                                   <td class="col-md-5"><c:out value="${assessment.maxGrade}"/></td>
                                                 </tr>
