@@ -26,4 +26,11 @@ public interface RoleDAO extends JpaRepository<Role, Long>
             + " ORDER BY r.id")
     List<Role> getShortListByRoleName(@Param("roleName") String roleName );
     
+    @Query(value = "SELECT r "
+            + " FROM Role r "
+            + " WHERE LOWER(r.name) LIKE LOWER(:roleName) ")
+    
+    Role getByName( @Param("roleName") String roleName );
+    
+    
 }

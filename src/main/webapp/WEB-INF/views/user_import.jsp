@@ -94,6 +94,17 @@
                                             <spring:message code="label.data.file_name" />:</label></th>
                                           <td><input type="file" id="inpFileName" name="file" class="btn-upload"></td>
                                         </tr>
+                                        <tr>
+                                          <th scope="row" ><label class="control-label-required" for="inpFileName">
+                                            <spring:message code="label.group.name" />:</label></th>
+                                          <td>
+                                            <input type="text" name="group_name" list="groupName"/>
+                                            <datalist id="groupName">
+                                                <c:forEach var="group" items="${userGroups}" varStatus="loopCounter">
+                                                    <option value="${group.name }">${group.name }</option>
+                                                </c:forEach>
+                                            </datalist>
+                                        </tr>
                                       </tbody>
                                     </table>
                                 </div>

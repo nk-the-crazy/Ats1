@@ -1,5 +1,7 @@
 package service.impl.identity;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.AccessControlException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -17,12 +19,14 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.base.Strings;
+import com.opencsv.CSVReader;
+
 import common.exceptions.security.InvalidLoginException;
 import common.exceptions.security.InvalidPasswordException;
 import common.exceptions.security.SystemSecurityException;
 import common.utils.security.SecurityUtils;
-import dao.api.group.GroupDAO;
 import dao.api.identity.PermissionDAO;
+import dao.api.group.GroupDAO;
 import dao.api.identity.RoleDAO;
 import dao.api.identity.UserDAO;
 import model.common.session.SessionData;
@@ -31,7 +35,10 @@ import model.identity.Permission;
 import model.identity.Role;
 import model.identity.User;
 import model.identity.UserType;
+import model.organization.Organization;
+import model.person.Person;
 import service.api.identity.IdentityManager;
+import service.api.organization.OrganizationManager;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -41,6 +48,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import common.utils.StringUtils;
 
 @Service("userManagerService")
 @Transactional
@@ -50,6 +58,8 @@ public class IdentityManagerImpl implements IdentityManager
     //---------------------------------
     private static final Logger logger = LoggerFactory.getLogger(IdentityManagerImpl.class);
     //---------------------------------
+    
+    private final int TOKEN_LENGTH = 6;
             
     @Autowired
     UserDAO userDAO;
@@ -62,6 +72,10 @@ public class IdentityManagerImpl implements IdentityManager
 
     @Autowired
     PermissionDAO permissionDAO;
+    
+    @Autowired
+    OrganizationManager organizationManager;
+    
     
     /**************************************************
      * 
@@ -103,7 +117,31 @@ public class IdentityManagerImpl implements IdentityManager
     @Override
     public User auhtenticateByToken( String token ) throws SecurityException
     {
-        return null;
+        String tokendata[] = token.split( "-" );
+        
+        User user = userDAO.getUserByToken( tokendata[0] );
+
+        if ( user != null )
+        {
+            if( tokendata[1] != null ) 
+            {
+                try 
+                {
+                    user.setAssessmentId( Long.parseLong( tokendata[1] ) );
+                }
+                catch( Exception e ) 
+                {
+                    user.setAssessmentId( 0 );
+                    //ignore
+                }
+            }
+            
+            return user;
+        }
+        else 
+        {
+            throw new InvalidLoginException();
+        }
     }
 
 
@@ -160,6 +198,7 @@ public class IdentityManagerImpl implements IdentityManager
             user.setPassword( password );
             user.setType( type );
             user.setEmail( email );
+            user.setToken( StringUtils.randomString( TOKEN_LENGTH ));
         }
         catch(Exception e) 
         {
@@ -197,6 +236,28 @@ public class IdentityManagerImpl implements IdentityManager
     
     }
     
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public UserGroup createGroup( String groupName )
+    {
+        UserGroup group = null;
+        
+        try 
+        {
+            group = new UserGroup();
+            group.setName( groupName );
+           
+        }
+        catch(Exception e) 
+        {
+            
+        }
+        
+        return group;
+    }
    
 
     /**************************************************
@@ -303,7 +364,11 @@ public class IdentityManagerImpl implements IdentityManager
     public User updateUser( User user, List<Long> roleIds, List<Long> groupIds)
     {
         isValidUserName( user.getUserName() );
-
+        
+        if(Strings.isNullOrEmpty( user.getToken() )) 
+        {
+            user.setToken( StringUtils.randomString( TOKEN_LENGTH ) );
+        }
    
         if(!CollectionUtils.isEmpty( roleIds ))
         {
@@ -631,9 +696,8 @@ public class IdentityManagerImpl implements IdentityManager
         return true;
     }
     
-    
     @Override
-    public void importUsers( MultipartFile file )
+    public void importUsers( MultipartFile file, String groupName  )
     {
         try
         {
@@ -641,62 +705,189 @@ public class IdentityManagerImpl implements IdentityManager
 
             if ( lowerCaseFileName.contains( ".xls" ) )
             {
-                Workbook offices = null;
+                importUsersXLS( file );
+            }
+            else if ( lowerCaseFileName.contains( ".csv" ) ) 
+            {
+                importUsersCSV( file, groupName );
+            }
+        }
+        catch ( Exception e )
+        {
+            logger.error( "******** Error importing data from file:", e );
+        }
 
-                logger.info( "Excel file uploaded:" + lowerCaseFileName );
-
-                try
+    }
+  
+    private void importUsersCSV( MultipartFile file, String groupName ) throws IOException
+    {
+        CSVReader csvIpBLocksReader = null;
+        
+        try 
+        {
+            String lowerCaseFileName = file.getOriginalFilename().toLowerCase();
+            
+            csvIpBLocksReader = new CSVReader( new InputStreamReader( file.getInputStream(), "UTF-8" ) );
+            
+            String[] nextRecord;
+            String firstName = "", lastName = "", middleName = "", organizationName = "";
+        
+            logger.info( "*** Processing CSV file:{}", lowerCaseFileName );
+            
+            while ((nextRecord = csvIpBLocksReader.readNext()) != null) 
+            {
+                if( nextRecord.length > 0) 
                 {
-                    if ( lowerCaseFileName.endsWith( ".xlsx" ) )
+                    if( !Strings.isNullOrEmpty( nextRecord[0] ) &&  !Strings.isNullOrEmpty( nextRecord[1] ) ) 
                     {
-                        offices = new XSSFWorkbook( file.getInputStream() );
-                    }
-                    else
-                    {
-                        offices = new HSSFWorkbook( file.getInputStream() );
-                    }
+                        lastName = nextRecord[0];
+                        firstName = nextRecord[1];
 
-                    Sheet worksheet = offices.getSheetAt( 0 );
-                    Iterator<Row> iterator = worksheet.iterator();
-                    User user = null;
-                    int index = 0;
-                    
-                    while ( iterator.hasNext() )
-                    {
-                        index++;
-                        Row currentRow = iterator.next();
-                        Cell currentCell = currentRow.getCell( 0 );
-
-                        if ( currentCell != null && currentCell.getCellType() != Cell.CELL_TYPE_BLANK )
+                        if( !Strings.isNullOrEmpty( nextRecord[2] ) ) 
+                            middleName = nextRecord[2];
+                        
+                        List<User> users = userDAO.findByFirstNameAndLastName( firstName, lastName);
+                        User user = null;
+                        Person person = null;
+                        
+                        if( !users.isEmpty() ) 
                         {
-                            int recordType = 0;
-
-                            if ( currentCell.getCellType() == Cell.CELL_TYPE_NUMERIC )
-                                recordType = (int) currentCell.getNumericCellValue();
-                            else if ( currentCell.getCellType() == Cell.CELL_TYPE_STRING )
-                                recordType = Integer.parseInt( currentCell.getStringCellValue() );
-
-                            logger.info( "Excel row:" + index + " column[4]:" + recordType );
-
-                            if ( recordType == 1 ) // Parent Category
+                            for( User foundUser: users ) 
                             {
-                                currentCell = currentRow.getCell( 0 );
-                                user = createUser( "userName", "password", "email", 2 );
-                                userDAO.save( user );
-                                logger.info( "Excel User inserted:" + user.getUserName() );
+                                user = foundUser;
+                                person = user.getPerson();
+                                
+                                break;
                             }
+                        }
+                        else 
+                        {
+                            String userName = StringUtils.randomString( TOKEN_LENGTH );
+                            String password = StringUtils.randomString( TOKEN_LENGTH );
+                            
+                            user = createUser( userName, password, "email", UserType.Regular.getId());
+                            
+                            person = new Person( firstName, lastName, middleName);
+                            user.setPerson( person );
+                            user.addRole( roleDAO.getByName( "Пользователь" ) );
+                        }
+                        
+                        
+                        //-------------------------------------------------
+                        UserGroup group = groupDAO.getByName( groupName );
+                        
+                        if( group == null ) 
+                        {
+                            group = createGroup( groupName );
+                            group = groupDAO.save( group );
+                        }
+                        
+                        user.addGroup( group );
+                        
+                        //--------------------------------------------------
+                        if( !Strings.isNullOrEmpty( nextRecord[3] ) ) 
+                        { 
+                            organizationName = nextRecord[3];
+                        
+                            List<Organization> orgzs = organizationManager.getOrganizationsByName( organizationName );
+                            Organization organization = null;
+                            
+                            if(!orgzs.isEmpty()) 
+                            {
+                                organization = orgzs.get( 0 );
+                            }
+                            else 
+                            {
+                                organization = organizationManager.createOrganization( "", organizationName, 
+                                        UserType.Regular.getId() );
+                                
+                                organization = organizationManager.saveOrganization( organization );
+                            }
+                            
+                            if(organization != null) 
+                            {
+                                person.setOrganization( organization );
+                            }
+                        }
+                        
+                        //----------------------------------------
+                        saveUser( user );
+                        //----------------------------------------
+                    } 
+                }
+            }
+        }
+        catch( Exception e ) 
+        {
+            throw e;
+        }
+        finally 
+        {
+            if(csvIpBLocksReader != null )
+                csvIpBLocksReader.close();
+        }
+    }
+    
+    private void importUsersXLS( MultipartFile file )
+    {
+        try
+        {
+            String lowerCaseFileName = file.getOriginalFilename().toLowerCase();
+
+            Workbook offices = null;
+
+            logger.info( "Excel file uploaded:" + lowerCaseFileName );
+
+            try
+            {
+                if ( lowerCaseFileName.endsWith( ".xlsx" ) )
+                {
+                    offices = new XSSFWorkbook( file.getInputStream() );
+                }
+                else
+                {
+                    offices = new HSSFWorkbook( file.getInputStream() );
+                }
+
+                Sheet worksheet = offices.getSheetAt( 0 );
+                Iterator<Row> iterator = worksheet.iterator();
+                User user = null;
+                int index = 0;
+                
+                while ( iterator.hasNext() )
+                {
+                    index++;
+                    Row currentRow = iterator.next();
+                    Cell currentCell = currentRow.getCell( 0 );
+
+                    if ( currentCell != null && currentCell.getCellType() != Cell.CELL_TYPE_BLANK )
+                    {
+                        int recordType = 0;
+
+                        if ( currentCell.getCellType() == Cell.CELL_TYPE_NUMERIC )
+                            recordType = (int) currentCell.getNumericCellValue();
+                        else if ( currentCell.getCellType() == Cell.CELL_TYPE_STRING )
+                            recordType = Integer.parseInt( currentCell.getStringCellValue() );
+
+                        logger.info( "Excel row:" + index + " column[4]:" + recordType );
+
+                        if ( recordType == 1 ) // Parent Category
+                        {
+                            currentCell = currentRow.getCell( 0 );
+                            user = createUser( "userName", "password", "email", 2 );
+                            userDAO.save( user );
+                            logger.info( "Excel User inserted:" + user.getUserName() );
                         }
                     }
                 }
-                catch ( Exception e )
-                {
-                    throw e;
-                }
-                finally
-                {
-                    offices.close();
-                }
-
+            }
+            catch ( Exception e )
+            {
+                throw e;
+            }
+            finally
+            {
+                offices.close();
             }
         }
         catch ( Exception e )

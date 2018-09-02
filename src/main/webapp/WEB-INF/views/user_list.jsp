@@ -125,6 +125,7 @@ common.utils.system.SystemUtils"%>
                                             <tr>
                                                 <th>№</th>
                                                 <th><spring:message code="label.user.login" /></th>
+                                                <th><spring:message code="label.user.token" /></th>
                                                 <th><spring:message code="label.user.full_name" /></th>
                                                 <th><spring:message code="label.user.last_login" /></th>
                                                 <th><spring:message code="label.data.status" /></th>
@@ -134,16 +135,17 @@ common.utils.system.SystemUtils"%>
                                         <!-- *********User list ************ -->
                                         <c:set var="index" value="${usersPage.number * usersPage.size}" />
                                         <c:forEach var="user" items="${usersPage.content}" varStatus="loopCounter">
-                                            <tr class="${user[3] == 1 ? 'a' : 'danger'}">
+                                            <tr class="${user[4] == 1 ? 'a' : 'danger'}">
                                                 <td class="col-md-1">${index + loopCounter.count }</td>
                                                 <td><a href="user_details.vw?user_id=${user[0]}">
                                                     <c:out value="${user[1]}"/></a></td>
-                                                <td><c:out value="${user[5]}"/>&nbsp;<c:out value="${user[4]}"/></td>
+                                                <td><c:out value="${user[2]}"/></td>
+                                                <td><c:out value="${user[6]}"/>&nbsp;<c:out value="${user[5]}"/></td>
                                                 <td class="col-md-3">
-                                                    <fmt:formatDate pattern="${dateTimeFormatShort }" value="${user[2]}" />
+                                                    <fmt:formatDate pattern="${dateTimeFormatShort }" value="${user[3]}" />
                                                 </td>
                                                 <td class="col-md-2">
-                                                   ${SystemUtils.getAttribute('system.attrib.data.status',user[3])}
+                                                   ${SystemUtils.getAttribute('system.attrib.data.status',user[4])}
                                                 </td>
                                             </tr>
                                         </c:forEach>

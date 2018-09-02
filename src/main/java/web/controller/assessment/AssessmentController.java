@@ -291,6 +291,41 @@ public class AssessmentController
         return model;
     }
     
+    /*******************************************************
+     * 
+     */
+    @RequestMapping( value = "/asmt_user_details.vw")
+    public ModelAndView getAssessmentUserDetailsView( @RequestParam( name = "outputType" , defaultValue = "1", required = false ) 
+                                                     int outputType,
+                                                     @RequestParam( name = "assessment_id" ) long assessmentId)
+    {         
+        ModelAndView model = new ModelAndView( ModelView.VIEW_SYSTEM_ERROR_PAGE );
+            
+        try
+        {
+            if(outputType == 1)
+            {
+            }
+            else if(outputType == 2)
+            {
+                List<Object> asmtUsersList = assessmentManager.getAssessmentUserDetails( assessmentId );
+                
+                return new ModelAndView( ModelView.VIEW_ASMT_USER_DETAILS_XLS, "asmtUsersList", asmtUsersList);
+            }
+            else if(outputType == 4)
+            {
+            }
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting Assessment result list:", e );        
+            model.addObject( "errorData", "message.error.system");
+            model.addObject( "errorDetails", e.toString() );        
+        }
+        
+        return model;
+    }
+    
     
     
     /*******************************************************

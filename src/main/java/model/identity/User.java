@@ -18,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -60,6 +61,13 @@ public class User implements Serializable
     @Column(name = "email", nullable = false )
     private String email;
 
+    @Column(name = "token", unique = true)
+    private String token;
+    
+    @Transient
+    private long assessmentId = 0;
+    
+    
     // *********************************************
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = {
@@ -161,6 +169,26 @@ public class User implements Serializable
     public void setEmail( String email )
     {
         this.email = email;
+    }
+    
+    public String getToken()
+    {
+        return token;
+    }
+
+    public void setToken( String token )
+    {
+        this.token = token;
+    }
+    
+    public long getAssessmentId()
+    {
+        return assessmentId;
+    }
+
+    public void setAssessmentId( long assessmentId )
+    {
+        this.assessmentId = assessmentId;
     }
 
     public List<Role> getRoles()

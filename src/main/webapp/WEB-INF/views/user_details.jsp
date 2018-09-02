@@ -121,6 +121,10 @@
                                                   <td class="col-md-5"><c:out value="${user.userName}"/></td>
                                                 </tr>
                                                 <tr>
+                                                  <th scope="row" class="col-md-2"><spring:message code="label.user.token" />:</th>
+                                                  <td class="col-md-5"><c:out value="${user.token}"/></td>
+                                                </tr>
+                                                <tr>
                                                   <th scope="row"><spring:message code="label.account_email" />:</th>
                                                   <td><c:out value="${user.email}"/></td>
                                                 </tr>

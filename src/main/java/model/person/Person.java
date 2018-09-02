@@ -84,7 +84,19 @@ public class Person
 	 * 
 	 * 
 	 */
-	
+    
+    public Person() {}
+    
+    
+    public Person( String firstName, String lastName, String middleName )
+    {
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+    }
+
+
     public long getId()
 	{
 		return id;

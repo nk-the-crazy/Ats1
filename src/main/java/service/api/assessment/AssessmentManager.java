@@ -90,5 +90,7 @@ public interface AssessmentManager
 
     Page<Object> getProcessWrongResponses( long processId, Pageable pageable );
 
+    List<Object> getAssessmentUserDetails( long assessmentId );
+
 
 }

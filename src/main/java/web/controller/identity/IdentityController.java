@@ -79,13 +79,31 @@ public class IdentityController
 	}
 	
 	
+    /*******************************************************
+     * 
+     * */
+    @RequestMapping(value={ "/login_system.vw"} )
+    public String sysLogin()
+    {
+        return ModelView.VIEW_SYSTEM_LOGIN_PAGE;
+    }
+    
+	
 	/*******************************************************
 	 * 
 	 * */
 	@RequestMapping( "/main.vw" )
-	public String mainView()
+	public String mainView( @AuthenticationPrincipal SessionData sData )
 	{
-		return ModelView.VIEW_MAIN_PAGE;
+		if( sData != null ) 
+		{
+		    if( sData.getUser() != null && sData.getUser().getAssessmentId() > 0 ) 
+		    {
+	            return "redirect:test_process_init.do?assessment_id=" + sData.getUser().getAssessmentId();
+		    }
+		}
+		
+	    return ModelView.VIEW_MAIN_PAGE;
 	}
 	
 	
@@ -154,21 +172,21 @@ public class IdentityController
                                   String lastName, 
                                   Pageable pageable )
     {
-	     ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
+	    ModelAndView model = new ModelAndView( ModelView.VIEW_MAIN_PAGE );
 	        
-	        try
-	        {
-	            Page<User> usersPage = identityManager.getUsersByUserNameAndLastName( userName, lastName, pageable);
-	                    
-	            model.addObject( "usersPage", usersPage );
-	            model.setViewName( ModelView.VIEW_USER_LIST_PAGE);
-	        }
-	        catch(Exception e)
-	        {
-	            logger.error( " **** Error getting user list:", e );        
-	        }
-	        
-	        return model;
+        try
+        {
+            Page<User> usersPage = identityManager.getUsersByUserNameAndLastName( userName, lastName, pageable);
+                    
+            model.addObject( "usersPage", usersPage );
+            model.setViewName( ModelView.VIEW_USER_LIST_PAGE);
+        }
+        catch(Exception e)
+        {
+            logger.error( " **** Error getting user list:", e );        
+        }
+        
+        return model;
     }
 	
 	
@@ -446,6 +464,9 @@ public class IdentityController
     @RequestMapping("/user_import.vw")
     public String importUserView(Model model)
     {
+        List<UserGroup> groups = groupManager.getGroups();
+        model.addAttribute( "userGroups", groups);
+        
         return ModelView.VIEW_USER_IMPORT_PAGE;
     }
     
@@ -454,13 +475,14 @@ public class IdentityController
      * 
      */
     @RequestMapping( value = "/user_import.do")
-    public String importUser( @RequestParam("file") MultipartFile file, Model model)
+    public String importUser( @RequestParam("file") MultipartFile file,
+                              @RequestParam( "group_name" ) String groupName, Model model)
     {
         try
         {
             if (!file.isEmpty()) 
             {
-                identityManager.importUsers(file);
+                identityManager.importUsers( file,groupName );
                 return "redirect:user_list.vw";
             }
             else

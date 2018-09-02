@@ -65,12 +65,14 @@ public interface IdentityManager
 
     List<Long> getUserGroupIds( long userId );
 
-    void importUsers( MultipartFile file );
-
     User updateUser( User user );
 
     User updateUser( User user, List<Long> roleIds, List<Long> groupIds );
 
     List<User> getUserFullDetailsList();
+
+    void importUsers( MultipartFile file, String groupName );
+
+    UserGroup createGroup( String groupName );
 
 }

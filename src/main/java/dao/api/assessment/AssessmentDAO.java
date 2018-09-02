@@ -1,6 +1,7 @@
 package dao.api.assessment;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,17 @@ public interface AssessmentDAO extends JpaRepository<Assessment, Long>
                                    @Param("startDateTo") Date startDateTo, 
                                    @Param("assessmentType") short assessmentType,
                                    Pageable pageable );
+    
+    
+    // ********************************************
+    @Query(value = " SELECT  DISTINCT usr, prn, a "
+                 +  " FROM Assessment a "  
+                 +  " JOIN a.participants p "
+                 +  " JOIN p.users usr "
+                 +  " JOIN usr.person prn "
+                 +  " WHERE a.id = :assessmentId "
+                 +  " ORDER BY prn.lastName " )
+    List<Object> getUserDetails( @Param("assessmentId") long assessmentId );
 
     //********************************************
     @Query(value = "SELECT a "

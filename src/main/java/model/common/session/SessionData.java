@@ -17,7 +17,6 @@ public class SessionData implements Serializable
 	private String token = "";
 	private Date lastLogin = null;
 	
-	
 	/* ********************************
 	 * 
 	 */
@@ -89,7 +88,5 @@ public class SessionData implements Serializable
     {
         return this.user.getAuthorities();
     }
-
-
-
+    
 }
