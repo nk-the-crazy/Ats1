@@ -336,7 +336,6 @@ public class IdentityManagerImpl implements IdentityManager
         isValidUserName( user.getUserName() );
         isValidPassword( user.getUserName(), user.getPassword() );
 
-   
         if(!CollectionUtils.isEmpty( roleIds ))
         {
             for(long roleId:roleIds)
@@ -400,6 +399,9 @@ public class IdentityManagerImpl implements IdentityManager
         
         try
         {
+            if(Strings.isNullOrEmpty( user.getToken() )) 
+                user.setToken( StringUtils.randomString( TOKEN_LENGTH ) );
+
             String salt = SecurityUtils.generateSecureRandom();
             user.setPassword( SecurityUtils.generateSecurePassword( user.getPassword(), salt ));
             user.setSalt( salt );

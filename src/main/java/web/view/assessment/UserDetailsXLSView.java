@@ -92,7 +92,7 @@ public class UserDetailsXLSView extends AbstractXlsxView  implements MessageSour
                 courseRow.createCell( 0 ).setCellValue( rowCount - 1 );
                 courseRow.createCell( 1 ).setCellValue( person.getLastName() + " " + person.getFirstName() );
                 courseRow.createCell( 2 ).setCellValue( asmt.getName() );
-                courseRow.createCell( 9 ).setCellValue( user.getToken() + "-" + asmt.getId());
+                courseRow.createCell( 3 ).setCellValue( user.getToken() + "-" + asmt.getId());
             }
         }
         catch ( Exception e )

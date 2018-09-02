@@ -65,9 +65,9 @@
                                 <div class="x_title">
                                     <h2><spring:message code="label.page.asmt_details.title" /></h2>
                                      <div style="text-align: right;">
-                                        <a href="asmt_user_details.vw?outputType=2&assessment_id=${param.assessment_id }" role="button" class="btn btn-info btn-xs">
+                                        <a href="asmt_user_details.vw?outputType=2&assessment_id=${param.assessment_id }" role="button" class="btn btn-success btn-xs">
                                             <i class="fa fa-file-excel-o"></i>&nbsp;
-                                                <spring:message code="label.page.user_details.title"/>
+                                                <spring:message code="label.assessment.participants"/>
                                         </a>
                                         <a href="asmt_test_edit.vw?assessment_id=${param.assessment_id }" role="button" class="btn btn-info btn-xs">
                                             <i class="fa fa-pencil-square-o"></i>&nbsp;
