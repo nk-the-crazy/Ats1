@@ -13,12 +13,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
 
-@Component
+@Component("SystemUtils")
 @Scope("singleton")
+@Order(1)
 public class SystemUtils
 {
     private static ResourceBundleMessageSource settingsBundle;

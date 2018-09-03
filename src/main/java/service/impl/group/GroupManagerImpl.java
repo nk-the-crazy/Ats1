@@ -123,6 +123,15 @@ public class GroupManagerImpl implements GroupManager
      * 
      */
     @Override
+    public List<UserGroup> getGroups()
+    {
+        return groupDAO.findAll();
+    }
+    
+    /**************************************************
+     * 
+     */
+    @Override
     public List<UserGroup> getGroupsByName( String groupName )
     {
         return groupDAO.findByName(groupName);

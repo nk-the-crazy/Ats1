@@ -499,7 +499,7 @@ public class AssessmentManagerImpl implements AssessmentManager
         }
         catch ( Exception e )
         {
-            logger.error( e.toString(), e );
+            logger.error( "(E!) Error creating assessment process !!", e );
         }
 
         return process;
@@ -526,7 +526,7 @@ public class AssessmentManagerImpl implements AssessmentManager
         }
         catch ( Exception e )
         {
-            logger.error( e.toString(), e );
+            logger.error( "(E!) Error ", e );
         }
 
         return assessment;
@@ -682,6 +682,16 @@ public class AssessmentManagerImpl implements AssessmentManager
     public Page<Object> getAssessmentResults( String lastName, Date startDateFrom , Pageable pageable )
     {
         return processDAO.getResults( lastName, startDateFrom, pageable );
+    }
+    
+    
+    /**************************************************
+     * 
+     */
+    @Override
+    public List<Object> getAssessmentUserDetails( long assessmentId )
+    {
+        return assessmentDAO.getUserDetails( assessmentId );
     }
 
 
@@ -876,7 +886,7 @@ public class AssessmentManagerImpl implements AssessmentManager
         }
         catch(Exception e)
         {
-            logger.error( "Error generating Assessment:", e );
+            logger.error( "(E!) Error generating Assessment:", e );
         }
         
         return null;

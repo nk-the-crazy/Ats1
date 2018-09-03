@@ -44,7 +44,7 @@ public interface ProcessResponseDAO extends JpaRepository<ProcessResponse, Long>
                  +  " JOIN r.task tsk "
                  
                  +  " WHERE p.id=:processId "
-                 +  " AND  r.grade > 0 "
+                 +  " AND  r.grade <= 0 "
                  +  " ORDER BY r.id ")
     Page<Object> getWrongByProcessId( @Param("processId") long processId , Pageable pageable );
 

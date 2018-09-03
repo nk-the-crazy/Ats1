@@ -20,6 +20,12 @@ public interface GroupDAO extends JpaRepository<UserGroup, Long>
                  + " HAVING LOWER(g.name) LIKE LOWER(CONCAT('%',:groupName, '%'))")
     Page<UserGroup> findByName(@Param("groupName") String groupName, Pageable pageable );
     
+    //********************************************
+    @Query(value = " SELECT g "
+                 + " FROM UserGroup g"
+                 + " WHERE LOWER(g.name) LIKE LOWER(:groupName)")
+    UserGroup getByName( @Param("groupName") String groupName );
+    
 
     //********************************************
     @Query(value = "SELECT g "
@@ -27,6 +33,13 @@ public interface GroupDAO extends JpaRepository<UserGroup, Long>
             + " WHERE LOWER(g.name) LIKE LOWER(CONCAT('%',:groupName, '%'))")
     List<UserGroup> findByName(@Param("groupName") String groupName);
 
+    //********************************************
+    @Query(value = "SELECT g "
+            + " FROM UserGroup g "
+            + "ORDER by g.name ")
+    List<UserGroup> findAll();
+
+    
     
     //********************************************
     @Query(value = "SELECT g "

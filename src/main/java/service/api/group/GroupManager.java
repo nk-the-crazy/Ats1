@@ -34,4 +34,6 @@ public interface GroupManager
 
     void addUsers( long groupId, List<Long> userIds );
 
+    List<UserGroup> getGroups();
+
 }

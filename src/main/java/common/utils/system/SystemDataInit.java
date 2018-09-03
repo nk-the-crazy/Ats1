@@ -2,6 +2,7 @@ package common.utils.system;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import model.common.DataValue;
@@ -20,6 +21,7 @@ import service.api.organization.OrganizationManager;
 import service.api.person.PersonManager;
 
 @Component
+@DependsOn("SystemUtils")
 @Transactional
 public class SystemDataInit
 {

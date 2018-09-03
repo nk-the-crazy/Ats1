@@ -155,8 +155,6 @@ public class OrganizationManagerImpl implements OrganizationManager
         return organzDAO.findByName( organizationName, pageable );
     }
     
-    
-
     /**************************************************
      * 
      */

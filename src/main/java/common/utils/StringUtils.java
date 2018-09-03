@@ -4,6 +4,7 @@ package common.utils;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -19,6 +20,13 @@ public class StringUtils
 
     private static SimpleDateFormat longDateFormatter = new SimpleDateFormat(
             SystemUtils.getSettings( "system.app.date.format.long" ) );
+    
+    static RandomStringGenerator generator = new RandomStringGenerator.Builder()
+            .withinRange('1', 'z')
+            .filteredBy(t -> t >= '1' && t <= '9', 
+                        t -> t >= 'A' && t <= 'Z' && t!='O', 
+                        t -> t >= 'a' && t <= 'z' && t!='o')
+            .build();
 
     /*****************************************
      * 
@@ -137,6 +145,23 @@ public class StringUtils
             return new String(str.getBytes("UTF-8"));
         }
         catch ( UnsupportedEncodingException e )
+        {
+            // ignore
+            return "";
+        }
+    }
+    
+    
+    /* ********************************************
+     * 
+     * */
+    public static String randomString( int length ) 
+    {
+        try
+        {    
+            return generator.generate( length );
+        }
+        catch ( Exception e )
         {
             // ignore
             return "";

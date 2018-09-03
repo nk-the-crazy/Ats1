@@ -9,6 +9,7 @@ public class ModelView
     //Identity
 	public static String VIEW_MAIN_PAGE  = "main";
 	public static String VIEW_LOGIN_PAGE = "login";
+    public static String VIEW_SYSTEM_LOGIN_PAGE = "login_system";
 	public static String VIEW_ERROR_PAGE = "error"; 
     
 	public static String VIEW_EDIT_PASSWORD_PAGE  = "edit_password";
@@ -61,6 +62,7 @@ public class ModelView
     public static String VIEW_ASMT_EDIT_PAGE  = "asmt_test_edit";
     public static String VIEW_ASMT_LIST_PAGE  = "asmt_test_list";
     public static String VIEW_ASMT_DETAILS_PAGE  = "asmt_test_details";
+    public static String VIEW_ASMT_USER_DETAILS_XLS  = "asmt_user_details_xls";
     
     //Report
     public static String VIEW_REPORT_RESULT_LIST_PAGE  = "report_result_list";

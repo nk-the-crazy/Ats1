@@ -19,9 +19,9 @@ public interface UserDAO extends JpaRepository<User, Long>
     //********************************************
     User findByUserName( String userName );
 
-    
+
     //********************************************
-    @Query(value = "SELECT u.id, u.userName, u.lastLogin, u.status ,p.firstName, p.lastName "
+    @Query(value = "SELECT u.id, u.userName,u.token, u.lastLogin, u.status ,p.firstName, p.lastName "
             + " FROM User u LEFT JOIN u.person p "
             + " WHERE LOWER(u.userName) LIKE LOWER(CONCAT('%',:userName, '%')) AND "
             + " LOWER(p.lastName) LIKE  LOWER(CONCAT('%',:lastName, '%')) "
@@ -35,8 +35,17 @@ public interface UserDAO extends JpaRepository<User, Long>
             + " FROM User u LEFT JOIN u.person p "
             + " WHERE LOWER(u.userName) LIKE LOWER(CONCAT('%',:userName, '%')) AND "
             + " LOWER(p.lastName) LIKE  LOWER(CONCAT('%',:lastName, '%'))")
-    List<User> findByUserNameAndLastName(@Param("userName") String userName,
-                                         @Param("lastName") String lastName );
+    List<User> findByUserNameAndLastName( @Param("userName") String userName,
+                                          @Param("lastName") String lastName );
+
+    
+    //********************************************
+    @Query(value = "SELECT u "
+            + " FROM User u LEFT JOIN FETCH u.person p "
+            + " WHERE LOWER(p.firstName) LIKE  LOWER(CONCAT('%',:firstName, '%')) AND "
+            + " LOWER(p.lastName) LIKE  LOWER(CONCAT('%',:lastName, '%'))")
+    List<User> findByFirstNameAndLastName( @Param("firstName") String firstName,
+                                           @Param("lastName") String lastName );
 
     
     //********************************************
@@ -49,6 +58,12 @@ public interface UserDAO extends JpaRepository<User, Long>
             + " LEFT JOIN FETCH p.organization o "
             + " WHERE u.id=:userId")
     User getFullDetails(@Param("userId") long userId );
+
+    //********************************************
+    @Query(value = "SELECT u "
+            + " FROM User u " 
+            + " WHERE LOWER(u.token) LIKE  LOWER(:token)")
+    User getUserByToken( @Param("token") String roken );
 
     
     //********************************************

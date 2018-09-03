@@ -78,6 +78,8 @@
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" name="taskIndex" value="0"/>
                                     <input type="hidden" name="assessment_id" value="${process.assessment.id }"/>
+                                    <input type="hidden" name="entryCode" value="1000" >
+                                    
                                     <table class="table table-bordered dataTable">
                                       <thead>
                                         <tr>
@@ -143,9 +145,11 @@
                                           </td>
                                         </tr>
                                         <tr>
-                                          <th scope="row" ><spring:message code="label.assessment.entry.code" />:</th>
+                                           <th scope="row" ><!--<spring:message code="label.assessment.entry.code" />:--></th>
                                            <td  class="col-md-2">
+                                                <!--  
                                                 <input type="text" id="inpEntryCode" name="entryCode" class="form-control input-sm" required="required">
+                                                -->
                                            </td>
                                           <td>
                                             <c:if test="${asmt_status == 1 }">
