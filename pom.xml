@@ -29,7 +29,7 @@
 		<jcl.slf4j.version>1.7.12</jcl.slf4j.version>
 		<itext.version>5.5.3</itext.version>
         <poi.version>3.12</poi.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <opencsv.version>4.0</opencsv.version>
 	</properties>
 
